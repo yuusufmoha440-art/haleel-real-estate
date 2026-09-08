@@ -3,493 +3,2440 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Haleel Real Estate</title>
+
 <style>
-:root{--primary:#006CC2;--primary-dark:#00539a;--light-blue:#EAF5FF;--navy:#0B1F33;--white:#fff;--gray:#F5F7FA;--text:#243447;--muted:#718096;--green:#20B26B;--red:#E5484D;--gold:#F5B942;--shadow:0 15px 45px rgba(0,108,194,.12);--radius:20px}
-*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,Segoe UI,Arial,sans-serif}
-body{background:var(--gray);color:var(--text)}
-.auth{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:25px;background:linear-gradient(135deg,rgba(0,108,194,.92),rgba(11,31,51,.95)),url("https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1800&q=80");background-size:cover;background-position:center}
-.auth-box{width:100%;max-width:1050px;min-height:620px;display:grid;grid-template-columns:1fr 1fr;background:rgba(255,255,255,.97);border-radius:30px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.25);animation:fadeUp .7s ease}
-.auth-image{padding:55px;color:#fff;display:flex;flex-direction:column;justify-content:center;background:linear-gradient(135deg,rgba(0,108,194,.75),rgba(11,31,51,.85)),url("https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80");background-size:cover;background-position:center}
-.logo{font-size:28px;font-weight:900;letter-spacing:1px}.auth-image h1{font-size:48px;line-height:1.1;margin:25px 0}.auth-image p{line-height:1.8;opacity:.9}
-.auth-form{padding:55px;display:flex;flex-direction:column;justify-content:center}.auth-form h2{font-size:32px;color:var(--navy);margin-bottom:10px}.auth-form>p{color:var(--muted);margin-bottom:25px}
-.input{width:100%;padding:15px 17px;border:1px solid #dce4ec;border-radius:12px;outline:none;margin-bottom:15px;transition:.25s;font-size:15px}.input:focus{border-color:var(--primary);box-shadow:0 0 0 4px rgba(0,108,194,.08)}
-.btn{border:0;padding:14px 20px;border-radius:12px;cursor:pointer;font-weight:700;transition:.25s}.btn-primary{background:var(--primary);color:#fff}.btn-primary:hover{background:var(--primary-dark);transform:translateY(-2px)}.btn-outline{background:#fff;color:var(--primary);border:1px solid var(--primary)}
-.switch{margin-top:20px;text-align:center;color:var(--muted)}.switch span{color:var(--primary);font-weight:700;cursor:pointer}.forgot{display:block;text-align:right;color:var(--primary);font-size:14px;font-weight:700;cursor:pointer;margin:-5px 0 15px}
-.auth-msg{display:none;padding:12px 14px;border-radius:10px;margin-bottom:15px;font-size:14px;font-weight:600}.auth-msg.show{display:block}.auth-msg.error{background:#ffebec;color:#b4232a;border:1px solid #ffc8cb}.auth-msg.success{background:#e5f8ef;color:#117a46;border:1px solid #b8ebd1}
-.otp-info{background:var(--light-blue);padding:13px;border-radius:12px;margin-bottom:18px;color:var(--text);font-size:14px;line-height:1.5}
-.app{display:none;min-height:100vh}.sidebar{position:fixed;width:250px;height:100vh;background:#fff;border-right:1px solid #e8edf2;padding:25px 18px;z-index:100}.brand{padding:10px 15px 35px}.brand h2{color:var(--primary)}.brand small{color:var(--muted)}
-.nav{display:flex;flex-direction:column;gap:8px}.nav button{width:100%;padding:14px;border:0;background:transparent;text-align:left;border-radius:12px;cursor:pointer;color:var(--text);font-weight:600;transition:.25s}.nav button:hover,.nav button.active{background:var(--light-blue);color:var(--primary)}
-.user{position:absolute;bottom:20px;left:18px;right:18px;padding:15px;background:var(--gray);border-radius:15px}.user strong{display:block}.user small{color:var(--muted)}
-.main{margin-left:250px;padding:25px}.topbar{height:65px;background:#fff;border-radius:16px;display:flex;justify-content:space-between;align-items:center;padding:0 22px;margin-bottom:25px;box-shadow:0 5px 20px rgba(0,0,0,.04)}
-.page{display:none;animation:fadeUp .4s ease}.page.active{display:block}
-.hero{min-height:420px;border-radius:25px;padding:50px;display:flex;align-items:center;color:#fff;background:linear-gradient(90deg,rgba(0,54,100,.9),rgba(0,108,194,.35)),url("https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1800&q=80");background-size:cover;background-position:center;box-shadow:var(--shadow)}
-.hero-content{max-width:620px}.hero h1{font-size:52px;line-height:1.08;margin-bottom:20px}.hero p{font-size:18px;line-height:1.7;margin-bottom:25px}.hero-buttons{display:flex;gap:12px;flex-wrap:wrap}
-.section{margin-top:35px}.section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}.section-header h2{color:var(--navy)}
-.services{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}.card{background:#fff;border-radius:var(--radius);padding:25px;box-shadow:0 8px 30px rgba(0,0,0,.04);transition:.3s}.card:hover{transform:translateY(-6px);box-shadow:var(--shadow)}.service-icon{width:55px;height:55px;display:flex;align-items:center;justify-content:center;border-radius:15px;background:var(--light-blue);font-size:25px;margin-bottom:18px}.card h3{margin-bottom:10px;color:var(--navy)}.card p{color:var(--muted);line-height:1.6}
-.status-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.status-card{color:#fff;padding:28px;border-radius:20px}.available{background:linear-gradient(135deg,#20B26B,#159957)}.rented{background:linear-gradient(135deg,#006CC2,#004f91)}.new{background:linear-gradient(135deg,#F5B942,#d89b20)}
-.property-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.property-card{background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 7px 25px rgba(0,0,0,.05);transition:.3s}.property-card:hover{transform:translateY(-5px)}.property-image{height:210px;width:100%;object-fit:cover}.property-content{padding:20px}.property-content h3{margin-bottom:8px}.location{color:var(--muted);margin-bottom:15px}.price{font-size:22px;font-weight:800;color:var(--primary)}.badge{display:inline-block;padding:6px 10px;border-radius:20px;font-size:12px;font-weight:700;margin-bottom:12px}.badge-green{background:#e5f8ef;color:#159957}.badge-blue{background:#e8f4ff;color:var(--primary)}.badge-red{background:#ffebec;color:var(--red)}
-.search-box{display:grid;grid-template-columns:2fr 1fr 1fr 1fr auto;gap:10px;background:#fff;padding:15px;border-radius:16px;margin-bottom:25px;box-shadow:0 5px 20px rgba(0,0,0,.04)}
-.care-grid,.settings-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.care-card{background:#fff;padding:30px;border-radius:22px;text-align:center;box-shadow:0 8px 30px rgba(0,0,0,.05);transition:.3s}.care-card:hover{transform:translateY(-6px)}.care-icon{font-size:45px;margin-bottom:20px}.care-card a{display:block;margin-top:20px;text-decoration:none}
-.form-container{max-width:1000px;background:#fff;padding:35px;border-radius:25px;box-shadow:var(--shadow)}.form-section{margin-bottom:30px}.form-section h3{color:var(--primary);margin-bottom:18px}.form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px}.form-group label{display:block;margin-bottom:7px;font-size:14px;font-weight:600}textarea.input{min-height:130px;resize:vertical}.upload{border:2px dashed #bdd9ef;padding:35px;text-align:center;border-radius:15px;background:var(--light-blue)}
-.setting-card{background:#fff;padding:30px;border-radius:20px;box-shadow:0 7px 25px rgba(0,0,0,.05)}.setting-icon{font-size:35px;margin-bottom:20px}
-.floating-care{position:fixed;right:25px;bottom:25px;z-index:500}.care-button{width:60px;height:60px;border-radius:50%;border:0;background:var(--primary);color:#fff;font-size:25px;cursor:pointer;box-shadow:0 10px 30px rgba(0,108,194,.4)}.care-menu{position:absolute;right:0;bottom:75px;width:210px;background:#fff;padding:12px;border-radius:18px;box-shadow:0 15px 45px rgba(0,0,0,.15);display:none}.care-menu.show{display:block;animation:scaleIn .25s ease}.care-menu a{display:block;padding:12px;text-decoration:none;color:var(--text);border-radius:10px}.care-menu a:hover{background:var(--light-blue);color:var(--primary)}
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:1000;padding:20px}.modal.show{display:flex}.modal-box{position:relative;background:#fff;width:100%;max-width:450px;padding:35px;border-radius:25px;text-align:center;animation:scaleIn .3s ease}.modal-box h2{margin-bottom:12px}.details-close{position:absolute;top:10px;right:15px;width:35px;height:35px;border:0;background:transparent;font-size:28px;color:#718096;cursor:pointer}.details-icon{font-size:50px;margin-bottom:10px}.details-text{color:#718096;line-height:1.7;margin:15px 0 20px}.details-contact{background:var(--light-blue);padding:18px;border-radius:15px;margin-bottom:20px}.details-contact-label{font-size:14px;color:var(--muted);margin-bottom:7px}.details-phone{font-size:20px;color:var(--primary)}.details-buttons{display:flex;gap:10px;justify-content:center}.call-button{text-decoration:none}
-.mobile-nav{display:none}
-@media(max-width:1000px){.services{grid-template-columns:repeat(2,1fr)}.property-grid{grid-template-columns:repeat(2,1fr)}.settings-grid,.care-grid{grid-template-columns:1fr}.search-box{grid-template-columns:1fr 1fr}}
-@media(max-width:750px){.auth-box{grid-template-columns:1fr}.auth-image{display:none}.auth-form{padding:35px 25px}.sidebar{display:none}.main{margin-left:0;padding:15px;padding-bottom:90px}.mobile-nav{position:fixed;display:flex;bottom:0;left:0;right:0;height:70px;background:#fff;z-index:900;justify-content:space-around;align-items:center;box-shadow:0 -5px 20px rgba(0,0,0,.1)}.mobile-nav button{border:0;background:none;color:var(--muted);font-size:12px;cursor:pointer}.mobile-nav button.active{color:var(--primary);font-weight:800}.hero{min-height:450px;padding:30px 25px}.hero h1{font-size:38px}.services,.property-grid,.status-grid{grid-template-columns:1fr}.search-box{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}.topbar{padding:0 15px}.modal-box{max-width:95%;padding:30px 20px}}
-@keyframes fadeUp{from{opacity:0;transform:translateY(25px)}to{opacity:1;transform:translateY(0)}}@keyframes scaleIn{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:scale(1)}}
+:root{
+--primary:#006CC2;
+--primary-dark:#00539a;
+--light-blue:#EAF5FF;
+--navy:#0B1F33;
+--white:#fff;
+--gray:#F5F7FA;
+--text:#243447;
+--muted:#718096;
+--green:#20B26B;
+--red:#E5484D;
+--gold:#F5B942;
+--shadow:0 15px 45px rgba(0,108,194,.12);
+--radius:20px
+}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Inter,Segoe UI,Arial,sans-serif
+}
+
+body{
+background:var(--gray);
+color:var(--text)
+}
+
+/* =========================
+   MAIN APP
+========================= */
+
+.app{
+display:block;
+min-height:100vh
+}
+
+.sidebar{
+position:fixed;
+width:250px;
+height:100vh;
+background:#fff;
+border-right:1px solid #e8edf2;
+padding:25px 18px;
+z-index:100
+}
+
+.brand{
+padding:10px 15px 35px
+}
+
+.brand h2{
+color:var(--primary)
+}
+
+.brand small{
+color:var(--muted)
+}
+
+.nav{
+display:flex;
+flex-direction:column;
+gap:8px
+}
+
+.nav button{
+width:100%;
+padding:14px;
+border:0;
+background:transparent;
+text-align:left;
+border-radius:12px;
+cursor:pointer;
+color:var(--text);
+font-weight:600;
+transition:.25s
+}
+
+.nav button:hover,
+.nav button.active{
+background:var(--light-blue);
+color:var(--primary)
+}
+
+.user{
+position:absolute;
+bottom:20px;
+left:18px;
+right:18px;
+padding:15px;
+background:var(--gray);
+border-radius:15px
+}
+
+.user strong{
+display:block
+}
+
+.user small{
+color:var(--muted)
+}
+
+.main{
+margin-left:250px;
+padding:25px
+}
+
+.topbar{
+height:65px;
+background:#fff;
+border-radius:16px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:0 22px;
+margin-bottom:25px;
+box-shadow:0 5px 20px rgba(0,0,0,.04)
+}
+
+.page{
+display:none;
+animation:fadeUp .4s ease
+}
+
+.page.active{
+display:block
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+.btn{
+border:0;
+padding:14px 20px;
+border-radius:12px;
+cursor:pointer;
+font-weight:700;
+transition:.25s
+}
+
+.btn-primary{
+background:var(--primary);
+color:#fff
+}
+
+.btn-primary:hover{
+background:var(--primary-dark);
+transform:translateY(-2px)
+}
+
+.btn-outline{
+background:#fff;
+color:var(--primary);
+border:1px solid var(--primary)
+}
+
+.input{
+width:100%;
+padding:15px 17px;
+border:1px solid #dce4ec;
+border-radius:12px;
+outline:none;
+margin-bottom:15px;
+transition:.25s;
+font-size:15px
+}
+
+.input:focus{
+border-color:var(--primary);
+box-shadow:0 0 0 4px rgba(0,108,194,.08)
+}
+
+/* =========================
+   HERO
+========================= */
+
+.hero{
+min-height:420px;
+border-radius:25px;
+padding:50px;
+display:flex;
+align-items:center;
+color:#fff;
+background:
+linear-gradient(
+90deg,
+rgba(0,54,100,.9),
+rgba(0,108,194,.35)
+),
+url("https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1800&q=80");
+background-size:cover;
+background-position:center;
+box-shadow:var(--shadow)
+}
+
+.hero-content{
+max-width:620px
+}
+
+.hero h1{
+font-size:52px;
+line-height:1.08;
+margin-bottom:20px
+}
+
+.hero p{
+font-size:18px;
+line-height:1.7;
+margin-bottom:25px
+}
+
+.hero-buttons{
+display:flex;
+gap:12px;
+flex-wrap:wrap
+}
+
+/* =========================
+   SECTIONS
+========================= */
+
+.section{
+margin-top:35px
+}
+
+.section-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:20px
+}
+
+.section-header h2{
+color:var(--navy)
+}
+
+/* =========================
+   SERVICES
+========================= */
+
+.services{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:18px
+}
+
+.card{
+background:#fff;
+border-radius:var(--radius);
+padding:25px;
+box-shadow:0 8px 30px rgba(0,0,0,.04);
+transition:.3s
+}
+
+.card:hover{
+transform:translateY(-6px);
+box-shadow:var(--shadow)
+}
+
+.service-icon{
+width:55px;
+height:55px;
+display:flex;
+align-items:center;
+justify-content:center;
+border-radius:15px;
+background:var(--light-blue);
+font-size:25px;
+margin-bottom:18px
+}
+
+.card h3{
+margin-bottom:10px;
+color:var(--navy)
+}
+
+.card p{
+color:var(--muted);
+line-height:1.6
+}
+
+/* =========================
+   STATUS
+========================= */
+
+.status-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:18px
+}
+
+.status-card{
+color:#fff;
+padding:28px;
+border-radius:20px
+}
+
+.available{
+background:linear-gradient(135deg,#20B26B,#159957)
+}
+
+.rented{
+background:linear-gradient(135deg,#006CC2,#004f91)
+}
+
+.new{
+background:linear-gradient(135deg,#F5B942,#d89b20)
+}
+
+/* =========================
+   PROPERTY
+========================= */
+
+.property-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:20px
+}
+
+.property-card{
+background:#fff;
+border-radius:20px;
+overflow:hidden;
+box-shadow:0 7px 25px rgba(0,0,0,.05);
+transition:.3s
+}
+
+.property-card:hover{
+transform:translateY(-5px)
+}
+
+.property-image{
+height:210px;
+width:100%;
+object-fit:cover
+}
+
+.property-content{
+padding:20px
+}
+
+.property-content h3{
+margin-bottom:8px
+}
+
+.location{
+color:var(--muted);
+margin-bottom:15px
+}
+
+.price{
+font-size:22px;
+font-weight:800;
+color:var(--primary)
+}
+
+.badge{
+display:inline-block;
+padding:6px 10px;
+border-radius:20px;
+font-size:12px;
+font-weight:700;
+margin-bottom:12px
+}
+
+.badge-green{
+background:#e5f8ef;
+color:#159957
+}
+
+.badge-blue{
+background:#e8f4ff;
+color:var(--primary)
+}
+
+.badge-red{
+background:#ffebec;
+color:var(--red)
+}
+
+/* =========================
+   SEARCH
+========================= */
+
+.search-box{
+display:grid;
+grid-template-columns:2fr 1fr 1fr 1fr auto;
+gap:10px;
+background:#fff;
+padding:15px;
+border-radius:16px;
+margin-bottom:25px;
+box-shadow:0 5px 20px rgba(0,0,0,.04)
+}
+
+/* =========================
+   CUSTOMER CARE
+========================= */
+
+.care-grid,
+.settings-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:20px
+}
+
+.care-card{
+background:#fff;
+padding:30px;
+border-radius:22px;
+text-align:center;
+box-shadow:0 8px 30px rgba(0,0,0,.05);
+transition:.3s
+}
+
+.care-card:hover{
+transform:translateY(-6px)
+}
+
+.care-icon{
+font-size:45px;
+margin-bottom:20px
+}
+
+.care-card a{
+display:block;
+margin-top:20px
+}
+
+/* =========================
+   SUBMIT PROPERTY
+========================= */
+
+.form-container{
+max-width:1000px;
+background:#fff;
+padding:35px;
+border-radius:25px;
+box-shadow:var(--shadow)
+}
+
+.form-section{
+margin-bottom:30px
+}
+
+.form-section h3{
+color:var(--primary);
+margin-bottom:18px
+}
+
+.form-grid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:15px
+}
+
+.form-group label{
+display:block;
+margin-bottom:7px;
+font-size:14px;
+font-weight:600
+}
+
+textarea.input{
+min-height:130px;
+resize:vertical
+}
+
+.upload{
+border:2px dashed #bdd9ef;
+padding:35px;
+text-align:center;
+border-radius:15px;
+background:var(--light-blue)
+}
+
+/* =========================
+   SETTINGS
+========================= */
+
+.setting-card{
+background:#fff;
+padding:30px;
+border-radius:20px;
+box-shadow:0 7px 25px rgba(0,0,0,.05)
+}
+
+.setting-icon{
+font-size:35px;
+margin-bottom:20px
+}
+
+/* =========================
+   FLOATING CUSTOMER CARE
+========================= */
+
+.floating-care{
+position:fixed;
+right:25px;
+bottom:25px;
+z-index:500
+}
+
+.care-button{
+width:60px;
+height:60px;
+border-radius:50%;
+border:0;
+background:var(--primary);
+color:#fff;
+font-size:25px;
+cursor:pointer;
+box-shadow:0 10px 30px rgba(0,108,194,.4)
+}
+
+.care-menu{
+position:absolute;
+right:0;
+bottom:75px;
+width:210px;
+background:#fff;
+padding:12px;
+border-radius:18px;
+box-shadow:0 15px 45px rgba(0,0,0,.15);
+display:none
+}
+
+.care-menu.show{
+display:block;
+animation:scaleIn .25s ease
+}
+
+.care-menu a{
+display:block;
+padding:12px;
+text-decoration:none;
+color:var(--text);
+border-radius:10px
+}
+
+.care-menu a:hover{
+background:var(--light-blue);
+color:var(--primary)
+}
+
+/* =========================
+   MODALS
+========================= */
+
+.modal{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.55);
+display:none;
+align-items:center;
+justify-content:center;
+z-index:1000;
+padding:20px
+}
+
+.modal.show{
+display:flex
+}
+
+.modal-box{
+position:relative;
+background:#fff;
+width:100%;
+max-width:450px;
+padding:35px;
+border-radius:25px;
+text-align:center;
+animation:scaleIn .3s ease
+}
+
+.modal-box h2{
+margin-bottom:12px
+}
+
+.details-close{
+position:absolute;
+top:10px;
+right:15px;
+width:35px;
+height:35px;
+border:0;
+background:transparent;
+font-size:28px;
+color:#718096;
+cursor:pointer
+}
+
+.details-icon{
+font-size:50px;
+margin-bottom:10px
+}
+
+.details-text{
+color:#718096;
+line-height:1.7;
+margin:15px 0 20px
+}
+
+.details-contact{
+background:var(--light-blue);
+padding:18px;
+border-radius:15px;
+margin-bottom:20px
+}
+
+.details-contact-label{
+font-size:14px;
+color:var(--muted);
+margin-bottom:7px
+}
+
+.details-phone{
+font-size:20px;
+color:var(--primary)
+}
+
+.details-buttons{
+display:flex;
+gap:10px;
+justify-content:center
+}
+
+.call-button{
+text-decoration:none
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+.mobile-nav{
+display:none
+}
+
+@media(max-width:1000px){
+
+.services{
+grid-template-columns:repeat(2,1fr)
+}
+
+.property-grid{
+grid-template-columns:repeat(2,1fr)
+}
+
+.settings-grid,
+.care-grid{
+grid-template-columns:1fr
+}
+
+.search-box{
+grid-template-columns:1fr 1fr
+}
+
+}
+
+@media(max-width:750px){
+
+.sidebar{
+display:none
+}
+
+.main{
+margin-left:0;
+padding:15px;
+padding-bottom:90px
+}
+
+.mobile-nav{
+position:fixed;
+display:flex;
+bottom:0;
+left:0;
+right:0;
+height:70px;
+background:#fff;
+z-index:900;
+justify-content:space-around;
+align-items:center;
+box-shadow:0 -5px 20px rgba(0,0,0,.1)
+}
+
+.mobile-nav button{
+border:0;
+background:none;
+color:var(--muted);
+font-size:12px;
+cursor:pointer
+}
+
+.mobile-nav button.active{
+color:var(--primary);
+font-weight:800
+}
+
+.hero{
+min-height:450px;
+padding:30px 25px
+}
+
+.hero h1{
+font-size:38px
+}
+
+.services,
+.property-grid,
+.status-grid{
+grid-template-columns:1fr
+}
+
+.search-box{
+grid-template-columns:1fr
+}
+
+.form-grid{
+grid-template-columns:1fr
+}
+
+.topbar{
+padding:0 15px
+}
+
+.modal-box{
+max-width:95%;
+padding:30px 20px
+}
+
+}
+
+@keyframes fadeUp{
+from{
+opacity:0;
+transform:translateY(25px)
+}
+to{
+opacity:1;
+transform:translateY(0)
+}
+}
+
+@keyframes scaleIn{
+from{
+opacity:0;
+transform:scale(.85)
+}
+to{
+opacity:1;
+transform:scale(1)
+}
+}
 </style>
 </head>
+
 <body>
 
-<section class="auth" id="auth">
-<div class="auth-box">
-<div class="auth-image"><div class="logo">Welcome</div><h1>Macmiil soo dhawoow!</h1><p>Kusoo dhawoow Shirkadda casriga ah ee Haleel Real Estate, macmiil waxaan kuugu adeegaynaa degdegsiimo & hufnaan goob kasta iyo goor kasta.</p></div>
-<div class="auth-form">
-
-<div id="loginForm">
-<h2>Haleel Real Estate</h2><p>Sign in to your Haleel Real Estate account.</p>
-<div id="loginMsg" class="auth-msg"></div>
-<input class="input" id="loginUsername" placeholder="Username or Email" autocomplete="username">
-<input class="input" id="loginPassword" type="password" placeholder="Password" autocomplete="current-password">
-<div class="forgot" onclick="showForgot()">Forgot Password?</div>
-<button class="btn btn-primary" style="width:100%" onclick="login()">Sign In</button>
-<div class="switch">Don't have an account? <span onclick="showSignup()">Create Account</span></div>
-</div>
-
-<div id="signupForm" style="display:none">
-<h2>Create Account</h2><p>Join Haleel Real Estate today.</p>
-<div id="signupMsg" class="auth-msg"></div>
-<input class="input" id="fullName" placeholder="Full Name">
-<input class="input" id="username" placeholder="Username">
-<input class="input" id="email" type="email" placeholder="Email">
-<input class="input" id="phone" placeholder="Phone Number">
-<input class="input" id="password" type="password" placeholder="Password" autocomplete="new-password">
-<input class="input" id="confirmPassword" type="password" placeholder="Confirm Password" autocomplete="new-password">
-<button class="btn btn-primary" style="width:100%" onclick="signup()">Create Account</button>
-<div class="switch">Already have an account? <span onclick="showLogin()">Sign In</span></div>
-</div>
-
-<div id="otpForm" style="display:none">
-<h2>Verify Email</h2><p>Geli OTP-ga 4-digit ah.</p>
-<div id="otpMsg" class="auth-msg"></div>
-<div class="otp-info">OTP-ga waxaa loo diray emailka aad gelisay. OTP-gu wuxuu shaqaynayaa muddo kooban.</div>
-<input class="input" id="signupOtp" inputmode="numeric" maxlength="4" placeholder="4-digit OTP">
-<button class="btn btn-primary" style="width:100%" onclick="verifySignupOTP()">Verify OTP</button>
-<div class="switch"><span onclick="showSignup()">← Back</span></div>
-</div>
-
-<div id="forgotForm" style="display:none">
-<h2>Forgot Password</h2><p>Geli Gmail-ka aad account-ka ku samaysatay.</p>
-<div id="forgotMsg" class="auth-msg"></div>
-<input class="input" id="forgotEmail" type="email" placeholder="Email">
-<button class="btn btn-primary" style="width:100%" onclick="sendForgotOTP()">Send OTP</button>
-<div class="switch"><span onclick="showLogin()">← Back to Sign In</span></div>
-</div>
-
-<div id="resetForm" style="display:none">
-<h2>Reset Password</h2><p>Geli OTP-ga iyo password-ka cusub.</p>
-<div id="resetMsg" class="auth-msg"></div>
-<input class="input" id="resetOtp" inputmode="numeric" maxlength="4" placeholder="4-digit OTP">
-<input class="input" id="newPassword" type="password" placeholder="New Password" autocomplete="new-password">
-<input class="input" id="confirmNewPassword" type="password" placeholder="Confirm New Password" autocomplete="new-password">
-<button class="btn btn-primary" style="width:100%" onclick="resetPassword()">Reset Password</button>
-</div>
-
-</div></div></section>
+<!-- =========================
+     MAIN APP
+========================= -->
 
 <section class="app" id="app">
+
+<!-- SIDEBAR -->
+
 <aside class="sidebar">
-<div class="brand"><h2>HALEEL</h2><small>Real Estate</small></div>
-<div class="nav">
-<button class="active" onclick="openPage('home',this)">🏠 Home</button>
-<button onclick="openPage('property',this)">🏘 Property</button>
-<button onclick="openPage('care',this)">💬 Customer Care</button>
-<button onclick="openPage('submit',this)">📝 Submit Property</button>
-<button onclick="openPage('settings',this)">⚙️ Settings</button>
+
+<div class="brand">
+<h2>HALEEL</h2>
+<small>Real Estate</small>
 </div>
-<div class="user"><strong id="userDisplay">Guest User</strong><small>Haleel Customer</small></div>
+
+<div class="nav">
+
+<button class="active" onclick="openPage('home',this)">
+🏠 Home
+</button>
+
+<button onclick="openPage('property',this)">
+🏘 Property
+</button>
+
+<button onclick="openPage('care',this)">
+💬 Customer Care
+</button>
+
+<button onclick="openPage('submit',this)">
+📝 Submit Property
+</button>
+
+<button onclick="openPage('settings',this)">
+⚙️ Settings
+</button>
+
+</div>
+
+<div class="user">
+
+<strong>Haleel Customer</strong>
+
+<small>
+Welcome to Haleel Real Estate
+</small>
+
+</div>
+
 </aside>
 
+
+<!-- MAIN -->
+
 <main class="main">
-<div class="topbar"><strong id="pageTitle">Home</strong><button class="btn btn-outline" onclick="logout()">Logout</button></div>
+
+<div class="topbar">
+
+<strong id="pageTitle">
+Home
+</strong>
+
+<button
+class="btn btn-outline"
+onclick="openPage('care')">
+Customer Care
+</button>
+
+</div>
+
+
+<!-- =========================
+     HOME
+========================= -->
 
 <div class="page active" id="home">
-<div class="hero"><div class="hero-content"><h1>Hogaanka Kiraynta!</h1><p>Macmiil soo dhawoow, waxaad si fudud u heli kartaa guri kiro ah sidoo kalena waad iska kirayn kartaa, adiga oo jooga gurigaaga, waxaan kuu haynaa adeeg casri ah oo qiimo jaban!.</p><div class="hero-buttons"><button class="btn btn-primary" onclick="openPage('property')">Raadi Guri</button><button class="btn" style="background:white;color:#006CC2" onclick="openPage('submit')">Diiwaangeli Guri</button></div></div></div>
-<section class="section"><div class="section-header"><h2>Adeegyada</h2></div><div class="services">
-<div class="card"><div class="service-icon">🏠</div><h3>Adeega Ejaar</h3><p>Macmiil adeega ejaar wuxuu kaa saacidayaa helida guri kiro ah & inaad kiraysid gurigaaga si fudud.</p></div>
-<div class="card"><div class="service-icon">📢</div><h3>Adeega Soohel</h3><p>Macmiil waxaad haddii aad soo gudbisid guri kiro ah waxaad helaysaa khidmad lacageed.</p></div>
-<div class="card"><div class="service-icon">🤝</div><h3>Adeega Dilaal</h3><p>Macmiil waxaad ku iibin kartaa gurigaaga & bugcadaada, sidoo kalena waxaad helaysaa guryo & bugcado iib ah.</p></div>
-<div class="card"><div class="service-icon">💻</div><h3>Qancinta Macaamiisha</h3><p>Macmiil waxaan diyaar u nahay xalinta cabashadaada & qancintaada.</p></div>
-</div></section>
-<section class="section"><div class="section-header"><h2>Website Status</h2></div><div class="status-grid"><div class="status-card available"><h2>1,375</h2><p>Guryaha banaan</p></div><div class="status-card rented"><h2>5,885</h2><p>Guryaha la dagay</p></div><div class="status-card new"><h2>100k+</h2><p>Downloads</p></div></div></section>
-<section class="section"><div class="section-header"><h2>Guryaha</h2><button class="btn btn-outline" onclick="openPage('property')">View All</button></div><div class="property-grid">
-<div class="property-card"><img class="property-image" src="https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=900&q=80"><div class="property-content"><span class="badge badge-green">Banaan</span><h3>Apartment</h3><div class="location">📍 Garowe</div><div class="price">$350 / Month</div></div></div>
-<div class="property-card"><img class="property-image" src="https://images.unsplash.com/photo-1600607688969-a5bfcd646154?auto=format&fit=crop&w=900&q=80"><div class="property-content"><span class="badge badge-green">Banaan</span><h3>Dabaq-suge</h3><div class="location">📍 Gaalkacyo</div><div class="price">$500 / Month</div></div></div>
-<div class="property-card"><img class="property-image" src="https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=900&q=80"><div class="property-content"><span class="badge badge-blue">La dagay</span><h3>Fiilo</h3><div class="location">📍 Laascanod</div><div class="price">$150 / Month</div></div></div>
-</div></section>
+
+<div class="hero">
+
+<div class="hero-content">
+
+<h1>
+Hogaanka Kiraynta!
+</h1>
+
+<p>
+Macmiil soo dhawoow, waxaad si fudud u heli kartaa guri kiro ah sidoo kalena waad iska kirayn kartaa, adiga oo jooga gurigaaga, waxaan kuu haynaa adeeg casri ah oo qiimo jaban!.
+</p>
+
+<div class="hero-buttons">
+
+<button
+class="btn btn-primary"
+onclick="openPage('property')">
+Raadi Guri
+</button>
+
+<button
+class="btn"
+style="background:white;color:#006CC2"
+onclick="openPage('submit')">
+Diiwaangeli Guri
+</button>
+
 </div>
 
-<div class="page" id="property">
-<div class="section-header"><div><h2>Raadi Guri</h2><p style="color:#718096">Macmiil raadi nooca guri aad rabtid.</p></div></div>
-<div class="search-box"><input class="input" style="margin:0" placeholder="Raadi goobta..."><select class="input" style="margin:0"><option>Nooca Guriga</option><option>Fiilo</option><option>Apartment</option><option>Qol Ganacsi</option><option>Qol Irid-banaan</option><option>Qolal guri ka banaan</option><option>Dabaq-suge</option><option>Guri goglan</option></select><select class="input" style="margin:0"><option>Marxalada</option><option>Guri kiro ah</option><option>Guri Iib ah</option></select><select class="input" style="margin:0"><option>Qolalka</option><option>1+</option><option>2+</option><option>3+</option><option>4+</option></select><button class="btn btn-primary">Raadi</button></div>
-<div class="property-grid">
-<div class="property-card"><img class="property-image" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=80"><div class="property-content"><span class="badge badge-green">Banaan</span><h3>Fiilo</h3><div class="location">📍 Bosaaso</div><p>🛏 3 Qol &nbsp; 🛁 2 Suuli</p><br><div class="price">$300 / Month</div><br><button class="btn btn-primary" onclick="openDetails()">Call Now</button></div></div>
-<div class="property-card"><img class="property-image" src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=900&q=80"><div class="property-content"><span class="badge badge-green">Banaan</span><h3>Guri goglan</h3><div class="location">📍 Garowe</div><p>🛏 4 Qol &nbsp; 🛁 3 Suuli</p><br><div class="price">$450 / Month</div><br><button class="btn btn-primary" onclick="openDetails()">Call Now</button></div></div>
-<div class="property-card"><img class="property-image" src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=900&q=80"><div class="property-content"><span class="badge badge-blue">La dagay</span><h3>Apartment</h3><div class="location">📍 Gaalkacyo</div><p>🛏 2 Qol &nbsp; 🛁 1 Suuli</p><br><div class="price">$180 / Month</div></div></div>
-</div></div>
-
-<div class="page" id="care">
-<div class="section-header"><div><h2>Customer Care</h2><p style="color:#718096">Daryeelka Macaamiisha.</p></div></div>
-<div class="care-grid">
-<div class="care-card"><div class="care-icon">💬</div><h3>Chat Care</h3><p>Send text, voice messages and images to Haleel Customer Care.</p><button class="btn btn-primary" style="margin-top:20px" onclick="openChat()">Start Chat</button></div>
-<div class="care-card"><div class="care-icon">🟢</div><h3>WhatsApp</h3><p>Chat directly with Haleel Real Estate.</p><a class="btn btn-primary" href="https://wa.me/252907469995" target="_blank">WhatsApp</a></div>
-<div class="care-card"><div class="care-icon">📞</div><h3>Voice Call</h3><p>Call Haleel Real Estate directly.</p><a class="btn btn-primary" href="tel:+252907469995">Call Now</a></div>
-</div>
-<div class="card" style="margin-top:25px;text-align:center"><h3>📧 Email Support</h3><p>Haleelrealestate@gmail.com</p><br><a class="btn btn-outline" href="mailto:Haleelrealestate@gmail.com">Email Us</a></div>
 </div>
 
-<div class="page" id="submit">
-<div class="form-container"><h2>Geli Xogtaada</h2><p style="color:#718096;margin:10px 0 30px">Mudane / Marwo diiwaan-geli guriga la rabo In la kireeyo adiga oo gudbinaya dhammaan macluumaadkiisa.</p>
-<div class="form-section"><h3>Xogta Mulkiilaha</h3><div class="form-grid">
-<div class="form-group"><label>Full Name</label><input class="input" id="ownerName" placeholder="Full Name"></div><div class="form-group"><label>Phone Number</label><input class="input" id="ownerPhone" placeholder="+252..."></div><div class="form-group"><label>Email</label><input class="input" id="ownerEmail" type="email" placeholder="Email"></div><div class="form-group"><label>WhatsApp</label><input class="input" id="ownerWhatsapp" placeholder="+252..."></div>
-</div></div>
-<div class="form-section"><h3>Geli Macluumaadka Guriga</h3><div class="form-grid">
-<div class="form-group"><label>Magaca soo gudbiyaha</label><input class="input" id="propertyTitle" placeholder="Geli magacaaga oo dhamaystiran..."></div>
-<div class="form-group"><label>Nooca Guriga</label><select class="input" id="propertyType"><option>Fiilo</option><option>Apartment</option><option>Qol Ganacsi</option><option>Qol Irid-banaan</option><option>Qolal guri ka banaan</option><option>Dabaq-suge</option><option>Guri goglan</option></select></div>
-<div class="form-group"><label>Magaalada</label><input class="input" id="city" placeholder="Geli magaalada..."></div><div class="form-group"><label>Xaafadda</label><input class="input" id="neighborhood" placeholder="Geli xaafadda..."></div>
-<div class="form-group"><label>Qiimaha Kirada</label><input class="input" id="rent" type="number" placeholder="$USD"></div><div class="form-group"><label>Tirada Qolalka</label><input class="input" id="bedrooms" type="number"></div>
-<div class="form-group"><label>Tirada Suuliyada</label><input class="input" id="bathrooms" type="number"></div><div class="form-group"><label>Cabirka Guriga</label><input class="input" id="size" placeholder="m²"></div>
-</div></div>
-<div class="form-section"><h3>Faah-faahinta Guriga</h3><textarea class="input" id="description" placeholder="Soo gudbi haddii aad qabtid faah-faahin dheeraad ah..."></textarea></div>
-<div class="form-section"><h3>Sawirka Guriga</h3><div class="upload">📷<h3>Geli sawirka guriga</h3><p style="color:#718096">Dooro sawirka guriga.</p><br><input type="file" id="images" multiple accept="image/*"></div></div>
-<button class="btn btn-primary" style="width:100%;font-size:16px" onclick="submitProperty()">Gudbi</button>
-</div></div>
+</div>
 
-<div class="page" id="settings">
-<div class="section-header"><div><h2>Settings</h2><p style="color:#718096">Manage your Haleel account.</p></div></div>
-<div class="settings-grid">
-<div class="setting-card"><div class="setting-icon">🚪</div><h3>Log Out</h3><p>Sign out of your Haleel Real Estate account.</p><br><button class="btn btn-primary" onclick="logout()">Log Out</button></div>
-<div class="setting-card"><div class="setting-icon">🌐</div><h3>Language</h3><p>Choose your preferred language.</p><br><select class="input"><option>English</option></select></div>
-<div class="setting-card"><div class="setting-icon">ℹ️</div><h3>About</h3><p>Haleel Real Estate — Hogaanka Kiraynta.</p><br><strong>Version 1.0.0</strong></div>
-</div></div>
-</main>
 
-<nav class="mobile-nav"><button class="active" onclick="openPage('home',this)">🏠<br>Home</button><button onclick="openPage('property',this)">🏘<br>Property</button><button onclick="openPage('care',this)">💬<br>Care</button><button onclick="openPage('settings',this)">⚙️<br>Settings</button></nav>
-<div class="floating-care"><div class="care-menu" id="careMenu"><a href="https://wa.me/252907469995" target="_blank">🟢 WhatsApp</a><a href="tel:+252907469995">📞 Call</a><a href="mailto:Haleelrealestate@gmail.com">📧 Email</a><a href="#" onclick="openChat();return false;">💬 Chat Care</a></div><button class="care-button" onclick="toggleCare()">💬</button></div>
+<!-- SERVICES -->
+
+<section class="section">
+
+<div class="section-header">
+<h2>Adeegyada</h2>
+</div>
+
+<div class="services">
+
+<div class="card">
+
+<div class="service-icon">
+🏠
+</div>
+
+<h3>
+Adeega Ejaar
+</h3>
+
+<p>
+Macmiil adeega ejaar wuxuu kaa saacidayaa helida guri kiro ah & inaad kiraysid gurigaaga si fudud.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<div class="service-icon">
+📢
+</div>
+
+<h3>
+Adeega Soohel
+</h3>
+
+<p>
+Macmiil waxaad haddii aad soo gudbisid guri kiro ah waxaad helaysaa khidmad lacageed.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<div class="service-icon">
+🤝
+</div>
+
+<h3>
+Adeega Dilaal
+</h3>
+
+<p>
+Macmiil waxaad ku iibin kartaa gurigaaga & bugcadaada, sidoo kalena waxaad helaysaa guryo & bugcado iib ah.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<div class="service-icon">
+💻
+</div>
+
+<h3>
+Qancinta Macaamiisha
+</h3>
+
+<p>
+Macmiil waxaan diyaar u nahay xalinta cabashadaada & qancintaada.
+</p>
+
+</div>
+
+</div>
+
 </section>
 
-<div class="modal" id="detailsModal"><div class="modal-box"><button class="details-close" onclick="closeDetails()">×</button><div class="details-icon">🏠</div><h2>Faahfaahinta Guriga</h2><p class="details-text">Haddii aad doonaysid gurigan, la xiriir xarumaheena si aad u hesho faahfaahin dheeraad ah.</p><div class="details-contact"><div class="details-contact-label">📞 Nala Xiriir</div><strong class="details-phone">+252 90 7469995</strong></div><div class="details-buttons"><button class="btn btn-outline" onclick="closeDetails()">Close</button><a href="tel:+252907469995" class="btn btn-primary call-button">📞 Call Now</a></div></div></div>
 
-<div class="modal" id="chatModal"><div class="modal-box"><h2>💬 Qancinta Macaamiisha!</h2><p style="color:#718096">Macmiil maxaan kaa caawiyaa?</p><br><textarea class="input" id="chatMessage" placeholder="Write your message..."></textarea><div style="display:flex;gap:10px"><button class="btn btn-outline" onclick="document.getElementById('chatModal').classList.remove('show')">Close</button><button class="btn btn-primary" onclick="sendEmail()">Send</button></div></div></div>
+<!-- STATUS -->
 
-<div class="modal" id="successModal"><div class="modal-box"><div style="font-size:55px">✅</div><h2>Mahadsanid!</h2><p style="color:#718096;margin:15px 0">Waad ku mahadsantahay macmiil, hadda waad gudbisay macluumaadkii.</p><button class="btn btn-primary" onclick="closeSuccess()">Dib u noqo!</button></div></div>
+<section class="section">
+
+<div class="section-header">
+
+<h2>
+Website Status
+</h2>
+
+</div>
+
+<div class="status-grid">
+
+<div class="status-card available">
+
+<h2>
+1,375
+</h2>
+
+<p>
+Guryaha banaan
+</p>
+
+</div>
+
+
+<div class="status-card rented">
+
+<h2>
+5,885
+</h2>
+
+<p>
+Guryaha la dagay
+</p>
+
+</div>
+
+
+<div class="status-card new">
+
+<h2>
+100k+
+</h2>
+
+<p>
+Downloads
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- PROPERTY -->
+
+<section class="section">
+
+<div class="section-header">
+
+<h2>
+Guryaha
+</h2>
+
+<button
+class="btn btn-outline"
+onclick="openPage('property')">
+View All
+</button>
+
+</div>
+
+
+<div class="property-grid">
+
+
+<div class="property-card">
+
+<img
+class="property-image"
+src="https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=900&q=80">
+
+<div class="property-content">
+
+<span class="badge badge-green">
+Banaan
+</span>
+
+<h3>
+Apartment
+</h3>
+
+<div class="location">
+📍 Garowe
+</div>
+
+<div class="price">
+$350 / Month
+</div>
+
+</div>
+
+</div>
+
+
+<div class="property-card">
+
+<img
+class="property-image"
+src="https://images.unsplash.com/photo-1600607688969-a5bfcd646154?auto=format&fit=crop&w=900&q=80">
+
+<div class="property-content">
+
+<span class="badge badge-green">
+Banaan
+</span>
+
+<h3>
+Dabaq-suge
+</h3>
+
+<div class="location">
+📍 Gaalkacyo
+</div>
+
+<div class="price">
+$500 / Month
+</div>
+
+</div>
+
+</div>
+
+
+<div class="property-card">
+
+<img
+class="property-image"
+src="https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=900&q=80">
+
+<div class="property-content">
+
+<span class="badge badge-blue">
+La dagay
+</span>
+
+<h3>
+Fiilo
+</h3>
+
+<div class="location">
+📍 Laascanod
+</div>
+
+<div class="price">
+$150 / Month
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+</div>
+
+
+<!-- =========================
+     PROPERTY PAGE
+========================= -->
+
+<div class="page" id="property">
+
+<div class="section-header">
+
+<div>
+
+<h2>
+Raadi Guri
+</h2>
+
+<p style="color:#718096">
+Macmiil raadi nooca guri aad rabtid.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="search-box">
+
+<input
+class="input"
+style="margin:0"
+placeholder="Raadi goobta...">
+
+<select
+class="input"
+style="margin:0">
+
+<option>
+Nooca Guriga
+</option>
+
+<option>
+Fiilo
+</option>
+
+<option>
+Apartment
+</option>
+
+<option>
+Qol Ganacsi
+</option>
+
+<option>
+Qol Irid-banaan
+</option>
+
+<option>
+Qolal guri ka banaan
+</option>
+
+<option>
+Dabaq-suge
+</option>
+
+<option>
+Guri goglan
+</option>
+
+</select>
+
+
+<select
+class="input"
+style="margin:0">
+
+<option>
+Marxalada
+</option>
+
+<option>
+Guri kiro ah
+</option>
+
+<option>
+Guri Iib ah
+</option>
+
+</select>
+
+
+<select
+class="input"
+style="margin:0">
+
+<option>
+Qolalka
+</option>
+
+<option>
+1+
+</option>
+
+<option>
+2+
+</option>
+
+<option>
+3+
+</option>
+
+<option>
+4+
+</option>
+
+</select>
+
+
+<button
+class="btn btn-primary">
+Raadi
+</button>
+
+</div>
+
+
+<div class="property-grid">
+
+
+<div class="property-card">
+
+<img
+class="property-image"
+src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=80">
+
+<div class="property-content">
+
+<span class="badge badge-green">
+Banaan
+</span>
+
+<h3>
+Fiilo
+</h3>
+
+<div class="location">
+📍 Bosaaso
+</div>
+
+<p>
+🛏 3 Qol &nbsp; 🛁 2 Suuli
+</p>
+
+<br>
+
+<div class="price">
+$300 / Month
+</div>
+
+<br>
+
+<button
+class="btn btn-primary"
+onclick="openDetails()">
+Call Now
+</button>
+
+</div>
+
+</div>
+
+
+<div class="property-card">
+
+<img
+class="property-image"
+src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=900&q=80">
+
+<div class="property-content">
+
+<span class="badge badge-green">
+Banaan
+</span>
+
+<h3>
+Guri goglan
+</h3>
+
+<div class="location">
+📍 Garowe
+</div>
+
+<p>
+🛏 4 Qol &nbsp; 🛁 3 Suuli
+</p>
+
+<br>
+
+<div class="price">
+$450 / Month
+</div>
+
+<br>
+
+<button
+class="btn btn-primary"
+onclick="openDetails()">
+Call Now
+</button>
+
+</div>
+
+</div>
+
+
+<div class="property-card">
+
+<img
+class="property-image"
+src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=900&q=80">
+
+<div class="property-content">
+
+<span class="badge badge-blue">
+La dagay
+</span>
+
+<h3>
+Apartment
+</h3>
+
+<div class="location">
+📍 Gaalkacyo
+</div>
+
+<p>
+🛏 2 Qol &nbsp; 🛁 1 Suuli
+</p>
+
+<br>
+
+<div class="price">
+$180 / Month
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- =========================
+     CUSTOMER CARE
+========================= -->
+
+<div class="page" id="care">
+
+<div class="section-header">
+
+<div>
+
+<h2>
+Customer Care
+</h2>
+
+<p style="color:#718096">
+Daryeelka Macaamiisha.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="care-grid">
+
+
+<div class="care-card">
+
+<div class="care-icon">
+💬
+</div>
+
+<h3>
+Chat Care
+</h3>
+
+<p>
+Send text, voice messages and images to Haleel Customer Care.
+</p>
+
+<button
+class="btn btn-primary"
+style="margin-top:20px"
+onclick="openChat()">
+Start Chat
+</button>
+
+</div>
+
+
+<div class="care-card">
+
+<div class="care-icon">
+🟢
+</div>
+
+<h3>
+WhatsApp
+</h3>
+
+<p>
+Chat directly with Haleel Real Estate.
+</p>
+
+<a
+class="btn btn-primary"
+href="https://wa.me/252907469995"
+target="_blank">
+WhatsApp
+</a>
+
+</div>
+
+
+<div class="care-card">
+
+<div class="care-icon">
+📞
+</div>
+
+<h3>
+Voice Call
+</h3>
+
+<p>
+Call Haleel Real Estate directly.
+</p>
+
+<a
+class="btn btn-primary"
+href="tel:+252907469995">
+Call Now
+</a>
+
+</div>
+
+</div>
+
+
+<div
+class="card"
+style="margin-top:25px;text-align:center">
+
+<h3>
+📧 Email Support
+</h3>
+
+<p>
+Haleelrealestate@gmail.com
+</p>
+
+<br>
+
+<a
+class="btn btn-outline"
+href="mailto:Haleelrealestate@gmail.com">
+Email Us
+</a>
+
+</div>
+
+</div>
+
+
+<!-- =========================
+     SUBMIT PROPERTY
+========================= -->
+
+<div class="page" id="submit">
+
+<div class="form-container">
+
+<h2>
+Geli Xogtaada
+</h2>
+
+<p
+style="color:#718096;margin:10px 0 30px">
+
+Mudane / Marwo diiwaan-geli guriga la rabo In la kireeyo adiga oo gudbinaya dhammaan macluumaadkiisa.
+
+</p>
+
+
+<div class="form-section">
+
+<h3>
+Xogta Mulkiilaha
+</h3>
+
+<div class="form-grid">
+
+
+<div class="form-group">
+
+<label>
+Full Name
+</label>
+
+<input
+class="input"
+id="ownerName"
+placeholder="Full Name">
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Phone Number
+</label>
+
+<input
+class="input"
+id="ownerPhone"
+placeholder="+252...">
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Email
+</label>
+
+<input
+class="input"
+id="ownerEmail"
+type="email"
+placeholder="Email">
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+WhatsApp
+</label>
+
+<input
+class="input"
+id="ownerWhatsapp"
+placeholder="+252...">
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="form-section">
+
+<h3>
+Geli Macluumaadka Guriga
+</h3>
+
+<div class="form-grid">
+
+
+<div class="form-group">
+
+<label>
+Magaca soo gudbiyaha
+</label>
+
+<input
+class="input"
+id="propertyTitle"
+placeholder="Geli magacaaga oo dhamaystiran...">
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Nooca Guriga
+</label>
+
+<select
+class="input"
+id="propertyType">
+
+<option>
+Fiilo
+</option>
+
+<option>
+Apartment
+</option>
+
+<option>
+Qol Ganacsi
+</option>
+
+<option>
+Qol Irid-banaan
+</option>
+
+<option>
+Qolal guri ka banaan
+</option>
+
+<option>
+Dabaq-suge
+</option>
+
+<option>
+Guri goglan
+</option>
+
+</select>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Magaalada
+</label>
+
+<input
+class="input"
+id="city"
+placeholder="Geli magaalada...">
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Xaafadda
+</label>
+
+<input
+class="input"
+id="neighborhood"
+placeholder="Geli xaafadda...">
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Qiimaha Kirada
+</label>
+
+<input
+class="input"
+id="rent"
+type="number"
+placeholder="$USD">
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Tirada Qolalka
+</label>
+
+<input
+class="input"
+id="bedrooms"
+type="number">
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Tirada Suuliyada
+</label>
+
+<input
+class="input"
+id="bathrooms"
+type="number">
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Cabirka Guriga
+</label>
+
+<input
+class="input"
+id="size"
+placeholder="m²">
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="form-section">
+
+<h3>
+Faah-faahinta Guriga
+</h3>
+
+<textarea
+class="input"
+id="description"
+placeholder="Soo gudbi haddii aad qabtid faah-faahin dheeraad ah...">
+</textarea>
+
+</div>
+
+
+<div class="form-section">
+
+<h3>
+Sawirka Guriga
+</h3>
+
+<div class="upload">
+
+📷
+
+<h3>
+Geli sawirka guriga
+</h3>
+
+<p style="color:#718096">
+Dooro sawirka guriga.
+</p>
+
+<br>
+
+<input
+type="file"
+id="images"
+multiple
+accept="image/*">
+
+</div>
+
+</div>
+
+
+<button
+class="btn btn-primary"
+style="width:100%;font-size:16px"
+onclick="submitProperty()">
+
+Gudbi
+
+</button>
+
+</div>
+
+</div>
+
+
+<!-- =========================
+     SETTINGS
+========================= -->
+
+<div class="page" id="settings">
+
+<div class="section-header">
+
+<div>
+
+<h2>
+Settings
+</h2>
+
+<p style="color:#718096">
+Website Settings.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="settings-grid">
+
+
+<div class="setting-card">
+
+<div class="setting-icon">
+💬
+</div>
+
+<h3>
+Customer Care
+</h3>
+
+<p>
+Need help? Contact Haleel Customer Care.
+</p>
+
+<br>
+
+<button
+class="btn btn-primary"
+onclick="openPage('care')">
+Contact Us
+</button>
+
+</div>
+
+
+<div class="setting-card">
+
+<div class="setting-icon">
+🌐
+</div>
+
+<h3>
+Language
+</h3>
+
+<p>
+Choose your preferred language.
+</p>
+
+<br>
+
+<select class="input">
+
+<option>
+English
+</option>
+
+<option>
+Somali
+</option>
+
+</select>
+
+</div>
+
+
+<div class="setting-card">
+
+<div class="setting-icon">
+ℹ️
+</div>
+
+<h3>
+About
+</h3>
+
+<p>
+Haleel Real Estate — Hogaanka Kiraynta.
+</p>
+
+<br>
+
+<strong>
+Version 1.0.0
+</strong>
+
+</div>
+
+</div>
+
+</div>
+
+</main>
+
+
+<!-- =========================
+     MOBILE NAV
+========================= -->
+
+<nav class="mobile-nav">
+
+<button
+class="active"
+onclick="openPage('home',this)">
+🏠
+<br>
+Home
+</button>
+
+<button
+onclick="openPage('property',this)">
+🏘
+<br>
+Property
+</button>
+
+<button
+onclick="openPage('care',this)">
+💬
+<br>
+Care
+</button>
+
+<button
+onclick="openPage('settings',this)">
+⚙️
+<br>
+Settings
+</button>
+
+</nav>
+
+
+<!-- FLOATING CARE -->
+
+<div class="floating-care">
+
+<div
+class="care-menu"
+id="careMenu">
+
+<a
+href="https://wa.me/252907469995"
+target="_blank">
+🟢 WhatsApp
+</a>
+
+<a
+href="tel:+252907469995">
+📞 Call
+</a>
+
+<a
+href="mailto:Haleelrealestate@gmail.com">
+📧 Email
+</a>
+
+<a
+href="#"
+onclick="openChat();return false;">
+💬 Chat Care
+</a>
+
+</div>
+
+
+<button
+class="care-button"
+onclick="toggleCare()">
+💬
+</button>
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     PROPERTY DETAILS MODAL
+========================= -->
+
+<div
+class="modal"
+id="detailsModal">
+
+<div class="modal-box">
+
+<button
+class="details-close"
+onclick="closeDetails()">
+×
+</button>
+
+<div class="details-icon">
+🏠
+</div>
+
+<h2>
+Faahfaahinta Guriga
+</h2>
+
+<p class="details-text">
+
+Haddii aad doonaysid gurigan, la xiriir xarumaheena si aad u hesho faahfaahin dheeraad ah.
+
+</p>
+
+<div class="details-contact">
+
+<div class="details-contact-label">
+📞 Nala Xiriir
+</div>
+
+<strong class="details-phone">
++252 90 7469995
+</strong>
+
+</div>
+
+<div class="details-buttons">
+
+<button
+class="btn btn-outline"
+onclick="closeDetails()">
+Close
+</button>
+
+<a
+href="tel:+252907469995"
+class="btn btn-primary call-button">
+📞 Call Now
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- =========================
+     CHAT MODAL
+========================= -->
+
+<div
+class="modal"
+id="chatModal">
+
+<div class="modal-box">
+
+<h2>
+💬 Qancinta Macaamiisha!
+</h2>
+
+<p style="color:#718096">
+Macmiil maxaan kaa caawiyaa?
+</p>
+
+<br>
+
+<textarea
+class="input"
+id="chatMessage"
+placeholder="Write your message...">
+</textarea>
+
+<div style="display:flex;gap:10px">
+
+<button
+class="btn btn-outline"
+onclick="document.getElementById('chatModal').classList.remove('show')">
+Close
+</button>
+
+<button
+class="btn btn-primary"
+onclick="sendEmail()">
+Send
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- =========================
+     SUCCESS MODAL
+========================= -->
+
+<div
+class="modal"
+id="successModal">
+
+<div class="modal-box">
+
+<div style="font-size:55px">
+✅
+</div>
+
+<h2>
+Mahadsanid!
+</h2>
+
+<p style="color:#718096;margin:15px 0">
+
+Waad ku mahadsantahay macmiil, hadda waad gudbisay macluumaadkii.
+
+</p>
+
+<button
+class="btn btn-primary"
+onclick="closeSuccess()">
+Dib u noqo!
+</button>
+
+</div>
+
+</div>
+
 
 <script>
-/*
- IMPORTANT:
- This frontend expects a Cloudflare Worker API on the SAME domain:
- POST /api/signup/start
- POST /api/signup/verify
- POST /api/login
- POST /api/forgot/start
- POST /api/forgot/verify
- POST /api/forgot/reset
- GET  /api/me
- POST /api/logout
 
- Do NOT put Resend API keys, passwords or OTP secrets in this file.
-*/
+/* =========================
+   PAGE NAVIGATION
+========================= */
 
-const API_BASE = ""; // Same-domain Cloudflare Worker API.
-
-function $(id){return document.getElementById(id)}
-
-function showMsg(id,text,type="error"){
-    const el=$(id);
-    el.textContent=text;
-    el.className="auth-msg show "+type;
-}
-function clearMsg(id){
-    const el=$(id);
-    el.textContent="";
-    el.className="auth-msg";
-}
-function hideAuthForms(){
-    ["loginForm","signupForm","otpForm","forgotForm","resetForm"].forEach(id=>$(id).style.display="none");
-}
-function showLogin(){
-    hideAuthForms(); $("loginForm").style.display="block";
-    clearMsg("loginMsg");
-}
-function showSignup(){
-    hideAuthForms(); $("signupForm").style.display="block";
-    clearMsg("signupMsg");
-}
-function showForgot(){
-    hideAuthForms(); $("forgotForm").style.display="block";
-    clearMsg("forgotMsg");
-}
-async function api(path,options={}){
-    const res=await fetch(API_BASE+path,{
-        credentials:"include",
-        headers:{"Content-Type":"application/json",...(options.headers||{})},
-        ...options
-    });
-    let data={};
-    try{data=await res.json()}catch(e){}
-    if(!res.ok && !data.message) data.message="Server error. Fadlan isku day mar kale.";
-    return {res,data};
+function $(id){
+return document.getElementById(id);
 }
 
-async function signup(){
-    const name=$("fullName").value.trim();
-    const username=$("username").value.trim();
-    const email=$("email").value.trim();
-    const phone=$("phone").value.trim();
-    const password=$("password").value;
-    const confirm=$("confirmPassword").value;
-
-    clearMsg("signupMsg");
-
-    if(!name||!username||!email||!phone||!password||!confirm){
-        showMsg("signupMsg","Fadlan buuxi dhammaan xogta.","error"); return;
-    }
-    if(password.length<8){
-        showMsg("signupMsg","Password-ku waa inuu ahaadaa ugu yaraan 8 xaraf.","error"); return;
-    }
-    if(password!==confirm){
-        showMsg("signupMsg","Passwords-ku isma waafaqayaan.","error"); return;
-    }
-
-    const {data}=await api("/api/signup/start",{
-        method:"POST",
-        body:JSON.stringify({name,username,email,phone,password})
-    });
-
-    if(!data.ok){
-        showMsg("signupMsg",data.message||"Account lama samayn karin.","error");
-        return;
-    }
-
-    sessionStorage.setItem("pendingSignupEmail",email);
-    hideAuthForms();
-    $("otpForm").style.display="block";
-    showMsg("otpMsg",data.message||"OTP ayaa emailka laguu diray.","success");
-}
-
-async function verifySignupOTP(){
-    const email=sessionStorage.getItem("pendingSignupEmail");
-    const otp=$("signupOtp").value.trim();
-
-    if(!email||!/^\d{4}$/.test(otp)){
-        showMsg("otpMsg","Geli OTP sax ah oo 4-digit ah.","error"); return;
-    }
-
-    const {data}=await api("/api/signup/verify",{
-        method:"POST",
-        body:JSON.stringify({email,otp})
-    });
-
-    if(!data.ok){
-        showMsg("otpMsg",data.message||"OTP-ga waa khalad ama wuu dhacay.","error");
-        return;
-    }
-
-    sessionStorage.removeItem("pendingSignupEmail");
-    if(data.user) setUser(data.user);
-    openDashboard();
-}
-
-async function login(){
-    const username=$("loginUsername").value.trim();
-    const password=$("loginPassword").value;
-
-    clearMsg("loginMsg");
-
-    if(!username||!password){
-        showMsg("loginMsg","Fadlan geli username-kaaga & lambar sireedkaaga!","error");
-        return;
-    }
-
-    const {data}=await api("/api/login",{
-        method:"POST",
-        body:JSON.stringify({login:username,password})
-    });
-
-    if(!data.ok){
-        if(data.code==="USER_NOT_FOUND"){
-            showMsg("loginMsg","User-kan kama abuurna adeegeena","error");
-        }else{
-            showMsg("loginMsg","Waa khalad fadlan ku celi mar kale!","error");
-        }
-        return;
-    }
-
-    setUser(data.user);
-    openDashboard();
-}
-
-async function sendForgotOTP(){
-    const email=$("forgotEmail").value.trim();
-    clearMsg("forgotMsg");
-
-    if(!email){
-        showMsg("forgotMsg","Fadlan geli emailkaaga.","error"); return;
-    }
-
-    const {data}=await api("/api/forgot/start",{
-        method:"POST",
-        body:JSON.stringify({email})
-    });
-
-    if(!data.ok){
-        showMsg("forgotMsg",data.message||"Email-ka lama helin.","error");
-        return;
-    }
-
-    sessionStorage.setItem("resetEmail",email);
-    hideAuthForms();
-    $("resetForm").style.display="block";
-    showMsg("resetMsg",data.message||"OTP ayaa emailka laguu diray.","success");
-}
-
-async function resetPassword(){
-    const email=sessionStorage.getItem("resetEmail");
-    const otp=$("resetOtp").value.trim();
-    const password=$("newPassword").value;
-    const confirm=$("confirmNewPassword").value;
-
-    clearMsg("resetMsg");
-
-    if(!email||!/^\d{4}$/.test(otp)){
-        showMsg("resetMsg","Geli OTP sax ah oo 4-digit ah.","error"); return;
-    }
-    if(password.length<8){
-        showMsg("resetMsg","Password-ka cusub waa inuu ahaadaa ugu yaraan 8 xaraf.","error"); return;
-    }
-    if(password!==confirm){
-        showMsg("resetMsg","Passwords-ku isma waafaqayaan.","error"); return;
-    }
-
-    const {data}=await api("/api/forgot/reset",{
-        method:"POST",
-        body:JSON.stringify({email,otp,newPassword:password})
-    });
-
-    if(!data.ok){
-        showMsg("resetMsg",data.message||"Password-ka lama beddeli karin.","error");
-        return;
-    }
-
-    sessionStorage.removeItem("resetEmail");
-    if(data.user) setUser(data.user);
-    openDashboard();
-}
-
-function setUser(user){
-    $("userDisplay").textContent=user.name||user.username||"Haleel Customer";
-}
-
-function openDashboard(){
-    $("auth").style.display="none";
-    $("app").style.display="block";
-    openPage("home");
-}
-
-async function logout(){
-    try{await api("/api/logout",{method:"POST"})}catch(e){}
-    $("app").style.display="none";
-    $("auth").style.display="flex";
-    $("loginUsername").value="";
-    $("loginPassword").value="";
-    showLogin();
-}
-
-async function restoreSession(){
-    try{
-        const {data}=await api("/api/me");
-        if(data.ok&&data.user){
-            setUser(data.user);
-            openDashboard();
-        }
-    }catch(e){}
-}
 
 function openPage(page,button){
-    document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
-    const selected=$(page);
-    if(selected) selected.classList.add("active");
 
-    const titles={home:"Home",property:"Properties",care:"Customer Care",submit:"Submit Property",settings:"Settings"};
-    $("pageTitle").textContent=titles[page]||"Haleel Real Estate";
+document
+.querySelectorAll(".page")
+.forEach(p=>{
+p.classList.remove("active");
+});
 
-    document.querySelectorAll(".nav button,.mobile-nav button").forEach(b=>b.classList.remove("active"));
 
-    if(button) button.classList.add("active");
-    else{
-        const map={home:0,property:1,care:2,submit:3,settings:4};
-        const index=map[page];
-        if(index!==undefined){
-            const desktop=document.querySelectorAll(".nav button")[index];
-            if(desktop) desktop.classList.add("active");
-            const mobileIndex=page==="submit"?3:index;
-            const mobile=document.querySelectorAll(".mobile-nav button")[mobileIndex];
-            if(mobile) mobile.classList.add("active");
-        }
-    }
+const selected=$(page);
+
+if(selected){
+selected.classList.add("active");
 }
 
-function openDetails(){$("detailsModal").classList.add("show")}
-function closeDetails(){$("detailsModal").classList.remove("show")}
-$("detailsModal").addEventListener("click",e=>{if(e.target===e.currentTarget)closeDetails()});
 
-function toggleCare(){$("careMenu").classList.toggle("show")}
-function openChat(){$("chatModal").classList.add("show")}
+const titles={
+home:"Home",
+property:"Properties",
+care:"Customer Care",
+submit:"Submit Property",
+settings:"Settings"
+};
+
+$("pageTitle").textContent=
+titles[page]||"Haleel Real Estate";
+
+
+document
+.querySelectorAll(".nav button,.mobile-nav button")
+.forEach(b=>{
+b.classList.remove("active");
+});
+
+
+if(button){
+
+button.classList.add("active");
+
+}else{
+
+const map={
+home:0,
+property:1,
+care:2,
+submit:3,
+settings:4
+};
+
+const index=map[page];
+
+if(index!==undefined){
+
+const desktop=
+document.querySelectorAll(".nav button")[index];
+
+if(desktop){
+desktop.classList.add("active");
+}
+
+
+let mobileIndex=index;
+
+if(page==="submit"){
+mobileIndex=3;
+}
+
+if(page==="settings"){
+mobileIndex=3;
+}
+
+const mobile=
+document.querySelectorAll(".mobile-nav button")[mobileIndex];
+
+if(mobile){
+mobile.classList.add("active");
+}
+
+}
+
+}
+
+}
+
+
+/* =========================
+   PROPERTY DETAILS
+========================= */
+
+function openDetails(){
+
+$("detailsModal")
+.classList.add("show");
+
+}
+
+
+function closeDetails(){
+
+$("detailsModal")
+.classList.remove("show");
+
+}
+
+
+$("detailsModal").addEventListener(
+"click",
+function(e){
+
+if(e.target===e.currentTarget){
+closeDetails();
+}
+
+}
+);
+
+
+/* =========================
+   CUSTOMER CARE
+========================= */
+
+function toggleCare(){
+
+$("careMenu")
+.classList.toggle("show");
+
+}
+
+
+function openChat(){
+
+$("chatModal")
+.classList.add("show");
+
+}
+
+
+/* =========================
+   SEND EMAIL
+========================= */
 
 function sendEmail(){
-    const message=$("chatMessage").value.trim();
-    if(!message){alert("Please write a message.");return}
-    const subject=encodeURIComponent("Haleel Customer Care");
-    const body=encodeURIComponent(message);
-    window.location.href=`mailto:Haleelrealestate@gmail.com?subject=${subject}&body=${body}`;
+
+const message=
+$("chatMessage").value.trim();
+
+if(!message){
+
+alert("Please write a message.");
+
+return;
+
 }
+
+const subject=
+encodeURIComponent(
+"Haleel Customer Care"
+);
+
+const body=
+encodeURIComponent(message);
+
+window.location.href=
+`mailto:Haleelrealestate@gmail.com?subject=${subject}&body=${body}`;
+
+}
+
+
+/* =========================
+   SUBMIT PROPERTY
+========================= */
 
 function submitProperty(){
-    const owner=$("ownerName").value.trim(),phone=$("ownerPhone").value.trim(),title=$("propertyTitle").value.trim(),city=$("city").value.trim(),rent=$("rent").value.trim();
-    if(!owner||!phone||!title||!city){alert("Please complete the required property information.");return}
 
-    const subject=encodeURIComponent("New Property Submission - Haleel Real Estate");
-    const body=encodeURIComponent(`NEW PROPERTY SUBMISSION
+const owner=
+$("ownerName").value.trim();
+
+const phone=
+$("ownerPhone").value.trim();
+
+const title=
+$("propertyTitle").value.trim();
+
+const city=
+$("city").value.trim();
+
+const rent=
+$("rent").value.trim();
+
+
+if(!owner||!phone||!title||!city){
+
+alert(
+"Please complete the required property information."
+);
+
+return;
+
+}
+
+
+const subject=
+encodeURIComponent(
+"New Property Submission - Haleel Real Estate"
+);
+
+
+const body=
+encodeURIComponent(`
+
+NEW PROPERTY SUBMISSION
 
 OWNER INFORMATION
+
 Name: ${owner}
+
 Phone: ${phone}
+
 Email: ${$("ownerEmail").value}
+
 WhatsApp: ${$("ownerWhatsapp").value}
 
+
 PROPERTY INFORMATION
+
 Title: ${title}
+
 Type: ${$("propertyType").value}
+
 City: ${city}
+
 Neighborhood: ${$("neighborhood").value}
+
 Monthly Rent: $${rent}
+
 Bedrooms: ${$("bedrooms").value}
+
 Bathrooms: ${$("bathrooms").value}
+
 Size: ${$("size").value}
 
+
 DESCRIPTION
+
 ${$("description").value}
 
-Submitted through Haleel Real Estate Website.`);
 
-    window.location.href=`mailto:Haleelrealestate@gmail.com?subject=${subject}&body=${body}`;
-    $("successModal").classList.add("show");
+Submitted through Haleel Real Estate Website.
+
+`);
+
+
+window.location.href=
+`mailto:Haleelrealestate@gmail.com?subject=${subject}&body=${body}`;
+
+
+$("successModal")
+.classList.add("show");
+
 }
-function closeSuccess(){$("successModal").classList.remove("show");openPage("home")}
 
-document.addEventListener("DOMContentLoaded",restoreSession);
+
+/* =========================
+   SUCCESS
+========================= */
+
+function closeSuccess(){
+
+$("successModal")
+.classList.remove("show");
+
+openPage("home");
+
+}
+
 </script>
+
 </body>
 </html>
