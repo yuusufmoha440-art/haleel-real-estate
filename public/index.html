@@ -2804,16 +2804,24 @@ $("chatModal")
 ========================= */
 
 function sendEmail(){
+    const message = $("chatMessage").value.trim();
 
-const message=
-$("chatMessage").value.trim();
+    if(!message){
+        alert("Fadlan fariin qor.");
+        return;
+    }
 
-if(!message){
+    const subject = encodeURIComponent("Haleel Customer Care");
+    const body = encodeURIComponent(message);
 
-alert("Please write a message.");
+    // One-file version: opens the user's email app with the message prepared.
+    window.location.href =
+        `mailto:Haleelrealestate@gmail.com?subject=${subject}&body=${body}`;
 
-return;
-
+    // Show confirmation in the website.
+    $("chatModal").classList.remove("show");
+    $("chatMessage").value = "";
+    $("successModal").classList.add("show");
 }
 
 const subject=
