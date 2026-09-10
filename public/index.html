@@ -23,7 +23,6 @@
 --gold:#F5B942;
 --shadow:0 15px 45px rgba(0,108,194,.12);
 --radius:20px;
-
 color-scheme:light;
 }
 
@@ -296,7 +295,7 @@ color:#91a0b1;
 }
 
 body.dark .mobile-nav{
-background:rgba(15,23,32,.94) !important;
+background:rgba(15,23,32,.94)!important;
 border-top-color:rgba(255,255,255,.08);
 box-shadow:0 -5px 20px rgba(0,0,0,.30);
 }
@@ -1507,20 +1506,14 @@ transition-duration:.001ms!important;
 
 <script>
 
-/* Load saved theme immediately */
-
 (function(){
 
 const savedTheme=localStorage.getItem("haleelTheme");
 
 if(savedTheme==="dark"){
-
 document.documentElement.classList.add("dark");
-
 }else{
-
 document.documentElement.classList.remove("dark");
-
 }
 
 })();
@@ -2475,7 +2468,6 @@ function $(id){
 return document.getElementById(id);
 }
 
-
 /* =========================
    THEME SYSTEM
 ========================= */
@@ -2493,6 +2485,7 @@ body.classList.add("dark");
 html.style.colorScheme="dark";
 body.style.colorScheme="dark";
 
+if($("themeStatus"))
 $("themeStatus").textContent="Current theme: Dark Mode";
 
 if($("darkThemeButton"))
@@ -2512,6 +2505,7 @@ body.classList.remove("dark");
 html.style.colorScheme="light";
 body.style.colorScheme="light";
 
+if($("themeStatus"))
 $("themeStatus").textContent="Current theme: Light Mode";
 
 if($("lightThemeButton"))
@@ -2530,11 +2524,8 @@ localStorage.setItem("haleelTheme",theme);
 }
 
 function setTheme(theme){
-
 applyTheme(theme);
-
 }
-
 
 /* =========================
    PAGE NAVIGATION
@@ -2620,7 +2611,6 @@ behavior:"smooth"
 
 }
 
-
 /* =========================
    PROPERTY DETAILS
 ========================= */
@@ -2640,7 +2630,6 @@ closeDetails();
 }
 
 });
-
 
 /* =========================
    CUSTOMER CARE
@@ -2676,7 +2665,6 @@ window.location.href=
 `mailto:Haleelrealestate@gmail.com?subject=${subject}&body=${body}`;
 
 }
-
 
 /* =========================
    PROPERTY SUBMISSION
@@ -2718,255 +2706,4 @@ Phone: ${phone}
 
 Email: ${$("ownerEmail").value}
 
-WhatsApp: ${$("ownerWhatsapp").value}
-
-PROPERTY INFORMATION
-
-Title: ${title}
-
-Type: ${$("propertyType").value}
-
-City: ${city}
-
-Neighborhood: ${$("neighborhood").value}
-
-Monthly Rent: $${rent}
-
-Bedrooms: ${$("bedrooms").value}
-
-Bathrooms: ${$("bathrooms").value}
-
-Size: ${$("size").value}
-
-DESCRIPTION
-
-${$("description").value}
-
-Submitted through Haleel Real Estate Website.
-
-`);
-
-window.location.href=
-`mailto:Haleelrealestate@gmail.com?subject=${subject}&body=${body}`;
-
-$("successModal").classList.add("show");
-
-}
-
-function closeSuccess(){
-
-$("successModal").classList.remove("show");
-
-openPage("home");
-
-}
-
-
-/* =========================
-   PAGE LOAD
-========================= */
-
-document.addEventListener("DOMContentLoaded",()=>{
-
-const savedTheme=
-localStorage.getItem("haleelTheme")||"light";
-
-applyTheme(savedTheme);
-
-document.querySelectorAll(".property-card img").forEach(img=>{
-
-img.addEventListener("error",()=>{
-img.style.opacity=".35";
-});
-
-});
-
-document.addEventListener("keydown",(e)=>{
-
-if(e.key==="Escape"){
-
-document
-.querySelectorAll(".modal.show")
-.forEach(m=>m.classList.remove("show"));
-
-const menu=
-document.getElementById("careMenu");
-
-if(menu)
-menu.classList.remove("show");
-
-}
-
-});
-
-document.addEventListener("click",(e)=>{
-
-const wrap=
-document.querySelector(".floating-care");
-
-const menu=
-document.getElementById("careMenu");
-
-if(wrap && menu && !wrap.contains(e.target))
-menu.classList.remove("show");
-
-});
-
-});
-
-
-/* =========================
-   PWA INSTALL
-========================= */
-
-let deferredInstallPrompt=null;
-
-window.addEventListener("beforeinstallprompt",(event)=>{
-
-event.preventDefault();
-
-deferredInstallPrompt=event;
-
-});
-
-window.addEventListener("appinstalled",()=>{
-
-deferredInstallPrompt=null;
-
-const button=
-document.getElementById("installAppButton");
-
-if(button){
-
-button.textContent="✅ App Installed";
-button.disabled=true;
-
-}
-
-});
-
-async function installHaleel(){
-
-if(deferredInstallPrompt){
-
-deferredInstallPrompt.prompt();
-
-const choice=
-await deferredInstallPrompt.userChoice;
-
-deferredInstallPrompt=null;
-
-if(choice && choice.outcome==="accepted"){
-
-const button=
-document.getElementById("installAppButton");
-
-if(button)
-button.textContent="✅ App Installed";
-
-}
-
-return;
-
-}
-
-const isIOS=
-/iphone|ipad|ipod/i.test(navigator.userAgent) ||
-(navigator.platform==="MacIntel" &&
-navigator.maxTouchPoints>1);
-
-const isStandalone=
-window.matchMedia("(display-mode: standalone)").matches ||
-window.navigator.standalone===true;
-
-if(isStandalone){
-
-alert(
-"Macmiil wuu kuugu jiraa Application-ka Haleel."
-);
-
-}else if(isIOS){
-
-alert(
-"iPhone/iPad: Safari → Share → Add to Home Screen."
-);
-
-}else{
-
-alert(
-"Install lama soo bandhigin. Hubi HTTPS iyo in manifest.webmanifest iyo sw.js ay sax yihiin, kadib Chrome/Edge ku tijaabi."
-);
-
-}
-
-}
-
-
-/* =========================
-   SERVICE WORKER
-========================= */
-
-if("serviceWorker" in navigator){
-
-window.addEventListener("load",()=>{
-
-navigator.serviceWorker.register("./sw.js")
-
-.then(()=>
-console.log("Haleel Service Worker registered")
-)
-
-.catch(error=>
-console.error(
-"Haleel Service Worker error:",
-error
-)
-);
-
-});
-
-}
-
-
-/* =========================
-   ZOOM LOCK
-========================= */
-
-document.addEventListener("gesturestart",function(e){
-e.preventDefault();
-},{passive:false});
-
-document.addEventListener("gesturechange",function(e){
-e.preventDefault();
-},{passive:false});
-
-document.addEventListener("gestureend",function(e){
-e.preventDefault();
-},{passive:false});
-
-document.addEventListener("touchmove",function(e){
-
-if(e.touches.length>1){
-e.preventDefault();
-}
-
-},{passive:false});
-
-let lastTouchEnd=0;
-
-document.addEventListener("touchend",function(e){
-
-const now=Date.now();
-
-if(now-lastTouchEnd<=300){
-e.preventDefault();
-}
-
-lastTouchEnd=now;
-
-},{passive:false});
-
-</script>
-
-</body>
-</html>
+WhatsApp
