@@ -3031,221 +3031,131 @@ window.location.href=
 
 function submitProperty(){
 
-const owner=
-$("ownerName").value.trim();
-
-const phone=
-$("ownerPhone").value.trim();
-
-const title=
-$("propertyTitle").value.trim();
-
-const city=
-$("city").value.trim();
-
-const rent=
-$("rent").value.trim();
-
+const owner=$("ownerName").value.trim();
+const phone=$("ownerPhone").value.trim();
+const title=$("propertyTitle").value.trim();
+const city=$("city").value.trim();
+const rent=$("rent").value.trim();
 
 if(!owner || !phone || !title || !city){
-
-alert(
-"Fadlan geli macluumaadka muhiimka ah."
-);
-
+alert("Fadlan geli macluumaadka muhiimka ah.");
 return;
+}
+
+const submitButton=$("submitPropertyButton");
+const originalText=submitButton.textContent;
+
+submitButton.disabled=true;
+submitButton.textContent="⏳ Waa la dirayaa...";
+
+const data={
+ownerName:owner,
+ownerPhone:phone,
+ownerEmail:$("ownerEmail").value.trim(),
+ownerWhatsapp:$("ownerWhatsapp").value.trim(),
+propertyTitle:title,
+propertyType:$("propertyType").value,
+city:city,
+neighborhood:$("neighborhood").value.trim(),
+rent:rent,
+bedrooms:$("bedrooms").value.trim(),
+bathrooms:$("bathrooms").value.trim(),
+size:$("size").value.trim(),
+description:$("description").value.trim()
+};
+
+const form=document.createElement("form");
+
+form.method="POST";
+form.action=HALEEL_BACKEND_URL;
+form.target="haleelSubmitFrame";
+form.style.display="none";
+
+const payload=document.createElement("input");
+
+payload.type="hidden";
+payload.name="payload";
+payload.value=JSON.stringify(data);
+
+form.appendChild(payload);
+document.body.appendChild(form);
+
+let finished=false;
+
+const finishSubmission=function(showSuccess){
+
+if(finished) return;
+
+finished=true;
+
+clearTimeout(timeoutId);
+
+if(form.parentNode){
+form.remove();
+}
+
+if(showSuccess){
+
+$("ownerName").value="";
+$("ownerPhone").value="";
+$("ownerEmail").value="";
+$("ownerWhatsapp").value="";
+$("propertyTitle").value="";
+$("city").value="";
+$("neighborhood").value="";
+$("rent").value="";
+$("bedrooms").value="";
+$("bathrooms").value="";
+$("size").value="";
+$("description").value="";
+$("images").value="";
+
+$("successModal").classList.add("show");
+
+}else{
+
+alert("Gudbinta way fashilantay. Fadlan hubi internet-ka kadibna isku day mar kale.");
 
 }
 
-
-const submitButton=
-$("submitPropertyButton");
-
-const originalText=
-submitButton.textContent;
-
-
-submitButton.disabled=true;
-
-submitButton.textContent=
-"⏳ Waa la dirayaa...";
-
-
-const data={
-
-ownerName:owner,
-
-ownerPhone:phone,
-
-ownerEmail:
-$("ownerEmail").value.trim(),
-
-ownerWhatsapp:
-$("ownerWhatsapp").value.trim(),
-
-propertyTitle:title,
-
-propertyType:
-$("propertyType").value,
-
-city:city,
-
-neighborhood:
-$("neighborhood").value.trim(),
-
-rent:rent,
-
-bedrooms:
-$("bedrooms").value.trim(),
-
-bathrooms:
-$("bathrooms").value.trim(),
-
-size:
-$("size").value.trim(),
-
-description:
-$("description").value.trim()
+submitButton.disabled=false;
+submitButton.textContent=originalText;
 
 };
 
+const iframe=$("haleelSubmitFrame");
 
-/*
-==========================================
-CREATE NATIVE FORM
-==========================================
+const iframeLoaded=function(){
 
-Native form POST ayaa loo isticmaalayaa
-instead of fetch/no-cors.
+if(!finished){
+setTimeout(function(){
+finishSubmission(true);
+},300);
+}
 
-Tani waxay ka dhigaysaa request-ka
-mid browser-ku si caadi ah u diro
-iyadoo Gmail aanu furmin.
-*/
+};
 
-const form=
-document.createElement("form");
+iframe.addEventListener("load",iframeLoaded,{once:false});
 
-form.method="POST";
+const timeoutId=setTimeout(function(){
 
-form.action=
-HALEEL_BACKEND_URL;
+finishSubmission(false);
 
-form.target=
-"haleelSubmitFrame";
-
-form.style.display="none";
-
-
-const payload=
-document.createElement("input");
-
-payload.type="hidden";
-
-payload.name="payload";
-
-payload.value=
-JSON.stringify(data);
-
-
-form.appendChild(payload);
-
-document.body.appendChild(form);
-
-
-/*
-==========================================
-SEND
-==========================================
-*/
+},15000);
 
 try{
 
 form.submit();
 
-
-/*
-Waxaan siinaynaa Apps Script waqti
-uu request-ka ku qaabilo.
-*/
-
-setTimeout(function(){
-
-form.remove();
-
-
-/*
-==========================================
-CLEAR FORM
-==========================================
-*/
-
-$("ownerName").value="";
-
-$("ownerPhone").value="";
-
-$("ownerEmail").value="";
-
-$("ownerWhatsapp").value="";
-
-$("propertyTitle").value="";
-
-$("city").value="";
-
-$("neighborhood").value="";
-
-$("rent").value="";
-
-$("bedrooms").value="";
-
-$("bathrooms").value="";
-
-$("size").value="";
-
-$("description").value="";
-
-$("images").value="";
-
-
-/*
-==========================================
-SUCCESS MODAL
-==========================================
-*/
-
-$("successModal")
-.classList.add("show");
-
-
-submitButton.disabled=false;
-
-submitButton.textContent=
-originalText;
-
-},1500);
-
-
 }catch(error){
 
-console.error(error);
+console.error("Haleel submission error:",error);
 
-if(form){
-form.remove();
-}
-
-submitButton.disabled=false;
-
-submitButton.textContent=
-originalText;
-
-alert(
-"Waxaa dhacay cilad. Fadlan isku day mar kale."
-);
+finishSubmission(false);
 
 }
 
 }
-
 
 /* ==========================================
    SUCCESS MODAL
