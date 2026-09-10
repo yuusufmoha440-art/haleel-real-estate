@@ -979,6 +979,7 @@ text-align:center;
 border-radius:15px;
 background:linear-gradient(135deg,#eff8ff,#f8fcff);
 transition:.3s ease;
+cursor:pointer;
 }
 
 .upload:hover{
@@ -1714,7 +1715,8 @@ View All
 class="property-image"
 src="https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=900&q=80"
 loading="lazy"
-decoding="async">
+decoding="async"
+alt="Apartment">
 
 <div class="property-content">
 
@@ -1735,7 +1737,8 @@ decoding="async">
 class="property-image"
 src="https://images.unsplash.com/photo-1600607688969-a5bfcd646154?auto=format&fit=crop&w=900&q=80"
 loading="lazy"
-decoding="async">
+decoding="async"
+alt="Dabaq-suge">
 
 <div class="property-content">
 
@@ -1756,7 +1759,8 @@ decoding="async">
 class="property-image"
 src="https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=900&q=80"
 loading="lazy"
-decoding="async">
+decoding="async"
+alt="Fiilo">
 
 <div class="property-content">
 
@@ -1836,7 +1840,8 @@ Raadi
 class="property-image"
 src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=80"
 loading="lazy"
-decoding="async">
+decoding="async"
+alt="Fiilo">
 
 <div class="property-content">
 
@@ -1867,7 +1872,8 @@ Call Now
 class="property-image"
 src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=900&q=80"
 loading="lazy"
-decoding="async">
+decoding="async"
+alt="Guri goglan">
 
 <div class="property-content">
 
@@ -1898,7 +1904,8 @@ Call Now
 class="property-image"
 src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=900&q=80"
 loading="lazy"
-decoding="async">
+decoding="async"
+alt="Apartment">
 
 <div class="property-content">
 
@@ -2015,6 +2022,8 @@ Email Us
 Mudane / Marwo diiwaan-geli guriga la rabo In la kireeyo adiga oo gudbinaya dhammaan macluumaadkiisa.
 </p>
 
+<form onsubmit="handleSubmit(event)">
+
 <div class="form-section">
 
 <h3>Xogta Mulkiilaha</h3>
@@ -2022,22 +2031,22 @@ Mudane / Marwo diiwaan-geli guriga la rabo In la kireeyo adiga oo gudbinaya dham
 <div class="form-grid">
 
 <div class="form-group">
-<label>Full Name</label>
-<input class="input" id="ownerName" placeholder="Full Name">
+<label for="ownerName">Full Name</label>
+<input class="input" id="ownerName" placeholder="Full Name" required>
 </div>
 
 <div class="form-group">
-<label>Phone Number</label>
-<input class="input" id="ownerPhone" placeholder="+252...">
+<label for="ownerPhone">Phone Number</label>
+<input class="input" id="ownerPhone" placeholder="+252..." required>
 </div>
 
 <div class="form-group">
-<label>Email</label>
+<label for="ownerEmail">Email</label>
 <input class="input" id="ownerEmail" type="email" placeholder="Email">
 </div>
 
 <div class="form-group">
-<label>WhatsApp</label>
+<label for="ownerWhatsapp">WhatsApp</label>
 <input class="input" id="ownerWhatsapp" placeholder="+252...">
 </div>
 
@@ -2046,27 +2055,14 @@ Mudane / Marwo diiwaan-geli guriga la rabo In la kireeyo adiga oo gudbinaya dham
 
 <div class="form-section">
 
-<h3>Geli Macluumaadka Guriga</h3>
+<h3>Xogta Guriga</h3>
 
 <div class="form-grid">
 
 <div class="form-group">
-
-<label>Magaca soo gudbiyaha</label>
-
-<input
-class="input"
-id="propertyTitle"
-placeholder="Geli magacaaga oo dhamaystiran...">
-
-</div>
-
-<div class="form-group">
-
-<label>Nooca Guriga</label>
-
-<select class="input" id="propertyType">
-
+<label for="propType">Nooca Guriga</label>
+<select class="input" id="propType" required>
+<option value="">Doorasho...</option>
 <option>Fiilo</option>
 <option>Apartment</option>
 <option>Qol Ganacsi</option>
@@ -2074,126 +2070,64 @@ placeholder="Geli magacaaga oo dhamaystiran...">
 <option>Qolal guri ka banaan</option>
 <option>Dabaq-suge</option>
 <option>Guri goglan</option>
-
 </select>
-
 </div>
 
 <div class="form-group">
-
-<label>Magaalada</label>
-
-<input
-class="input"
-id="city"
-placeholder="Geli magaalada...">
-
+<label for="propCity">Magaalada</label>
+<input class="input" id="propCity" placeholder="Magaalada..." required>
 </div>
 
 <div class="form-group">
-
-<label>Xaafadda</label>
-
-<input
-class="input"
-id="neighborhood"
-placeholder="Geli xaafadda...">
-
+<label for="propLocation">Xaafada / Solaada</label>
+<input class="input" id="propLocation" placeholder="Xaafada..." required>
 </div>
 
 <div class="form-group">
-
-<label>Qiimaha Kirada</label>
-
-<input
-class="input"
-id="rent"
-type="number"
-placeholder="$USD">
-
+<label for="propRooms">Tirada Qolalka</label>
+<input class="input" id="propRooms" type="number" placeholder="3" required>
 </div>
 
 <div class="form-group">
-
-<label>Tirada Qolalka</label>
-
-<input
-class="input"
-id="bedrooms"
-type="number">
-
+<label for="propPrice">Qiimaha ($)</label>
+<input class="input" id="propPrice" type="number" placeholder="250" required>
 </div>
 
 <div class="form-group">
-
-<label>Tirada Suuliyada</label>
-
-<input
-class="input"
-id="bathrooms"
-type="number">
-
-</div>
-
-<div class="form-group">
-
-<label>Cabirka Guriga</label>
-
-<input
-class="input"
-id="size"
-placeholder="m²">
-
+<label for="propStatus">Marxalada</label>
+<select class="input" id="propStatus" required>
+<option>Guri kiro ah</option>
+<option>Guri Iib ah</option>
+</select>
 </div>
 
 </div>
+
+<div class="form-group" style="margin-top:15px">
+<label for="propDesc">Faahfaahin Dheeraad ah</label>
+<textarea class="input" id="propDesc" placeholder="Qerree faahfaahinta guriga..."></textarea>
 </div>
-
-<div class="form-section">
-
-<h3>Faah-faahinta Guriga</h3>
-
-<textarea
-class="input"
-id="description"
-placeholder="Soo gudbi haddii aad qabtid faah-faahin dheeraad ah..."></textarea>
 
 </div>
 
 <div class="form-section">
 
-<h3>Sawirka Guriga</h3>
+<h3>Sawirada Guriga</h3>
 
-<div class="upload">
-
-📷
-
-<h3>Geli sawirka guriga</h3>
-
-<p style="color:#718096">
-Dooro sawirka guriga.
-</p>
-
-<br>
-
-<input
-type="file"
-id="images"
-multiple
-accept="image/*">
-
+<div class="upload" onclick="document.getElementById('propertyImages').click()">
+<div style="font-size:32px;margin-bottom:8px">📸</div>
+<strong>Riix si aad sawiro uga soo geliso</strong>
+<p style="font-size:13px;color:#718096;margin-top:4px">PNG, JPG, JPEG allowed</p>
+<input type="file" id="propertyImages" multiple accept="image/*" style="display:none">
 </div>
 
 </div>
 
-<button
-class="btn btn-primary"
-style="width:100%;font-size:16px"
-onclick="submitProperty()">
-
-Gudbi
-
+<button class="btn btn-primary" type="submit" style="width:100%;margin-top:20px;padding:16px">
+Gudbi Guriga
 </button>
+
+</form>
 
 </div>
 </div>
@@ -2201,98 +2135,36 @@ Gudbi
 <div class="page" id="settings">
 
 <div class="section-header">
-
-<div>
 <h2>Settings</h2>
-<p style="color:#718096">Website Settings.</p>
-</div>
-
 </div>
 
 <div class="settings-grid">
 
 <div class="setting-card">
-
 <div class="setting-icon">🎨</div>
-
-<h3>Appearance</h3>
-
-<p>Choose how Haleel should look.</p>
+<h3>Theme Mode</h3>
+<p>Choose your preferred interface theme style.</p>
 
 <div class="theme-options">
-
-<button
-class="theme-button"
-id="lightThemeButton"
-onclick="setTheme('light')">
-☀️ Light
-</button>
-
-<button
-class="theme-button"
-id="darkThemeButton"
-onclick="setTheme('dark')">
-🌙 Dark
-</button>
-
+<button class="theme-button" id="themeLightBtn" onclick="setTheme('light')">☀️ Light</button>
+<button class="theme-button" id="themeDarkBtn" onclick="setTheme('dark')">🌙 Dark</button>
 </div>
 
-<div
-class="theme-status"
-id="themeStatus">
-Current theme: Light Mode
-</div>
-
+<div class="theme-status" id="themeStatus">Currently using Light Mode</div>
 </div>
 
 <div class="setting-card">
-
-<div class="setting-icon">💬</div>
-
-<h3>Customer Care</h3>
-
-<p>Need help? Contact Haleel Customer Care.</p>
-
-<br>
-
-<button
-class="btn btn-primary"
-onclick="openPage('care')">
-Contact Us
-</button>
-
+<div class="setting-icon">🔔</div>
+<h3>Notifications</h3>
+<p>Receive updates for newly available rental properties.</p>
+<button class="btn btn-outline" style="margin-top:15px;width:100%" onclick="alert('Notification settings updated!')">Enable Notifications</button>
 </div>
 
 <div class="setting-card">
-
 <div class="setting-icon">🌐</div>
-
-<h3>Language</h3>
-
-<p>Choose your preferred language.</p>
-
-<br>
-
-<select class="input">
-
-<option>English</option>
-
-</select>
-
-</div>
-
-<div class="setting-card">
-
-<div class="setting-icon">ℹ️</div>
-
-<h3>About</h3>
-
-<p>Haleel Real Estate — Hogaanka Kiraynta.</p>
-
-<br>
-
-<strong>Version 1.0.0</strong>
-
+<h3>Language / Luqada</h3>
+<p>Change your preferred display language.</p>
+<button class="btn btn-outline" style="margin-top:15px;width:100%" onclick="alert('Somali language is default.')">Somali (Default)</button>
 </div>
 
 </div>
@@ -2301,672 +2173,154 @@ Contact Us
 
 </main>
 
-<nav class="mobile-nav">
+</section>
 
-<button class="active" onclick="openPage('home',this)">
-🏠
-<br>
-Home
-</button>
+<!-- Mobile Navigation Bar -->
+<div class="mobile-nav">
+<button class="active" onclick="openPage('home',this)">🏠<br>Home</button>
+<button onclick="openPage('property',this)">🏘<br>Property</button>
+<button onclick="openPage('care',this)">💬<br>Care</button>
+<button onclick="openPage('submit',this)">📝<br>Submit</button>
+<button onclick="openPage('settings',this)">⚙️<br>Settings</button>
+</div>
 
-<button onclick="openPage('property',this)">
-🏘
-<br>
-Property
-</button>
-
-<button onclick="openPage('care',this)">
-💬
-<br>
-Care
-</button>
-
-<button onclick="openPage('settings',this)">
-⚙️
-<br>
-Settings
-</button>
-
-</nav>
-
+<!-- Floating Customer Care Quick Access -->
 <div class="floating-care">
-
+<button class="care-button" onclick="toggleCareMenu()">💬</button>
 <div class="care-menu" id="careMenu">
+<a href="https://wa.me/252907469995" target="_blank">🟢 WhatsApp</a>
+<a href="tel:+252907469995">📞 Call Center</a>
+<a href="mailto:Haleelrealestate@gmail.com">📧 Email Support</a>
+</div>
+</div>
 
-<a href="https://wa.me/252907469995" target="_blank"> 
-🟢 WhatsApp 
-</a> 
- 
-<a href="tel:+252907469995"> 
-📞 Call 
-</a> 
- 
-<a href="mailto:Haleelrealestate@gmail.com"> 
-📧 Email 
-</a> 
- 
-<a href="#" onclick="openChat();return false;"> 
-💬 Chat Care 
-</a> 
- 
-</div> 
- 
-<button class="care-button" onclick="toggleCare()"> 
-💬 
-</button> 
- 
-</div> 
- 
-</section> 
- 
-<div class="modal" id="detailsModal"> 
- 
-<div class="modal-box"> 
- 
-<button class="details-close" onclick="closeDetails()"> 
-× 
-</button> 
- 
-<div class="details-icon">🏠</div> 
- 
-<h2>Faahfaahinta Guriga</h2> 
- 
-<p class="details-text"> 
-Haddii aad doonaysid gurigan, la xiriir xarumaheena si aad u hesho faahfaahin dheeraad ah. 
-</p> 
- 
-<div class="details-contact"> 
- 
-<div class="details-contact-label"> 
-📞 Nala Xiriir 
-</div> 
- 
-<strong class="details-phone"> 
-+252 90 7469995 
-</strong> 
- 
-</div> 
- 
-<div class="details-buttons"> 
- 
-<button 
-class="btn btn-outline" 
-onclick="closeDetails()"> 
-Close 
-</button> 
- 
-<a 
-href="tel:+252907469995" 
-class="btn btn-primary call-button"> 
-📞 Call Now 
-</a> 
- 
-</div> 
- 
-</div> 
-</div> 
- 
-<div class="modal" id="chatModal"> 
- 
-<div class="modal-box"> 
- 
-<h2>💬 Qancinta Macaamiisha!</h2> 
- 
-<p style="color:#718096"> 
-Macmiil maxaan kaa caawiyaa? 
-</p> 
- 
-<br> 
- 
-<textarea 
-class="input" 
-id="chatMessage" 
-placeholder="Write your message..."></textarea> 
- 
-<div style="display:flex;gap:10px"> 
- 
-<button 
-class="btn btn-outline" 
-onclick="document.getElementById('chatModal').classList.remove('show')"> 
-Close 
-</button> 
- 
-<button 
-class="btn btn-primary" 
-onclick="sendEmail()"> 
-Send 
-</button> 
- 
-</div> 
- 
-</div> 
-</div> 
- 
-<div class="modal" id="successModal"> 
- 
-<div class="modal-box"> 
- 
-<div style="font-size:55px"> 
-✅ 
-</div> 
- 
-<h2>Mahadsanid!</h2> 
- 
-<p style="color:#718096;margin:15px 0"> 
-Waad ku mahadsantahay macmiil, hadda waad gudbisay macluumaadkii. 
-</p> 
- 
-<button 
-class="btn btn-primary" 
-onclick="closeSuccess()"> 
-Dib u noqo! 
-</button> 
- 
-</div> 
-</div> 
- 
-<script> 
- 
-/* ========================= 
-   BASIC FUNCTIONS 
-========================= */ 
- 
-function $(id){ 
-return document.getElementById(id); 
-} 
- 
- 
-/* ========================= 
-   THEME SYSTEM 
-========================= */ 
- 
-function applyTheme(theme){ 
- 
-const html=document.documentElement; 
-const body=document.body; 
- 
-if(theme==="dark"){ 
- 
-html.classList.add("dark"); 
-body.classList.add("dark"); 
- 
-html.style.colorScheme="dark"; 
-body.style.colorScheme="dark"; 
- 
-$("themeStatus").textContent="Current theme: Dark Mode"; 
- 
-if($("darkThemeButton")) 
-$("darkThemeButton").classList.add("active"); 
- 
-if($("lightThemeButton")) 
-$("lightThemeButton").classList.remove("active"); 
- 
-document.querySelector('meta[name="theme-color"]') 
-?.setAttribute("content","#0B1118"); 
- 
-}else{ 
- 
-html.classList.remove("dark"); 
-body.classList.remove("dark"); 
- 
-html.style.colorScheme="light"; 
-body.style.colorScheme="light"; 
- 
-$("themeStatus").textContent="Current theme: Light Mode"; 
- 
-if($("lightThemeButton")) 
-$("lightThemeButton").classList.add("active"); 
- 
-if($("darkThemeButton")) 
-$("darkThemeButton").classList.remove("active"); 
- 
-document.querySelector('meta[name="theme-color"]') 
-?.setAttribute("content","#FFFFFF"); 
- 
-} 
- 
-localStorage.setItem("haleelTheme",theme); 
- 
-} 
- 
-function setTheme(theme){ 
- 
-applyTheme(theme); 
- 
-} 
- 
- 
-/* ========================= 
-   PAGE NAVIGATION 
-========================= */ 
- 
-function openPage(page,button){ 
- 
-document.querySelectorAll(".page").forEach(p=>{ 
-p.classList.remove("active"); 
-}); 
- 
-const selected=$(page); 
- 
-if(selected){ 
-selected.classList.add("active"); 
-} 
- 
-const titles={ 
-home:"Home", 
-property:"Properties", 
-care:"Customer Care", 
-submit:"Submit Property", 
-settings:"Settings" 
-}; 
- 
-$("pageTitle").textContent= 
-titles[page]||"Haleel Real Estate"; 
- 
-document.querySelectorAll(".nav button,.mobile-nav button").forEach(b=>{ 
-b.classList.remove("active"); 
-}); 
- 
-if(button){ 
- 
-button.classList.add("active"); 
- 
-}else{ 
- 
-const map={ 
-home:0, 
-property:1, 
-care:2, 
-submit:3, 
-settings:4 
-}; 
- 
-const index=map[page]; 
- 
-if(index!==undefined){ 
- 
-const desktop= 
-document.querySelectorAll(".nav button")[index]; 
- 
-if(desktop){ 
-desktop.classList.add("active"); 
-} 
- 
-let mobileIndex=index; 
- 
-if(page==="submit"){ 
-mobileIndex=3; 
-} 
- 
-if(page==="settings"){ 
-mobileIndex=3; 
-} 
- 
-const mobile= 
-document.querySelectorAll(".mobile-nav button")[mobileIndex]; 
- 
-if(mobile){ 
-mobile.classList.add("active"); 
-} 
- 
-} 
- 
-} 
- 
-window.scrollTo({ 
-top:0, 
-behavior:"smooth" 
-}); 
- 
-} 
- 
- 
-/* ========================= 
-   PROPERTY DETAILS 
-========================= */ 
- 
-function openDetails(){ 
-$("detailsModal").classList.add("show"); 
-} 
- 
-function closeDetails(){ 
-$("detailsModal").classList.remove("show"); 
-} 
- 
-$("detailsModal").addEventListener("click",function(e){ 
- 
-if(e.target===e.currentTarget){ 
-closeDetails(); 
-} 
- 
-}); 
- 
- 
-/* ========================= 
-   CUSTOMER CARE 
-========================= */ 
- 
-function toggleCare(){ 
-$("careMenu").classList.toggle("show"); 
-} 
- 
-function openChat(){ 
-$("chatModal").classList.add("show"); 
-} 
- 
-function sendEmail(){ 
- 
-const message=$("chatMessage").value.trim(); 
- 
-if(!message){ 
- 
-alert("Please write a message."); 
- 
-return; 
- 
-} 
- 
-const subject= 
-encodeURIComponent("Haleel Customer Care"); 
- 
-const body= 
-encodeURIComponent(message); 
- 
-window.location.href= 
-`mailto:Haleelrealestate@gmail.com?subject=${subject}&body=${body}`; 
- 
-} 
- 
- 
-/* ========================= 
-   PROPERTY SUBMISSION 
-========================= */ 
- 
-function submitProperty(){ 
- 
-const owner=$("ownerName").value.trim(); 
-const phone=$("ownerPhone").value.trim(); 
-const title=$("propertyTitle").value.trim(); 
-const city=$("city").value.trim(); 
-const rent=$("rent").value.trim(); 
- 
-if(!owner||!phone||!title||!city){ 
- 
-alert( 
-"Fadlan geli macluumaadka!" 
-); 
- 
-return; 
- 
-} 
- 
-const subject= 
-encodeURIComponent( 
-"New Property Submission - Haleel Real Estate" 
-); 
- 
-const body= 
-encodeURIComponent(` 
- 
-NEW PROPERTY SUBMISSION 
- 
-OWNER INFORMATION 
- 
-Name: ${owner} 
- 
-Phone: ${phone} 
- 
-Email: ${$("ownerEmail").value} 
- 
-WhatsApp: ${$("ownerWhatsapp").value} 
- 
-PROPERTY INFORMATION 
- 
-Title: ${title} 
- 
-Type: ${$("propertyType").value} 
- 
-City: ${city} 
- 
-Neighborhood: ${$("neighborhood").value} 
- 
-Monthly Rent: $${rent} 
- 
-Bedrooms: ${$("bedrooms").value} 
- 
-Bathrooms: ${$("bathrooms").value} 
- 
-Size: ${$("size").value} 
- 
-DESCRIPTION 
- 
-${$("description").value} 
- 
-Submitted through Haleel Real Estate Website. 
- 
-`); 
- 
-window.location.href= 
-`mailto:Haleelrealestate@gmail.com?subject=${subject}&body=${body}`; 
- 
-$("successModal").classList.add("show"); 
- 
-} 
- 
-function closeSuccess(){ 
- 
-$("successModal").classList.remove("show"); 
- 
-openPage("home"); 
- 
-} 
- 
- 
-/* ========================= 
-   PAGE LOAD 
-========================= */ 
- 
-document.addEventListener("DOMContentLoaded",()=>{ 
- 
-const savedTheme= 
-localStorage.getItem("haleelTheme")||"light"; 
- 
-applyTheme(savedTheme); 
- 
-document.querySelectorAll(".property-card img").forEach(img=>{ 
- 
-img.addEventListener("error",()=>{ 
-img.style.opacity=".35"; 
-}); 
- 
-}); 
- 
-document.addEventListener("keydown",(e)=>{ 
- 
-if(e.key==="Escape"){ 
- 
-document 
-.querySelectorAll(".modal.show") 
-.forEach(m=>m.classList.remove("show")); 
- 
-const menu= 
-document.getElementById("careMenu"); 
- 
-if(menu) 
-menu.classList.remove("show"); 
- 
-} 
- 
-}); 
- 
-document.addEventListener("click",(e)=>{ 
- 
-const wrap= 
-document.querySelector(".floating-care"); 
- 
-const menu= 
-document.getElementById("careMenu"); 
- 
-if(wrap && menu && !wrap.contains(e.target)) 
-menu.classList.remove("show"); 
- 
-}); 
- 
-}); 
- 
- 
-/* ========================= 
-   PWA INSTALL 
-========================= */ 
- 
-let deferredInstallPrompt=null; 
- 
-window.addEventListener("beforeinstallprompt",(event)=>{ 
- 
-event.preventDefault(); 
- 
-deferredInstallPrompt=event; 
- 
-}); 
- 
-window.addEventListener("appinstalled",()=>{ 
- 
-deferredInstallPrompt=null; 
- 
-const button= 
-document.getElementById("installAppButton"); 
- 
-if(button){ 
- 
-button.textContent="✅ App Installed"; 
-button.disabled=true; 
- 
-} 
- 
-}); 
- 
-async function installHaleel(){ 
- 
-if(deferredInstallPrompt){ 
- 
-deferredInstallPrompt.prompt(); 
- 
-const choice= 
-await deferredInstallPrompt.userChoice; 
- 
-deferredInstallPrompt=null; 
- 
-if(choice && choice.outcome==="accepted"){ 
- 
-const button= 
-document.getElementById("installAppButton"); 
- 
-if(button) 
-button.textContent="✅ App Installed"; 
- 
-} 
- 
-return; 
- 
-} 
- 
-const isIOS= 
-/iphone|ipad|ipod/i.test(navigator.userAgent) || 
-(navigator.platform==="MacIntel" && 
-navigator.maxTouchPoints>1); 
- 
-const isStandalone= 
-window.matchMedia("(display-mode: standalone)").matches || 
-window.navigator.standalone===true; 
- 
-if(isStandalone){ 
- 
-alert( 
-"Macmiil wuu kuugu jiraa Application-ka Haleel." 
-); 
- 
-}else if(isIOS){ 
- 
-alert( 
-"iPhone/iPad: Safari → Share → Add to Home Screen." 
-); 
- 
-}else{ 
- 
-alert( 
-"Install lama soo bandhigin. Hubi HTTPS iyo in manifest.webmanifest iyo sw.js ay sax yihiin, kadib Chrome/Edge ku tijaabi." 
-); 
- 
-} 
- 
-} 
- 
- 
-/* ========================= 
-   SERVICE WORKER 
-========================= */ 
- 
-if("serviceWorker" in navigator){ 
- 
-window.addEventListener("load",()=>{ 
- 
-navigator.serviceWorker.register("./sw.js") 
- 
-.then(()=> 
-console.log("Haleel Service Worker registered") 
-) 
- 
-.catch(error=> 
-console.error( 
-"Haleel Service Worker error:", 
-error 
-) 
-); 
- 
-}); 
- 
-} 
- 
- 
-/* ========================= 
-   ZOOM LOCK 
-========================= */ 
- 
-document.addEventListener("gesturestart",function(e){ 
-e.preventDefault(); 
-},{passive:false}); 
- 
-document.addEventListener("gesturechange",function(e){ 
-e.preventDefault(); 
-},{passive:false}); 
- 
-document.addEventListener("gestureend",function(e){ 
-e.preventDefault(); 
-},{passive:false}); 
- 
-document.addEventListener("touchmove",function(e){ 
- 
-if(e.touches.length>1){ 
-e.preventDefault(); 
-} 
- 
-},{passive:false}); 
- 
-let lastTouchEnd=0; 
- 
-document.addEventListener("touchend",function(e){ 
- 
-const now=Date.now(); 
- 
-if(now-lastTouchEnd<=300){ 
-e.preventDefault(); 
-} 
- 
-lastTouchEnd=now; 
- 
-},{passive:false}); 
- 
-</script> 
- 
-</body> 
+<!-- Modal Dialog -->
+<div class="modal" id="detailsModal">
+<div class="modal-box">
+<button class="details-close" onclick="closeModal()">&times;</button>
+<div class="details-icon">📞</div>
+<h2>Contact Support / Agent</h2>
+<p class="details-text">Si aad xog dheeraad ah uga hesho gurigan ama aad u kireaysato, fadlan la xiriir xafiiska Haleel Real Estate.</p>
+
+<div class="details-contact">
+<div class="details-contact-label">Direct Phone Line</div>
+<div class="details-phone">+252 90 746 9995</div>
+</div>
+
+<div class="details-buttons">
+<a class="btn btn-primary call-button" href="tel:+252907469995">Call Now</a>
+<button class="btn btn-outline" onclick="closeModal()">Close</button>
+</div>
+</div>
+</div>
+
+<script>
+/* Page Navigation Logic */
+function openPage(pageId, navBtn){
+    const pages = document.querySelectorAll('.page');
+    pages.forEach(p => p.classList.remove('active'));
+    
+    const targetPage = document.getElementById(pageId);
+    if(targetPage){
+        targetPage.classList.add('active');
+    }
+    
+    const titleMap = {
+        'home': 'Home',
+        'property': 'Properties',
+        'care': 'Customer Care',
+        'submit': 'Submit Property',
+        'settings': 'Settings'
+    };
+    
+    document.getElementById('pageTitle').innerText = titleMap[pageId] || 'Haleel Real Estate';
+
+    /* Synchronize sidebar & mobile bottom nav buttons */
+    const allButtons = document.querySelectorAll('.nav button, .mobile-nav button');
+    allButtons.forEach(btn => btn.classList.remove('active'));
+
+    if(navBtn){
+        navBtn.classList.add('active');
+    } else {
+        allButtons.forEach(btn => {
+            if(btn.getAttribute('onclick') && btn.getAttribute('onclick').includes(`'${pageId}'`)){
+                btn.classList.add('active');
+            }
+        });
+    }
+
+    window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+/* Theme Handler Logic */
+function setTheme(mode){
+    if(mode === 'dark'){
+        document.documentElement.classList.add('dark');
+        localStorage.setItem('haleelTheme', 'dark');
+        updateThemeUI('dark');
+    } else {
+        document.documentElement.classList.remove('dark');
+        localStorage.setItem('haleelTheme', 'light');
+        updateThemeUI('light');
+    }
+}
+
+function updateThemeUI(mode){
+    const lightBtn = document.getElementById('themeLightBtn');
+    const darkBtn = document.getElementById('themeDarkBtn');
+    const statusText = document.getElementById('themeStatus');
+
+    if(lightBtn && darkBtn && statusText){
+        if(mode === 'dark'){
+            darkBtn.classList.add('active');
+            lightBtn.classList.remove('active');
+            statusText.innerText = 'Currently using Dark Mode';
+        } else {
+            lightBtn.classList.add('active');
+            darkBtn.classList.remove('active');
+            statusText.innerText = 'Currently using Light Mode';
+        }
+    }
+}
+
+/* Modal Window Toggle */
+function openDetails(){
+    document.getElementById('detailsModal').classList.add('show');
+}
+
+function closeModal(){
+    document.getElementById('detailsModal').classList.remove('show');
+}
+
+/* Floating Care Menu Toggle */
+function toggleCareMenu(){
+    const menu = document.getElementById('careMenu');
+    menu.classList.toggle('show');
+}
+
+/* Open Chat Care Function */
+function openChat(){
+    window.open('https://wa.me/252907469995', '_blank');
+}
+
+/* Handle Property Submission Form */
+function handleSubmit(e){
+    e.preventDefault();
+    alert('Waad ku mahadsantahay! Xogta gurigaaga waa la gudbiyay, dhakhso ayaana kuula xiriiri doonaa.');
+    e.target.reset();
+}
+
+/* Install App Mock Function */
+function installHaleel(){
+    alert('Downloading Haleel Real Estate App...');
+}
+
+/* Initialize Default States on Load */
+document.addEventListener('DOMContentLoaded', () => {
+    const isDark = document.documentElement.classList.contains('dark');
+    updateThemeUI(isDark ? 'dark' : 'light');
+});
+</script>
+
+</body>
 </html>
