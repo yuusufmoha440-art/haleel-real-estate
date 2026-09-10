@@ -3035,7 +3035,6 @@ const owner=$("ownerName").value.trim();
 const phone=$("ownerPhone").value.trim();
 const title=$("propertyTitle").value.trim();
 const city=$("city").value.trim();
-const rent=$("rent").value.trim();
 
 if(!owner || !phone || !title || !city){
 alert("Fadlan geli macluumaadka muhiimka ah.");
@@ -3057,7 +3056,7 @@ propertyTitle:title,
 propertyType:$("propertyType").value,
 city:city,
 neighborhood:$("neighborhood").value.trim(),
-rent:rent,
+rent:$("rent").value.trim(),
 bedrooms:$("bedrooms").value.trim(),
 bathrooms:$("bathrooms").value.trim(),
 size:$("size").value.trim(),
@@ -3081,20 +3080,26 @@ form.appendChild(payload);
 document.body.appendChild(form);
 
 let finished=false;
+let timeoutId=null;
 
-const finishSubmission=function(showSuccess){
+function finishSubmission(success){
 
 if(finished) return;
 
 finished=true;
 
+if(timeoutId){
 clearTimeout(timeoutId);
+}
 
 if(form.parentNode){
 form.remove();
 }
 
-if(showSuccess){
+submitButton.disabled=false;
+submitButton.textContent=originalText;
+
+if(success){
 
 $("ownerName").value="";
 $("ownerPhone").value="";
@@ -3118,29 +3123,24 @@ alert("Gudbinta way fashilantay. Fadlan hubi internet-ka kadibna isku day mar ka
 
 }
 
-submitButton.disabled=false;
-submitButton.textContent=originalText;
-
-};
+}
 
 const iframe=$("haleelSubmitFrame");
 
-const iframeLoaded=function(){
+function iframeLoaded(){
 
-if(!finished){
+if(finished) return;
+
 setTimeout(function(){
 finishSubmission(true);
-},300);
+},500);
+
 }
 
-};
+iframe.addEventListener("load",iframeLoaded,{once:true});
 
-iframe.addEventListener("load",iframeLoaded,{once:false});
-
-const timeoutId=setTimeout(function(){
-
+timeoutId=setTimeout(function(){
 finishSubmission(false);
-
 },15000);
 
 try{
@@ -3156,6 +3156,7 @@ finishSubmission(false);
 }
 
 }
+
 
 /* ==========================================
    SUCCESS MODAL
