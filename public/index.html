@@ -8,6 +8,7 @@
 <title>Haleel Real Estate</title>
 
 <style>
+
 :root{
 --primary:#006CC2;
 --primary-dark:#00539a;
@@ -23,13 +24,13 @@
 --shadow:0 15px 45px rgba(0,108,194,.12);
 --radius:20px;
 
-color-scheme:light !important;
+color-scheme:light;
 }
 
 html{
 scroll-behavior:smooth;
-color-scheme:light !important;
-background:#F3F7FB !important;
+background:#F3F7FB;
+color-scheme:light;
 }
 
 *{
@@ -43,34 +44,283 @@ body{
 background:
 radial-gradient(circle at 10% 0%,rgba(0,108,194,.07),transparent 30%),
 radial-gradient(circle at 100% 15%,rgba(32,178,107,.05),transparent 28%),
-#F3F7FB !important;
-color:#1d3044 !important;
-color-scheme:light !important;
+#F3F7FB;
+color:#1d3044;
 overflow-x:hidden;
+transition:background .3s ease,color .3s ease;
 }
 
 input,
 textarea,
 select,
 button{
-color-scheme:light !important;
+color-scheme:light;
 }
 
 input,
 textarea,
 select{
-background:#FFFFFF !important;
-color:#1d3044 !important;
+background:#FFFFFF;
+color:#1d3044;
 }
 
 input::placeholder,
 textarea::placeholder{
-color:#718096 !important;
+color:#718096;
 }
 
 button{
 font:inherit;
 }
+
+/* =========================
+   DARK MODE
+========================= */
+
+html.dark{
+color-scheme:dark;
+background:#0b1118;
+}
+
+body.dark{
+background:
+radial-gradient(circle at 10% 0%,rgba(0,108,194,.13),transparent 30%),
+radial-gradient(circle at 100% 15%,rgba(32,178,107,.08),transparent 28%),
+#0b1118;
+color:#e8eef5;
+}
+
+body.dark input,
+body.dark textarea,
+body.dark select{
+background:#151e28;
+color:#e8eef5;
+border-color:#2b3948;
+}
+
+body.dark input::placeholder,
+body.dark textarea::placeholder{
+color:#8292a5;
+}
+
+body.dark .sidebar{
+background:rgba(15,23,32,.92);
+border-right-color:rgba(255,255,255,.08);
+box-shadow:10px 0 40px rgba(0,0,0,.20);
+}
+
+body.dark .brand small{
+color:#8292a5;
+}
+
+body.dark .nav button{
+color:#aab7c5;
+}
+
+body.dark .nav button:hover{
+background:#172534;
+color:#42a9ff;
+}
+
+body.dark .nav button.active{
+background:linear-gradient(90deg,#112c42,#142331);
+color:#42a9ff;
+box-shadow:inset 0 0 0 1px rgba(0,108,194,.18);
+}
+
+body.dark .user{
+background:linear-gradient(135deg,#142331,#101a24);
+border-color:rgba(0,108,194,.18);
+}
+
+body.dark .user strong{
+color:#f1f5f9;
+}
+
+body.dark .user small{
+color:#8292a5;
+}
+
+body.dark .topbar{
+background:rgba(15,23,32,.88);
+border-color:rgba(255,255,255,.08);
+box-shadow:0 10px 35px rgba(0,0,0,.20);
+}
+
+body.dark .topbar strong{
+color:#f1f5f9;
+}
+
+body.dark .btn-outline{
+background:#151e28;
+color:#42a9ff;
+border-color:rgba(66,169,255,.25);
+}
+
+body.dark .btn-outline:hover{
+background:#172c3e;
+}
+
+body.dark .section-header h2{
+color:#f1f5f9;
+}
+
+body.dark .card{
+background:#131c26;
+border-color:rgba(255,255,255,.08);
+box-shadow:0 10px 35px rgba(0,0,0,.18);
+}
+
+body.dark .card h3{
+color:#f1f5f9;
+}
+
+body.dark .card p{
+color:#91a0b1;
+}
+
+body.dark .service-icon{
+background:#122b40;
+border-color:rgba(66,169,255,.12);
+}
+
+body.dark .property-card{
+background:#131c26;
+border-color:rgba(255,255,255,.08);
+box-shadow:0 10px 35px rgba(0,0,0,.20);
+}
+
+body.dark .property-content h3{
+color:#f1f5f9;
+}
+
+body.dark .location{
+color:#91a0b1;
+}
+
+body.dark .search-box{
+background:rgba(19,28,38,.92);
+border-color:rgba(255,255,255,.08);
+box-shadow:0 12px 35px rgba(0,0,0,.20);
+}
+
+body.dark .care-card{
+background:#131c26;
+border-color:rgba(255,255,255,.08);
+box-shadow:0 10px 35px rgba(0,0,0,.20);
+}
+
+body.dark .care-card h3{
+color:#f1f5f9;
+}
+
+body.dark .care-card p{
+color:#91a0b1;
+}
+
+body.dark .care-icon{
+background:linear-gradient(135deg,#122b40,#17222d);
+}
+
+body.dark .form-container{
+background:rgba(19,28,38,.95);
+border-color:rgba(255,255,255,.08);
+box-shadow:0 18px 55px rgba(0,0,0,.25);
+}
+
+body.dark .form-section{
+border-bottom-color:#263340;
+}
+
+body.dark .upload{
+background:linear-gradient(135deg,#122535,#16212b);
+border-color:#31526b;
+}
+
+body.dark .upload:hover{
+background:#142c40;
+}
+
+body.dark .setting-card{
+background:#131c26;
+border-color:rgba(255,255,255,.08);
+box-shadow:0 10px 35px rgba(0,0,0,.20);
+}
+
+body.dark .setting-card h3{
+color:#f1f5f9;
+}
+
+body.dark .setting-card p{
+color:#91a0b1;
+}
+
+body.dark .care-menu{
+background:#131c26;
+border-color:rgba(255,255,255,.08);
+box-shadow:0 20px 55px rgba(0,0,0,.35);
+}
+
+body.dark .care-menu a{
+color:#d9e3ec;
+}
+
+body.dark .care-menu a:hover{
+background:#122b40;
+color:#42a9ff;
+}
+
+body.dark .modal-box{
+background:#131c26;
+border-color:rgba(255,255,255,.10);
+}
+
+body.dark .modal-box h2{
+color:#f1f5f9;
+}
+
+body.dark .details-close{
+color:#91a0b1;
+}
+
+body.dark .details-text{
+color:#91a0b1;
+}
+
+body.dark .details-contact{
+background:#122b40;
+}
+
+body.dark .details-contact-label{
+color:#91a0b1;
+}
+
+body.dark .mobile-nav{
+background:rgba(15,23,32,.94) !important;
+border-top-color:rgba(255,255,255,.08);
+box-shadow:0 -5px 20px rgba(0,0,0,.30);
+}
+
+body.dark .mobile-nav button{
+color:#8292a5;
+}
+
+body.dark .mobile-nav button.active{
+color:#42a9ff;
+background:#122b40;
+}
+
+body.dark ::-webkit-scrollbar-track{
+background:#111a23;
+}
+
+body.dark ::-webkit-scrollbar-thumb{
+background:linear-gradient(#006CC2,#43aaff);
+}
+
+/* =========================
+   MAIN DESIGN
+========================= */
 
 .app{
 display:block;
@@ -295,8 +545,8 @@ outline:none;
 margin-bottom:15px;
 transition:.25s;
 font-size:15px;
-background:#FFFFFF !important;
-color:#1d3044 !important;
+background:#FFFFFF;
+color:#1d3044;
 }
 
 .input:hover{
@@ -306,7 +556,7 @@ border-color:#b8d6ed;
 .input:focus{
 border-color:#006CC2;
 box-shadow:0 0 0 4px rgba(0,108,194,.10),0 8px 25px rgba(0,108,194,.06);
-background:#fff !important;
+background:#fff;
 }
 
 .hero{
@@ -750,6 +1000,58 @@ font-size:35px;
 margin-bottom:20px;
 }
 
+.theme-options{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
+margin-top:18px;
+}
+
+.theme-button{
+padding:14px 10px;
+border:1px solid #dce4ec;
+background:#fff;
+color:#243447;
+border-radius:13px;
+cursor:pointer;
+font-weight:700;
+transition:.25s;
+}
+
+.theme-button:hover{
+transform:translateY(-2px);
+border-color:#006CC2;
+}
+
+.theme-button.active{
+background:#eaf5ff;
+border-color:#006CC2;
+color:#006CC2;
+box-shadow:0 6px 18px rgba(0,108,194,.12);
+}
+
+body.dark .theme-button{
+background:#151e28;
+border-color:#2b3948;
+color:#dce6ef;
+}
+
+body.dark .theme-button.active{
+background:#122f45;
+border-color:#168ce0;
+color:#42a9ff;
+}
+
+.theme-status{
+font-size:13px;
+color:#718096;
+margin-top:12px;
+}
+
+body.dark .theme-status{
+color:#8292a5;
+}
+
 .floating-care{
 position:fixed;
 right:25px;
@@ -978,7 +1280,7 @@ bottom:0;
 left:0;
 right:0;
 height:70px;
-background:rgba(255,255,255,.90) !important;
+background:rgba(255,255,255,.90);
 backdrop-filter:blur(16px);
 -webkit-backdrop-filter:blur(16px);
 border-top:1px solid rgba(13,61,98,.10);
@@ -1054,6 +1356,10 @@ padding:24px 18px;
 
 .property-image{
 height:205px;
+}
+
+.theme-options{
+grid-template-columns:1fr 1fr;
 }
 
 }
@@ -1188,8 +1494,8 @@ transition-duration:.001ms!important;
 <link rel="manifest" href="./manifest.webmanifest">
 
 <meta name="theme-color" content="#FFFFFF">
-<meta name="color-scheme" content="light">
-<meta name="supported-color-schemes" content="light">
+<meta name="color-scheme" content="light dark">
+<meta name="supported-color-schemes" content="light dark">
 
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1200,7 +1506,25 @@ transition-duration:.001ms!important;
 <link rel="icon" type="image/png" sizes="192x192" href="./icons/Haleel icons.png">
 
 <script>
-document.documentElement.style.colorScheme="light";
+
+/* Load saved theme immediately */
+
+(function(){
+
+const savedTheme=localStorage.getItem("haleelTheme");
+
+if(savedTheme==="dark"){
+
+document.documentElement.classList.add("dark");
+
+}else{
+
+document.documentElement.classList.remove("dark");
+
+}
+
+})();
+
 </script>
 
 </head>
@@ -1889,6 +2213,40 @@ Gudbi
 
 <div class="setting-card">
 
+<div class="setting-icon">🎨</div>
+
+<h3>Appearance</h3>
+
+<p>Choose how Haleel should look.</p>
+
+<div class="theme-options">
+
+<button
+class="theme-button"
+id="lightThemeButton"
+onclick="setTheme('light')">
+☀️ Light
+</button>
+
+<button
+class="theme-button"
+id="darkThemeButton"
+onclick="setTheme('dark')">
+🌙 Dark
+</button>
+
+</div>
+
+<div
+class="theme-status"
+id="themeStatus">
+Current theme: Light Mode
+</div>
+
+</div>
+
+<div class="setting-card">
+
 <div class="setting-icon">💬</div>
 
 <h3>Customer Care</h3>
@@ -1938,6 +2296,7 @@ Contact Us
 </div>
 
 </div>
+
 </div>
 
 </main>
@@ -2108,9 +2467,78 @@ Dib u noqo!
 
 <script>
 
+/* =========================
+   BASIC FUNCTIONS
+========================= */
+
 function $(id){
 return document.getElementById(id);
 }
+
+
+/* =========================
+   THEME SYSTEM
+========================= */
+
+function applyTheme(theme){
+
+const html=document.documentElement;
+const body=document.body;
+
+if(theme==="dark"){
+
+html.classList.add("dark");
+body.classList.add("dark");
+
+html.style.colorScheme="dark";
+body.style.colorScheme="dark";
+
+$("themeStatus").textContent="Current theme: Dark Mode";
+
+if($("darkThemeButton"))
+$("darkThemeButton").classList.add("active");
+
+if($("lightThemeButton"))
+$("lightThemeButton").classList.remove("active");
+
+document.querySelector('meta[name="theme-color"]')
+?.setAttribute("content","#0B1118");
+
+}else{
+
+html.classList.remove("dark");
+body.classList.remove("dark");
+
+html.style.colorScheme="light";
+body.style.colorScheme="light";
+
+$("themeStatus").textContent="Current theme: Light Mode";
+
+if($("lightThemeButton"))
+$("lightThemeButton").classList.add("active");
+
+if($("darkThemeButton"))
+$("darkThemeButton").classList.remove("active");
+
+document.querySelector('meta[name="theme-color"]')
+?.setAttribute("content","#FFFFFF");
+
+}
+
+localStorage.setItem("haleelTheme",theme);
+
+}
+
+function setTheme(theme){
+
+applyTheme(theme);
+
+}
+
+
+/* =========================
+   PAGE NAVIGATION
+========================= */
 
 function openPage(page,button){
 
@@ -2185,7 +2613,17 @@ mobile.classList.add("active");
 
 }
 
+window.scrollTo({
+top:0,
+behavior:"smooth"
+});
+
 }
+
+
+/* =========================
+   PROPERTY DETAILS
+========================= */
 
 function openDetails(){
 $("detailsModal").classList.add("show");
@@ -2202,6 +2640,11 @@ closeDetails();
 }
 
 });
+
+
+/* =========================
+   CUSTOMER CARE
+========================= */
 
 function toggleCare(){
 $("careMenu").classList.toggle("show");
@@ -2233,6 +2676,11 @@ window.location.href=
 `mailto:Haleelrealestate@gmail.com?subject=${subject}&body=${body}`;
 
 }
+
+
+/* =========================
+   PROPERTY SUBMISSION
+========================= */
 
 function submitProperty(){
 
@@ -2313,15 +2761,17 @@ openPage("home");
 
 }
 
-</script>
 
-<script>
+/* =========================
+   PAGE LOAD
+========================= */
 
 document.addEventListener("DOMContentLoaded",()=>{
 
-document.documentElement.style.colorScheme="light";
+const savedTheme=
+localStorage.getItem("haleelTheme")||"light";
 
-document.body.style.colorScheme="light";
+applyTheme(savedTheme);
 
 document.querySelectorAll(".property-card img").forEach(img=>{
 
@@ -2364,11 +2814,12 @@ menu.classList.remove("show");
 
 });
 
-</script>
 
-<script>
+/* =========================
+   PWA INSTALL
+========================= */
 
-let deferredInstallPrompt = null;
+let deferredInstallPrompt=null;
 
 window.addEventListener("beforeinstallprompt",(event)=>{
 
@@ -2450,6 +2901,11 @@ alert(
 
 }
 
+
+/* =========================
+   SERVICE WORKER
+========================= */
+
 if("serviceWorker" in navigator){
 
 window.addEventListener("load",()=>{
@@ -2471,9 +2927,10 @@ error
 
 }
 
-</script>
 
-<script>
+/* =========================
+   ZOOM LOCK
+========================= */
 
 document.addEventListener("gesturestart",function(e){
 e.preventDefault();
