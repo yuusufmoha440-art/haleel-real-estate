@@ -23,6 +23,7 @@
 --gold:#F5B942;
 --shadow:0 15px 45px rgba(0,108,194,.12);
 --radius:20px;
+
 color-scheme:light;
 }
 
@@ -295,7 +296,7 @@ color:#91a0b1;
 }
 
 body.dark .mobile-nav{
-background:rgba(15,23,32,.94)!important;
+background:rgba(15,23,32,.94) !important;
 border-top-color:rgba(255,255,255,.08);
 box-shadow:0 -5px 20px rgba(0,0,0,.30);
 }
@@ -1506,14 +1507,20 @@ transition-duration:.001ms!important;
 
 <script>
 
+/* Load saved theme immediately */
+
 (function(){
 
 const savedTheme=localStorage.getItem("haleelTheme");
 
 if(savedTheme==="dark"){
+
 document.documentElement.classList.add("dark");
+
 }else{
+
 document.documentElement.classList.remove("dark");
+
 }
 
 })();
@@ -2326,384 +2333,640 @@ Settings
 
 <div class="care-menu" id="careMenu">
 
-<a href="https://wa.me/252907469995" target="_blank">
-🟢 WhatsApp
-</a>
-
-<a href="tel:+252907469995">
-📞 Call
-</a>
-
-<a href="mailto:Haleelrealestate@gmail.com">
-📧 Email
-</a>
-
-<a href="#" onclick="openChat();return false;">
-💬 Chat Care
-</a>
-
-</div>
-
-<button class="care-button" onclick="toggleCare()">
-💬
-</button>
-
-</div>
-
-</section>
-
-<div class="modal" id="detailsModal">
-
-<div class="modal-box">
-
-<button class="details-close" onclick="closeDetails()">
-×
-</button>
-
-<div class="details-icon">🏠</div>
-
-<h2>Faahfaahinta Guriga</h2>
-
-<p class="details-text">
-Haddii aad doonaysid gurigan, la xiriir xarumaheena si aad u hesho faahfaahin dheeraad ah.
-</p>
-
-<div class="details-contact">
-
-<div class="details-contact-label">
-📞 Nala Xiriir
-</div>
-
-<strong class="details-phone">
-+252 90 7469995
-</strong>
-
-</div>
-
-<div class="details-buttons">
-
-<button
-class="btn btn-outline"
-onclick="closeDetails()">
-Close
-</button>
-
-<a
-href="tel:+252907469995"
-class="btn btn-primary call-button">
-📞 Call Now
-</a>
-
-</div>
-
-</div>
-</div>
-
-<div class="modal" id="chatModal">
-
-<div class="modal-box">
-
-<h2>💬 Qancinta Macaamiisha!</h2>
-
-<p style="color:#718096">
-Macmiil maxaan kaa caawiyaa?
-</p>
-
-<br>
-
-<textarea
-class="input"
-id="chatMessage"
-placeholder="Write your message..."></textarea>
-
-<div style="display:flex;gap:10px">
-
-<button
-class="btn btn-outline"
-onclick="document.getElementById('chatModal').classList.remove('show')">
-Close
-</button>
-
-<button
-class="btn btn-primary"
-onclick="sendEmail()">
-Send
-</button>
-
-</div>
-
-</div>
-</div>
-
-<div class="modal" id="successModal">
-
-<div class="modal-box">
-
-<div style="font-size:55px">
-✅
-</div>
-
-<h2>Mahadsanid!</h2>
-
-<p style="color:#718096;margin:15px 0">
-Waad ku mahadsantahay macmiil, hadda waad gudbisay macluumaadkii.
-</p>
-
-<button
-class="btn btn-primary"
-onclick="closeSuccess()">
-Dib u noqo!
-</button>
-
-</div>
-</div>
-
-<script>
-
-/* =========================
-   BASIC FUNCTIONS
-========================= */
-
-function $(id){
-return document.getElementById(id);
-}
-
-/* =========================
-   THEME SYSTEM
-========================= */
-
-function applyTheme(theme){
-
-const html=document.documentElement;
-const body=document.body;
-
-if(theme==="dark"){
-
-html.classList.add("dark");
-body.classList.add("dark");
-
-html.style.colorScheme="dark";
-body.style.colorScheme="dark";
-
-if($("themeStatus"))
-$("themeStatus").textContent="Current theme: Dark Mode";
-
-if($("darkThemeButton"))
-$("darkThemeButton").classList.add("active");
-
-if($("lightThemeButton"))
-$("lightThemeButton").classList.remove("active");
-
-document.querySelector('meta[name="theme-color"]')
-?.setAttribute("content","#0B1118");
-
-}else{
-
-html.classList.remove("dark");
-body.classList.remove("dark");
-
-html.style.colorScheme="light";
-body.style.colorScheme="light";
-
-if($("themeStatus"))
-$("themeStatus").textContent="Current theme: Light Mode";
-
-if($("lightThemeButton"))
-$("lightThemeButton").classList.add("active");
-
-if($("darkThemeButton"))
-$("darkThemeButton").classList.remove("active");
-
-document.querySelector('meta[name="theme-color"]')
-?.setAttribute("content","#FFFFFF");
-
-}
-
-localStorage.setItem("haleelTheme",theme);
-
-}
-
-function setTheme(theme){
-applyTheme(theme);
-}
-
-/* =========================
-   PAGE NAVIGATION
-========================= */
-
-function openPage(page,button){
-
-document.querySelectorAll(".page").forEach(p=>{
-p.classList.remove("active");
-});
-
-const selected=$(page);
-
-if(selected){
-selected.classList.add("active");
-}
-
-const titles={
-home:"Home",
-property:"Properties",
-care:"Customer Care",
-submit:"Submit Property",
-settings:"Settings"
-};
-
-$("pageTitle").textContent=
-titles[page]||"Haleel Real Estate";
-
-document.querySelectorAll(".nav button,.mobile-nav button").forEach(b=>{
-b.classList.remove("active");
-});
-
-if(button){
-
-button.classList.add("active");
-
-}else{
-
-const map={
-home:0,
-property:1,
-care:2,
-submit:3,
-settings:4
-};
-
-const index=map[page];
-
-if(index!==undefined){
-
-const desktop=
-document.querySelectorAll(".nav button")[index];
-
-if(desktop){
-desktop.classList.add("active");
-}
-
-let mobileIndex=index;
-
-if(page==="submit"){
-mobileIndex=3;
-}
-
-if(page==="settings"){
-mobileIndex=3;
-}
-
-const mobile=
-document.querySelectorAll(".mobile-nav button")[mobileIndex];
-
-if(mobile){
-mobile.classList.add("active");
-}
-
-}
-
-}
-
-window.scrollTo({
-top:0,
-behavior:"smooth"
-});
-
-}
-
-/* =========================
-   PROPERTY DETAILS
-========================= */
-
-function openDetails(){
-$("detailsModal").classList.add("show");
-}
-
-function closeDetails(){
-$("detailsModal").classList.remove("show");
-}
-
-$("detailsModal").addEventListener("click",function(e){
-
-if(e.target===e.currentTarget){
-closeDetails();
-}
-
-});
-
-/* =========================
-   CUSTOMER CARE
-========================= */
-
-function toggleCare(){
-$("careMenu").classList.toggle("show");
-}
-
-function openChat(){
-$("chatModal").classList.add("show");
-}
-
-function sendEmail(){
-
-const message=$("chatMessage").value.trim();
-
-if(!message){
-
-alert("Please write a message.");
-
-return;
-
-}
-
-const subject=
-encodeURIComponent("Haleel Customer Care");
-
-const body=
-encodeURIComponent(message);
-
-window.location.href=
-`mailto:Haleelrealestate@gmail.com?subject=${subject}&body=${body}`;
-
-}
-
-/* =========================
-   PROPERTY SUBMISSION
-========================= */
-
-function submitProperty(){
-
-const owner=$("ownerName").value.trim();
-const phone=$("ownerPhone").value.trim();
-const title=$("propertyTitle").value.trim();
-const city=$("city").value.trim();
-const rent=$("rent").value.trim();
-
-if(!owner||!phone||!title||!city){
-
-alert(
-"Please complete the required property information."
-);
-
-return;
-
-}
-
-const subject=
-encodeURIComponent(
-"New Property Submission - Haleel Real Estate"
-);
-
-const body=
-encodeURIComponent(`
-
-NEW PROPERTY SUBMISSION
-
-OWNER INFORMATION
-
-Name: ${owner}
-
-Phone: ${phone}
-
-Email: ${$("ownerEmail").value}
-
-WhatsApp
+<a href="https://wa.me/252907469995" target="_blank"> 
+🟢 WhatsApp 
+</a> 
+ 
+<a href="tel:+252907469995"> 
+📞 Call 
+</a> 
+ 
+<a href="mailto:Haleelrealestate@gmail.com"> 
+📧 Email 
+</a> 
+ 
+<a href="#" onclick="openChat();return false;"> 
+💬 Chat Care 
+</a> 
+ 
+</div> 
+ 
+<button class="care-button" onclick="toggleCare()"> 
+💬 
+</button> 
+ 
+</div> 
+ 
+</section> 
+ 
+<div class="modal" id="detailsModal"> 
+ 
+<div class="modal-box"> 
+ 
+<button class="details-close" onclick="closeDetails()"> 
+× 
+</button> 
+ 
+<div class="details-icon">🏠</div> 
+ 
+<h2>Faahfaahinta Guriga</h2> 
+ 
+<p class="details-text"> 
+Haddii aad doonaysid gurigan, la xiriir xarumaheena si aad u hesho faahfaahin dheeraad ah. 
+</p> 
+ 
+<div class="details-contact"> 
+ 
+<div class="details-contact-label"> 
+📞 Nala Xiriir 
+</div> 
+ 
+<strong class="details-phone"> 
++252 90 7469995 
+</strong> 
+ 
+</div> 
+ 
+<div class="details-buttons"> 
+ 
+<button 
+class="btn btn-outline" 
+onclick="closeDetails()"> 
+Close 
+</button> 
+ 
+<a 
+href="tel:+252907469995" 
+class="btn btn-primary call-button"> 
+📞 Call Now 
+</a> 
+ 
+</div> 
+ 
+</div> 
+</div> 
+ 
+<div class="modal" id="chatModal"> 
+ 
+<div class="modal-box"> 
+ 
+<h2>💬 Qancinta Macaamiisha!</h2> 
+ 
+<p style="color:#718096"> 
+Macmiil maxaan kaa caawiyaa? 
+</p> 
+ 
+<br> 
+ 
+<textarea 
+class="input" 
+id="chatMessage" 
+placeholder="Write your message..."></textarea> 
+ 
+<div style="display:flex;gap:10px"> 
+ 
+<button 
+class="btn btn-outline" 
+onclick="document.getElementById('chatModal').classList.remove('show')"> 
+Close 
+</button> 
+ 
+<button 
+class="btn btn-primary" 
+onclick="sendEmail()"> 
+Send 
+</button> 
+ 
+</div> 
+ 
+</div> 
+</div> 
+ 
+<div class="modal" id="successModal"> 
+ 
+<div class="modal-box"> 
+ 
+<div style="font-size:55px"> 
+✅ 
+</div> 
+ 
+<h2>Mahadsanid!</h2> 
+ 
+<p style="color:#718096;margin:15px 0"> 
+Waad ku mahadsantahay macmiil, hadda waad gudbisay macluumaadkii. 
+</p> 
+ 
+<button 
+class="btn btn-primary" 
+onclick="closeSuccess()"> 
+Dib u noqo! 
+</button> 
+ 
+</div> 
+</div> 
+ 
+<script> 
+ 
+/* ========================= 
+   BASIC FUNCTIONS 
+========================= */ 
+ 
+function $(id){ 
+return document.getElementById(id); 
+} 
+ 
+ 
+/* ========================= 
+   THEME SYSTEM 
+========================= */ 
+ 
+function applyTheme(theme){ 
+ 
+const html=document.documentElement; 
+const body=document.body; 
+ 
+if(theme==="dark"){ 
+ 
+html.classList.add("dark"); 
+body.classList.add("dark"); 
+ 
+html.style.colorScheme="dark"; 
+body.style.colorScheme="dark"; 
+ 
+$("themeStatus").textContent="Current theme: Dark Mode"; 
+ 
+if($("darkThemeButton")) 
+$("darkThemeButton").classList.add("active"); 
+ 
+if($("lightThemeButton")) 
+$("lightThemeButton").classList.remove("active"); 
+ 
+document.querySelector('meta[name="theme-color"]') 
+?.setAttribute("content","#0B1118"); 
+ 
+}else{ 
+ 
+html.classList.remove("dark"); 
+body.classList.remove("dark"); 
+ 
+html.style.colorScheme="light"; 
+body.style.colorScheme="light"; 
+ 
+$("themeStatus").textContent="Current theme: Light Mode"; 
+ 
+if($("lightThemeButton")) 
+$("lightThemeButton").classList.add("active"); 
+ 
+if($("darkThemeButton")) 
+$("darkThemeButton").classList.remove("active"); 
+ 
+document.querySelector('meta[name="theme-color"]') 
+?.setAttribute("content","#FFFFFF"); 
+ 
+} 
+ 
+localStorage.setItem("haleelTheme",theme); 
+ 
+} 
+ 
+function setTheme(theme){ 
+ 
+applyTheme(theme); 
+ 
+} 
+ 
+ 
+/* ========================= 
+   PAGE NAVIGATION 
+========================= */ 
+ 
+function openPage(page,button){ 
+ 
+document.querySelectorAll(".page").forEach(p=>{ 
+p.classList.remove("active"); 
+}); 
+ 
+const selected=$(page); 
+ 
+if(selected){ 
+selected.classList.add("active"); 
+} 
+ 
+const titles={ 
+home:"Home", 
+property:"Properties", 
+care:"Customer Care", 
+submit:"Submit Property", 
+settings:"Settings" 
+}; 
+ 
+$("pageTitle").textContent= 
+titles[page]||"Haleel Real Estate"; 
+ 
+document.querySelectorAll(".nav button,.mobile-nav button").forEach(b=>{ 
+b.classList.remove("active"); 
+}); 
+ 
+if(button){ 
+ 
+button.classList.add("active"); 
+ 
+}else{ 
+ 
+const map={ 
+home:0, 
+property:1, 
+care:2, 
+submit:3, 
+settings:4 
+}; 
+ 
+const index=map[page]; 
+ 
+if(index!==undefined){ 
+ 
+const desktop= 
+document.querySelectorAll(".nav button")[index]; 
+ 
+if(desktop){ 
+desktop.classList.add("active"); 
+} 
+ 
+let mobileIndex=index; 
+ 
+if(page==="submit"){ 
+mobileIndex=3; 
+} 
+ 
+if(page==="settings"){ 
+mobileIndex=3; 
+} 
+ 
+const mobile= 
+document.querySelectorAll(".mobile-nav button")[mobileIndex]; 
+ 
+if(mobile){ 
+mobile.classList.add("active"); 
+} 
+ 
+} 
+ 
+} 
+ 
+window.scrollTo({ 
+top:0, 
+behavior:"smooth" 
+}); 
+ 
+} 
+ 
+ 
+/* ========================= 
+   PROPERTY DETAILS 
+========================= */ 
+ 
+function openDetails(){ 
+$("detailsModal").classList.add("show"); 
+} 
+ 
+function closeDetails(){ 
+$("detailsModal").classList.remove("show"); 
+} 
+ 
+$("detailsModal").addEventListener("click",function(e){ 
+ 
+if(e.target===e.currentTarget){ 
+closeDetails(); 
+} 
+ 
+}); 
+ 
+ 
+/* ========================= 
+   CUSTOMER CARE 
+========================= */ 
+ 
+function toggleCare(){ 
+$("careMenu").classList.toggle("show"); 
+} 
+ 
+function openChat(){ 
+$("chatModal").classList.add("show"); 
+} 
+ 
+function sendEmail(){ 
+ 
+const message=$("chatMessage").value.trim(); 
+ 
+if(!message){ 
+ 
+alert("Please write a message."); 
+ 
+return; 
+ 
+} 
+ 
+const subject= 
+encodeURIComponent("Haleel Customer Care"); 
+ 
+const body= 
+encodeURIComponent(message); 
+ 
+window.location.href= 
+`mailto:Haleelrealestate@gmail.com?subject=${subject}&body=${body}`; 
+ 
+} 
+ 
+ 
+/* ========================= 
+   PROPERTY SUBMISSION 
+========================= */ 
+ 
+function submitProperty(){ 
+ 
+const owner=$("ownerName").value.trim(); 
+const phone=$("ownerPhone").value.trim(); 
+const title=$("propertyTitle").value.trim(); 
+const city=$("city").value.trim(); 
+const rent=$("rent").value.trim(); 
+ 
+if(!owner||!phone||!title||!city){ 
+ 
+alert( 
+"Please complete the required property information." 
+); 
+ 
+return; 
+ 
+} 
+ 
+const subject= 
+encodeURIComponent( 
+"New Property Submission - Haleel Real Estate" 
+); 
+ 
+const body= 
+encodeURIComponent(` 
+ 
+NEW PROPERTY SUBMISSION 
+ 
+OWNER INFORMATION 
+ 
+Name: ${owner} 
+ 
+Phone: ${phone} 
+ 
+Email: ${$("ownerEmail").value} 
+ 
+WhatsApp: ${$("ownerWhatsapp").value} 
+ 
+PROPERTY INFORMATION 
+ 
+Title: ${title} 
+ 
+Type: ${$("propertyType").value} 
+ 
+City: ${city} 
+ 
+Neighborhood: ${$("neighborhood").value} 
+ 
+Monthly Rent: $${rent} 
+ 
+Bedrooms: ${$("bedrooms").value} 
+ 
+Bathrooms: ${$("bathrooms").value} 
+ 
+Size: ${$("size").value} 
+ 
+DESCRIPTION 
+ 
+${$("description").value} 
+ 
+Submitted through Haleel Real Estate Website. 
+ 
+`); 
+ 
+window.location.href= 
+`mailto:Haleelrealestate@gmail.com?subject=${subject}&body=${body}`; 
+ 
+$("successModal").classList.add("show"); 
+ 
+} 
+ 
+function closeSuccess(){ 
+ 
+$("successModal").classList.remove("show"); 
+ 
+openPage("home"); 
+ 
+} 
+ 
+ 
+/* ========================= 
+   PAGE LOAD 
+========================= */ 
+ 
+document.addEventListener("DOMContentLoaded",()=>{ 
+ 
+const savedTheme= 
+localStorage.getItem("haleelTheme")||"light"; 
+ 
+applyTheme(savedTheme); 
+ 
+document.querySelectorAll(".property-card img").forEach(img=>{ 
+ 
+img.addEventListener("error",()=>{ 
+img.style.opacity=".35"; 
+}); 
+ 
+}); 
+ 
+document.addEventListener("keydown",(e)=>{ 
+ 
+if(e.key==="Escape"){ 
+ 
+document 
+.querySelectorAll(".modal.show") 
+.forEach(m=>m.classList.remove("show")); 
+ 
+const menu= 
+document.getElementById("careMenu"); 
+ 
+if(menu) 
+menu.classList.remove("show"); 
+ 
+} 
+ 
+}); 
+ 
+document.addEventListener("click",(e)=>{ 
+ 
+const wrap= 
+document.querySelector(".floating-care"); 
+ 
+const menu= 
+document.getElementById("careMenu"); 
+ 
+if(wrap && menu && !wrap.contains(e.target)) 
+menu.classList.remove("show"); 
+ 
+}); 
+ 
+}); 
+ 
+ 
+/* ========================= 
+   PWA INSTALL 
+========================= */ 
+ 
+let deferredInstallPrompt=null; 
+ 
+window.addEventListener("beforeinstallprompt",(event)=>{ 
+ 
+event.preventDefault(); 
+ 
+deferredInstallPrompt=event; 
+ 
+}); 
+ 
+window.addEventListener("appinstalled",()=>{ 
+ 
+deferredInstallPrompt=null; 
+ 
+const button= 
+document.getElementById("installAppButton"); 
+ 
+if(button){ 
+ 
+button.textContent="✅ App Installed"; 
+button.disabled=true; 
+ 
+} 
+ 
+}); 
+ 
+async function installHaleel(){ 
+ 
+if(deferredInstallPrompt){ 
+ 
+deferredInstallPrompt.prompt(); 
+ 
+const choice= 
+await deferredInstallPrompt.userChoice; 
+ 
+deferredInstallPrompt=null; 
+ 
+if(choice && choice.outcome==="accepted"){ 
+ 
+const button= 
+document.getElementById("installAppButton"); 
+ 
+if(button) 
+button.textContent="✅ App Installed"; 
+ 
+} 
+ 
+return; 
+ 
+} 
+ 
+const isIOS= 
+/iphone|ipad|ipod/i.test(navigator.userAgent) || 
+(navigator.platform==="MacIntel" && 
+navigator.maxTouchPoints>1); 
+ 
+const isStandalone= 
+window.matchMedia("(display-mode: standalone)").matches || 
+window.navigator.standalone===true; 
+ 
+if(isStandalone){ 
+ 
+alert( 
+"Macmiil wuu kuugu jiraa Application-ka Haleel." 
+); 
+ 
+}else if(isIOS){ 
+ 
+alert( 
+"iPhone/iPad: Safari → Share → Add to Home Screen." 
+); 
+ 
+}else{ 
+ 
+alert( 
+"Install lama soo bandhigin. Hubi HTTPS iyo in manifest.webmanifest iyo sw.js ay sax yihiin, kadib Chrome/Edge ku tijaabi." 
+); 
+ 
+} 
+ 
+} 
+ 
+ 
+/* ========================= 
+   SERVICE WORKER 
+========================= */ 
+ 
+if("serviceWorker" in navigator){ 
+ 
+window.addEventListener("load",()=>{ 
+ 
+navigator.serviceWorker.register("./sw.js") 
+ 
+.then(()=> 
+console.log("Haleel Service Worker registered") 
+) 
+ 
+.catch(error=> 
+console.error( 
+"Haleel Service Worker error:", 
+error 
+) 
+); 
+ 
+}); 
+ 
+} 
+ 
+ 
+/* ========================= 
+   ZOOM LOCK 
+========================= */ 
+ 
+document.addEventListener("gesturestart",function(e){ 
+e.preventDefault(); 
+},{passive:false}); 
+ 
+document.addEventListener("gesturechange",function(e){ 
+e.preventDefault(); 
+},{passive:false}); 
+ 
+document.addEventListener("gestureend",function(e){ 
+e.preventDefault(); 
+},{passive:false}); 
+ 
+document.addEventListener("touchmove",function(e){ 
+ 
+if(e.touches.length>1){ 
+e.preventDefault(); 
+} 
+ 
+},{passive:false}); 
+ 
+let lastTouchEnd=0; 
+ 
+document.addEventListener("touchend",function(e){ 
+ 
+const now=Date.now(); 
+ 
+if(now-lastTouchEnd<=300){ 
+e.preventDefault(); 
+} 
+ 
+lastTouchEnd=now; 
+ 
+},{passive:false}); 
+ 
+</script> 
+ 
+</body> 
+</html> 1 fayl oo dhamaystiran iisoo dir?
