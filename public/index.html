@@ -2236,13 +2236,13 @@ Geli Macluumaadka Guriga
 <div class="form-group">
 
 <label>
-Magaca Guriga
+Magaca soo gudbiyaha
 </label>
 
 <input
 class="input"
 id="propertyTitle"
-placeholder="Geli magaca guriga...">
+placeholder="Geli magacaaga oo dhamaystiran...">
 
 </div>
 
@@ -2843,7 +2843,7 @@ return document.getElementById(id);
 ========================================== */
 
 const HALEEL_BACKEND_URL =
-"https://script.google.com/macros/s/AKfycbw0Kuio7gyRvj8qnZpnjsWAh8HeaSB1-LxpzDsXGbUgp5naIpD0sXYFeqDuzHs8bQ3tcw/exec";
+"https://script.google.com/macros/s/AKfycby5_MaPFQpcRDObAVYomJ0Pm89gOqASiS59J7I31sSEO-0dsGmGvv6x29CfTx6ft35a/exec";
 
 
 /* ==========================================
@@ -3382,66 +3382,48 @@ const city=$("city").value.trim();
 if(!owner || !phone || !title || !city){
 
 alert("Fadlan geli macluumaadka muhiimka ah.");
-
 return;
 
 }
 
 const submitButton=$("submitPropertyButton");
-
-const originalText=
-submitButton.textContent;
+const originalText=submitButton.textContent;
 
 submitButton.disabled=true;
-
-submitButton.textContent=
-"⏳ Waa la dirayaa...";
-
+submitButton.textContent="⏳ Waa la dirayaa...";
 
 const data={
-
 ownerName:owner,
 ownerPhone:phone,
 ownerEmail:$("ownerEmail").value.trim(),
 ownerWhatsapp:$("ownerWhatsapp").value.trim(),
-
 propertyTitle:title,
 propertyType:$("propertyType").value,
 city:city,
 neighborhood:$("neighborhood").value.trim(),
-
 rent:$("rent").value.trim(),
 bedrooms:$("bedrooms").value.trim(),
 bathrooms:$("bathrooms").value.trim(),
 size:$("size").value.trim(),
-
 description:$("description").value.trim()
-
 };
 
-
+/*
+   Send silently in the background.
+   Apps Script receives the same parameter name: payload.
+   No Gmail page/window is opened for the visitor.
+*/
 const body=new URLSearchParams();
+body.append("payload",JSON.stringify(data));
 
-body.append(
-"payload",
-JSON.stringify(data)
-);
+let completed=false;
 
-
-fetch(
-HALEEL_BACKEND_URL,
-{
-method:"POST",
-mode:"no-cors",
-headers:{
-"Content-Type":
-"application/x-www-form-urlencoded;charset=UTF-8"
-},
-body:body.toString()
+function resetButton(){
+submitButton.disabled=false;
+submitButton.textContent=originalText;
 }
-)
-.then(()=>{
 
+function clearPropertyForm(){
 $("ownerName").value="";
 $("ownerPhone").value="";
 $("ownerEmail").value="";
@@ -3454,29 +3436,55 @@ $("bedrooms").value="";
 $("bathrooms").value="";
 $("size").value="";
 $("description").value="";
-$("images").value="";
 
+const images=$("images");
+if(images) images.value="";
+}
+
+function showSuccess(){
+if(completed) return;
+completed=true;
+resetButton();
+clearPropertyForm();
 $("successModal").classList.add("show");
+}
+
+function showFailure(){
+if(completed) return;
+completed=true;
+resetButton();
+alert("Gudbinta way fashilantay. Fadlan hubi internet-ka kadibna isku day mar kale.");
+}
+
+fetch(HALEEL_BACKEND_URL,{
+method:"POST",
+mode:"no-cors",
+body:body,
+keepalive:true
+})
+.then(()=>{
+
+/*
+   no-cors intentionally returns an opaque response.
+   A resolved request means the browser successfully sent
+   the POST request to the Apps Script endpoint.
+*/
+setTimeout(showSuccess,700);
 
 })
 .catch(error=>{
 
-console.error(
-"Haleel submission error:",
-error
-);
-
-alert(
-"Gudbinta way fashilantay. Fadlan hubi internet-ka kadibna isku day mar kale."
-);
-
-})
-.finally(()=>{
-
-submitButton.disabled=false;
-submitButton.textContent=originalText;
+console.error("Haleel submission error:",error);
+showFailure();
 
 });
+
+/* Safety timeout for a genuine network failure/hang. */
+setTimeout(()=>{
+if(!completed){
+showFailure();
+}
+},20000);
 
 }
 
