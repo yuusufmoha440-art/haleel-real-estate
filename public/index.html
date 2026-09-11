@@ -2236,13 +2236,13 @@ Geli Macluumaadka Guriga
 <div class="form-group">
 
 <label>
-Magaca soo gudbiyaha
+Magaca Guriga
 </label>
 
 <input
 class="input"
 id="propertyTitle"
-placeholder="Geli magacaaga oo dhamaystiran...">
+placeholder="Geli magaca guriga...">
 
 </div>
 
@@ -3404,63 +3404,43 @@ ownerName:owner,
 ownerPhone:phone,
 ownerEmail:$("ownerEmail").value.trim(),
 ownerWhatsapp:$("ownerWhatsapp").value.trim(),
+
 propertyTitle:title,
 propertyType:$("propertyType").value,
 city:city,
 neighborhood:$("neighborhood").value.trim(),
+
 rent:$("rent").value.trim(),
 bedrooms:$("bedrooms").value.trim(),
 bathrooms:$("bathrooms").value.trim(),
 size:$("size").value.trim(),
+
 description:$("description").value.trim()
 
 };
 
 
-const form=document.createElement("form");
+const body=new URLSearchParams();
 
-form.method="POST";
-form.action=HALEEL_BACKEND_URL;
-form.target="haleelSubmitFrame";
-form.style.display="none";
-
-
-const payload=
-document.createElement("input");
-
-payload.type="hidden";
-payload.name="payload";
-payload.value=JSON.stringify(data);
-
-form.appendChild(payload);
-
-document.body.appendChild(form);
+body.append(
+"payload",
+JSON.stringify(data)
+);
 
 
-let finished=false;
-let timeoutId=null;
-
-
-function finishSubmission(success){
-
-if(finished) return;
-
-finished=true;
-
-if(timeoutId){
-clearTimeout(timeoutId);
+fetch(
+HALEEL_BACKEND_URL,
+{
+method:"POST",
+mode:"no-cors",
+headers:{
+"Content-Type":
+"application/x-www-form-urlencoded;charset=UTF-8"
+},
+body:body.toString()
 }
-
-if(form.parentNode){
-form.remove();
-}
-
-submitButton.disabled=false;
-submitButton.textContent=
-originalText;
-
-
-if(success){
+)
+.then(()=>{
 
 $("ownerName").value="";
 $("ownerPhone").value="";
@@ -3478,65 +3458,27 @@ $("images").value="";
 
 $("successModal").classList.add("show");
 
-}else{
-
-alert(
-"Gudbinta way fashilantay. Fadlan hubi internet-ka kadibna isku day mar kale."
-);
-
-}
-
-}
-
-
-const iframe=$("haleelSubmitFrame");
-
-
-function iframeLoaded(){
-
-if(finished) return;
-
-setTimeout(function(){
-
-finishSubmission(true);
-
-},500);
-
-}
-
-
-iframe.addEventListener(
-"load",
-iframeLoaded,
-{once:true}
-);
-
-
-timeoutId=
-setTimeout(function(){
-
-finishSubmission(false);
-
-},15000);
-
-
-try{
-
-form.submit();
-
-}catch(error){
+})
+.catch(error=>{
 
 console.error(
 "Haleel submission error:",
 error
 );
 
-finishSubmission(false);
+alert(
+"Gudbinta way fashilantay. Fadlan hubi internet-ka kadibna isku day mar kale."
+);
+
+})
+.finally(()=>{
+
+submitButton.disabled=false;
+submitButton.textContent=originalText;
+
+});
 
 }
-
-}
-
 
 /* ==========================================
    SUCCESS MODAL
