@@ -2188,7 +2188,7 @@ Phone Number
 <input
 class="input"
 id="ownerPhone"
-placeholder="+252...">
+placeholder="Phone Number">
 
 </div>
 
@@ -2217,7 +2217,7 @@ WhatsApp
 <input
 class="input"
 id="ownerWhatsapp"
-placeholder="+252...">
+placeholder="WhatsApp">
 
 </div>
 
@@ -2242,7 +2242,7 @@ Magaca soo gudbiyaha
 <input
 class="input"
 id="propertyTitle"
-placeholder="Geli magacaaga oo dhamaystiran...">
+placeholder="Magaca soo gudbiyaha">
 
 </div>
 
@@ -2299,7 +2299,7 @@ Magaalada
 <input
 class="input"
 id="city"
-placeholder="Geli magaalada...">
+placeholder="Magaalada">
 
 </div>
 
@@ -2313,7 +2313,7 @@ Xaafadda
 <input
 class="input"
 id="neighborhood"
-placeholder="Geli xaafadda...">
+placeholder="Xaafadda">
 
 </div>
 
@@ -2328,7 +2328,7 @@ Qiimaha Kirada
 class="input"
 id="rent"
 type="number"
-placeholder="$USD">
+placeholder="Qiimaha Kirada">
 
 </div>
 
@@ -2370,7 +2370,7 @@ Cabirka Guriga
 <input
 class="input"
 id="size"
-placeholder="m²">
+placeholder="Cabirka Guriga">
 
 </div>
 
@@ -2387,7 +2387,7 @@ Faah-faahinta Guriga
 <textarea
 class="input"
 id="description"
-placeholder="Soo gudbi haddii aad qabtid faah-faahin dheeraad ah..."></textarea>
+placeholder="Faah-faahinta Guriga"></textarea>
 
 </div>
 
@@ -3376,10 +3376,10 @@ function submitProperty(){
 
 const owner=$("ownerName").value.trim();
 const phone=$("ownerPhone").value.trim();
-const title=$("propertyTitle").value.trim();
+const submitterName=$("propertyTitle").value.trim();
 const city=$("city").value.trim();
 
-if(!owner || !phone || !title || !city){
+if(!owner || !phone || !submitterName || !city){
 
 alert("Fadlan geli macluumaadka muhiimka ah.");
 return;
@@ -3392,12 +3392,13 @@ const originalText=submitButton.textContent;
 submitButton.disabled=true;
 submitButton.textContent="⏳ Waa la dirayaa...";
 
+/* FIELD MAPPING: HTML fields -> Apps Script payload */
 const data={
 ownerName:owner,
 ownerPhone:phone,
 ownerEmail:$("ownerEmail").value.trim(),
 ownerWhatsapp:$("ownerWhatsapp").value.trim(),
-propertyTitle:title,
+propertyTitle:submitterName,
 propertyType:$("propertyType").value,
 city:city,
 neighborhood:$("neighborhood").value.trim(),
