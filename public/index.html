@@ -3392,7 +3392,6 @@ const originalText=submitButton.textContent;
 submitButton.disabled=true;
 submitButton.textContent="⏳ Waa la dirayaa...";
 
-/* FIELD MAPPING: HTML fields -> Apps Script payload */
 const data={
 ownerName:owner,
 ownerPhone:phone,
@@ -3409,22 +3408,43 @@ size:$("size").value.trim(),
 description:$("description").value.trim()
 };
 
+/* Create hidden form */
+const form=document.createElement("form");
+
+form.method="POST";
+form.action=HALEEL_BACKEND_URL;
+form.target="haleelSubmitFrame";
+form.style.display="none";
+
+/* Payload field */
+const input=document.createElement("input");
+
+input.type="hidden";
+input.name="payload";
+input.value=JSON.stringify(data);
+
+form.appendChild(input);
+document.body.appendChild(form);
+
+/* Submit to Google Apps Script */
+form.submit();
+
+/* Remove temporary form */
+setTimeout(()=>{
+form.remove();
+},1000);
+
 /*
-   Send silently in the background.
-   Apps Script receives the same parameter name: payload.
-   No Gmail page/window is opened for the visitor.
+   Google Apps Script receives the POST in the background.
+   Because the hidden iframe is used, the visitor does not
+   leave the Haleel website.
 */
-const body=new URLSearchParams();
-body.append("payload",JSON.stringify(data));
+setTimeout(()=>{
 
-let completed=false;
-
-function resetButton(){
 submitButton.disabled=false;
 submitButton.textContent=originalText;
-}
 
-function clearPropertyForm(){
+/* Clear form */
 $("ownerName").value="";
 $("ownerPhone").value="";
 $("ownerEmail").value="";
@@ -3440,52 +3460,11 @@ $("description").value="";
 
 const images=$("images");
 if(images) images.value="";
-}
 
-function showSuccess(){
-if(completed) return;
-completed=true;
-resetButton();
-clearPropertyForm();
+/* Show success */
 $("successModal").classList.add("show");
-}
 
-function showFailure(){
-if(completed) return;
-completed=true;
-resetButton();
-alert("Gudbinta way fashilantay. Fadlan hubi internet-ka kadibna isku day mar kale.");
-}
-
-fetch(HALEEL_BACKEND_URL,{
-method:"POST",
-mode:"no-cors",
-body:body,
-keepalive:true
-})
-.then(()=>{
-
-/*
-   no-cors intentionally returns an opaque response.
-   A resolved request means the browser successfully sent
-   the POST request to the Apps Script endpoint.
-*/
-setTimeout(showSuccess,700);
-
-})
-.catch(error=>{
-
-console.error("Haleel submission error:",error);
-showFailure();
-
-});
-
-/* Safety timeout for a genuine network failure/hang. */
-setTimeout(()=>{
-if(!completed){
-showFailure();
-}
-},20000);
+},2000);
 
 }
 
