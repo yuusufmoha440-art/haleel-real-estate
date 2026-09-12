@@ -9,13 +9,6 @@ content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale
 
 <title>Haleel Real Estate</title>
 
-<!-- Client-side defense-in-depth. Strong HTTP headers are added by Cloudflare Worker. -->
-<meta name="referrer" content="strict-origin-when-cross-origin">
-<meta http-equiv="X-Content-Type-Options" content="nosniff">
-<meta http-equiv="X-Frame-Options" content="DENY">
-<meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), payment=(), usb=(), bluetooth=()">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'none'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; img-src 'self' data: https:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; connect-src 'self'; font-src 'self' data:; upgrade-insecure-requests">
-
 <style>
 
 :root{
@@ -3700,13 +3693,8 @@ return document.getElementById(id);
    GOOGLE APPS SCRIPT BACKEND
 ========================================== */
 
-/*
-  SECURITY:
-  The browser talks only to the same-origin Cloudflare Worker.
-  The Google Apps Script URL is kept server-side in the Worker secret
-  APPS_SCRIPT_URL and is never exposed in this HTML.
-*/
-const HALEEL_BACKEND_URL = "/api/submit";
+const HALEEL_BACKEND_URL =
+"https://script.google.com/macros/s/AKfycby5_MaPFQpcRDObAVYomJ0Pm89gOqASiS59J7I31sSEO-0dsGmGvv6x29CfTx6ft35a/exec";
 
 
 /* ==========================================
@@ -4247,28 +4235,12 @@ window.location.href=
    PROPERTY SUBMISSION
 ========================================== */
 
-async function submitProperty(){
-
-/*
-  SECURITY NOTE:
-  Client-side validation improves UX only. The Cloudflare Worker
-  validates the same fields again before forwarding them to Apps Script.
-*/
+function submitProperty(){
 
 const owner=$("ownerName").value.trim();
 const phone=$("ownerPhone").value.trim();
 const submitterName=$("propertyTitle").value.trim();
 const city=$("city").value.trim();
-
-const email=$("ownerEmail").value.trim();
-const whatsapp=$("ownerWhatsapp").value.trim();
-const propertyType=$("propertyType").value.trim();
-const neighborhood=$("neighborhood").value.trim();
-const rent=$("rent").value.trim();
-const bedrooms=$("bedrooms").value.trim();
-const bathrooms=$("bathrooms").value.trim();
-const size=$("size").value.trim();
-const description=$("description").value.trim();
 
 if(!owner || !phone || !submitterName || !city){
 
@@ -4276,73 +4248,6 @@ alert("Fadlan geli macluumaadka muhiimka ah.");
 return;
 
 }
-
-/* Basic browser-side limits prevent accidental oversized submissions. */
-const max={
-owner:120,
-phone:40,
-email:160,
-whatsapp:40,
-title:160,
-city:80,
-neighborhood:120,
-rent:40,
-bedrooms:10,
-bathrooms:10,
-size:40,
-description:2500
-};
-
-if(
-owner.length>max.owner ||
-phone.length>max.phone ||
-email.length>max.email ||
-whatsapp.length>max.whatsapp ||
-submitterName.length>max.title ||
-city.length>max.city ||
-neighborhood.length>max.neighborhood ||
-rent.length>max.rent ||
-bedrooms.length>max.bedrooms ||
-bathrooms.length>max.bathrooms ||
-size.length>max.size ||
-description.length>max.description
-){
-
-alert("Qaar ka mid ah xogta aad gelisay way ka dheer tahay xadka la oggol yahay.");
-return;
-
-}
-
-/* Reject obvious control characters before the request is created. */
-const allText=[
-owner,phone,email,whatsapp,submitterName,propertyType,
-city,neighborhood,rent,bedrooms,bathrooms,size,description
-].join("\n");
-
-if(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/.test(allText)){
-
-alert("Xog aan sax ahayn ayaa la helay.");
-return;
-
-}
-
-if(email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
-
-alert("Email-ka ma saxna.");
-return;
-
-}
-
-if(phone && !/^[0-9+\s()\-]{5,40}$/.test(phone)){
-
-alert("Lambarka telefoonka ma saxna.");
-return;
-
-}
-
-/* Prevent accidental double-click / duplicate submissions. */
-if(window.haleelSubmitting) return;
-window.haleelSubmitting=true;
 
 const submitButton=$("submitPropertyButton");
 const originalText=submitButton.textContent;
@@ -4353,57 +4258,51 @@ submitButton.textContent="⏳ Waa la dirayaa...";
 const data={
 ownerName:owner,
 ownerPhone:phone,
-ownerEmail:email,
-ownerWhatsapp:whatsapp,
+ownerEmail:$("ownerEmail").value.trim(),
+ownerWhatsapp:$("ownerWhatsapp").value.trim(),
 propertyTitle:submitterName,
-propertyType:propertyType,
+propertyType:$("propertyType").value,
 city:city,
-neighborhood:neighborhood,
-rent:rent,
-bedrooms:bedrooms,
-bathrooms:bathrooms,
-size:size,
-description:description
+neighborhood:$("neighborhood").value.trim(),
+rent:$("rent").value.trim(),
+bedrooms:$("bedrooms").value.trim(),
+bathrooms:$("bathrooms").value.trim(),
+size:$("size").value.trim(),
+description:$("description").value.trim()
 };
 
-try{
 
-/*
-  Same-origin request to Cloudflare Worker.
-  credentials are deliberately omitted because this public
-  submission endpoint does not use browser cookies.
-*/
-const response=await fetch(
-HALEEL_BACKEND_URL,
-{
-method:"POST",
-headers:{
-"Content-Type":"application/json",
-"Accept":"application/json"
-},
-body:JSON.stringify(data),
-credentials:"omit",
-cache:"no-store",
-redirect:"error"
-}
-);
+const form=document.createElement("form");
 
-let result=null;
+form.method="POST";
+form.action=HALEEL_BACKEND_URL;
+form.target="haleelSubmitFrame";
+form.style.display="none";
 
-try{
-result=await response.json();
-}catch(_){}
 
-if(!response.ok || !result || result.ok!==true){
+const input=document.createElement("input");
 
-throw new Error(
-(result && result.message)
-||"Gudbintu ma aysan dhammaan."
-);
+input.type="hidden";
+input.name="payload";
+input.value=JSON.stringify(data);
 
-}
+form.appendChild(input);
+document.body.appendChild(form);
 
-/* Clear only after the server confirms acceptance. */
+form.submit();
+
+
+setTimeout(()=>{
+form.remove();
+},1000);
+
+
+setTimeout(()=>{
+
+submitButton.disabled=false;
+submitButton.textContent=originalText;
+
+
 $("ownerName").value="";
 $("ownerPhone").value="";
 $("ownerEmail").value="";
@@ -4422,25 +4321,11 @@ const images=$("images");
 if(images)
 images.value="";
 
-$("successModal").classList.add("show");
 
-}catch(error){
+$("successModal")
+.classList.add("show");
 
-console.error("Haleel submission error:",error);
-
-alert(
-error && error.message
-? error.message
-: "Gudbinta way fashilantay. Fadlan mar kale isku day."
-);
-
-}finally{
-
-window.haleelSubmitting=false;
-submitButton.disabled=false;
-submitButton.textContent=originalText;
-
-}
+},2000);
 
 }
 
@@ -4780,64 +4665,6 @@ e.preventDefault();
 
 lastTouchEnd=now;
 
-});
-
-
-/* ==========================================
-   CLIENT-SIDE SECURITY HARDENING
-========================================== */
-
-/*
-  Do not treat the browser as a security boundary.
-  These checks are defense-in-depth only; the Worker is authoritative.
-*/
-
-/* Block drag/drop navigation of arbitrary files onto the page. */
-document.addEventListener("dragover",function(e){
-e.preventDefault();
-},{passive:false});
-
-document.addEventListener("drop",function(e){
-e.preventDefault();
-},{passive:false});
-
-/* Prevent accidental form submission by Enter where a button is not intended. */
-document.addEventListener("submit",function(e){
-e.preventDefault();
-},{passive:false});
-
-/*
-  Never store authentication tokens, passwords, API keys, or session secrets
-  in localStorage. The existing localStorage usage is limited to UI preferences.
-*/
-try{
-Object.defineProperty(window,"__HALEEL_SECURITY_MODE",{
-value:"defense-in-depth",
-writable:false,
-configurable:false
-});
-}catch(_){}
-
-/*
-  External links are kept isolated from the opener when opened in a new tab.
-*/
-document.addEventListener("click",function(e){
-
-const link=e.target.closest("a[target='_blank']");
-
-if(link){
-link.setAttribute("rel","noopener noreferrer");
-}
-
-});
-
-/*
-  Disable common context-menu/selection shortcuts only as light UI hardening.
-  This does NOT provide real cryptographic security and is intentionally not
-  used as the main defense.
-*/
-document.addEventListener("contextmenu",function(e){
-e.preventDefault();
 });
 
 </script>
