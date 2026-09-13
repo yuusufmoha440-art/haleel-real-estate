@@ -5,3 +5,8 @@ compatibility_date = "2026-09-08"
 [assets]
 directory = "./public"
 binding = "ASSETS"
+
+[[d1_databases]]
+binding = "ACCOUNTS_DB"
+database_name = "haleel-accounts-db"
+database_id = "cd9f6709-6432-41a1-ad1d-5f5aeb5727ba"
