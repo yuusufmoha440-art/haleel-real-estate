@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -99,15 +100,10 @@ body.dark .property-card,
 body.dark .form-container,
 body.dark .setting-card,
 body.dark .care-card,
-body.dark .care-help-card,
-body.dark .care-mini-card{
+body.dark .care-help-card{
 background:#131c26;
 border-color:rgba(255,255,255,.08);
 color:#e8eef5;
-}
-
-body.dark .sidebar{
-box-shadow:10px 0 40px rgba(0,0,0,.2);
 }
 
 body.dark .topbar strong,
@@ -157,8 +153,6 @@ background:#131c26;
 body.dark .care-menu a{
 color:#d9e3ec;
 }
-
-/* APP */
 
 .app{
 min-height:100vh;
@@ -303,8 +297,6 @@ color:#006CC2;
 border:1px solid rgba(0,108,194,.20);
 }
 
-/* HERO */
-
 .hero{
 min-height:470px;
 border-radius:25px;
@@ -345,8 +337,6 @@ gap:14px;
 flex-wrap:wrap;
 }
 
-/* SECTIONS */
-
 .section{
 margin-top:42px;
 }
@@ -380,7 +370,6 @@ transition:.3s;
 
 .card:hover{
 transform:translateY(-7px);
-box-shadow:0 24px 65px rgba(0,108,194,.15);
 }
 
 .service-icon{
@@ -404,8 +393,6 @@ color:#081b2e;
 color:#718096;
 line-height:1.6;
 }
-
-/* STATUS */
 
 .status-grid{
 display:grid;
@@ -445,10 +432,6 @@ background:linear-gradient(135deg,#006CC2,#004f91);
 .new{
 background:linear-gradient(135deg,#F5B942,#d89b20);
 }
-
-/* ==========================================
-   MODERN PROPERTY SEARCH
-========================================== */
 
 .property-header{
 display:flex;
@@ -572,8 +555,6 @@ display:flex;
 gap:9px;
 }
 
-/* PROPERTY GRID */
-
 .property-grid{
 display:grid;
 grid-template-columns:repeat(3,1fr);
@@ -592,7 +573,6 @@ position:relative;
 
 .property-card:hover{
 transform:translateY(-7px);
-box-shadow:0 24px 65px rgba(0,108,194,.18);
 }
 
 .property-image-wrap{
@@ -623,7 +603,6 @@ font-size:12px;
 font-weight:800;
 background:#e5f8ef;
 color:#159957;
-backdrop-filter:blur(8px);
 }
 
 .property-favorite{
@@ -679,11 +658,6 @@ color:#53677a;
 font-weight:700;
 }
 
-body.dark .meta-item{
-background:#182531;
-color:#aebdca;
-}
-
 .property-bottom{
 display:flex;
 justify-content:space-between;
@@ -708,8 +682,6 @@ padding:10px 14px;
 font-size:13px;
 }
 
-/* EMPTY */
-
 .no-results{
 display:none;
 text-align:center;
@@ -728,20 +700,12 @@ font-size:50px;
 margin-bottom:15px;
 }
 
-.no-results h3{
-margin-bottom:8px;
-}
-
 .no-results p{
 color:#718096;
 margin-bottom:18px;
 }
 
-/* CARE */
-
 .care-hero{
-position:relative;
-overflow:hidden;
 min-height:340px;
 border-radius:28px;
 padding:48px;
@@ -867,25 +831,6 @@ justify-content:space-between;
 gap:20px;
 }
 
-.care-contact-info h3{
-font-size:22px;
-color:#081b2e;
-margin-bottom:7px;
-}
-
-.care-contact-info p{
-color:#718096;
-line-height:1.5;
-}
-
-.care-contact-actions{
-display:flex;
-gap:10px;
-flex-wrap:wrap;
-}
-
-/* FORM */
-
 .form-container{
 max-width:1000px;
 background:rgba(255,255,255,.93);
@@ -941,8 +886,6 @@ text-align:center;
 border-radius:15px;
 background:#eff8ff;
 }
-
-/* SETTINGS */
 
 .settings-grid{
 display:grid;
@@ -1002,8 +945,6 @@ display:block;
 margin-bottom:4px;
 }
 
-/* FLOATING CARE */
-
 .floating-care{
 position:fixed;
 right:25px;
@@ -1052,8 +993,6 @@ background:#eaf5ff;
 color:#006CC2;
 }
 
-/* MODAL */
-
 .modal{
 position:fixed;
 inset:0;
@@ -1101,11 +1040,6 @@ border-radius:17px;
 margin-bottom:18px;
 }
 
-.details-icon{
-font-size:50px;
-margin-bottom:10px;
-}
-
 .details-text{
 color:#718096;
 line-height:1.7;
@@ -1128,15 +1062,12 @@ color:#006CC2;
 display:flex;
 gap:10px;
 justify-content:center;
+flex-wrap:wrap;
 }
-
-/* MOBILE NAV */
 
 .mobile-nav{
 display:none;
 }
-
-/* RESPONSIVE */
 
 @media(max-width:1100px){
 
@@ -1289,12 +1220,6 @@ width:100%;
 grid-template-columns:1fr;
 }
 
-.care-contact-actions{
-width:100%;
-display:grid;
-grid-template-columns:1fr;
-}
-
 .form-grid{
 grid-template-columns:1fr;
 }
@@ -1355,8 +1280,6 @@ transform:translateY(0);
 
 <section class="app">
 
-<!-- SIDEBAR -->
-
 <aside class="sidebar">
 
 <div class="brand">
@@ -1366,25 +1289,11 @@ transform:translateY(0);
 
 <div class="nav">
 
-<button class="active" onclick="openPage('home',this)">
-🏠 Home
-</button>
-
-<button onclick="openPage('property',this)">
-🏘 Property
-</button>
-
-<button onclick="openPage('care',this)">
-💬 Customer Care
-</button>
-
-<button onclick="openPage('submit',this)">
-📝 Submit Property
-</button>
-
-<button onclick="openPage('settings',this)">
-⚙️ Settings
-</button>
+<button class="active" onclick="openPage('home',this)">🏠 Home</button>
+<button onclick="openPage('property',this)">🏘 Property</button>
+<button onclick="openPage('care',this)">💬 Customer Care</button>
+<button onclick="openPage('submit',this)">📝 Submit Property</button>
+<button onclick="openPage('settings',this)">⚙️ Settings</button>
 
 </div>
 
@@ -1395,16 +1304,13 @@ transform:translateY(0);
 
 </aside>
 
-
 <main class="main">
 
 <div class="topbar">
 
 <strong id="pageTitle">Home</strong>
 
-<button
-class="btn btn-outline"
-onclick="openPage('care')">
+<button class="btn btn-outline" onclick="openPage('care')">
 Customer Care
 </button>
 
@@ -1428,14 +1334,12 @@ sidoo kalena waad iska kirayn kartaa, adiga oo jooga gurigaaga.
 
 <div class="hero-buttons">
 
-<button
-class="btn btn-primary"
+<button class="btn btn-primary"
 onclick="openPage('property')">
 Raadi Guri
 </button>
 
-<button
-class="btn"
+<button class="btn"
 style="background:white;color:#006CC2"
 onclick="openPage('submit')">
 Diiwaangeli Guri
@@ -1458,33 +1362,25 @@ Diiwaangeli Guri
 <div class="card">
 <div class="service-icon">🏠</div>
 <h3>Adeega Ejaar</h3>
-<p>
-Hel guri kiro ah ama si fudud u kirayso gurigaaga.
-</p>
+<p>Hel guri kiro ah ama si fudud u kirayso gurigaaga.</p>
 </div>
 
 <div class="card">
 <div class="service-icon">📢</div>
 <h3>Adeega Soohel</h3>
-<p>
-Haddii aad soo gudbiso guri kiro ah waxaad heli kartaa khidmad.
-</p>
+<p>Haddii aad soo gudbiso guri kiro ah waxaad heli kartaa khidmad.</p>
 </div>
 
 <div class="card">
 <div class="service-icon">🤝</div>
 <h3>Adeega Dilaal</h3>
-<p>
-Waxaad iibin kartaa gurigaaga iyo bugcadaada.
-</p>
+<p>Waxaad iibin kartaa gurigaaga iyo bugcadaada.</p>
 </div>
 
 <div class="card">
 <div class="service-icon">💻</div>
 <h3>Qancinta Macaamiisha</h3>
-<p>
-Waxaan diyaar u nahay xalinta cabashadaada.
-</p>
+<p>Waxaan diyaar u nahay xalinta cabashadaada.</p>
 </div>
 
 </div>
@@ -1534,8 +1430,7 @@ onclick="installHaleel()">
 
 <h2>Guryaha Available</h2>
 
-<button
-class="btn btn-outline"
+<button class="btn btn-outline"
 onclick="openPage('property')">
 View All
 </button>
@@ -1580,9 +1475,7 @@ Ka raadi guryaha Haleel Real Estate adigoo isticmaalaya filters-ka hoose.
 🔎 Search & Filter
 </div>
 
-<span>
-Guryaha Available
-</span>
+<span>Guryaha Available</span>
 
 </div>
 
@@ -1606,7 +1499,6 @@ autocomplete="off">
 <select id="typeFilter" class="filter-select">
 
 <option value="">Nooca Guriga — Dhammaan</option>
-
 <option value="Fiilo">Fiilo</option>
 <option value="Apartment">Apartment</option>
 <option value="Dabaq-suge">Dabaq-suge</option>
@@ -1641,9 +1533,7 @@ autocomplete="off">
 
 <div>
 
-<label class="filter-label">
-Qiimaha ugu yar
-</label>
+<label class="filter-label">Qiimaha ugu yar</label>
 
 <input
 id="minPrice"
@@ -1657,9 +1547,7 @@ placeholder="$ Min">
 
 <div>
 
-<label class="filter-label">
-Qiimaha ugu badan
-</label>
+<label class="filter-label">Qiimaha ugu badan</label>
 
 <input
 id="maxPrice"
@@ -1673,17 +1561,11 @@ placeholder="$ Max">
 
 <div>
 
-<label class="filter-label">
-Marxaladda
-</label>
+<label class="filter-label">Marxaladda</label>
 
-<select
-id="statusFilter"
-class="filter-select">
-
+<select id="statusFilter" class="filter-select">
 <option value="Available">Available</option>
 <option value="">Dhammaan</option>
-
 </select>
 
 </div>
@@ -1691,19 +1573,13 @@ class="filter-select">
 
 <div>
 
-<label class="filter-label">
-Kala hormari
-</label>
+<label class="filter-label">Kala hormari</label>
 
-<select
-id="sortFilter"
-class="filter-select">
-
+<select id="sortFilter" class="filter-select">
 <option value="newest">Newest</option>
 <option value="priceLow">Qiimaha: Low → High</option>
 <option value="priceHigh">Qiimaha: High → Low</option>
 <option value="bedrooms">Qolal badan</option>
-
 </select>
 
 </div>
@@ -1711,9 +1587,7 @@ class="filter-select">
 
 <div>
 
-<label class="filter-label">
-&nbsp;
-</label>
+<label class="filter-label">&nbsp;</label>
 
 <button
 class="btn btn-primary"
@@ -1750,15 +1624,10 @@ onclick="resetFilters()">
 </div>
 
 
-<div
-class="property-grid"
-id="propertyGrid">
-</div>
+<div class="property-grid" id="propertyGrid"></div>
 
 
-<div
-class="no-results"
-id="noResults">
+<div class="no-results" id="noResults">
 
 <div class="no-results-icon">🏠</div>
 
@@ -1800,9 +1669,7 @@ kirada, iibka, gudbinta guryaha, cabashooyinka iyo su'aalahaaga.
 
 <div class="care-hero-buttons">
 
-<button
-class="btn btn-primary"
-onclick="openChat()">
+<button class="btn btn-primary" onclick="openChat()">
 💬 La Hadal Haleel
 </button>
 
@@ -1838,9 +1705,7 @@ style="background:#fff;color:#006CC2;text-decoration:none">
 Haddii aad qabto su'aal ama cabasho, fariin noo soo dir.
 </p>
 
-<button
-class="btn btn-primary"
-onclick="openChat()">
+<button class="btn btn-primary" onclick="openChat()">
 Start Chat
 </button>
 
@@ -1853,9 +1718,7 @@ Start Chat
 
 <h3>WhatsApp</h3>
 
-<p>
-Si toos ah WhatsApp ugula xiriir Haleel.
-</p>
+<p>Si toos ah WhatsApp ugula xiriir Haleel.</p>
 
 <a
 class="btn btn-primary"
@@ -1873,9 +1736,7 @@ WhatsApp Us
 
 <h3>Voice Call</h3>
 
-<p>
-Hadda si toos ah ula hadal Haleel.
-</p>
+<p>Hadda si toos ah ula hadal Haleel.</p>
 
 <a
 class="btn btn-primary"
@@ -1953,7 +1814,7 @@ onclick="openChatWithMessage('Waxaan qabaa cabasho ama dhibaato.')">
 
 <div class="care-contact-strip">
 
-<div class="care-contact-info">
+<div>
 
 <h3>📞 Waxaan joognaa diyaar</h3>
 
@@ -1965,21 +1826,23 @@ Waxaad nagala soo xiriiri kartaa telefoon, WhatsApp ama Email.
 
 </div>
 
-<div class="care-contact-actions">
+<div>
 
 <a class="btn btn-primary"
 href="tel:+252907469995">
 📞 Call
 </a>
 
-<a class="btn"
+<a
+class="btn"
 href="https://wa.me/252907469995"
 target="_blank"
 style="background:#20B26B;color:#fff;text-decoration:none">
 🟢 WhatsApp
 </a>
 
-<a class="btn btn-outline"
+<a
+class="btn btn-outline"
 href="mailto:haleelrealestate@gmail.com">
 📧 Email
 </a>
@@ -1991,7 +1854,7 @@ href="mailto:haleelrealestate@gmail.com">
 </div>
 
 
-<!-- SUBMIT -->
+<!-- SUBMIT PROPERTY -->
 
 <div class="page" id="submit">
 
@@ -2042,10 +1905,14 @@ Diiwaangeli guriga aad rabto in la kireeyo.
 
 <div class="form-group">
 <label>Magaca soo gudbiyaha</label>
-<input class="input" id="propertyTitle" placeholder="Magaca soo gudbiyaha">
+<input
+class="input"
+id="propertyTitle"
+placeholder="Magaca soo gudbiyaha">
 </div>
 
 <div class="form-group">
+
 <label>Nooca Guriga</label>
 
 <select class="input" id="propertyType">
@@ -2062,33 +1929,70 @@ Diiwaangeli guriga aad rabto in la kireeyo.
 </div>
 
 <div class="form-group">
+
 <label>Magaalada</label>
-<input class="input" id="city" placeholder="Magaalada">
+
+<input
+class="input"
+id="city"
+placeholder="Magaalada">
+
 </div>
 
 <div class="form-group">
+
 <label>Xaafadda</label>
-<input class="input" id="neighborhood" placeholder="Xaafadda">
+
+<input
+class="input"
+id="neighborhood"
+placeholder="Xaafadda">
+
 </div>
 
 <div class="form-group">
+
 <label>Qiimaha Kirada</label>
-<input class="input" id="rent" type="number" placeholder="Qiimaha Kirada">
+
+<input
+class="input"
+id="rent"
+type="number"
+placeholder="Qiimaha Kirada">
+
 </div>
 
 <div class="form-group">
+
 <label>Tirada Qolalka</label>
-<input class="input" id="bedrooms" type="number">
+
+<input
+class="input"
+id="bedrooms"
+type="number">
+
 </div>
 
 <div class="form-group">
+
 <label>Tirada Suuliyada</label>
-<input class="input" id="bathrooms" type="number">
+
+<input
+class="input"
+id="bathrooms"
+type="number">
+
 </div>
 
 <div class="form-group">
+
 <label>Cabirka Guriga</label>
-<input class="input" id="size" placeholder="Cabirka Guriga">
+
+<input
+class="input"
+id="size"
+placeholder="Cabirka Guriga">
+
 </div>
 
 </div>
@@ -2236,9 +2140,7 @@ Loading...
 
 <h3>Customer Care</h3>
 
-<p>
-Need help? Contact Haleel Customer Care.
-</p>
+<p>Need help? Contact Haleel Customer Care.</p>
 
 <br>
 
@@ -2379,7 +2281,7 @@ class="details-image"
 src=""
 alt="Property">
 
-<div class="details-icon">🏠</div>
+<div style="font-size:50px">🏠</div>
 
 <h2 id="detailsTitle">
 Faahfaahinta Guriga
@@ -2390,8 +2292,7 @@ id="detailsDescription"
 class="details-text">
 </p>
 
-<div
-class="details-contact">
+<div class="details-contact">
 
 <div>📞 Nala Xiriir</div>
 
@@ -2489,7 +2390,8 @@ id="successModal">
 <h2>Mahadsanid!</h2>
 
 <p style="color:#718096;margin:15px 0">
-Waad ku mahadsantahay macmiil, hadda waad gudbisay macluumaadkii.
+Macluumaadka gurigaaga waa la gudbiyey.
+Kooxda Haleel ayaa heli doonta xogta aad soo dirtay.
 </p>
 
 <button
@@ -2502,10 +2404,13 @@ Dib u noqo!
 </div>
 
 
+<!-- HIDDEN SUBMISSION TARGET -->
+
 <iframe
 name="haleelSubmitFrame"
 id="haleelSubmitFrame"
-style="display:none;width:0;height:0;border:0">
+style="display:none;width:0;height:0;border:0"
+title="Haleel submission">
 </iframe>
 
 
@@ -2513,7 +2418,6 @@ style="display:none;width:0;height:0;border:0">
 
 /* =========================================================
    HALEEL REAL ESTATE
-   COMPLETE PROPERTY SYSTEM
 ========================================================= */
 
 function $(id){
@@ -2522,7 +2426,7 @@ return document.getElementById(id);
 
 
 /* =========================================================
-   GOOGLE APPS SCRIPT
+   GOOGLE APPS SCRIPT BACKEND
 ========================================================= */
 
 const HALEEL_BACKEND_URL =
@@ -2831,1185 +2735,1219 @@ bedrooms:6,
 bathrooms:5,
 size:"420 m²",
 status:"Available",
-image:"https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=900&q=80", 
-description:"Villa executive ah oo aad u ballaaran." 
-} 
- 
-]; 
- 
- 
-/* ========================================================= 
-   PROPERTY RENDER 
-========================================================= */ 
- 
-function renderProperties(list,targetId="propertyGrid"){ 
- 
-const grid=$(targetId); 
- 
-if(!grid) return; 
- 
-grid.innerHTML=""; 
- 
-list.forEach(property=>{ 
- 
-const card=document.createElement("div"); 
- 
-card.className="property-card"; 
- 
-card.innerHTML=` 
- 
-<div class="property-image-wrap"> 
- 
-<img 
-class="property-image" 
-src="${property.image}" 
-alt="${escapeHTML(property.title)}" 
-loading="lazy" 
-decoding="async" 
-onerror="this.style.opacity='.35'"> 
- 
-<span class="property-status"> 
-${escapeHTML(property.status)} 
-</span> 
- 
-<button 
-class="property-favorite" 
-type="button" 
-onclick="toggleFavorite(this)"> 
-♡ 
-</button> 
- 
-</div> 
- 
-<div class="property-content"> 
- 
-<div class="property-type"> 
-${escapeHTML(property.type)} 
-</div> 
- 
-<h3> 
-${escapeHTML(property.title)} 
-</h3> 
- 
-<div class="location"> 
-📍 ${escapeHTML(property.city)} — ${escapeHTML(property.neighborhood)} 
-</div> 
- 
-<div class="property-meta"> 
- 
-<span class="meta-item"> 
-🛏 ${property.bedrooms} Qol 
-</span> 
- 
-<span class="meta-item"> 
-🚿 ${property.bathrooms} Suuli 
-</span> 
- 
-<span class="meta-item"> 
-📐 ${escapeHTML(property.size)} 
-</span> 
- 
-</div> 
- 
-<div class="property-bottom"> 
- 
-<div class="price"> 
-$${property.rent} 
-<small>/ Month</small> 
-</div> 
- 
-<button 
-class="btn btn-primary view-btn" 
-onclick="openPropertyDetails(${property.id})"> 
-View Details 
-</button> 
- 
-</div> 
- 
-</div> 
-`; 
- 
-grid.appendChild(card); 
- 
-}); 
- 
-} 
- 
- 
-/* ========================================================= 
-   HOME PROPERTIES 
-========================================================= */ 
- 
-function renderHomeProperties(){ 
- 
-renderProperties( 
-properties.slice(0,3), 
-"homePropertyGrid" 
-); 
- 
-} 
- 
- 
-/* ========================================================= 
-   FILTER SYSTEM 
-========================================================= */ 
- 
-function filterProperties(){ 
- 
-const search= 
-$("propertySearch").value 
-.trim() 
-.toLowerCase(); 
- 
-const type= 
-$("typeFilter").value; 
- 
-const city= 
-$("cityFilter").value; 
- 
-const bedrooms= 
-$("bedroomFilter").value; 
- 
-const minPrice= 
-parseFloat($("minPrice").value); 
- 
-const maxPrice= 
-parseFloat($("maxPrice").value); 
- 
-const status= 
-$("statusFilter").value; 
- 
-const sort= 
-$("sortFilter").value; 
- 
- 
-let filtered=properties.filter(property=>{ 
- 
-const searchable=` 
- 
-${property.title} 
-${property.type} 
-${property.city} 
-${property.neighborhood} 
-${property.description} 
- 
-`.toLowerCase(); 
- 
- 
-const matchesSearch= 
-!search || 
-searchable.includes(search); 
- 
-const matchesType= 
-!type || 
-property.type===type; 
- 
-const matchesCity= 
-!city || 
-property.city===city; 
- 
-const matchesBedrooms= 
-!bedrooms || 
-property.bedrooms>=Number(bedrooms); 
- 
-const matchesMin= 
-isNaN(minPrice) || 
-property.rent>=minPrice; 
- 
-const matchesMax= 
-isNaN(maxPrice) || 
-property.rent<=maxPrice; 
- 
-const matchesStatus= 
-!status || 
-property.status===status; 
- 
- 
-return( 
-matchesSearch && 
-matchesType && 
-matchesCity && 
-matchesBedrooms && 
-matchesMin && 
-matchesMax && 
-matchesStatus 
-); 
- 
-}); 
- 
- 
-/* SORT */ 
- 
-if(sort==="priceLow"){ 
- 
-filtered.sort( 
-(a,b)=>a.rent-b.rent 
-); 
- 
-} 
- 
-else if(sort==="priceHigh"){ 
- 
-filtered.sort( 
-(a,b)=>b.rent-a.rent 
-); 
- 
-} 
- 
-else if(sort==="bedrooms"){ 
- 
-filtered.sort( 
-(a,b)=>b.bedrooms-a.bedrooms 
-); 
- 
-} 
- 
-else{ 
- 
-filtered.sort( 
-(a,b)=>b.id-a.id 
-); 
- 
-} 
- 
- 
-/* RENDER */ 
- 
-renderProperties(filtered); 
- 
-$("resultCount").textContent= 
-`${filtered.length} Guri`; 
- 
-$("activeFilterText").textContent= 
-filtered.length===0 
-? "Wax natiijo ah lama helin" 
-: `${filtered.length} guri ayaa ku habboon raadintaada`; 
- 
- 
-if(filtered.length===0){ 
- 
-$("noResults").classList.add("show"); 
- 
-}else{ 
- 
-$("noResults").classList.remove("show"); 
- 
-} 
- 
-} 
- 
- 
-/* ========================================================= 
-   CITY FILTER 
-========================================================= */ 
- 
-function loadCityFilter(){ 
- 
-const select=$("cityFilter"); 
- 
-if(!select) return; 
- 
-const cities= 
-[...new Set( 
-properties.map( 
-property=>property.city 
-) 
-)].sort(); 
- 
-cities.forEach(city=>{ 
- 
-const option= 
-document.createElement("option"); 
- 
-option.value=city; 
-option.textContent=city; 
- 
-select.appendChild(option); 
- 
-}); 
- 
-} 
- 
- 
-/* ========================================================= 
-   RESET 
-========================================================= */ 
- 
-function resetFilters(){ 
- 
-$("propertySearch").value=""; 
-$("typeFilter").value=""; 
-$("cityFilter").value=""; 
-$("bedroomFilter").value=""; 
-$("minPrice").value=""; 
-$("maxPrice").value=""; 
-$("statusFilter").value="Available"; 
-$("sortFilter").value="newest"; 
- 
-filterProperties(); 
- 
-} 
- 
- 
-/* ========================================================= 
-   LIVE SEARCH 
-========================================================= */ 
- 
-function enableLiveSearch(){ 
- 
-[ 
-"propertySearch", 
-"typeFilter", 
-"cityFilter", 
-"bedroomFilter", 
-"minPrice", 
-"maxPrice", 
-"statusFilter", 
-"sortFilter" 
- 
-].forEach(id=>{ 
- 
-const element=$(id); 
- 
-if(!element) return; 
- 
-element.addEventListener( 
-"input", 
-filterProperties 
-); 
- 
-element.addEventListener( 
-"change", 
-filterProperties 
-); 
- 
-}); 
- 
-} 
- 
- 
-/* ========================================================= 
-   PROPERTY DETAILS 
-========================================================= */ 
- 
-function openPropertyDetails(id){ 
- 
-const property= 
-properties.find( 
-item=>item.id===id 
-); 
- 
-if(!property) return; 
- 
-$("detailsImage").src= 
-property.image; 
- 
-$("detailsTitle").textContent= 
-property.title; 
- 
-$("detailsDescription").innerHTML=` 
- 
-<strong>${escapeHTML(property.type)}</strong><br> 
-📍 ${escapeHTML(property.city)} — ${escapeHTML(property.neighborhood)}<br><br> 
-🛏 ${property.bedrooms} Qol &nbsp; 
-🚿 ${property.bathrooms} Suuli<br> 
-📐 ${escapeHTML(property.size)}<br> 
-💰 <strong>$${property.rent} / Month</strong><br><br> 
-${escapeHTML(property.description)} 
- 
-`; 
- 
-$("detailsModal") 
-.classList.add("show"); 
- 
-} 
- 
- 
-function closeDetails(){ 
- 
-$("detailsModal") 
-.classList.remove("show"); 
- 
-} 
- 
- 
-/* ========================================================= 
-   FAVORITE 
-========================================================= */ 
- 
-function toggleFavorite(button){ 
- 
-if(button.textContent==="♡"){ 
- 
-button.textContent="♥"; 
-button.style.color="#E5484D"; 
- 
-}else{ 
- 
-button.textContent="♡"; 
-button.style.color=""; 
- 
-} 
- 
-} 
- 
- 
-/* ========================================================= 
-   SECURITY — HTML ESCAPE 
-========================================================= */ 
- 
-function escapeHTML(value){ 
- 
-return String(value) 
-.replace(/&/g,"&amp;") 
-.replace(/</g,"&lt;") 
-.replace(/>/g,"&gt;") 
-.replace(/"/g,"&quot;") 
-.replace(/'/g,"&#039;"); 
- 
-} 
- 
- 
-/* ========================================================= 
-   NAVIGATION 
-========================================================= */ 
- 
-function openPage(page,button){ 
- 
-document 
-.querySelectorAll(".page") 
-.forEach(p=> 
-p.classList.remove("active") 
-); 
- 
-const selected=$(page); 
- 
-if(selected){ 
-selected.classList.add("active"); 
-} 
- 
-const titles={ 
- 
-home:"Home", 
-property:"Properties", 
-care:"Customer Care", 
-submit:"Submit Property", 
-settings:"Settings" 
- 
-}; 
- 
-$("pageTitle").textContent= 
-titles[page]||"Haleel Real Estate"; 
- 
- 
-document 
-.querySelectorAll(".nav button,.mobile-nav button") 
-.forEach(b=> 
-b.classList.remove("active") 
-); 
- 
- 
-const map={ 
-home:0, 
-property:1, 
-care:2, 
-submit:3, 
-settings:4 
-}; 
- 
-if(button){ 
- 
-button.classList.add("active"); 
- 
-}else{ 
- 
-const index=map[page]; 
- 
-const desktop= 
-document.querySelectorAll( 
-".nav button" 
-)[index]; 
- 
-if(desktop) 
-desktop.classList.add("active"); 
- 
- 
-let mobileIndex=index; 
- 
-if(page==="submit" || 
-page==="settings"){ 
-mobileIndex=3; 
-} 
- 
-const mobile= 
-document.querySelectorAll( 
-".mobile-nav button" 
-)[mobileIndex]; 
- 
-if(mobile) 
-mobile.classList.add("active"); 
- 
-} 
- 
-window.scrollTo({ 
-top:0, 
-behavior:"smooth" 
-}); 
- 
-} 
- 
- 
-/* ========================================================= 
-   THEME 
-========================================================= */ 
- 
-function applyTheme(theme){ 
- 
-if(theme==="dark"){ 
- 
-document.body.classList.add("dark"); 
- 
-$("themeStatus").textContent= 
-"Current theme: Dark Mode"; 
- 
-$("darkThemeButton").classList.add("active"); 
-$("lightThemeButton").classList.remove("active"); 
- 
-document 
-.querySelector('meta[name="theme-color"]') 
-.setAttribute("content","#0B1118"); 
- 
-}else{ 
- 
-document.body.classList.remove("dark"); 
- 
-$("themeStatus").textContent= 
-"Current theme: Light Mode"; 
- 
-$("lightThemeButton").classList.add("active"); 
-$("darkThemeButton").classList.remove("active"); 
- 
-document 
-.querySelector('meta[name="theme-color"]') 
-.setAttribute("content","#FFFFFF"); 
- 
-} 
- 
-localStorage.setItem( 
-"haleelTheme", 
-theme 
-); 
- 
-} 
- 
- 
-function setTheme(theme){ 
- 
-applyTheme(theme); 
- 
-} 
- 
- 
-/* ========================================================= 
-   COUNTRY CLOCK 
-========================================================= */ 
- 
-const countries=[ 
- 
-["🇸🇴","Somalia","Africa/Mogadishu"], 
-["🇰🇪","Kenya","Africa/Nairobi"], 
-["🇪🇹","Ethiopia","Africa/Addis_Ababa"], 
-["🇩🇯","Djibouti","Africa/Djibouti"], 
-["🇸🇦","Saudi Arabia","Asia/Riyadh"], 
-["🇦🇪","United Arab Emirates","Asia/Dubai"], 
-["🇹🇷","Türkiye","Europe/Istanbul"], 
-["🇬🇧","United Kingdom","Europe/London"], 
-["🇺🇸","United States","America/New_York"], 
-["🇨🇦","Canada","America/Toronto"], 
-["🇩🇪","Germany","Europe/Berlin"], 
-["🇫🇷","France","Europe/Paris"], 
-["🇮🇳","India","Asia/Kolkata"], 
-["🇨🇳","China","Asia/Shanghai"], 
-["🇯🇵","Japan","Asia/Tokyo"], 
-["🇦🇺","Australia","Australia/Sydney"] 
- 
-]; 
- 
- 
-function loadCountries(){ 
- 
-const select=$("countrySelect"); 
- 
-if(!select) return; 
- 
-select.innerHTML=""; 
- 
-countries.forEach(country=>{ 
- 
-const option= 
-document.createElement("option"); 
- 
-option.value=country[2]; 
- 
-option.textContent= 
-`${country[0]} ${country[1]}`; 
- 
-select.appendChild(option); 
- 
-}); 
- 
-const saved= 
-localStorage.getItem("haleelCountry") 
-||"Africa/Mogadishu"; 
- 
-select.value=saved; 
- 
-changeCountry(); 
- 
-} 
- 
- 
-function changeCountry(){ 
- 
-const select=$("countrySelect"); 
- 
-if(!select) return; 
- 
-localStorage.setItem( 
-"haleelCountry", 
-select.value 
-); 
- 
-updateCountryTime(); 
- 
-} 
- 
- 
-function updateCountryTime(){ 
- 
-const select=$("countrySelect"); 
-const box=$("countryTime"); 
- 
-if(!select || !box) return; 
- 
-const country= 
-countries.find( 
-item=>item[2]===select.value 
-); 
- 
-if(!country) return; 
- 
-const time= 
-new Intl.DateTimeFormat( 
-"en-US", 
-{ 
-timeZone:select.value, 
-hour:"numeric", 
-minute:"2-digit", 
-second:"2-digit", 
-hour12:true 
-} 
-).format(new Date()); 
- 
-box.innerHTML=` 
- 
-<span class="country-time-label"> 
-Current Local Time 
-</span> 
- 
-${country[0]} ${country[1]} — ${time} 
- 
-`; 
- 
-} 
- 
- 
-/* ========================================================= 
-   CUSTOMER CARE 
-========================================================= */ 
- 
-function toggleCare(){ 
- 
-$("careMenu") 
-.classList.toggle("show"); 
- 
-} 
- 
- 
-function openChat(){ 
- 
-$("chatModal") 
-.classList.add("show"); 
- 
-setTimeout(()=>{ 
-$("chatMessage").focus(); 
-},200); 
- 
-} 
- 
- 
-function closeChat(){ 
- 
-$("chatModal") 
-.classList.remove("show"); 
- 
-} 
- 
- 
-function openChatWithMessage(message){ 
- 
-openChat(); 
- 
-$("chatMessage").value=message; 
- 
-} 
- 
- 
-function sendEmail(){ 
- 
-const message= 
-$("chatMessage").value.trim(); 
- 
-if(!message){ 
- 
-alert("Please write a message."); 
-return; 
- 
-} 
- 
-const subject= 
-encodeURIComponent( 
-"Haleel Customer Care" 
-); 
- 
-const body= 
-encodeURIComponent(message); 
- 
-window.location.href= 
-`mailto:haleelrealestate@gmail.com?subject=${subject}&body=${body}`; 
- 
-} 
- 
- 
-/* ========================================================= 
-   SUBMIT PROPERTY 
-========================================================= */ 
- 
-function submitProperty(){ 
- 
-const owner= 
-$("ownerName").value.trim(); 
- 
-const phone= 
-$("ownerPhone").value.trim(); 
- 
-const submitterName= 
-$("propertyTitle").value.trim(); 
- 
-const city= 
-$("city").value.trim(); 
- 
-if(!owner || !phone || !submitterName || !city){ 
- 
-alert( 
-"Fadlan geli macluumaadka muhiimka ah." 
-); 
- 
-return; 
- 
-} 
- 
-const button= 
-$("submitPropertyButton"); 
- 
-const original= 
-button.textContent; 
- 
-button.disabled=true; 
-button.textContent= 
-"⏳ Waa la dirayaa..."; 
- 
- 
-const data={ 
- 
-ownerName:owner, 
- 
-ownerPhone:phone, 
- 
-ownerEmail: 
-$("ownerEmail").value.trim(), 
- 
-ownerWhatsapp: 
-$("ownerWhatsapp").value.trim(), 
- 
-propertyTitle: 
-submitterName, 
- 
-propertyType: 
-$("propertyType").value, 
- 
-city:city, 
- 
-neighborhood: 
-$("neighborhood").value.trim(), 
- 
-rent: 
-$("rent").value.trim(), 
- 
-bedrooms: 
-$("bedrooms").value.trim(), 
- 
-bathrooms: 
-$("bathrooms").value.trim(), 
- 
-size: 
-$("size").value.trim(), 
- 
-description: 
-$("description").value.trim() 
- 
-}; 
- 
- 
-const form= 
-document.createElement("form"); 
- 
-form.method="POST"; 
- 
-form.action= 
-HALEEL_BACKEND_URL; 
- 
-form.target= 
-"haleelSubmitFrame"; 
- 
-form.style.display="none"; 
- 
- 
-const input= 
-document.createElement("input"); 
- 
-input.type="hidden"; 
- 
-input.name="payload"; 
- 
-input.value= 
-JSON.stringify(data); 
- 
-form.appendChild(input); 
- 
-document.body.appendChild(form); 
- 
-form.submit(); 
- 
- 
-setTimeout(()=>{ 
-form.remove(); 
-},1000); 
- 
- 
-setTimeout(()=>{ 
- 
-button.disabled=false; 
-button.textContent=original; 
- 
- 
-[ 
-"ownerName", 
-"ownerPhone", 
-"ownerEmail", 
-"ownerWhatsapp", 
-"propertyTitle", 
-"city", 
-"neighborhood", 
-"rent", 
-"bedrooms", 
-"bathrooms", 
-"size", 
-"description" 
- 
-].forEach(id=>{ 
-if($(id)) $(id).value=""; 
-}); 
- 
- 
-if($("images")) 
-$("images").value=""; 
- 
- 
-$("successModal") 
-.classList.add("show"); 
- 
-},2000); 
- 
-} 
- 
- 
-/* ========================================================= 
-   SUCCESS 
-========================================================= */ 
- 
-function closeSuccess(){ 
- 
-$("successModal") 
-.classList.remove("show"); 
- 
-openPage("home"); 
- 
-} 
- 
- 
-/* ========================================================= 
-   PWA INSTALL 
-========================================================= */ 
- 
-let deferredInstallPrompt=null; 
- 
- 
-window.addEventListener( 
-"beforeinstallprompt", 
-event=>{ 
- 
-event.preventDefault(); 
- 
-deferredInstallPrompt=event; 
- 
-} 
-); 
- 
- 
-window.addEventListener( 
-"appinstalled", 
-()=>{ 
- 
-deferredInstallPrompt=null; 
- 
-const button= 
-$("installAppButton"); 
- 
-if(button){ 
- 
-button.textContent= 
-"✅ App Installed"; 
- 
-button.disabled=true; 
- 
-} 
- 
-} 
-); 
- 
- 
-async function installHaleel(){ 
- 
-if(deferredInstallPrompt){ 
- 
-deferredInstallPrompt.prompt(); 
- 
-const choice= 
-await deferredInstallPrompt.userChoice; 
- 
-deferredInstallPrompt=null; 
- 
-if(choice.outcome==="accepted"){ 
- 
-const button= 
-$("installAppButton"); 
- 
-if(button) 
-button.textContent= 
-"✅ App Installed"; 
- 
-} 
- 
-return; 
- 
-} 
- 
- 
-const isIOS= 
-/iphone|ipad|ipod/i.test( 
-navigator.userAgent 
-) || 
-( 
-navigator.platform==="MacIntel" && 
-navigator.maxTouchPoints>1 
-); 
- 
- 
-const isStandalone= 
-window.matchMedia( 
-"(display-mode: standalone)" 
-).matches || 
-window.navigator.standalone===true; 
- 
- 
-if(isStandalone){ 
- 
-alert( 
-"Macmiil waxaad hore ugu jirtaa Application-ka Haleel." 
-); 
- 
-} 
- 
-else if(isIOS){ 
- 
-alert( 
-"iPhone/iPad: Safari → Share → Add to Home Screen." 
-); 
- 
-} 
- 
-else{ 
- 
-alert( 
-"Install lama soo bandhigin. Hubi HTTPS, manifest.webmanifest iyo sw.js." 
-); 
- 
-} 
- 
-} 
- 
- 
-/* ========================================================= 
-   SERVICE WORKER 
-========================================================= */ 
- 
-if("serviceWorker" in navigator){ 
- 
-window.addEventListener( 
-"load", 
-()=>{ 
- 
-navigator.serviceWorker 
-.register("./sw.js") 
-.then(()=>{ 
-console.log( 
-"Haleel Service Worker registered" 
-); 
-}) 
-.catch(error=>{ 
-console.error( 
-"Haleel Service Worker error:", 
-error 
-); 
-}); 
- 
-}); 
- 
-} 
- 
- 
-/* ========================================================= 
-   GLOBAL EVENTS 
-========================================================= */ 
- 
-document.addEventListener( 
-"DOMContentLoaded", 
-()=>{ 
- 
-/* Theme */ 
- 
-const savedTheme= 
-localStorage.getItem( 
-"haleelTheme" 
-)||"light"; 
- 
-applyTheme(savedTheme); 
- 
- 
-/* Properties */ 
- 
-loadCityFilter(); 
- 
-renderProperties(properties); 
- 
-renderHomeProperties(); 
- 
-enableLiveSearch(); 
- 
-filterProperties(); 
- 
- 
-/* Countries */ 
- 
-loadCountries(); 
- 
- 
-/* Close modal */ 
- 
-$("detailsModal") 
-.addEventListener( 
-"click", 
-function(e){ 
- 
-if(e.target===e.currentTarget) 
-closeDetails(); 
- 
-} 
-); 
- 
- 
-/* ESC */ 
- 
-document.addEventListener( 
-"keydown", 
-e=>{ 
- 
-if(e.key==="Escape"){ 
- 
-document 
-.querySelectorAll(".modal.show") 
-.forEach( 
-modal=> 
-modal.classList.remove("show") 
-); 
- 
-$("careMenu") 
-?.classList.remove("show"); 
- 
-} 
- 
-} 
-); 
- 
- 
-/* Click outside care */ 
- 
-document.addEventListener( 
-"click", 
-e=>{ 
- 
-const wrap= 
-document.querySelector( 
-".floating-care" 
-); 
- 
-if( 
-wrap && 
-!wrap.contains(e.target) 
-){ 
- 
-$("careMenu") 
-?.classList.remove("show"); 
- 
-} 
- 
-} 
-); 
- 
-}); 
- 
- 
-/* ========================================================= 
-   LIVE CLOCK 
-========================================================= */ 
- 
-setInterval( 
-updateCountryTime, 
-1000 
-); 
- 
-</script> 
- 
-</body> 
+image:"https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=900&q=80",
+description:"Villa executive ah oo aad u ballaaran."
+}
+
+];
+
+
+/* =========================================================
+   PROPERTY RENDER
+========================================================= */
+
+function renderProperties(list,targetId="propertyGrid"){
+
+const grid=$(targetId);
+
+if(!grid)return;
+
+grid.innerHTML="";
+
+list.forEach(property=>{
+
+const card=document.createElement("div");
+
+card.className="property-card";
+
+card.innerHTML=`
+
+<div class="property-image-wrap">
+
+<img
+class="property-image"
+src="${property.image}"
+alt="${escapeHTML(property.title)}"
+loading="lazy"
+onerror="this.style.opacity='.35'">
+
+<span class="property-status">
+${escapeHTML(property.status)}
+</span>
+
+<button
+class="property-favorite"
+type="button"
+onclick="toggleFavorite(this)">
+♡
+</button>
+
+</div>
+
+<div class="property-content">
+
+<div class="property-type">
+${escapeHTML(property.type)}
+</div>
+
+<h3>
+${escapeHTML(property.title)}
+</h3>
+
+<div class="location">
+📍 ${escapeHTML(property.city)} —
+${escapeHTML(property.neighborhood)}
+</div>
+
+<div class="property-meta">
+
+<span class="meta-item">
+🛏 ${property.bedrooms} Qol
+</span>
+
+<span class="meta-item">
+🚿 ${property.bathrooms} Suuli
+</span>
+
+<span class="meta-item">
+📐 ${escapeHTML(property.size)}
+</span>
+
+</div>
+
+<div class="property-bottom">
+
+<div class="price">
+$${property.rent}
+<small>/ Month</small>
+</div>
+
+<button
+class="btn btn-primary view-btn"
+onclick="openPropertyDetails(${property.id})">
+View Details
+</button>
+
+</div>
+
+</div>
+`;
+
+grid.appendChild(card);
+
+});
+
+}
+
+
+function renderHomeProperties(){
+
+renderProperties(
+properties.slice(0,3),
+"homePropertyGrid"
+);
+
+}
+
+
+/* =========================================================
+   FILTER
+========================================================= */
+
+function filterProperties(){
+
+const search=$("propertySearch").value.trim().toLowerCase();
+const type=$("typeFilter").value;
+const city=$("cityFilter").value;
+const bedrooms=$("bedroomFilter").value;
+const minPrice=parseFloat($("minPrice").value);
+const maxPrice=parseFloat($("maxPrice").value);
+const status=$("statusFilter").value;
+const sort=$("sortFilter").value;
+
+let filtered=properties.filter(property=>{
+
+const searchable=`
+${property.title}
+${property.type}
+${property.city}
+${property.neighborhood}
+${property.description}
+`.toLowerCase();
+
+return(
+(!search || searchable.includes(search)) &&
+(!type || property.type===type) &&
+(!city || property.city===city) &&
+(!bedrooms || property.bedrooms>=Number(bedrooms)) &&
+(isNaN(minPrice) || property.rent>=minPrice) &&
+(isNaN(maxPrice) || property.rent<=maxPrice) &&
+(!status || property.status===status)
+);
+
+});
+
+if(sort==="priceLow"){
+filtered.sort((a,b)=>a.rent-b.rent);
+}
+else if(sort==="priceHigh"){
+filtered.sort((a,b)=>b.rent-a.rent);
+}
+else if(sort==="bedrooms"){
+filtered.sort((a,b)=>b.bedrooms-a.bedrooms);
+}
+else{
+filtered.sort((a,b)=>b.id-a.id);
+}
+
+renderProperties(filtered);
+
+$("resultCount").textContent=`${filtered.length} Guri`;
+
+$("activeFilterText").textContent=
+filtered.length===0
+?"Wax natiijo ah lama helin"
+:`${filtered.length} guri ayaa ku habboon raadintaada`;
+
+$("noResults").classList.toggle(
+"show",
+filtered.length===0
+);
+
+}
+
+
+function loadCityFilter(){
+
+const select=$("cityFilter");
+
+if(!select)return;
+
+const cities=[
+...new Set(properties.map(p=>p.city))
+].sort();
+
+cities.forEach(city=>{
+
+const option=document.createElement("option");
+
+option.value=city;
+option.textContent=city;
+
+select.appendChild(option);
+
+});
+
+}
+
+
+function resetFilters(){
+
+$("propertySearch").value="";
+$("typeFilter").value="";
+$("cityFilter").value="";
+$("bedroomFilter").value="";
+$("minPrice").value="";
+$("maxPrice").value="";
+$("statusFilter").value="Available";
+$("sortFilter").value="newest";
+
+filterProperties();
+
+}
+
+
+function enableLiveSearch(){
+
+[
+"propertySearch",
+"typeFilter",
+"cityFilter",
+"bedroomFilter",
+"minPrice",
+"maxPrice",
+"statusFilter",
+"sortFilter"
+
+].forEach(id=>{
+
+const element=$(id);
+
+if(!element)return;
+
+element.addEventListener("input",filterProperties);
+element.addEventListener("change",filterProperties);
+
+});
+
+}
+
+
+/* =========================================================
+   DETAILS
+========================================================= */
+
+function openPropertyDetails(id){
+
+const property=properties.find(
+item=>item.id===id
+);
+
+if(!property)return;
+
+$("detailsImage").src=property.image;
+
+$("detailsTitle").textContent=property.title;
+
+$("detailsDescription").innerHTML=`
+
+<strong>${escapeHTML(property.type)}</strong><br>
+📍 ${escapeHTML(property.city)} —
+${escapeHTML(property.neighborhood)}<br><br>
+
+🛏 ${property.bedrooms} Qol &nbsp;
+🚿 ${property.bathrooms} Suuli<br>
+
+📐 ${escapeHTML(property.size)}<br>
+
+💰 <strong>$${property.rent} / Month</strong><br><br>
+
+${escapeHTML(property.description)}
+
+`;
+
+$("detailsModal").classList.add("show");
+
+}
+
+
+function closeDetails(){
+
+$("detailsModal").classList.remove("show");
+
+}
+
+
+function toggleFavorite(button){
+
+if(button.textContent.trim()==="♡"){
+
+button.textContent="♥";
+button.style.color="#E5484D";
+
+}else{
+
+button.textContent="♡";
+button.style.color="";
+
+}
+
+}
+
+
+function escapeHTML(value){
+
+return String(value)
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;");
+
+}
+
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+function openPage(page,button){
+
+document
+.querySelectorAll(".page")
+.forEach(p=>p.classList.remove("active"));
+
+const selected=$(page);
+
+if(selected){
+selected.classList.add("active");
+}
+
+const titles={
+home:"Home",
+property:"Properties",
+care:"Customer Care",
+submit:"Submit Property",
+settings:"Settings"
+};
+
+$("pageTitle").textContent=
+titles[page]||"Haleel Real Estate";
+
+document
+.querySelectorAll(".nav button,.mobile-nav button")
+.forEach(b=>b.classList.remove("active"));
+
+const map={
+home:0,
+property:1,
+care:2,
+submit:3,
+settings:4
+};
+
+if(button){
+
+button.classList.add("active");
+
+}else{
+
+const index=map[page];
+
+const desktop=
+document.querySelectorAll(".nav button")[index];
+
+if(desktop)
+desktop.classList.add("active");
+
+let mobileIndex=index;
+
+if(page==="submit" || page==="settings"){
+mobileIndex=3;
+}
+
+const mobile=
+document.querySelectorAll(".mobile-nav button")[mobileIndex];
+
+if(mobile)
+mobile.classList.add("active");
+
+}
+
+window.scrollTo({
+top:0,
+behavior:"smooth"
+});
+
+}
+
+
+/* =========================================================
+   THEME
+========================================================= */
+
+function applyTheme(theme){
+
+if(theme==="dark"){
+
+document.body.classList.add("dark");
+
+$("themeStatus").textContent=
+"Current theme: Dark Mode";
+
+$("darkThemeButton").classList.add("active");
+$("lightThemeButton").classList.remove("active");
+
+document
+.querySelector('meta[name="theme-color"]')
+.setAttribute("content","#0B1118");
+
+}else{
+
+document.body.classList.remove("dark");
+
+$("themeStatus").textContent=
+"Current theme: Light Mode";
+
+$("lightThemeButton").classList.add("active");
+$("darkThemeButton").classList.remove("active");
+
+document
+.querySelector('meta[name="theme-color"]')
+.setAttribute("content","#FFFFFF");
+
+}
+
+localStorage.setItem("haleelTheme",theme);
+
+}
+
+
+function setTheme(theme){
+
+applyTheme(theme);
+
+}
+
+
+/* =========================================================
+   COUNTRY CLOCK
+========================================================= */
+
+const countries=[
+
+["🇸🇴","Somalia","Africa/Mogadishu"],
+["🇰🇪","Kenya","Africa/Nairobi"],
+["🇪🇹","Ethiopia","Africa/Addis_Ababa"],
+["🇩🇯","Djibouti","Africa/Djibouti"],
+["🇸🇦","Saudi Arabia","Asia/Riyadh"],
+["🇦🇪","United Arab Emirates","Asia/Dubai"],
+["🇹🇷","Türkiye","Europe/Istanbul"],
+["🇬🇧","United Kingdom","Europe/London"],
+["🇺🇸","United States","America/New_York"],
+["🇨🇦","Canada","America/Toronto"],
+["🇩🇪","Germany","Europe/Berlin"],
+["🇫🇷","France","Europe/Paris"],
+["🇮🇳","India","Asia/Kolkata"],
+["🇨🇳","China","Asia/Shanghai"],
+["🇯🇵","Japan","Asia/Tokyo"],
+["🇦🇺","Australia","Australia/Sydney"]
+
+];
+
+
+function loadCountries(){
+
+const select=$("countrySelect");
+
+if(!select)return;
+
+select.innerHTML="";
+
+countries.forEach(country=>{
+
+const option=document.createElement("option");
+
+option.value=country[2];
+
+option.textContent=
+`${country[0]} ${country[1]}`;
+
+select.appendChild(option);
+
+});
+
+const saved=
+localStorage.getItem("haleelCountry")
+||"Africa/Mogadishu";
+
+select.value=saved;
+
+changeCountry();
+
+}
+
+
+function changeCountry(){
+
+const select=$("countrySelect");
+
+if(!select)return;
+
+localStorage.setItem(
+"haleelCountry",
+select.value
+);
+
+updateCountryTime();
+
+}
+
+
+function updateCountryTime(){
+
+const select=$("countrySelect");
+const box=$("countryTime");
+
+if(!select || !box)return;
+
+const country=countries.find(
+item=>item[2]===select.value
+);
+
+if(!country)return;
+
+const time=
+new Intl.DateTimeFormat(
+"en-US",
+{
+timeZone:select.value,
+hour:"numeric",
+minute:"2-digit",
+second:"2-digit",
+hour12:true
+}
+).format(new Date());
+
+box.innerHTML=`
+
+<span class="country-time-label">
+Current Local Time
+</span>
+
+${country[0]} ${country[1]} — ${time}
+
+`;
+
+}
+
+
+/* =========================================================
+   CUSTOMER CARE
+========================================================= */
+
+function toggleCare(){
+
+$("careMenu").classList.toggle("show");
+
+}
+
+
+function openChat(){
+
+$("chatModal").classList.add("show");
+
+setTimeout(()=>{
+$("chatMessage").focus();
+},200);
+
+}
+
+
+function closeChat(){
+
+$("chatModal").classList.remove("show");
+
+}
+
+
+function openChatWithMessage(message){
+
+openChat();
+
+$("chatMessage").value=message;
+
+}
+
+
+function sendEmail(){
+
+const message=$("chatMessage").value.trim();
+
+if(!message){
+
+alert("Please write a message.");
+
+return;
+
+}
+
+const subject=encodeURIComponent(
+"Haleel Customer Care"
+);
+
+const body=encodeURIComponent(message);
+
+window.location.href=
+`mailto:haleelrealestate@gmail.com?subject=${subject}&body=${body}`;
+
+}
+
+
+/* =========================================================
+   SUBMIT PROPERTY
+   IMPORTANT:
+   This function uses the existing Apps Script
+   and hidden iframe.
+
+   Gmail will NOT open.
+   The visitor remains on Haleel website.
+========================================================= */
+
+let propertySubmissionInProgress=false;
+
+
+function submitProperty(){
+
+if(propertySubmissionInProgress){
+
+return;
+
+}
+
+
+const owner=
+$("ownerName").value.trim();
+
+const phone=
+$("ownerPhone").value.trim();
+
+const submitterName=
+$("propertyTitle").value.trim();
+
+const city=
+$("city").value.trim();
+
+
+/* REQUIRED FIELDS */
+
+if(!owner || !phone || !submitterName || !city){
+
+alert(
+"Fadlan geli macluumaadka muhiimka ah."
+);
+
+return;
+
+}
+
+
+/* START SUBMISSION */
+
+propertySubmissionInProgress=true;
+
+const button=
+$("submitPropertyButton");
+
+const originalText=
+button.textContent;
+
+button.disabled=true;
+
+button.style.opacity="0.75";
+
+button.style.cursor="wait";
+
+button.textContent=
+"⏳ Waa la dirayaa...";
+
+
+/* DATA SENT TO GOOGLE APPS SCRIPT */
+
+const data={
+
+ownerName:owner,
+
+ownerPhone:phone,
+
+ownerEmail:
+$("ownerEmail").value.trim(),
+
+ownerWhatsapp:
+$("ownerWhatsapp").value.trim(),
+
+propertyTitle:
+submitterName,
+
+propertyType:
+$("propertyType").value,
+
+city:city,
+
+neighborhood:
+$("neighborhood").value.trim(),
+
+rent:
+$("rent").value.trim(),
+
+bedrooms:
+$("bedrooms").value.trim(),
+
+bathrooms:
+$("bathrooms").value.trim(),
+
+size:
+$("size").value.trim(),
+
+description:
+$("description").value.trim()
+
+};
+
+
+/*
+IMPORTANT:
+
+Apps Script-kaaga wuxuu filayaa:
+
+e.parameter.payload
+
+Sidaas darteed waxaan si gaar ah
+hidden input ugu diraynaa magaca "payload".
+*/
+
+
+const form=
+document.createElement("form");
+
+form.method="POST";
+
+form.action=
+HALEEL_BACKEND_URL;
+
+form.target=
+"haleelSubmitFrame";
+
+form.style.display="none";
+
+form.setAttribute(
+"aria-hidden",
+"true"
+);
+
+
+const input=
+document.createElement("input");
+
+input.type="hidden";
+
+input.name="payload";
+
+input.value=
+JSON.stringify(data);
+
+
+form.appendChild(input);
+
+document.body.appendChild(form);
+
+
+/*
+SUBMIT:
+
+Browser-ku wuxuu xogta u dirayaa
+Google Apps Script gudaha hidden iframe.
+
+Gmail page/app ma furmayo.
+*/
+
+
+try{
+
+form.submit();
+
+}catch(error){
+
+console.error(
+"Haleel submission error:",
+error
+);
+
+propertySubmissionInProgress=false;
+
+button.disabled=false;
+
+button.style.opacity="1";
+
+button.style.cursor="pointer";
+
+button.textContent=originalText;
+
+alert(
+"Xogta lama diri karin. Fadlan isku day mar kale."
+);
+
+form.remove();
+
+return;
+
+}
+
+
+/*
+Remove temporary form after submission.
+*/
+
+setTimeout(()=>{
+
+if(form && form.parentNode){
+
+form.remove();
+
+}
+
+},1500);
+
+
+/*
+The browser cannot read Google's cross-origin
+response directly.
+
+Therefore, without changing your Apps Script,
+we cannot technically verify Gmail delivery
+from the frontend.
+
+After giving Apps Script enough time to process,
+we show the success screen.
+*/
+
+setTimeout(()=>{
+
+/* RESET BUTTON */
+
+button.disabled=false;
+
+button.style.opacity="1";
+
+button.style.cursor="pointer";
+
+button.textContent=originalText;
+
+
+/* CLEAR FORM */
+
+[
+"ownerName",
+"ownerPhone",
+"ownerEmail",
+"ownerWhatsapp",
+"propertyTitle",
+"city",
+"neighborhood",
+"rent",
+"bedrooms",
+"bathrooms",
+"size",
+"description"
+
+].forEach(id=>{
+
+const element=$(id);
+
+if(element){
+
+element.value="";
+
+}
+
+});
+
+
+/* CLEAR IMAGE INPUT */
+
+if($("images")){
+
+$("images").value="";
+
+}
+
+
+/* FINISH */
+
+propertySubmissionInProgress=false;
+
+
+/* SUCCESS MODAL */
+
+$("successModal")
+.classList.add("show");
+
+},2500);
+
+}
+
+
+/* =========================================================
+   SUCCESS
+========================================================= */
+
+function closeSuccess(){
+
+$("successModal")
+.classList.remove("show");
+
+openPage("home");
+
+}
+
+
+/* =========================================================
+   PWA INSTALL
+========================================================= */
+
+let deferredInstallPrompt=null;
+
+
+window.addEventListener(
+"beforeinstallprompt",
+event=>{
+
+event.preventDefault();
+
+deferredInstallPrompt=event;
+
+});
+
+
+window.addEventListener(
+"appinstalled",
+()=>{
+
+deferredInstallPrompt=null;
+
+const button=
+$("installAppButton");
+
+if(button){
+
+button.textContent=
+"✅ App Installed";
+
+button.disabled=true;
+
+}
+
+});
+
+
+async function installHaleel(){
+
+if(deferredInstallPrompt){
+
+deferredInstallPrompt.prompt();
+
+const choice=
+await deferredInstallPrompt.userChoice;
+
+deferredInstallPrompt=null;
+
+if(choice.outcome==="accepted"){
+
+const button=
+$("installAppButton");
+
+if(button)
+button.textContent=
+"✅ App Installed";
+
+}
+
+return;
+
+}
+
+
+const isIOS=
+/iphone|ipad|ipod/i.test(
+navigator.userAgent
+) ||
+(
+navigator.platform==="MacIntel" &&
+navigator.maxTouchPoints>1
+);
+
+
+const isStandalone=
+window.matchMedia(
+"(display-mode: standalone)"
+).matches ||
+window.navigator.standalone===true;
+
+
+if(isStandalone){
+
+alert(
+"Macmiil waxaad hore ugu jirtaa Application-ka Haleel."
+);
+
+}
+
+else if(isIOS){
+
+alert(
+"iPhone/iPad: Safari → Share → Add to Home Screen."
+);
+
+}
+
+else{
+
+alert(
+"Install lama soo bandhigin. Hubi HTTPS, manifest.webmanifest iyo sw.js."
+);
+
+}
+
+}
+
+
+/* =========================================================
+   SERVICE WORKER
+========================================================= */
+
+if("serviceWorker" in navigator){
+
+window.addEventListener(
+"load",
+()=>{
+
+navigator.serviceWorker
+.register("./sw.js")
+.then(()=>{
+
+console.log(
+"Haleel Service Worker registered"
+);
+
+})
+.catch(error=>{
+
+console.error(
+"Haleel Service Worker error:",
+error
+);
+
+});
+
+});
+
+}
+
+
+/* =========================================================
+   GLOBAL EVENTS
+========================================================= */
+
+document.addEventListener(
+"DOMContentLoaded",
+()=>{
+
+
+/* THEME */
+
+const savedTheme=
+localStorage.getItem("haleelTheme")
+||"light";
+
+applyTheme(savedTheme);
+
+
+/* PROPERTIES */
+
+loadCityFilter();
+
+renderProperties(properties);
+
+renderHomeProperties();
+
+enableLiveSearch();
+
+filterProperties();
+
+
+/* COUNTRIES */
+
+loadCountries();
+
+
+/* CLOSE PROPERTY DETAILS */
+
+$("detailsModal")
+.addEventListener(
+"click",
+function(e){
+
+if(e.target===e.currentTarget){
+
+closeDetails();
+
+}
+
+});
+
+
+/* CLOSE SUCCESS MODAL WHEN BACKDROP IS CLICKED */
+
+$("successModal")
+.addEventListener(
+"click",
+function(e){
+
+if(e.target===e.currentTarget){
+
+closeSuccess();
+
+}
+
+});
+
+
+/* CLOSE CHAT MODAL WHEN BACKDROP IS CLICKED */
+
+$("chatModal")
+.addEventListener(
+"click",
+function(e){
+
+if(e.target===e.currentTarget){
+
+closeChat();
+
+}
+
+});
+
+
+/* ESC */
+
+document.addEventListener(
+"keydown",
+e=>{
+
+if(e.key==="Escape"){
+
+document
+.querySelectorAll(".modal.show")
+.forEach(
+modal=>
+modal.classList.remove("show")
+);
+
+$("careMenu")
+?.classList.remove("show");
+
+}
+
+});
+
+
+/* CLICK OUTSIDE CARE */
+
+document.addEventListener(
+"click",
+e=>{
+
+const wrap=
+document.querySelector(
+".floating-care"
+);
+
+if(
+wrap &&
+!wrap.contains(e.target)
+){
+
+$("careMenu")
+?.classList.remove("show");
+
+}
+
+});
+
+});
+
+
+/* =========================================================
+   LIVE CLOCK
+========================================================= */
+
+setInterval(
+updateCountryTime,
+1000
+);
+
+</script>
+
+</body>
 </html>
+```
