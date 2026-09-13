@@ -1068,236 +1068,6 @@ flex-wrap:wrap;
 display:none;
 }
 
-
-/* =========================================================
-   HALEEL CALL SCREEN
-========================================================= */
-
-.call-modal{
-z-index:3000;
-padding:0;
-background:
-linear-gradient(
-180deg,
-rgba(1,14,26,.98),
-rgba(3,38,65,.98)
-);
-align-items:stretch;
-justify-content:center;
-}
-
-.call-screen{
-width:100%;
-height:100%;
-min-height:100vh;
-max-width:520px;
-color:#fff;
-display:flex;
-flex-direction:column;
-align-items:center;
-padding:32px 24px 25px;
-text-align:center;
-overflow-y:auto;
-background:
-radial-gradient(
-circle at 50% 20%,
-rgba(0,108,194,.25),
-transparent 35%
-);
-}
-
-.call-top{
-width:100%;
-display:flex;
-justify-content:space-between;
-align-items:center;
-color:rgba(255,255,255,.72);
-font-size:13px;
-}
-
-.call-brand{
-font-weight:900;
-letter-spacing:3px;
-color:#fff;
-font-size:15px;
-}
-
-.call-network{
-font-size:12px;
-opacity:.85;
-}
-
-.call-avatar{
-width:110px;
-height:110px;
-border-radius:50%;
-margin-top:55px;
-display:flex;
-align-items:center;
-justify-content:center;
-background:
-linear-gradient(
-135deg,
-#006CC2,
-#0b9cff
-);
-font-size:49px;
-box-shadow:
-0 0 0 10px rgba(255,255,255,.055),
-0 20px 55px rgba(0,108,194,.40);
-}
-
-.call-screen h2{
-margin-top:24px;
-font-size:28px;
-font-weight:800;
-}
-
-.call-number{
-margin-top:8px;
-font-size:16px;
-color:rgba(255,255,255,.67);
-letter-spacing:.4px;
-}
-
-.call-state{
-margin-top:15px;
-color:#58e69a;
-font-size:15px;
-font-weight:800;
-min-height:20px;
-}
-
-.call-timer{
-font-size:16px;
-color:rgba(255,255,255,.72);
-margin-top:6px;
-min-height:22px;
-font-variant-numeric:tabular-nums;
-}
-
-.call-keypad{
-width:100%;
-max-width:350px;
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:12px;
-margin-top:30px;
-}
-
-.call-key{
-height:60px;
-border:1px solid rgba(255,255,255,.11);
-border-radius:18px;
-background:rgba(255,255,255,.075);
-color:#fff;
-font-size:22px;
-font-weight:700;
-transition:.15s;
--webkit-tap-highlight-color:transparent;
-}
-
-.call-key small{
-display:block;
-font-size:9px;
-color:rgba(255,255,255,.48);
-letter-spacing:1.2px;
-margin-top:2px;
-}
-
-.call-key:hover{
-background:rgba(255,255,255,.13);
-}
-
-.call-key:active{
-background:rgba(255,255,255,.20);
-transform:scale(.95);
-}
-
-.call-actions{
-display:flex;
-align-items:center;
-justify-content:center;
-gap:24px;
-margin-top:30px;
-padding-bottom:5px;
-}
-
-.call-action{
-width:62px;
-height:62px;
-border:0;
-border-radius:50%;
-background:rgba(255,255,255,.11);
-color:#fff;
-font-size:22px;
-transition:.2s;
-}
-
-.call-action:hover{
-background:rgba(255,255,255,.18);
-}
-
-.call-action.active{
-background:#fff;
-color:#006CC2;
-}
-
-.call-end{
-width:74px;
-height:74px;
-border:0;
-border-radius:50%;
-background:#E5484D;
-color:#fff;
-font-size:29px;
-display:flex;
-align-items:center;
-justify-content:center;
-transform:rotate(135deg);
-box-shadow:
-0 12px 35px rgba(229,72,77,.35);
-transition:.2s;
-}
-
-.call-end:hover{
-transform:rotate(135deg) scale(1.05);
-}
-
-.call-hint{
-margin-top:17px;
-color:rgba(255,255,255,.40);
-font-size:10px;
-letter-spacing:.4px;
-}
-
-.call-real-button{
-margin-top:20px;
-width:100%;
-max-width:350px;
-height:50px;
-border:1px solid rgba(255,255,255,.14);
-border-radius:14px;
-background:rgba(255,255,255,.07);
-color:rgba(255,255,255,.72);
-font-weight:700;
-font-size:13px;
-}
-
-.call-real-button:hover{
-background:rgba(255,255,255,.12);
-color:#fff;
-}
-
-.call-hidden-number{
-display:none;
-}
-
-
-/* =========================================================
-   RESPONSIVE
-========================================================= */
-
 @media(max-width:1100px){
 
 .sidebar{
@@ -1468,46 +1238,6 @@ right:16px;
 bottom:82px;
 }
 
-.call-screen{
-padding:24px 18px 22px;
-}
-
-.call-avatar{
-margin-top:35px;
-width:95px;
-height:95px;
-font-size:42px;
-}
-
-.call-screen h2{
-font-size:24px;
-}
-
-.call-keypad{
-gap:9px;
-margin-top:22px;
-}
-
-.call-key{
-height:55px;
-border-radius:16px;
-}
-
-.call-actions{
-margin-top:24px;
-gap:18px;
-}
-
-.call-action{
-width:57px;
-height:57px;
-}
-
-.call-end{
-width:68px;
-height:68px;
-}
-
 }
 
 @media(max-width:450px){
@@ -1527,30 +1257,6 @@ flex-direction:column;
 
 .view-btn{
 width:100%;
-}
-
-.call-avatar{
-width:88px;
-height:88px;
-font-size:38px;
-}
-
-.call-screen h2{
-font-size:22px;
-}
-
-.call-number{
-font-size:14px;
-}
-
-.call-keypad{
-max-width:310px;
-gap:8px;
-}
-
-.call-key{
-height:52px;
-font-size:20px;
 }
 
 }
@@ -1974,12 +1680,12 @@ style="background:#20B26B;color:#fff;text-decoration:none">
 🟢 WhatsApp
 </a>
 
-<button
+<a
 class="btn"
-onclick="openHaleelCall()"
-style="background:#fff;color:#006CC2">
+href="tel:+252907469995"
+style="background:#fff;color:#006CC2;text-decoration:none">
 📞 Wac Hadda
-</button>
+</a>
 
 </div>
 
@@ -2031,11 +1737,11 @@ WhatsApp Us
 
 <p>Hadda si toos ah ula hadal Haleel.</p>
 
-<button
+<a
 class="btn btn-primary"
-onclick="openHaleelCall()">
+href="tel:+252907469995">
 Call Now
-</button>
+</a>
 
 </div>
 
@@ -2121,11 +1827,10 @@ Waxaad nagala soo xiriiri kartaa telefoon, WhatsApp ama Email.
 
 <div>
 
-<button
-class="btn btn-primary"
-onclick="openHaleelCall()">
+<a class="btn btn-primary"
+href="tel:+252907469995">
 📞 Call
-</button>
+</a>
 
 <a
 class="btn"
@@ -2532,20 +2237,9 @@ id="careMenu">
 🟢 WhatsApp
 </a>
 
-<button
-type="button"
-onclick="openHaleelCall()"
-style="
-width:100%;
-border:0;
-background:transparent;
-text-align:left;
-padding:12px;
-border-radius:10px;
-color:inherit;
-">
+<a href="tel:+252907469995">
 📞 Call
-</button>
+</a>
 
 <a href="mailto:haleelrealestate@gmail.com">
 📧 Email
@@ -2615,11 +2309,11 @@ onclick="closeDetails()">
 Close
 </button>
 
-<button
-class="btn btn-primary"
-onclick="openHaleelCall()">
+<a
+href="tel:+252907469995"
+class="btn btn-primary">
 📞 Call Now
-</button>
+</a>
 
 <a
 href="https://wa.me/252907469995"
@@ -2629,200 +2323,6 @@ style="background:#20B26B;color:#fff">
 WhatsApp
 </a>
 
-</div>
-
-</div>
-</div>
-
-
-<!-- =====================================================
-     HALEEL CALL SCREEN
-===================================================== -->
-
-<div
-class="modal call-modal"
-id="callModal">
-
-<div class="call-screen">
-
-<div class="call-top">
-
-<span id="callTime">
-10:02
-</span>
-
-<span class="call-brand">
-HALEEL
-</span>
-
-<span class="call-network">
-📶 🔋
-</span>
-
-</div>
-
-
-<div class="call-avatar">
-🏠
-</div>
-
-
-<h2>
-Haleel Real Estate
-</h2>
-
-
-<div class="call-number">
-+252 90 7469995
-</div>
-
-
-<div
-class="call-state"
-id="callState">
-Calling...
-</div>
-
-
-<div
-class="call-timer"
-id="callTimer">
-00:00
-</div>
-
-
-<div class="call-keypad">
-
-<button
-class="call-key"
-onclick="callKey('1')">
-1
-</button>
-
-<button
-class="call-key"
-onclick="callKey('2')">
-2
-<small>ABC</small>
-</button>
-
-<button
-class="call-key"
-onclick="callKey('3')">
-3
-<small>DEF</small>
-</button>
-
-<button
-class="call-key"
-onclick="callKey('4')">
-4
-<small>GHI</small>
-</button>
-
-<button
-class="call-key"
-onclick="callKey('5')">
-5
-<small>JKL</small>
-</button>
-
-<button
-class="call-key"
-onclick="callKey('6')">
-6
-<small>MNO</small>
-</button>
-
-<button
-class="call-key"
-onclick="callKey('7')">
-7
-<small>PQRS</small>
-</button>
-
-<button
-class="call-key"
-onclick="callKey('8')">
-8
-<small>TUV</small>
-</button>
-
-<button
-class="call-key"
-onclick="callKey('9')">
-9
-<small>WXYZ</small>
-</button>
-
-<button
-class="call-key"
-onclick="callKey('*')">
-*
-</button>
-
-<button
-class="call-key"
-onclick="callKey('0')">
-0
-</button>
-
-<button
-class="call-key"
-onclick="callKey('#')">
-#
-</button>
-
-</div>
-
-
-<div class="call-actions">
-
-<button
-class="call-action"
-id="muteButton"
-onclick="toggleCallAction(this,'🔇','🎙️')"
-title="Mute">
-🎙️
-</button>
-
-
-<button
-class="call-end"
-onclick="endHaleelCall()"
-title="End Call">
-☎
-</button>
-
-
-<button
-class="call-action"
-id="speakerButton"
-onclick="toggleCallAction(this,'🔊','🔈')"
-title="Speaker">
-🔈
-</button>
-
-</div>
-
-
-<!--
-This button is intentionally NOT a SIM call.
-
-It gives the user an option to open the
-device's real Phone App if they want to
-make a real cellular call.
--->
-
-<button
-class="call-real-button"
-onclick="placeRealCall()">
-📱 Wacitaan dhab ah — Fur Phone App
-</button>
-
-
-<div class="call-hint">
-Haleel Call Screen • Website UI
 </div>
 
 </div>
@@ -3804,10 +3304,6 @@ $("careMenu").classList.toggle("show");
 
 function openChat(){
 
-/* Close call screen if open */
-
-$("callModal")?.classList.remove("show");
-
 $("chatModal").classList.add("show");
 
 setTimeout(()=>{
@@ -3858,253 +3354,13 @@ window.location.href=
 
 
 /* =========================================================
-   HALEEL CALL SCREEN
-========================================================= */
-
-let callTimerInterval=null;
-
-let callSeconds=0;
-
-
-/*
-Open Haleel Call Screen
-*/
-
-function openHaleelCall(){
-
-/* Close other menus/modals */
-
-$("careMenu")?.classList.remove("show");
-
-$("detailsModal")?.classList.remove("show");
-
-$("chatModal")?.classList.remove("show");
-
-$("successModal")?.classList.remove("show");
-
-
-/* Open call screen */
-
-$("callModal").classList.add("show");
-
-
-/* Reset */
-
-callSeconds=0;
-
-$("callTimer").textContent="00:00";
-
-$("callState").textContent="Calling...";
-
-
-/* Update phone-style clock */
-
-updateCallClock();
-
-
-/* Reset controls */
-
-$("muteButton").classList.remove("active");
-$("muteButton").textContent="🎙️";
-
-$("speakerButton").classList.remove("active");
-$("speakerButton").textContent="🔈";
-
-
-/* Start timer */
-
-clearInterval(callTimerInterval);
-
-callTimerInterval=setInterval(()=>{
-
-callSeconds++;
-
-$("callTimer").textContent=
-formatCallTime(callSeconds);
-
-},1000);
-
-
-/*
-After 1.8 seconds change state
-from Calling... to connected-style UI.
-
-IMPORTANT:
-This does NOT establish a real phone call.
-It is only the Haleel website interface.
-*/
-
-setTimeout(()=>{
-
-if(
-$("callModal").classList.contains("show")
-){
-
-$("callState").textContent=
-"Haleel Customer Care";
-
-}
-
-},1800);
-
-}
-
-
-/*
-Format timer
-*/
-
-function formatCallTime(seconds){
-
-const minutes=
-Math.floor(seconds/60);
-
-const secs=
-seconds%60;
-
-return(
-String(minutes).padStart(2,"0")
-+
-":"
-+
-String(secs).padStart(2,"0")
-);
-
-}
-
-
-/*
-End Haleel Call Screen
-*/
-
-function endHaleelCall(){
-
-clearInterval(callTimerInterval);
-
-callTimerInterval=null;
-
-$("callState").textContent=
-"Call Ended";
-
-
-setTimeout(()=>{
-
-$("callModal").classList.remove("show");
-
-},450);
-
-}
-
-
-/*
-Keypad
-*/
-
-function callKey(key){
-
-console.log(
-"Haleel keypad:",
-key
-);
-
-const state=
-$("callState");
-
-state.textContent=
-"Key "+key+" pressed";
-
-
-setTimeout(()=>{
-
-if(
-$("callModal").classList.contains("show")
-){
-
-state.textContent=
-"Haleel Customer Care";
-
-}
-
-},500);
-
-}
-
-
-/*
-Mute / Speaker buttons
-*/
-
-function toggleCallAction(
-button,
-activeIcon,
-normalIcon
-){
-
-button.classList.toggle("active");
-
-button.textContent=
-button.classList.contains("active")
-?activeIcon
-:normalIcon;
-
-}
-
-
-/*
-REAL SIM CALL
-
-This is intentionally separate.
-
-When the user presses this button,
-the operating system will open its Phone App.
-
-The normal Haleel Call buttons DO NOT
-open the Phone App.
-*/
-
-function placeRealCall(){
-
-window.location.href=
-"tel:+252907469995";
-
-}
-
-
-/*
-Phone-style time at top of call screen
-*/
-
-function updateCallClock(){
-
-const timeElement=
-$("callTime");
-
-if(!timeElement)return;
-
-const d=new Date();
-
-timeElement.textContent=
-d.toLocaleTimeString(
-[],
-{
-hour:"2-digit",
-minute:"2-digit"
-}
-);
-
-}
-
-
-/* Update call clock every minute */
-
-setInterval(
-updateCallClock,
-30000
-);
-
-
-/* =========================================================
    SUBMIT PROPERTY
+   IMPORTANT:
+   This function uses the existing Apps Script
+   and hidden iframe.
+
+   Gmail will NOT open.
+   The visitor remains on Haleel website.
 ========================================================= */
 
 let propertySubmissionInProgress=false;
@@ -4132,6 +3388,8 @@ const city=
 $("city").value.trim();
 
 
+/* REQUIRED FIELDS */
+
 if(!owner || !phone || !submitterName || !city){
 
 alert(
@@ -4142,6 +3400,8 @@ return;
 
 }
 
+
+/* START SUBMISSION */
 
 propertySubmissionInProgress=true;
 
@@ -4160,6 +3420,8 @@ button.style.cursor="wait";
 button.textContent=
 "⏳ Waa la dirayaa...";
 
+
+/* DATA SENT TO GOOGLE APPS SCRIPT */
 
 const data={
 
@@ -4202,6 +3464,18 @@ $("description").value.trim()
 };
 
 
+/*
+IMPORTANT:
+
+Apps Script-kaaga wuxuu filayaa:
+
+e.parameter.payload
+
+Sidaas darteed waxaan si gaar ah
+hidden input ugu diraynaa magaca "payload".
+*/
+
+
 const form=
 document.createElement("form");
 
@@ -4237,6 +3511,16 @@ form.appendChild(input);
 document.body.appendChild(form);
 
 
+/*
+SUBMIT:
+
+Browser-ku wuxuu xogta u dirayaa
+Google Apps Script gudaha hidden iframe.
+
+Gmail page/app ma furmayo.
+*/
+
+
 try{
 
 form.submit();
@@ -4269,6 +3553,10 @@ return;
 }
 
 
+/*
+Remove temporary form after submission.
+*/
+
 setTimeout(()=>{
 
 if(form && form.parentNode){
@@ -4280,7 +3568,21 @@ form.remove();
 },1500);
 
 
+/*
+The browser cannot read Google's cross-origin
+response directly.
+
+Therefore, without changing your Apps Script,
+we cannot technically verify Gmail delivery
+from the frontend.
+
+After giving Apps Script enough time to process,
+we show the success screen.
+*/
+
 setTimeout(()=>{
+
+/* RESET BUTTON */
 
 button.disabled=false;
 
@@ -4290,6 +3592,8 @@ button.style.cursor="pointer";
 
 button.textContent=originalText;
 
+
+/* CLEAR FORM */
 
 [
 "ownerName",
@@ -4318,6 +3622,8 @@ element.value="";
 });
 
 
+/* CLEAR IMAGE INPUT */
+
 if($("images")){
 
 $("images").value="";
@@ -4325,8 +3631,12 @@ $("images").value="";
 }
 
 
+/* FINISH */
+
 propertySubmissionInProgress=false;
 
+
+/* SUCCESS MODAL */
 
 $("successModal")
 .classList.add("show");
@@ -4545,7 +3855,7 @@ closeDetails();
 });
 
 
-/* CLOSE SUCCESS MODAL */
+/* CLOSE SUCCESS MODAL WHEN BACKDROP IS CLICKED */
 
 $("successModal")
 .addEventListener(
@@ -4561,7 +3871,7 @@ closeSuccess();
 });
 
 
-/* CLOSE CHAT */
+/* CLOSE CHAT MODAL WHEN BACKDROP IS CLICKED */
 
 $("chatModal")
 .addEventListener(
@@ -4577,23 +3887,6 @@ closeChat();
 });
 
 
-/* CLOSE CALL SCREEN BY BACKDROP */
-
-$("callModal")
-.addEventListener(
-"click",
-function(e){
-
-/*
-We intentionally do NOT close the call screen
-when tapping the backdrop.
-
-The user should use End Call.
-*/
-
-});
-
-
 /* ESC */
 
 document.addEventListener(
@@ -4601,22 +3894,6 @@ document.addEventListener(
 e=>{
 
 if(e.key==="Escape"){
-
-/*
-If Call Screen is open,
-Esc behaves like End Call.
-*/
-
-if(
-$("callModal").classList.contains("show")
-){
-
-endHaleelCall();
-
-return;
-
-}
-
 
 document
 .querySelectorAll(".modal.show")
@@ -4660,7 +3937,7 @@ $("careMenu")
 
 
 /* =========================================================
-   LIVE COUNTRY CLOCK
+   LIVE CLOCK
 ========================================================= */
 
 setInterval(
