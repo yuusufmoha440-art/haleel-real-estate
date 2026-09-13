@@ -156,7 +156,6 @@ color:#d9e3ec;
 
 /* =========================================================
    HALEEL AUTHENTICATION DESIGN
-   ONLY AUTHENTICATION DESIGN
 ========================================================= */
 
 .auth-screen{
@@ -168,7 +167,7 @@ display:flex;
 align-items:center;
 justify-content:center;
 padding:24px;
-overflow:hidden;
+overflow:auto;
 
 background:
 radial-gradient(circle at 15% 20%,rgba(0,108,194,.18),transparent 28%),
@@ -775,7 +774,7 @@ letter-spacing:4px;
 
 @media(prefers-reduced-motion:reduce){
 
-.auth-screen *,
+.auth-screen * ,
 .auth-screen::before,
 .auth-screen::after{
 animation:none !important;
@@ -2063,6 +2062,93 @@ id="signupMessage">
 
 <form onsubmit="createAccount(event)">
 
+
+<!-- FIRST NAME -->
+
+<div class="auth-group">
+
+<label for="signupFirstName">
+FIRST NAME
+</label>
+
+<div class="auth-input-wrap">
+
+<input
+class="auth-input"
+id="signupFirstName"
+type="text"
+maxlength="50"
+placeholder="First Name"
+autocomplete="given-name"
+required>
+
+<span class="auth-input-icon">
+👤
+</span>
+
+</div>
+
+</div>
+
+
+<!-- MIDDLE NAME -->
+
+<div class="auth-group">
+
+<label for="signupMiddleName">
+MIDDLE NAME
+</label>
+
+<div class="auth-input-wrap">
+
+<input
+class="auth-input"
+id="signupMiddleName"
+type="text"
+maxlength="50"
+placeholder="Middle Name"
+autocomplete="additional-name"
+required>
+
+<span class="auth-input-icon">
+👤
+</span>
+
+</div>
+
+</div>
+
+
+<!-- LAST NAME -->
+
+<div class="auth-group">
+
+<label for="signupLastName">
+LAST NAME
+</label>
+
+<div class="auth-input-wrap">
+
+<input
+class="auth-input"
+id="signupLastName"
+type="text"
+maxlength="50"
+placeholder="Last Name"
+autocomplete="family-name"
+required>
+
+<span class="auth-input-icon">
+👤
+</span>
+
+</div>
+
+</div>
+
+
+<!-- PASSWORD -->
+
 <div class="auth-group">
 
 <label for="signupPassword">
@@ -2093,6 +2179,8 @@ aria-label="Show password">
 
 </div>
 
+
+<!-- CONFIRM PASSWORD -->
 
 <div class="auth-group">
 
@@ -3980,7 +4068,7 @@ $("accountCreatedPanel").style.display="none";
 
 setTimeout(()=>{
 
-$("signupPassword")?.focus();
+$("signupFirstName")?.focus();
 
 },100);
 
@@ -4175,6 +4263,7 @@ button.textContent=
 
 /* =========================================================
    CREATE ACCOUNT
+   FIRST NAME + MIDDLE NAME + LAST NAME
 ========================================================= */
 
 async function createAccount(event){
@@ -4182,15 +4271,107 @@ async function createAccount(event){
 event.preventDefault();
 
 
+const firstName=
+$("signupFirstName")
+.value
+.trim();
+
+const middleName=
+$("signupMiddleName")
+.value
+.trim();
+
+const lastName=
+$("signupLastName")
+.value
+.trim();
+
 const password=
-$("signupPassword").value;
+$("signupPassword")
+.value;
 
 const confirm=
-$("signupConfirmPassword").value;
+$("signupConfirmPassword")
+.value;
 
 
 clearAuthMessages();
 
+
+/* NAME VALIDATION */
+
+if(!firstName){
+
+showSignupMessage(
+"Fadlan geli First Name-ka."
+);
+
+$("signupFirstName")?.focus();
+
+return;
+
+}
+
+
+if(!middleName){
+
+showSignupMessage(
+"Fadlan geli Middle Name-ka."
+);
+
+$("signupMiddleName")?.focus();
+
+return;
+
+}
+
+
+if(!lastName){
+
+showSignupMessage(
+"Fadlan geli Last Name-ka."
+);
+
+$("signupLastName")?.focus();
+
+return;
+
+}
+
+
+/* NAME LENGTH */
+
+if(
+firstName.length<1 ||
+middleName.length<1 ||
+lastName.length<1
+){
+
+showSignupMessage(
+"Magacyadu waa inay lahaadaan ugu yaraan 1 character."
+);
+
+return;
+
+}
+
+
+if(
+firstName.length>50 ||
+middleName.length>50 ||
+lastName.length>50
+){
+
+showSignupMessage(
+"Magac kasta waa inuu ka yar yahay 50 characters."
+);
+
+return;
+
+}
+
+
+/* PASSWORD VALIDATION */
 
 if(password.length<8){
 
@@ -4252,7 +4433,15 @@ headers:{
 },
 
 body:JSON.stringify({
-password
+
+firstName:firstName,
+
+middleName:middleName,
+
+lastName:lastName,
+
+password:password
+
 })
 
 }
@@ -4295,6 +4484,14 @@ return;
 
 }
 
+
+/* CLEAR SIGNUP FORM */
+
+$("signupFirstName").value="";
+
+$("signupMiddleName").value="";
+
+$("signupLastName").value="";
 
 $("signupPassword").value="";
 
@@ -4451,6 +4648,12 @@ haleelCurrentAccountId="";
 $("loginAccountId").value="";
 
 $("loginPassword").value="";
+
+$("signupFirstName").value="";
+
+$("signupMiddleName").value="";
+
+$("signupLastName").value="";
 
 $("signupPassword").value="";
 
