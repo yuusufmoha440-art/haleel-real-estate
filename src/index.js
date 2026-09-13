@@ -4,6 +4,7 @@ const SESSION_DAYS = 30;
 const PBKDF2_ITERATIONS = 10000;
 const PASSWORD_HASH_LENGTH = 256;
 
+
 // ============================================================
 // MAIN WORKER
 // ============================================================
@@ -30,6 +31,7 @@ export default {
       }
 
       return env.ASSETS.fetch(request);
+
     } catch (error) {
       console.error("WORKER ERROR:", error);
 
@@ -50,6 +52,7 @@ export default {
 // ============================================================
 
 async function signup(request, env) {
+
   if (request.method !== "POST") {
     return json(
       {
@@ -82,6 +85,7 @@ async function signup(request, env) {
     );
   }
 
+
   // ----------------------------------------------------------
   // READ SIGNUP DATA
   // ----------------------------------------------------------
@@ -108,6 +112,7 @@ async function signup(request, env) {
   const lastName = body.lastName.trim();
   const phoneNumber = body.phoneNumber.trim();
   const password = body.password;
+
 
   // ----------------------------------------------------------
   // NAME VALIDATION
@@ -154,6 +159,7 @@ async function signup(request, env) {
     );
   }
 
+
   // ----------------------------------------------------------
   // PHONE NUMBER VALIDATION
   // ----------------------------------------------------------
@@ -188,6 +194,7 @@ async function signup(request, env) {
     );
   }
 
+
   // ----------------------------------------------------------
   // PASSWORD VALIDATION
   // ----------------------------------------------------------
@@ -213,6 +220,7 @@ async function signup(request, env) {
     );
   }
 
+
   // ----------------------------------------------------------
   // CHECK DUPLICATE PHONE NUMBER
   // ----------------------------------------------------------
@@ -229,8 +237,13 @@ async function signup(request, env) {
       `)
       .bind(phoneNumber)
       .first();
+
   } catch (error) {
-    console.error("PHONE CHECK ERROR:", error);
+
+    console.error(
+      "PHONE CHECK ERROR:",
+      error
+    );
 
     return json(
       {
@@ -252,6 +265,7 @@ async function signup(request, env) {
     );
   }
 
+
   // ----------------------------------------------------------
   // GET NEXT ACCOUNT ID
   // ----------------------------------------------------------
@@ -259,6 +273,7 @@ async function signup(request, env) {
   let sequence;
 
   try {
+
     sequence = await env.ACCOUNTS_DB
       .prepare(`
         SELECT next_id
@@ -267,7 +282,9 @@ async function signup(request, env) {
         LIMIT 1
       `)
       .first();
+
   } catch (error) {
+
     console.error(
       "ACCOUNT SEQUENCE READ ERROR:",
       error
@@ -311,6 +328,7 @@ async function signup(request, env) {
     );
   }
 
+
   // ----------------------------------------------------------
   // HASH PASSWORD
   // ----------------------------------------------------------
@@ -318,8 +336,12 @@ async function signup(request, env) {
   let passwordHash;
 
   try {
-    passwordHash = await hashPassword(password);
+
+    passwordHash =
+      await hashPassword(password);
+
   } catch (error) {
+
     console.error(
       "PASSWORD HASH ERROR:",
       error
@@ -335,6 +357,7 @@ async function signup(request, env) {
     );
   }
 
+
   // ----------------------------------------------------------
   // CREATE SESSION
   // ----------------------------------------------------------
@@ -342,8 +365,12 @@ async function signup(request, env) {
   let session;
 
   try {
-    session = await buildSession(accountId);
+
+    session =
+      await buildSession(accountId);
+
   } catch (error) {
+
     console.error(
       "SESSION BUILD ERROR:",
       error
@@ -359,12 +386,15 @@ async function signup(request, env) {
     );
   }
 
+
   // ----------------------------------------------------------
   // SAVE USER
   // ----------------------------------------------------------
 
   try {
+
     await env.ACCOUNTS_DB.batch([
+
       env.ACCOUNTS_DB
         .prepare(`
           INSERT INTO users (
@@ -410,7 +440,9 @@ async function signup(request, env) {
           session.expiresAt
         )
     ]);
+
   } catch (error) {
+
     console.error(
       "SIGNUP DATABASE ERROR:",
       error
@@ -426,12 +458,14 @@ async function signup(request, env) {
     );
   }
 
+
   // ----------------------------------------------------------
   // FORMAT ACCOUNT ID
   // ----------------------------------------------------------
 
   const formattedAccountId =
     String(accountId).padStart(7, "0");
+
 
   return new Response(
     JSON.stringify({
@@ -445,11 +479,16 @@ async function signup(request, env) {
     }),
     {
       status: 201,
+
       headers: {
         "Content-Type":
           "application/json; charset=UTF-8",
-        "Cache-Control": "no-store",
-        "Set-Cookie": session.cookie
+
+        "Cache-Control":
+          "no-store",
+
+        "Set-Cookie":
+          session.cookie
       }
     }
   );
@@ -461,6 +500,7 @@ async function signup(request, env) {
 // ============================================================
 
 async function login(request, env) {
+
   if (request.method !== "POST") {
     return json(
       {
@@ -494,6 +534,7 @@ async function login(request, env) {
     );
   }
 
+
   const accountId =
     String(body.accountId || "").trim();
 
@@ -501,6 +542,7 @@ async function login(request, env) {
     typeof body.password === "string"
       ? body.password
       : "";
+
 
   // ----------------------------------------------------------
   // ACCOUNT ID VALIDATION
@@ -525,6 +567,7 @@ async function login(request, env) {
     return invalidLogin();
   }
 
+
   // ----------------------------------------------------------
   // FIND USER
   // ----------------------------------------------------------
@@ -532,6 +575,7 @@ async function login(request, env) {
   let user;
 
   try {
+
     user = await env.ACCOUNTS_DB
       .prepare(`
         SELECT
@@ -547,7 +591,9 @@ async function login(request, env) {
       `)
       .bind(numericAccountId)
       .first();
+
   } catch (error) {
+
     console.error(
       "LOGIN DATABASE ERROR:",
       error
@@ -567,6 +613,7 @@ async function login(request, env) {
     return invalidLogin();
   }
 
+
   // ----------------------------------------------------------
   // VERIFY PASSWORD
   // ----------------------------------------------------------
@@ -581,12 +628,15 @@ async function login(request, env) {
   let passwordCorrect;
 
   try {
+
     passwordCorrect =
       await verifyPassword(
         password,
         user.password_hash
       );
+
   } catch (error) {
+
     console.error(
       "PASSWORD VERIFY ERROR:",
       error
@@ -599,6 +649,7 @@ async function login(request, env) {
     return invalidLogin();
   }
 
+
   // ----------------------------------------------------------
   // CREATE LOGIN SESSION
   // ----------------------------------------------------------
@@ -606,11 +657,14 @@ async function login(request, env) {
   let session;
 
   try {
+
     session =
       await buildSession(
         Number(user.account_id)
       );
+
   } catch (error) {
+
     console.error(
       "LOGIN SESSION BUILD ERROR:",
       error
@@ -626,11 +680,13 @@ async function login(request, env) {
     );
   }
 
+
   // ----------------------------------------------------------
   // SAVE LOGIN SESSION
   // ----------------------------------------------------------
 
   try {
+
     await env.ACCOUNTS_DB
       .prepare(`
         INSERT INTO sessions (
@@ -646,7 +702,9 @@ async function login(request, env) {
         session.expiresAt
       )
       .run();
+
   } catch (error) {
+
     console.error(
       "LOGIN SESSION ERROR:",
       error
@@ -662,6 +720,7 @@ async function login(request, env) {
     );
   }
 
+
   // ----------------------------------------------------------
   // LOGIN SUCCESS
   // ----------------------------------------------------------
@@ -669,27 +728,38 @@ async function login(request, env) {
   return new Response(
     JSON.stringify({
       success: true,
+
       accountId:
         String(user.account_id)
           .padStart(7, "0"),
+
       firstName:
         user.first_name || "",
+
       middleName:
         user.middle_name || "",
+
       lastName:
         user.last_name || "",
+
       phoneNumber:
         user.phone_number || "",
+
       message:
         "Login successful."
     }),
     {
       status: 200,
+
       headers: {
         "Content-Type":
           "application/json; charset=UTF-8",
-        "Cache-Control": "no-store",
-        "Set-Cookie": session.cookie
+
+        "Cache-Control":
+          "no-store",
+
+        "Set-Cookie":
+          session.cookie
       }
     }
   );
@@ -701,6 +771,7 @@ async function login(request, env) {
 // ============================================================
 
 function invalidLogin() {
+
   return json(
     {
       success: false,
@@ -717,6 +788,7 @@ function invalidLogin() {
 // ============================================================
 
 async function getCurrentUser(request, env) {
+
   if (request.method !== "GET") {
     return json(
       {
@@ -738,6 +810,7 @@ async function getCurrentUser(request, env) {
     );
   }
 
+
   // ----------------------------------------------------------
   // GET SESSION COOKIE
   // ----------------------------------------------------------
@@ -758,6 +831,7 @@ async function getCurrentUser(request, env) {
     );
   }
 
+
   // ----------------------------------------------------------
   // HASH SESSION TOKEN
   // ----------------------------------------------------------
@@ -765,9 +839,12 @@ async function getCurrentUser(request, env) {
   let tokenHash;
 
   try {
+
     tokenHash =
       await sha256(token);
+
   } catch (error) {
+
     console.error(
       "TOKEN HASH ERROR:",
       error
@@ -782,6 +859,7 @@ async function getCurrentUser(request, env) {
     );
   }
 
+
   // ----------------------------------------------------------
   // FIND ACTIVE SESSION
   // ----------------------------------------------------------
@@ -789,6 +867,7 @@ async function getCurrentUser(request, env) {
   let session;
 
   try {
+
     session = await env.ACCOUNTS_DB
       .prepare(`
         SELECT
@@ -804,7 +883,9 @@ async function getCurrentUser(request, env) {
         new Date().toISOString()
       )
       .first();
+
   } catch (error) {
+
     console.error(
       "SESSION LOOKUP ERROR:",
       error
@@ -819,11 +900,13 @@ async function getCurrentUser(request, env) {
     );
   }
 
+
   // ----------------------------------------------------------
   // SESSION INVALID / EXPIRED
   // ----------------------------------------------------------
 
   if (!session) {
+
     return new Response(
       JSON.stringify({
         success: false,
@@ -831,17 +914,21 @@ async function getCurrentUser(request, env) {
       }),
       {
         status: 401,
+
         headers: {
           "Content-Type":
             "application/json; charset=UTF-8",
+
           "Cache-Control":
             "no-store",
+
           "Set-Cookie":
             clearSessionCookie()
         }
       }
     );
   }
+
 
   // ----------------------------------------------------------
   // GET USER
@@ -850,6 +937,7 @@ async function getCurrentUser(request, env) {
   let user;
 
   try {
+
     user = await env.ACCOUNTS_DB
       .prepare(`
         SELECT
@@ -865,7 +953,9 @@ async function getCurrentUser(request, env) {
         Number(session.account_id)
       )
       .first();
+
   } catch (error) {
+
     console.error(
       "CURRENT USER DATABASE ERROR:",
       error
@@ -880,7 +970,9 @@ async function getCurrentUser(request, env) {
     );
   }
 
+
   if (!user) {
+
     return new Response(
       JSON.stringify({
         success: false,
@@ -888,17 +980,21 @@ async function getCurrentUser(request, env) {
       }),
       {
         status: 401,
+
         headers: {
           "Content-Type":
             "application/json; charset=UTF-8",
+
           "Cache-Control":
             "no-store",
+
           "Set-Cookie":
             clearSessionCookie()
         }
       }
     );
   }
+
 
   // ----------------------------------------------------------
   // RETURN CURRENT USER
@@ -907,15 +1003,20 @@ async function getCurrentUser(request, env) {
   return json({
     success: true,
     loggedIn: true,
+
     accountId:
       String(session.account_id)
         .padStart(7, "0"),
+
     firstName:
       user.first_name || "",
+
     middleName:
       user.middle_name || "",
+
     lastName:
       user.last_name || "",
+
     phoneNumber:
       user.phone_number || ""
   });
@@ -927,6 +1028,7 @@ async function getCurrentUser(request, env) {
 // ============================================================
 
 async function logout(request, env) {
+
   if (request.method !== "POST") {
     return json(
       {
@@ -944,8 +1046,11 @@ async function logout(request, env) {
       "haleel_session"
     );
 
+
   if (token && env.ACCOUNTS_DB) {
+
     try {
+
       const tokenHash =
         await sha256(token);
 
@@ -956,13 +1061,16 @@ async function logout(request, env) {
         `)
         .bind(tokenHash)
         .run();
+
     } catch (error) {
+
       console.error(
         "LOGOUT DATABASE ERROR:",
         error
       );
     }
   }
+
 
   return new Response(
     JSON.stringify({
@@ -972,11 +1080,14 @@ async function logout(request, env) {
     }),
     {
       status: 200,
+
       headers: {
         "Content-Type":
           "application/json; charset=UTF-8",
+
         "Cache-Control":
           "no-store",
+
         "Set-Cookie":
           clearSessionCookie()
       }
@@ -990,6 +1101,7 @@ async function logout(request, env) {
 // ============================================================
 
 async function buildSession(accountId) {
+
   const tokenBytes =
     new Uint8Array(32);
 
@@ -997,13 +1109,16 @@ async function buildSession(accountId) {
     tokenBytes
   );
 
+
   const token =
     bytesToBase64Url(
       tokenBytes
     );
 
+
   const tokenHash =
     await sha256(token);
+
 
   const expiresAt =
     new Date(
@@ -1015,6 +1130,7 @@ async function buildSession(accountId) {
       1000
     ).toISOString();
 
+
   const cookie =
     `haleel_session=${token}; ` +
     `HttpOnly; ` +
@@ -1022,6 +1138,7 @@ async function buildSession(accountId) {
     `SameSite=Lax; ` +
     `Path=/; ` +
     `Max-Age=${SESSION_DAYS * 24 * 60 * 60}`;
+
 
   return {
     accountId,
@@ -1038,6 +1155,7 @@ async function buildSession(accountId) {
 // ============================================================
 
 function clearSessionCookie() {
+
   return (
     "haleel_session=; " +
     "HttpOnly; " +
@@ -1054,16 +1172,19 @@ function clearSessionCookie() {
 // ============================================================
 
 async function sha256(value) {
+
   const data =
     new TextEncoder().encode(
       value
     );
+
 
   const hash =
     await crypto.subtle.digest(
       "SHA-256",
       data
     );
+
 
   return bytesToBase64Url(
     new Uint8Array(hash)
@@ -1076,10 +1197,14 @@ async function sha256(value) {
 // ============================================================
 
 async function hashPassword(password) {
+
   const salt =
     new Uint8Array(16);
 
-  crypto.getRandomValues(salt);
+  crypto.getRandomValues(
+    salt
+  );
+
 
   const key =
     await crypto.subtle.importKey(
@@ -1092,20 +1217,29 @@ async function hashPassword(password) {
       ["deriveBits"]
     );
 
+
   const bits =
     await crypto.subtle.deriveBits(
       {
         name: "PBKDF2",
+
         salt: salt,
-        iterations: PBKDF2_ITERATIONS,
+
+        iterations:
+          PBKDF2_ITERATIONS,
+
         hash: "SHA-256"
       },
+
       key,
+
       PASSWORD_HASH_LENGTH
     );
 
+
   const hash =
     new Uint8Array(bits);
+
 
   return (
     "pbkdf2$" +
@@ -1126,8 +1260,10 @@ async function verifyPassword(
   password,
   storedHash
 ) {
+
   const parts =
     storedHash.split("$");
+
 
   if (
     parts.length !== 4 ||
@@ -1136,8 +1272,10 @@ async function verifyPassword(
     return false;
   }
 
+
   const iterations =
     Number(parts[1]);
+
 
   if (
     !Number.isInteger(iterations) ||
@@ -1146,11 +1284,36 @@ async function verifyPassword(
     return false;
   }
 
-  const salt =
-    base64UrlToBytes(parts[2]);
 
-  const expectedHash =
-    base64UrlToBytes(parts[3]);
+  let salt;
+  let expectedHash;
+
+
+  try {
+
+    salt =
+      base64UrlToBytes(
+        parts[2]
+      );
+
+    expectedHash =
+      base64UrlToBytes(
+        parts[3]
+      );
+
+  } catch {
+
+    return false;
+  }
+
+
+  if (
+    salt.length === 0 ||
+    expectedHash.length === 0
+  ) {
+    return false;
+  }
+
 
   const key =
     await crypto.subtle.importKey(
@@ -1163,20 +1326,28 @@ async function verifyPassword(
       ["deriveBits"]
     );
 
+
   const bits =
     await crypto.subtle.deriveBits(
       {
         name: "PBKDF2",
+
         salt: salt,
+
         iterations: iterations,
+
         hash: "SHA-256"
       },
+
       key,
+
       expectedHash.length * 8
     );
 
+
   const actualHash =
     new Uint8Array(bits);
+
 
   return timingSafeEqual(
     actualHash,
@@ -1190,20 +1361,25 @@ async function verifyPassword(
 // ============================================================
 
 function timingSafeEqual(a, b) {
+
   if (a.length !== b.length) {
     return false;
   }
 
+
   let difference = 0;
+
 
   for (
     let i = 0;
     i < a.length;
     i++
   ) {
+
     difference |=
       a[i] ^ b[i];
   }
+
 
   return difference === 0;
 }
@@ -1214,26 +1390,34 @@ function timingSafeEqual(a, b) {
 // ============================================================
 
 function getCookie(request, name) {
+
   const cookieHeader =
     request.headers.get("Cookie");
+
 
   if (!cookieHeader) {
     return null;
   }
 
+
   const cookies =
     cookieHeader.split(";");
 
+
   for (const cookie of cookies) {
+
     const trimmed =
       cookie.trim();
+
 
     const separator =
       trimmed.indexOf("=");
 
+
     if (separator === -1) {
       continue;
     }
+
 
     const key =
       trimmed.slice(
@@ -1241,15 +1425,18 @@ function getCookie(request, name) {
         separator
       );
 
+
     const value =
       trimmed.slice(
         separator + 1
       );
 
+
     if (key === name) {
       return value || null;
     }
   }
+
 
   return null;
 }
@@ -1260,9 +1447,13 @@ function getCookie(request, name) {
 // ============================================================
 
 async function readJSON(request) {
+
   try {
+
     return await request.json();
+
   } catch {
+
     return null;
   }
 }
@@ -1276,13 +1467,16 @@ function json(
   data,
   status = 200
 ) {
+
   return new Response(
     JSON.stringify(data),
     {
       status,
+
       headers: {
         "Content-Type":
           "application/json; charset=UTF-8",
+
         "Cache-Control":
           "no-store"
       }
@@ -1296,12 +1490,16 @@ function json(
 // ============================================================
 
 function bytesToBase64Url(bytes) {
+
   let binary = "";
 
+
   for (const byte of bytes) {
+
     binary +=
       String.fromCharCode(byte);
   }
+
 
   return btoa(binary)
     .replace(/\+/g, "-")
@@ -1315,32 +1513,39 @@ function bytesToBase64Url(bytes) {
 // ============================================================
 
 function base64UrlToBytes(value) {
+
   const base64 =
     value
       .replace(/-/g, "+")
       .replace(/_/g, "/");
+
 
   const padding =
     "=".repeat(
       (4 - (base64.length % 4)) % 4
     );
 
+
   const binary =
     atob(base64 + padding);
+
 
   const bytes =
     new Uint8Array(
       binary.length
     );
 
+
   for (
     let i = 0;
     i < binary.length;
     i++
   ) {
+
     bytes[i] =
       binary.charCodeAt(i);
   }
+
 
   return bytes;
 }
