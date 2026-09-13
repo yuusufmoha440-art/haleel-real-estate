@@ -1272,12 +1272,418 @@ transform:translateY(0);
 }
 }
 
+
+/* =========================================================
+   HALEEL AUTHENTICATION
+========================================================= */
+.auth-gate{
+  position:fixed;
+  inset:0;
+  z-index:99999;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:22px;
+  overflow:auto;
+  background:
+    radial-gradient(circle at 10% 10%,rgba(0,108,194,.30),transparent 30%),
+    radial-gradient(circle at 90% 90%,rgba(32,178,107,.14),transparent 28%),
+    linear-gradient(135deg,#061b2d,#006CC2);
+}
+.auth-gate::before{
+  content:"";
+  position:absolute;
+  width:420px;height:420px;
+  border-radius:50%;
+  background:rgba(255,255,255,.08);
+  top:-180px;right:-120px;
+  animation:authFloat 7s ease-in-out infinite;
+}
+.auth-gate::after{
+  content:"";
+  position:absolute;
+  width:300px;height:300px;
+  border-radius:50%;
+  background:rgba(32,178,107,.08);
+  bottom:-140px;left:-80px;
+  animation:authFloat 9s ease-in-out infinite reverse;
+}
+.auth-shell{
+  position:relative;
+  z-index:2;
+  width:min(980px,100%);
+  min-height:620px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  overflow:hidden;
+  border-radius:30px;
+  background:rgba(255,255,255,.96);
+  border:1px solid rgba(255,255,255,.35);
+  box-shadow:0 35px 100px rgba(0,20,40,.32);
+  animation:authIn .65s cubic-bezier(.2,.8,.2,1);
+}
+.auth-brand-panel{
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding:55px;
+  color:#fff;
+  overflow:hidden;
+  background:
+    linear-gradient(135deg,rgba(0,41,72,.93),rgba(0,108,194,.70)),
+    url("https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1400&q=80");
+  background-size:cover;
+  background-position:center;
+}
+.auth-brand-panel::after{
+  content:"";
+  position:absolute;
+  width:180px;height:180px;
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:50%;
+  right:-55px;bottom:-55px;
+}
+.auth-logo{
+  font-size:34px;
+  font-weight:950;
+  letter-spacing:3px;
+  margin-bottom:8px;
+}
+.auth-tag{
+  font-size:12px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  opacity:.78;
+}
+.auth-brand-panel h1{
+  margin:38px 0 16px;
+  font-size:clamp(38px,5vw,58px);
+  line-height:1.02;
+}
+.auth-brand-panel p{
+  max-width:420px;
+  line-height:1.8;
+  color:rgba(255,255,255,.86);
+}
+.auth-feature{
+  margin-top:30px;
+  display:grid;
+  gap:11px;
+}
+.auth-feature span{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-weight:700;
+  font-size:14px;
+}
+.auth-form-panel{
+  padding:42px clamp(24px,5vw,58px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.auth-form-wrap{
+  width:100%;
+  max-width:390px;
+}
+.auth-form-wrap h2{
+  color:#081b2e;
+  font-size:32px;
+  margin-bottom:8px;
+}
+.auth-form-wrap > p{
+  color:#718096;
+  line-height:1.6;
+  margin-bottom:24px;
+}
+.auth-form-view{
+  animation:authFormIn .35s ease;
+}
+.auth-label{
+  display:block;
+  margin:0 0 7px;
+  color:#53677a;
+  font-size:13px;
+  font-weight:800;
+}
+.auth-input{
+  width:100%;
+  height:52px;
+  border:1px solid #dce4ec;
+  border-radius:14px;
+  padding:0 15px;
+  outline:none;
+  background:#fff;
+  color:#1d3044;
+  margin-bottom:14px;
+  transition:.25s;
+}
+.auth-input:focus{
+  border-color:#006CC2;
+  box-shadow:0 0 0 4px rgba(0,108,194,.10);
+  transform:translateY(-1px);
+}
+.auth-name-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+.auth-password-wrap{position:relative}
+.auth-password-wrap .auth-input{padding-right:50px}
+.auth-eye{
+  position:absolute;
+  right:10px;
+  top:7px;
+  width:38px;height:38px;
+  border:0;
+  border-radius:10px;
+  background:transparent;
+}
+.auth-primary{
+  width:100%;
+  height:52px;
+  border:0;
+  border-radius:14px;
+  color:#fff;
+  font-weight:900;
+  background:linear-gradient(135deg,#006CC2,#0b8bea);
+  box-shadow:0 12px 28px rgba(0,108,194,.25);
+  transition:.25s;
+}
+.auth-primary:hover{transform:translateY(-2px);box-shadow:0 16px 34px rgba(0,108,194,.32)}
+.auth-primary:disabled{opacity:.65;cursor:wait;transform:none}
+.auth-secondary{
+  width:100%;
+  height:50px;
+  margin-top:10px;
+  border:1px solid rgba(0,108,194,.22);
+  border-radius:14px;
+  color:#006CC2;
+  background:#f7fbff;
+  font-weight:800;
+}
+.auth-link{
+  border:0;background:none;color:#006CC2;
+  font-weight:800;cursor:pointer;
+}
+.auth-bottom{
+  margin-top:18px;
+  text-align:center;
+  color:#718096;
+  font-size:14px;
+}
+.auth-message{
+  min-height:20px;
+  margin:2px 0 12px;
+  font-size:13px;
+  font-weight:700;
+  color:#E5484D;
+}
+.auth-success{
+  color:#159957;
+}
+.auth-account-preview{
+  padding:14px;
+  margin:0 0 15px;
+  border-radius:15px;
+  background:#eaf5ff;
+  color:#006CC2;
+  text-align:center;
+  font-weight:800;
+  animation:authPulse 1.5s ease-in-out infinite;
+}
+.auth-account-preview strong{
+  display:block;
+  font-size:28px;
+  letter-spacing:2px;
+  margin-top:4px;
+}
+.auth-note{
+  margin-top:12px;
+  color:#718096;
+  font-size:12px;
+  line-height:1.5;
+  text-align:center;
+}
+body.dark .auth-shell{background:#131c26}
+body.dark .auth-form-wrap h2{color:#f1f5f9}
+body.dark .auth-form-wrap>p,
+body.dark .auth-bottom,
+body.dark .auth-note,
+body.dark .auth-label{color:#91a0b1}
+body.dark .auth-input{
+  background:#151e28;color:#e8eef5;border-color:#2b3948;
+}
+body.dark .auth-secondary{background:#182432;border-color:#2b5270}
+body.dark .auth-account-preview{background:#102d43;color:#65b9ff}
+
+@keyframes authIn{
+  from{opacity:0;transform:translateY(24px) scale(.985)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+@keyframes authFormIn{
+  from{opacity:0;transform:translateX(12px)}
+  to{opacity:1;transform:translateX(0)}
+}
+@keyframes authFloat{
+  0%,100%{transform:translateY(0) rotate(0deg)}
+  50%{transform:translateY(18px) rotate(8deg)}
+}
+@keyframes authPulse{
+  0%,100%{box-shadow:0 0 0 0 rgba(0,108,194,.05)}
+  50%{box-shadow:0 0 0 7px rgba(0,108,194,.06)}
+}
+@media(max-width:780px){
+  .auth-shell{grid-template-columns:1fr;min-height:auto;max-width:520px}
+  .auth-brand-panel{padding:34px 28px;min-height:245px}
+  .auth-brand-panel h1{font-size:38px;margin:22px 0 10px}
+  .auth-feature{display:none}
+  .auth-form-panel{padding:30px 24px 34px}
+}
+@media(max-width:430px){
+  .auth-gate{padding:10px}
+  .auth-shell{border-radius:22px}
+  .auth-brand-panel{padding:28px 22px}
+  .auth-form-panel{padding:26px 18px}
+  .auth-name-grid{grid-template-columns:1fr}
+}
+
 </style>
 </head>
 
 <body>
 
-<section class="app">
+
+<!-- =========================================================
+     HALEEL AUTHENTICATION GATE
+========================================================= -->
+<section class="auth-gate" id="authGate">
+  <div class="auth-shell">
+    <div class="auth-brand-panel">
+      <div class="auth-logo">HALEEL</div>
+      <div class="auth-tag">Real Estate • Hogaanka Kiraynta</div>
+      <h1>Ku soo dhowow Haleel.</h1>
+      <p>
+        Gal account-kaaga si aad u isticmaasho adeegyada gudaha website-ka.
+        Account cusubna waxaad ku samaysan kartaa dhowr tallaabo.
+      </p>
+      <div class="auth-feature">
+        <span>🔐 ID 7-digit ah oo gaar kuu ah</span>
+        <span>🛡️ Password ammaan ah oo backend lagu kaydiyo</span>
+        <span>⚡ Sign In degdeg ah</span>
+      </div>
+    </div>
+
+    <div class="auth-form-panel">
+      <div class="auth-form-wrap">
+
+        <div class="auth-form-view" id="signInView">
+          <h2>Sign In</h2>
+          <p>Geli 7-digit Account ID-gaaga iyo Password-kaaga.</p>
+
+          <label class="auth-label" for="authLoginId">Account ID</label>
+          <input
+            class="auth-input"
+            id="authLoginId"
+            type="text"
+            inputmode="numeric"
+            maxlength="7"
+            autocomplete="username"
+            placeholder="0000001"
+          >
+
+          <label class="auth-label" for="authLoginPassword">Password</label>
+          <div class="auth-password-wrap">
+            <input
+              class="auth-input"
+              id="authLoginPassword"
+              type="password"
+              autocomplete="current-password"
+              placeholder="Password"
+            >
+            <button class="auth-eye" type="button" onclick="toggleAuthPassword('authLoginPassword',this)">👁️</button>
+          </div>
+
+          <div class="auth-message" id="authLoginMessage"></div>
+
+          <button class="auth-primary" id="authLoginButton" type="button" onclick="authLogin()">
+            🔐 Sign In
+          </button>
+
+          <button class="auth-secondary" type="button" onclick="showCreateAccount()">
+            ＋ Create new account
+          </button>
+
+          <div class="auth-note">
+            Account ID waa 7 lambar. Tusaale: <strong>0000001</strong>
+          </div>
+        </div>
+
+        <div class="auth-form-view" id="createAccountView" style="display:none">
+          <h2>Create Account</h2>
+          <p>Buuxi xogta hoose. Backend-ku wuxuu kuu samaynayaa ID 7-digit ah.</p>
+
+          <div class="auth-name-grid">
+            <div>
+              <label class="auth-label" for="authFirstName">First Name</label>
+              <input class="auth-input" id="authFirstName" autocomplete="given-name" placeholder="First Name">
+            </div>
+            <div>
+              <label class="auth-label" for="authMiddleName">Middle Name</label>
+              <input class="auth-input" id="authMiddleName" autocomplete="additional-name" placeholder="Middle Name">
+            </div>
+          </div>
+
+          <label class="auth-label" for="authLastName">Last Name</label>
+          <input class="auth-input" id="authLastName" autocomplete="family-name" placeholder="Last Name">
+
+          <label class="auth-label" for="authNumber">Number</label>
+          <input
+            class="auth-input"
+            id="authNumber"
+            type="tel"
+            inputmode="tel"
+            autocomplete="tel"
+            placeholder="+252 90 0000000"
+          >
+
+          <label class="auth-label" for="authSignupPassword">Password</label>
+          <div class="auth-password-wrap">
+            <input class="auth-input" id="authSignupPassword" type="password" autocomplete="new-password" placeholder="Password">
+            <button class="auth-eye" type="button" onclick="toggleAuthPassword('authSignupPassword',this)">👁️</button>
+          </div>
+
+          <label class="auth-label" for="authConfirmPassword">Confirm Password</label>
+          <div class="auth-password-wrap">
+            <input class="auth-input" id="authConfirmPassword" type="password" autocomplete="new-password" placeholder="Confirm Password">
+            <button class="auth-eye" type="button" onclick="toggleAuthPassword('authConfirmPassword',this)">👁️</button>
+          </div>
+
+          <div class="auth-message" id="authSignupMessage"></div>
+
+          <div id="authCreatedAccount" style="display:none" class="auth-account-preview">
+            Account ID-gaaga cusub:
+            <strong id="authCreatedAccountId">0000000</strong>
+          </div>
+
+          <button class="auth-primary" id="authCreateButton" type="button" onclick="createAccount()">
+            ✨ Create Account
+          </button>
+
+          <div class="auth-bottom">
+            Hore account ma u leedahay?
+            <button class="auth-link" type="button" onclick="showSignIn()">Sign In</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="app" style="display:none">
 
 <aside class="sidebar">
 
@@ -2074,6 +2480,15 @@ Website Settings.
 <div class="settings-grid">
 
 <div class="setting-card">
+  <div class="setting-icon">🚪</div>
+  <h3>Log Out</h3>
+  <p>Ka bax account-kaaga Haleel.</p>
+  <br>
+  <button class="btn btn-primary" onclick="logout()">Log Out</button>
+</div>
+
+
+<div class="setting-card">
 
 <div class="setting-icon">🎨</div>
 
@@ -2423,6 +2838,283 @@ function $(id){
 return document.getElementById(id);
 }
 
+
+
+/* =========================================================
+   HALEEL ACCOUNT AUTH — 7 DIGIT ID
+   Backend: Cloudflare Worker + D1
+========================================================= */
+const HALEEL_AUTH_API =
+  "https://haleel-real-estate121.yuusufmoha440.workers.dev";
+
+function authApi(path, body=null){
+  const headers={"Content-Type":"application/json"};
+  const token=localStorage.getItem("haleelSessionToken");
+  if(token) headers.Authorization="Bearer "+token;
+
+  return fetch(HALEEL_AUTH_API+path,{
+    method:body ? "POST" : "GET",
+    headers,
+    body:body ? JSON.stringify(body) : undefined
+  }).then(async response=>{
+    let data={};
+    try{ data=await response.json(); }catch(e){}
+    if(!response.ok){
+      throw new Error(data.error || "Request failed.");
+    }
+    return data;
+  });
+}
+
+function authMessage(id,message="",success=false){
+  const el=$(id);
+  if(!el)return;
+  el.textContent=message;
+  el.classList.toggle("auth-success",success);
+}
+
+function showSignIn(){
+  $("signInView").style.display="block";
+  $("createAccountView").style.display="none";
+  authMessage("authLoginMessage","");
+  setTimeout(()=>$("authLoginId")?.focus(),80);
+}
+
+function showCreateAccount(){
+  $("signInView").style.display="none";
+  $("createAccountView").style.display="block";
+  authMessage("authSignupMessage","");
+  $("authCreatedAccount").style.display="none";
+  setTimeout(()=>$("authFirstName")?.focus(),80);
+}
+
+function toggleAuthPassword(id,button){
+  const input=$(id);
+  if(!input)return;
+  const visible=input.type==="text";
+  input.type=visible?"password":"text";
+  button.textContent=visible?"👁️":"🙈";
+}
+
+function setAuthBusy(button,busy,text){
+  if(!button)return;
+  button.disabled=busy;
+  if(busy){
+    button.dataset.originalText=button.textContent;
+    button.textContent=text;
+  }else{
+    button.textContent=button.dataset.originalText || button.textContent;
+  }
+}
+
+function openDashboardForUser(user){
+  const name =
+    user?.name ||
+    [user?.firstName,user?.middleName,user?.lastName].filter(Boolean).join(" ") ||
+    "Haleel Customer";
+
+  const accountId =
+    user?.accountId ||
+    user?.account_id ||
+    "";
+
+  const display=$("userDisplay");
+  if(display){
+    display.innerHTML =
+      `${escapeHTML(name)}<small style="display:block;color:#718096;margin-top:3px">ID: ${escapeHTML(accountId)}</small>`;
+  }
+
+  const gate=$("authGate");
+  if(gate) gate.style.display="none";
+
+  const app=document.querySelector(".app");
+  if(app) app.style.display="block";
+
+  openPage("home");
+}
+
+function lockDashboard(){
+  const app=document.querySelector(".app");
+  if(app) app.style.display="none";
+  const gate=$("authGate");
+  if(gate) gate.style.display="flex";
+}
+
+async function authLogin(){
+  const accountId=$("authLoginId").value.trim();
+  const password=$("authLoginPassword").value;
+  const button=$("authLoginButton");
+
+  authMessage("authLoginMessage","");
+
+  if(!/^\d{7}$/.test(accountId)){
+    authMessage("authLoginMessage","Fadlan geli Account ID ka kooban 7 lambar.");
+    return;
+  }
+  if(!password){
+    authMessage("authLoginMessage","Fadlan geli Password-kaaga.");
+    return;
+  }
+
+  setAuthBusy(button,true,"⏳ Signing In...");
+
+  try{
+    const data=await authApi("/api/login",{
+      accountId,
+      password
+    });
+
+    if(!data.token || !data.user){
+      throw new Error("Login response-ku ma dhamaystirna.");
+    }
+
+    localStorage.setItem("haleelSessionToken",data.token);
+    localStorage.setItem("haleelAccountId",data.user.accountId || accountId);
+
+    openDashboardForUser(data.user);
+  }catch(error){
+    const msg=String(error.message||"");
+
+    if(/account|not found|does not exist|ma jiro/i.test(msg)){
+      authMessage("authLoginMessage","Account ID-ga aad gelisay ma jiro.");
+    }else if(/password|credential|invalid/i.test(msg)){
+      authMessage("authLoginMessage","Password-ka aad gelisay waa khalad.");
+    }else{
+      authMessage("authLoginMessage",msg || "Sign In wuu fashilmay. Fadlan isku day mar kale.");
+    }
+  }finally{
+    setAuthBusy(button,false);
+  }
+}
+
+async function createAccount(){
+  const firstName=$("authFirstName").value.trim();
+  const middleName=$("authMiddleName").value.trim();
+  const lastName=$("authLastName").value.trim();
+  const number=$("authNumber").value.trim();
+  const password=$("authSignupPassword").value;
+  const confirm=$("authConfirmPassword").value;
+  const button=$("authCreateButton");
+
+  authMessage("authSignupMessage","");
+
+  if(!firstName || !middleName || !lastName || !number || !password || !confirm){
+    authMessage("authSignupMessage","Fadlan buuxi dhammaan meelaha.");
+    return;
+  }
+
+  if(password.length<6){
+    authMessage("authSignupMessage","Password-ku waa inuu ahaadaa ugu yaraan 6 xaraf/lambar.");
+    return;
+  }
+
+  if(password!==confirm){
+    authMessage("authSignupMessage","Password iyo Confirm Password isma laha.");
+    return;
+  }
+
+  setAuthBusy(button,true,"⏳ Creating Account...");
+
+  try{
+    const data=await authApi("/api/signup",{
+      firstName,
+      middleName,
+      lastName,
+      number,
+      password
+    });
+
+    const newId =
+      data.accountId ||
+      data.account_id ||
+      data.user?.accountId;
+
+    if(!/^\d{7}$/.test(String(newId||""))){
+      throw new Error("Backend-ku ma soo celin 7-digit Account ID.");
+    }
+
+    $("authCreatedAccountId").textContent=String(newId);
+    $("authCreatedAccount").style.display="block";
+
+    $("authLoginId").value=String(newId);
+    $("authLoginPassword").value="";
+
+    authMessage(
+      "authSignupMessage",
+      "Account-ka waa la sameeyay. ID-gaaga hoos ayuu ku qoran yahay.",
+      true
+    );
+
+    /* Account ID-ga lama sameyn karo mar kale:
+       uniqueness-ka waxaa xaqiijinaya D1 primary key/autoincrement. */
+    setTimeout(()=>{
+      showSignIn();
+      $("authLoginId").value=String(newId);
+      $("authLoginPassword").focus();
+    },1200);
+
+  }catch(error){
+    authMessage(
+      "authSignupMessage",
+      error.message || "Account cusub lama samayn karin."
+    );
+  }finally{
+    setAuthBusy(button,false);
+  }
+}
+
+async function restoreHaleelSession(){
+  lockDashboard();
+
+  const token=localStorage.getItem("haleelSessionToken");
+  if(!token){
+    showSignIn();
+    return;
+  }
+
+  try{
+    const data=await authApi("/api/me");
+    if(!data.user) throw new Error("Session invalid.");
+    openDashboardForUser(data.user);
+  }catch(error){
+    localStorage.removeItem("haleelSessionToken");
+    localStorage.removeItem("haleelAccountId");
+    showSignIn();
+  }
+}
+
+function logout(){
+  localStorage.removeItem("haleelSessionToken");
+  localStorage.removeItem("haleelAccountId");
+  lockDashboard();
+  $("authLoginPassword").value="";
+  showSignIn();
+}
+
+/* 7-digit ID input: digits only */
+document.addEventListener("input",function(event){
+  if(event.target && event.target.id==="authLoginId"){
+    event.target.value=event.target.value.replace(/\D/g,"").slice(0,7);
+  }
+});
+
+/* Enter key support */
+document.addEventListener("keydown",function(event){
+  if(event.key!=="Enter")return;
+  const target=event.target;
+  if(target?.id==="authLoginId" || target?.id==="authLoginPassword"){
+    event.preventDefault();
+    authLogin();
+  }
+  if(target?.id==="authConfirmPassword"){
+    event.preventDefault();
+    createAccount();
+  }
+});
+
+document.addEventListener("DOMContentLoaded",()=>{
+  restoreHaleelSession();
+});
 
 /* =========================================================
    GOOGLE APPS SCRIPT BACKEND
