@@ -7,10 +7,6 @@ export default {
     const url = new URL(request.url);
 
     try {
-      // ======================================================
-      // API ROUTES
-      // ======================================================
-
       if (url.pathname === "/api/signup") {
         return await signup(request, env);
       }
@@ -26,10 +22,6 @@ export default {
       if (url.pathname === "/api/me") {
         return await getCurrentUser(request, env);
       }
-
-      // ======================================================
-      // WEBSITE STATIC FILES
-      // ======================================================
 
       return env.ASSETS.fetch(request);
 
@@ -64,13 +56,7 @@ async function signup(request, env) {
     );
   }
 
-  // ----------------------------------------------------------
-  // Check database binding
-  // ----------------------------------------------------------
-
   if (!env.ACCOUNTS_DB) {
-    console.error("ACCOUNTS_DB binding is missing.");
-
     return json(
       {
         success: false,
@@ -80,23 +66,9 @@ async function signup(request, env) {
     );
   }
 
-  // ----------------------------------------------------------
-  // Read request body
-  // ----------------------------------------------------------
-
   const body = await readJSON(request);
 
-  if (!body) {
-    return json(
-      {
-        success: false,
-        message: "Invalid request."
-      },
-      400
-    );
-  }
-
-  if (typeof body.password !== "string") {
+  if (!body || typeof body.password !== "string") {
     return json(
       {
         success: false,
@@ -107,10 +79,6 @@ async function signup(request, env) {
   }
 
   const password = body.password;
-
-  // ----------------------------------------------------------
-  // Password validation
-  // ----------------------------------------------------------
 
   if (password.length < 8) {
     return json(
@@ -132,20 +100,12 @@ async function signup(request, env) {
     );
   }
 
-  // ----------------------------------------------------------
-  // Hash password
-  // ----------------------------------------------------------
-
   let passwordHash;
 
   try {
     passwordHash = await hashPassword(password);
   } catch (error) {
-
-    console.error(
-      "PASSWORD HASH ERROR:",
-      error
-    );
+    console.error("PASSWORD HASH ERROR:", error);
 
     return json(
       {
@@ -156,14 +116,9 @@ async function signup(request, env) {
     );
   }
 
-  // ----------------------------------------------------------
-  // Read automatic account ID
-  // ----------------------------------------------------------
-
   let sequence;
 
   try {
-
     sequence = await env.ACCOUNTS_DB
       .prepare(`
         SELECT next_id
@@ -174,11 +129,7 @@ async function signup(request, env) {
       .first();
 
   } catch (error) {
-
-    console.error(
-      "ACCOUNT SEQUENCE READ ERROR:",
-      error
-    );
+    console.error("ACCOUNT SEQUENCE READ ERROR:", error);
 
     return json(
       {
@@ -190,11 +141,6 @@ async function signup(request, env) {
   }
 
   if (!sequence) {
-
-    console.error(
-      "ACCOUNT SEQUENCE ROW DOES NOT EXIST."
-    );
-
     return json(
       {
         success: false,
@@ -204,20 +150,13 @@ async function signup(request, env) {
     );
   }
 
-  const accountId = Number(
-    sequence.next_id
-  );
-
-  // ----------------------------------------------------------
-  // Validate account ID
-  // ----------------------------------------------------------
+  const accountId = Number(sequence.next_id);
 
   if (
     !Number.isInteger(accountId) ||
     accountId < 1 ||
     accountId > MAX_ACCOUNT_ID
   ) {
-
     return json(
       {
         success: false,
@@ -227,45 +166,11 @@ async function signup(request, env) {
     );
   }
 
-  // ----------------------------------------------------------
-  // Build login session
-  // ----------------------------------------------------------
-
-  let session;
+  const session = await buildSession(accountId);
 
   try {
 
-    session = await buildSession(
-      accountId
-    );
-
-  } catch (error) {
-
-    console.error(
-      "SESSION BUILD ERROR:",
-      error
-    );
-
-    return json(
-      {
-        success: false,
-        message: "Unable to create session."
-      },
-      500
-    );
-  }
-
-  // ----------------------------------------------------------
-  // Create account
-  // ----------------------------------------------------------
-
-  try {
-
-    const result = await env.ACCOUNTS_DB.batch([
-
-      // --------------------------------------------
-      // 1. CREATE USER
-      // --------------------------------------------
+    await env.ACCOUNTS_DB.batch([
 
       env.ACCOUNTS_DB
         .prepare(`
@@ -280,10 +185,6 @@ async function signup(request, env) {
           passwordHash
         ),
 
-      // --------------------------------------------
-      // 2. MOVE SEQUENCE TO NEXT ID
-      // --------------------------------------------
-
       env.ACCOUNTS_DB
         .prepare(`
           UPDATE account_sequence
@@ -292,10 +193,6 @@ async function signup(request, env) {
             AND next_id = ?
         `)
         .bind(accountId),
-
-      // --------------------------------------------
-      // 3. CREATE SESSION
-      // --------------------------------------------
 
       env.ACCOUNTS_DB
         .prepare(`
@@ -311,13 +208,7 @@ async function signup(request, env) {
           session.tokenHash,
           session.expiresAt
         )
-
     ]);
-
-    console.log(
-      "SIGNUP DATABASE RESULT:",
-      result
-    );
 
   } catch (error) {
 
@@ -329,24 +220,14 @@ async function signup(request, env) {
     return json(
       {
         success: false,
-        message: "Unable to create account.",
-        error: String(
-          error?.message || error
-        )
+        message: "Unable to create account."
       },
       500
     );
   }
 
-  // ----------------------------------------------------------
-  // SUCCESS
-  // ----------------------------------------------------------
-
   const formattedAccountId =
-    String(accountId).padStart(
-      7,
-      "0"
-    );
+    String(accountId).padStart(7, "0");
 
   return new Response(
     JSON.stringify({
@@ -356,7 +237,6 @@ async function signup(request, env) {
     }),
     {
       status: 201,
-
       headers: {
         "Content-Type":
           "application/json; charset=UTF-8",
@@ -411,58 +291,31 @@ async function login(request, env) {
   }
 
   const accountId =
-    String(
-      body.accountId || ""
-    ).trim();
+    String(body.accountId || "").trim();
 
   const password =
-    String(
-      body.password || ""
-    );
-
-  // ----------------------------------------------------------
-  // Validate ID
-  // ----------------------------------------------------------
+    typeof body.password === "string"
+      ? body.password
+      : "";
 
   if (!/^\d{7}$/.test(accountId)) {
-    return json(
-      {
-        success: false,
-        message: "Invalid ID or password."
-      },
-      401
-    );
+    return invalidLogin();
   }
 
   if (!password) {
-    return json(
-      {
-        success: false,
-        message: "Invalid ID or password."
-      },
-      401
-    );
+    return invalidLogin();
   }
 
   const numericAccountId =
     Number(accountId);
 
   if (
+    !Number.isInteger(numericAccountId) ||
     numericAccountId < 1 ||
     numericAccountId > MAX_ACCOUNT_ID
   ) {
-    return json(
-      {
-        success: false,
-        message: "Invalid ID or password."
-      },
-      401
-    );
+    return invalidLogin();
   }
-
-  // ----------------------------------------------------------
-  // Find account
-  // ----------------------------------------------------------
 
   let user;
 
@@ -477,9 +330,7 @@ async function login(request, env) {
         WHERE account_id = ?
         LIMIT 1
       `)
-      .bind(
-        numericAccountId
-      )
+      .bind(numericAccountId)
       .first();
 
   } catch (error) {
@@ -499,18 +350,8 @@ async function login(request, env) {
   }
 
   if (!user) {
-    return json(
-      {
-        success: false,
-        message: "Invalid ID or password."
-      },
-      401
-    );
+    return invalidLogin();
   }
-
-  // ----------------------------------------------------------
-  // Verify password
-  // ----------------------------------------------------------
 
   let validPassword = false;
 
@@ -539,18 +380,8 @@ async function login(request, env) {
   }
 
   if (!validPassword) {
-    return json(
-      {
-        success: false,
-        message: "Invalid ID or password."
-      },
-      401
-    );
+    return invalidLogin();
   }
-
-  // ----------------------------------------------------------
-  // Create session
-  // ----------------------------------------------------------
 
   const session =
     await buildSession(
@@ -595,17 +426,11 @@ async function login(request, env) {
     JSON.stringify({
       success: true,
       accountId:
-        String(
-          user.account_id
-        ).padStart(
-          7,
-          "0"
-        ),
+        String(user.account_id).padStart(7, "0"),
       message: "Login successful."
     }),
     {
       status: 200,
-
       headers: {
         "Content-Type":
           "application/json; charset=UTF-8",
@@ -617,6 +442,22 @@ async function login(request, env) {
           session.cookie
       }
     }
+  );
+}
+
+
+// ============================================================
+// INVALID LOGIN
+// ============================================================
+
+function invalidLogin() {
+
+  return json(
+    {
+      success: false,
+      message: "Invalid ID or password."
+    },
+    401
   );
 }
 
@@ -666,8 +507,25 @@ async function getCurrentUser(
     );
   }
 
-  const tokenHash =
-    await sha256(token);
+  let tokenHash;
+
+  try {
+    tokenHash = await sha256(token);
+  } catch (error) {
+
+    console.error(
+      "TOKEN HASH ERROR:",
+      error
+    );
+
+    return json(
+      {
+        success: false,
+        loggedIn: false
+      },
+      500
+    );
+  }
 
   let session;
 
@@ -724,7 +582,7 @@ async function getCurrentUser(
             "no-store",
 
           "Set-Cookie":
-            "haleel_session=; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=0"
+            clearSessionCookie()
         }
       }
     );
@@ -734,12 +592,8 @@ async function getCurrentUser(
     success: true,
     loggedIn: true,
     accountId:
-      String(
-        session.account_id
-      ).padStart(
-        7,
-        "0"
-      )
+      String(session.account_id)
+        .padStart(7, "0")
   });
 }
 
@@ -771,10 +625,10 @@ async function logout(
 
   if (token && env.ACCOUNTS_DB) {
 
-    const tokenHash =
-      await sha256(token);
-
     try {
+
+      const tokenHash =
+        await sha256(token);
 
       await env.ACCOUNTS_DB
         .prepare(`
@@ -809,7 +663,7 @@ async function logout(
           "no-store",
 
         "Set-Cookie":
-          "haleel_session=; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=0"
+          clearSessionCookie()
       }
     }
   );
@@ -868,6 +722,23 @@ async function buildSession(
 
 
 // ============================================================
+// CLEAR SESSION COOKIE
+// ============================================================
+
+function clearSessionCookie() {
+
+  return (
+    "haleel_session=; " +
+    "HttpOnly; " +
+    "Secure; " +
+    "SameSite=Lax; " +
+    "Path=/; " +
+    "Max-Age=0"
+  );
+}
+
+
+// ============================================================
 // PASSWORD HASHING
 // ============================================================
 
@@ -912,9 +783,7 @@ async function hashPassword(
     PBKDF2_ITERATIONS,
     bytesToBase64Url(salt),
     bytesToBase64Url(
-      new Uint8Array(
-        derivedBits
-      )
+      new Uint8Array(derivedBits)
     )
   ].join("$");
 }
@@ -951,9 +820,7 @@ async function verifyPassword(
       hashString
     ] = parts;
 
-    if (
-      algorithm !== "pbkdf2"
-    ) {
+    if (algorithm !== "pbkdf2") {
       return false;
     }
 
@@ -977,6 +844,13 @@ async function verifyPassword(
       base64UrlToBytes(
         hashString
       );
+
+    if (
+      salt.length === 0 ||
+      expectedHash.length === 0
+    ) {
+      return false;
+    }
 
     const encoder =
       new TextEncoder();
@@ -1003,9 +877,7 @@ async function verifyPassword(
       );
 
     return timingSafeEqual(
-      new Uint8Array(
-        derivedBits
-      ),
+      new Uint8Array(derivedBits),
       expectedHash
     );
 
@@ -1086,9 +958,7 @@ function getCookie(
 ) {
 
   const cookieHeader =
-    request.headers.get(
-      "Cookie"
-    );
+    request.headers.get("Cookie");
 
   if (!cookieHeader) {
     return null;
@@ -1101,22 +971,29 @@ function getCookie(
     const cookie of cookies
   ) {
 
-    const [
-      key,
-      ...valueParts
-    ] =
-      cookie
-        .trim()
-        .split("=");
+    const trimmed =
+      cookie.trim();
 
-    if (
-      key === name
-    ) {
+    const separator =
+      trimmed.indexOf("=");
 
-      return (
-        valueParts.join("=") ||
-        null
+    if (separator === -1) {
+      continue;
+    }
+
+    const key =
+      trimmed.slice(
+        0,
+        separator
       );
+
+    const value =
+      trimmed.slice(
+        separator + 1
+      );
+
+    if (key === name) {
+      return value || null;
     }
   }
 
@@ -1184,24 +1061,13 @@ function bytesToBase64Url(
   ) {
 
     binary +=
-      String.fromCharCode(
-        byte
-      );
+      String.fromCharCode(byte);
   }
 
   return btoa(binary)
-    .replace(
-      /\+/g,
-      "-"
-    )
-    .replace(
-      /\//g,
-      "_"
-    )
-    .replace(
-      /=+$/g,
-      ""
-    );
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_")
+    .replace(/=+$/g, "");
 }
 
 
@@ -1213,23 +1079,24 @@ function base64UrlToBytes(
   value
 ) {
 
+  if (
+    typeof value !== "string" ||
+    value.length === 0
+  ) {
+    throw new Error(
+      "Invalid base64url value."
+    );
+  }
+
   const base64 =
     value
-      .replace(
-        /-/g,
-        "+"
-      )
-      .replace(
-        /_/g,
-        "/"
-      );
+      .replace(/-/g, "+")
+      .replace(/_/g, "/");
 
   const padded =
     base64 +
     "=".repeat(
-      (4 -
-        (base64.length % 4)) %
-        4
+      (4 - (base64.length % 4)) % 4
     );
 
   const binary =
