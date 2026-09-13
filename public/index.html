@@ -5,9 +5,22 @@
 <meta charset="UTF-8">
 
 <meta name="viewport"
-content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
 
 <title>Haleel Real Estate</title>
+
+<link rel="manifest" href="./manifest.webmanifest">
+
+<meta name="theme-color" content="#FFFFFF">
+<meta name="color-scheme" content="light dark">
+
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Haleel">
+
+<link rel="apple-touch-icon" href="./icons/Haleel icons.png">
+<link rel="icon" type="image/png" href="./icons/Haleel icons.png">
 
 <style>
 
@@ -15,22 +28,17 @@ content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale
 --primary:#006CC2;
 --primary-dark:#00539a;
 --light-blue:#EAF5FF;
---navy:#0B1F33;
+--navy:#081b2e;
 --white:#fff;
---gray:#F5F7FA;
+--gray:#F3F7FB;
 --text:#243447;
 --muted:#718096;
 --green:#20B26B;
 --red:#E5484D;
 --gold:#F5B942;
+--border:rgba(13,61,98,.10);
 --shadow:0 15px 45px rgba(0,108,194,.12);
 --radius:20px;
-color-scheme:light;
-}
-
-html{
-scroll-behavior:smooth;
-background:#F3F7FB;
 color-scheme:light;
 }
 
@@ -41,6 +49,11 @@ box-sizing:border-box;
 font-family:Inter,Segoe UI,Arial,sans-serif;
 }
 
+html{
+scroll-behavior:smooth;
+background:#F3F7FB;
+}
+
 body{
 background:
 radial-gradient(circle at 10% 0%,rgba(0,108,194,.07),transparent 30%),
@@ -48,35 +61,19 @@ radial-gradient(circle at 100% 15%,rgba(32,178,107,.05),transparent 28%),
 #F3F7FB;
 color:#1d3044;
 overflow-x:hidden;
-transition:background .3s ease,color .3s ease;
 }
 
-input,
-textarea,
-select,
-button{
-color-scheme:light;
-}
-
-input,
-textarea,
-select{
-background:#FFFFFF;
-color:#1d3044;
-}
-
-input::placeholder,
-textarea::placeholder{
-color:#718096;
-}
-
-button{
+button,input,textarea,select{
 font:inherit;
 }
 
-html.dark{
-color-scheme:dark;
-background:#0b1118;
+input,textarea,select{
+background:#fff;
+color:#1d3044;
+}
+
+button{
+cursor:pointer;
 }
 
 body.dark{
@@ -95,261 +92,86 @@ color:#e8eef5;
 border-color:#2b3948;
 }
 
-body.dark input::placeholder,
-body.dark textarea::placeholder{
-color:#8292a5;
-}
-
-body.dark .sidebar{
-background:rgba(15,23,32,.92);
-border-right-color:rgba(255,255,255,.08);
-box-shadow:10px 0 40px rgba(0,0,0,.20);
-}
-
-body.dark .brand small{
-color:#8292a5;
-}
-
-body.dark .nav button{
-color:#aab7c5;
-}
-
-body.dark .nav button:hover{
-background:#172534;
-color:#42a9ff;
-}
-
-body.dark .nav button.active{
-background:linear-gradient(90deg,#112c42,#142331);
-color:#42a9ff;
-box-shadow:inset 0 0 0 1px rgba(0,108,194,.18);
-}
-
-body.dark .user{
-background:linear-gradient(135deg,#142331,#101a24);
-border-color:rgba(0,108,194,.18);
-}
-
-body.dark .user strong{
-color:#f1f5f9;
-}
-
-body.dark .user small{
-color:#8292a5;
-}
-
-body.dark .topbar{
-background:rgba(15,23,32,.88);
-border-color:rgba(255,255,255,.08);
-box-shadow:0 10px 35px rgba(0,0,0,.20);
-}
-
-body.dark .topbar strong{
-color:#f1f5f9;
-}
-
-body.dark .btn-outline{
-background:#151e28;
-color:#42a9ff;
-border-color:rgba(66,169,255,.25);
-}
-
-body.dark .btn-outline:hover{
-background:#172c3e;
-}
-
-body.dark .section-header h2{
-color:#f1f5f9;
-}
-
-body.dark .card{
+body.dark .sidebar,
+body.dark .topbar,
+body.dark .card,
+body.dark .property-card,
+body.dark .form-container,
+body.dark .setting-card,
+body.dark .care-card,
+body.dark .care-help-card{
 background:#131c26;
 border-color:rgba(255,255,255,.08);
-box-shadow:0 10px 35px rgba(0,0,0,.18);
+color:#e8eef5;
 }
 
-body.dark .card h3{
-color:#f1f5f9;
-}
-
-body.dark .card p{
-color:#91a0b1;
-}
-
-body.dark .service-icon{
-background:#122b40;
-border-color:rgba(66,169,255,.12);
-}
-
-body.dark .property-card{
-background:#131c26;
-border-color:rgba(255,255,255,.08);
-box-shadow:0 10px 35px rgba(0,0,0,.20);
-}
-
+body.dark .topbar strong,
+body.dark h2,
+body.dark h3,
 body.dark .property-content h3{
 color:#f1f5f9;
 }
 
-body.dark .location{
+body.dark p,
+body.dark .location,
+body.dark .theme-status{
 color:#91a0b1;
 }
 
-body.dark .search-box{
-background:rgba(19,28,38,.92);
-border-color:rgba(255,255,255,.08);
-box-shadow:0 12px 35px rgba(0,0,0,.20);
-}
-
-body.dark .care-card{
+body.dark .search-panel{
 background:#131c26;
 border-color:rgba(255,255,255,.08);
-box-shadow:0 10px 35px rgba(0,0,0,.20);
 }
 
-body.dark .care-card h3{
+body.dark .search-title,
+body.dark .filter-label{
 color:#f1f5f9;
 }
 
-body.dark .care-card p{
-color:#91a0b1;
+body.dark .search-input,
+body.dark .filter-select{
+background:#151e28;
+color:#e8eef5;
+border-color:#2b3948;
 }
 
-body.dark .care-icon{
-background:linear-gradient(135deg,#122b40,#17222d);
+body.dark .mobile-nav{
+background:rgba(15,23,32,.96);
+border-color:rgba(255,255,255,.08);
+}
+
+body.dark .modal-box{
+background:#131c26;
+color:#f1f5f9;
 }
 
 body.dark .care-menu{
 background:#131c26;
-border-color:rgba(255,255,255,.08);
-box-shadow:0 20px 55px rgba(0,0,0,.35);
 }
 
 body.dark .care-menu a{
 color:#d9e3ec;
 }
 
-body.dark .care-menu a:hover{
-background:#122b40;
-color:#42a9ff;
-}
-
-body.dark .modal-box{
-background:#131c26;
-border-color:rgba(255,255,255,.10);
-}
-
-body.dark .modal-box h2{
-color:#f1f5f9;
-}
-
-body.dark .details-close{
-color:#91a0b1;
-}
-
-body.dark .details-text{
-color:#91a0b1;
-}
-
-body.dark .details-contact{
-background:#122b40;
-}
-
-body.dark .details-contact-label{
-color:#91a0b1;
-}
-
-body.dark .mobile-nav{
-background:rgba(15,23,32,.94)!important;
-border-top-color:rgba(255,255,255,.08);
-box-shadow:0 -5px 20px rgba(0,0,0,.30);
-}
-
-body.dark .mobile-nav button{
-color:#8292a5;
-}
-
-body.dark .mobile-nav button.active{
-color:#42a9ff;
-background:#122b40;
-}
-
-body.dark .care-hero{
-background:
-linear-gradient(135deg,rgba(2,28,50,.97),rgba(0,71,126,.95));
-}
-
-body.dark .care-help-card{
-background:rgba(19,28,38,.95);
-border-color:rgba(255,255,255,.08);
-}
-
-body.dark .care-help-card h3{
-color:#f1f5f9;
-}
-
-body.dark .care-help-card p{
-color:#91a0b1;
-}
-
-body.dark .care-contact-strip{
-background:linear-gradient(135deg,#122b40,#162b3c);
-border-color:rgba(66,169,255,.12);
-}
-
-body.dark .care-contact-strip h3{
-color:#f1f5f9;
-}
-
-body.dark .care-contact-strip p{
-color:#91a0b1;
-}
-
-body.dark .care-mini-card{
-background:#131c26;
-border-color:rgba(255,255,255,.08);
-}
-
-body.dark .care-mini-card h4{
-color:#f1f5f9;
-}
-
-body.dark .care-mini-card p{
-color:#91a0b1;
-}
-
 .app{
-display:block;
 min-height:100vh;
 }
 
 .sidebar{
 position:fixed;
+left:0;
+top:0;
 width:268px;
 height:100vh;
-background:rgba(255,255,255,.86);
+background:rgba(255,255,255,.88);
 backdrop-filter:blur(18px);
--webkit-backdrop-filter:blur(18px);
-border-right:1px solid rgba(13,61,98,.10);
+border-right:1px solid var(--border);
 padding:24px 16px;
 z-index:100;
-box-shadow:10px 0 40px rgba(8,35,60,.04);
 }
 
 .brand{
 padding:10px 14px 30px;
-position:relative;
-}
-
-.brand:after{
-content:"";
-position:absolute;
-left:14px;
-bottom:16px;
-width:46px;
-height:4px;
-border-radius:10px;
-background:linear-gradient(90deg,#006CC2,#0b8bea);
 }
 
 .brand h2{
@@ -358,7 +180,6 @@ letter-spacing:2px;
 font-weight:900;
 background:linear-gradient(135deg,#006CC2,#20a2ff);
 -webkit-background-clip:text;
-background-clip:text;
 color:transparent;
 }
 
@@ -376,30 +197,15 @@ gap:6px;
 }
 
 .nav button{
-position:relative;
 width:100%;
 padding:14px 15px;
 border:1px solid transparent;
 background:transparent;
 text-align:left;
 border-radius:14px;
-cursor:pointer;
 color:#53677a;
 font-weight:600;
 transition:.25s;
-}
-
-.nav button:before{
-content:"";
-position:absolute;
-left:0;
-top:10px;
-bottom:10px;
-width:3px;
-border-radius:10px;
-background:#006CC2;
-transform:scaleY(0);
-transition:.25s ease;
 }
 
 .nav button:hover{
@@ -411,11 +217,6 @@ transform:translateX(3px);
 .nav button.active{
 background:linear-gradient(90deg,#e8f5ff,#f7fbff);
 color:#006CC2;
-box-shadow:inset 0 0 0 1px rgba(0,108,194,.06);
-}
-
-.nav button.active:before{
-transform:scaleY(1);
 }
 
 .user{
@@ -427,7 +228,6 @@ padding:15px;
 border:1px solid rgba(0,108,194,.07);
 background:linear-gradient(135deg,#f5faff,#eef7ff);
 border-radius:15px;
-box-shadow:0 8px 25px rgba(0,108,194,.06);
 }
 
 .user strong{
@@ -437,20 +237,18 @@ color:#081b2e;
 
 .user small{
 color:#718096;
-line-height:1.5;
 }
 
 .main{
 margin-left:268px;
-padding:22px 28px 40px;
+padding:22px 28px 50px;
 }
 
 .topbar{
 height:70px;
-background:rgba(255,255,255,.82);
+background:rgba(255,255,255,.84);
 backdrop-filter:blur(16px);
--webkit-backdrop-filter:blur(16px);
-border:1px solid rgba(13,61,98,.10);
+border:1px solid var(--border);
 border-radius:18px;
 display:flex;
 justify-content:space-between;
@@ -463,49 +261,27 @@ box-shadow:0 10px 35px rgba(10,42,70,.06);
 .topbar strong{
 font-size:18px;
 color:#081b2e;
-letter-spacing:-.3px;
 }
 
 .page{
 display:none;
-animation:fadeUp .4s ease;
+animation:pageIn .4s ease;
 }
 
 .page.active{
 display:block;
-animation:pageIn .55s cubic-bezier(.2,.75,.25,1);
 }
 
 .btn{
-position:relative;
-overflow:hidden;
 border:0;
 padding:13px 20px;
 border-radius:13px;
-cursor:pointer;
 font-weight:700;
-letter-spacing:.1px;
-transition:transform .25s ease,box-shadow .25s ease,background .25s ease,color .25s ease;
+transition:.25s;
 }
 
-.btn:after{
-content:"";
-position:absolute;
-top:-60%;
-left:-120%;
-width:70%;
-height:220%;
-transform:rotate(25deg);
-background:rgba(255,255,255,.22);
-transition:left .55s ease;
-}
-
-.btn:hover:after{
-left:140%;
-}
-
-.btn:active{
-transform:scale(.97);
+.btn:hover{
+transform:translateY(-2px);
 }
 
 .btn-primary{
@@ -514,45 +290,10 @@ color:#fff;
 box-shadow:0 10px 25px rgba(0,108,194,.24);
 }
 
-.btn-primary:hover{
-background:linear-gradient(135deg,#004f91,#006CC2);
-transform:translateY(-3px);
-box-shadow:0 15px 30px rgba(0,108,194,.30);
-}
-
 .btn-outline{
-background:rgba(255,255,255,.9);
+background:#fff;
 color:#006CC2;
 border:1px solid rgba(0,108,194,.20);
-box-shadow:0 5px 18px rgba(0,108,194,.05);
-}
-
-.btn-outline:hover{
-background:#eaf5ff;
-transform:translateY(-2px);
-}
-
-.input{
-width:100%;
-padding:15px 17px;
-border:1px solid #dce4ec;
-border-radius:13px;
-outline:none;
-margin-bottom:15px;
-transition:.25s;
-font-size:15px;
-background:#FFFFFF;
-color:#1d3044;
-}
-
-.input:hover{
-border-color:#b8d6ed;
-}
-
-.input:focus{
-border-color:#006CC2;
-box-shadow:0 0 0 4px rgba(0,108,194,.10),0 8px 25px rgba(0,108,194,.06);
-background:#fff;
 }
 
 .hero{
@@ -563,64 +304,29 @@ display:flex;
 align-items:center;
 position:relative;
 overflow:hidden;
-isolation:isolate;
 color:#fff;
-border:1px solid rgba(255,255,255,.15);
 background:
-linear-gradient(110deg,rgba(3,28,52,.94) 0%,rgba(0,82,145,.72) 48%,rgba(0,108,194,.28) 100%),
+linear-gradient(110deg,rgba(3,28,52,.94),rgba(0,82,145,.72),rgba(0,108,194,.28)),
 url("https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1800&q=80");
 background-size:cover;
 background-position:center;
 box-shadow:0 25px 70px rgba(0,54,100,.20);
 }
 
-.hero:before,
-.hero:after{
-content:"";
-position:absolute;
-border-radius:50%;
-filter:blur(3px);
-pointer-events:none;
-}
-
-.hero:before{
-width:320px;
-height:320px;
-right:-100px;
-top:-120px;
-background:rgba(32,162,255,.20);
-animation:floatOrb 7s ease-in-out infinite;
-}
-
-.hero:after{
-width:220px;
-height:220px;
-left:35%;
-bottom:-130px;
-background:rgba(32,178,107,.13);
-animation:floatOrb 9s ease-in-out infinite reverse;
-}
-
 .hero-content{
-max-width:620px;
-position:relative;
-z-index:2;
-animation:heroText .8s ease both;
+max-width:650px;
 }
 
 .hero h1{
 font-size:clamp(38px,5vw,62px);
 line-height:1.08;
-letter-spacing:-2px;
 margin-bottom:20px;
-text-shadow:0 10px 35px rgba(0,0,0,.25);
 }
 
 .hero p{
 font-size:18px;
 line-height:1.7;
 margin-bottom:25px;
-max-width:650px;
 color:rgba(255,255,255,.88);
 }
 
@@ -628,10 +334,6 @@ color:rgba(255,255,255,.88);
 display:flex;
 gap:14px;
 flex-wrap:wrap;
-}
-
-.hero .btn{
-min-width:145px;
 }
 
 .section{
@@ -648,17 +350,6 @@ margin-bottom:20px;
 .section-header h2{
 color:#081b2e;
 font-size:27px;
-letter-spacing:-.6px;
-}
-
-.section-header h2:after{
-content:"";
-display:block;
-width:38px;
-height:4px;
-border-radius:8px;
-margin-top:8px;
-background:linear-gradient(90deg,#006CC2,#32a8ff);
 }
 
 .services{
@@ -669,35 +360,27 @@ gap:18px;
 
 .card{
 background:#fff;
-border:1px solid rgba(13,61,98,.10);
+border:1px solid var(--border);
 border-radius:22px;
 padding:27px;
 box-shadow:0 10px 35px rgba(9,44,73,.055);
 transition:.3s;
-position:relative;
-overflow:hidden;
-}
-
-.card:before{
-content:"";
-position:absolute;
-width:100px;
-height:100px;
-right:-45px;
-top:-45px;
-border-radius:50%;
-background:rgba(0,108,194,.045);
-transition:.4s ease;
 }
 
 .card:hover{
-transform:translateY(-8px);
-box-shadow:0 24px 65px rgba(0,108,194,.18);
-border-color:rgba(0,108,194,.15);
+transform:translateY(-7px);
 }
 
-.card:hover:before{
-transform:scale(1.8);
+.service-icon{
+width:55px;
+height:55px;
+display:flex;
+align-items:center;
+justify-content:center;
+border-radius:15px;
+background:#eaf5ff;
+font-size:25px;
+margin-bottom:18px;
 }
 
 .card h3{
@@ -710,25 +393,6 @@ color:#718096;
 line-height:1.6;
 }
 
-.service-icon{
-width:55px;
-height:55px;
-display:flex;
-align-items:center;
-justify-content:center;
-border-radius:15px;
-background:#eaf5ff;
-border:1px solid rgba(0,108,194,.08);
-box-shadow:0 8px 22px rgba(0,108,194,.08);
-font-size:25px;
-margin-bottom:18px;
-transition:.35s ease;
-}
-
-.card:hover .service-icon{
-transform:rotate(-6deg) scale(1.08);
-}
-
 .status-grid{
 display:grid;
 grid-template-columns:repeat(3,1fr);
@@ -739,34 +403,21 @@ gap:18px;
 color:#fff;
 padding:28px;
 border-radius:20px;
-position:relative;
-overflow:hidden;
 min-height:145px;
 display:flex;
 flex-direction:column;
 justify-content:center;
-box-shadow:0 14px 35px rgba(0,0,0,.10);
-}
-
-.status-card:after{
-content:"";
-position:absolute;
-width:150px;
-height:150px;
-right:-55px;
-top:-55px;
-border-radius:50%;
-background:rgba(255,255,255,.10);
+box-shadow:0 14px 35px rgba(0,0,0,.1);
 }
 
 .status-card h2{
 font-size:35px;
-letter-spacing:-1px;
+color:#fff;
 }
 
 .status-card p{
+color:#fff;
 opacity:.88;
-margin-top:5px;
 }
 
 .available{
@@ -781,6 +432,128 @@ background:linear-gradient(135deg,#006CC2,#004f91);
 background:linear-gradient(135deg,#F5B942,#d89b20);
 }
 
+.property-header{
+display:flex;
+justify-content:space-between;
+align-items:flex-end;
+gap:20px;
+margin-bottom:22px;
+}
+
+.property-header h2{
+font-size:34px;
+color:#081b2e;
+margin-bottom:7px;
+}
+
+.property-header p{
+color:#718096;
+}
+
+.result-count{
+padding:10px 15px;
+border-radius:30px;
+background:#eaf5ff;
+color:#006CC2;
+font-weight:800;
+white-space:nowrap;
+}
+
+.search-panel{
+background:rgba(255,255,255,.94);
+border:1px solid var(--border);
+border-radius:24px;
+padding:20px;
+margin-bottom:25px;
+box-shadow:0 15px 45px rgba(9,44,73,.07);
+}
+
+.search-top{
+display:flex;
+align-items:center;
+justify-content:space-between;
+margin-bottom:16px;
+}
+
+.search-title{
+font-size:18px;
+font-weight:800;
+color:#081b2e;
+}
+
+.search-top span{
+font-size:13px;
+color:#718096;
+}
+
+.search-grid{
+display:grid;
+grid-template-columns:2fr 1fr 1fr 1fr;
+gap:12px;
+}
+
+.search-field{
+position:relative;
+}
+
+.search-input,
+.filter-select{
+width:100%;
+height:52px;
+border:1px solid #dce4ec;
+border-radius:14px;
+outline:none;
+padding:0 15px;
+font-size:14px;
+transition:.25s;
+}
+
+.search-input:focus,
+.filter-select:focus{
+border-color:#006CC2;
+box-shadow:0 0 0 4px rgba(0,108,194,.09);
+}
+
+.search-icon{
+position:absolute;
+right:16px;
+top:15px;
+pointer-events:none;
+}
+
+.advanced-filters{
+display:grid;
+grid-template-columns:1fr 1fr 1fr 1fr 1fr;
+gap:12px;
+margin-top:12px;
+}
+
+.filter-label{
+font-size:12px;
+font-weight:800;
+color:#53677a;
+display:block;
+margin-bottom:6px;
+}
+
+.search-actions{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:10px;
+margin-top:14px;
+}
+
+.active-filter-text{
+font-size:13px;
+color:#718096;
+}
+
+.filter-buttons{
+display:flex;
+gap:9px;
+}
+
 .property-grid{
 display:grid;
 grid-template-columns:repeat(3,1fr);
@@ -788,8 +561,8 @@ gap:20px;
 }
 
 .property-card{
-background:rgba(255,255,255,.96);
-border:1px solid rgba(13,61,98,.10);
+background:#fff;
+border:1px solid var(--border);
 border-radius:22px;
 overflow:hidden;
 box-shadow:0 10px 35px rgba(9,44,73,.055);
@@ -798,161 +571,150 @@ position:relative;
 }
 
 .property-card:hover{
-transform:translateY(-8px);
-box-shadow:0 24px 65px rgba(0,108,194,.18);
+transform:translateY(-7px);
+}
+
+.property-image-wrap{
+height:225px;
+position:relative;
+overflow:hidden;
+background:#eaf5ff;
 }
 
 .property-image{
-height:225px;
 width:100%;
+height:100%;
 object-fit:cover;
-transition:transform .65s cubic-bezier(.2,.7,.2,1),filter .4s ease;
+transition:.6s;
 }
 
 .property-card:hover .property-image{
-transform:scale(1.055);
-filter:saturate(1.06);
+transform:scale(1.06);
 }
 
-.property-content{
-padding:22px;
-}
-
-.property-content h3{
-margin-bottom:8px;
-font-size:19px;
-color:#081b2e;
-}
-
-.location{
-color:#718096;
-font-size:14px;
-margin-bottom:15px;
-}
-
-.price{
-font-size:24px;
-font-weight:800;
-color:#006CC2;
-}
-
-.badge{
-display:inline-block;
-padding:6px 10px;
-border-radius:20px;
+.property-status{
+position:absolute;
+top:14px;
+left:14px;
+padding:7px 11px;
+border-radius:30px;
 font-size:12px;
-font-weight:700;
-margin-bottom:12px;
-}
-
-.badge-green{
+font-weight:800;
 background:#e5f8ef;
 color:#159957;
 }
 
-.badge-blue{
-background:#e8f4ff;
+.property-favorite{
+position:absolute;
+right:14px;
+top:14px;
+width:40px;
+height:40px;
+border:0;
+border-radius:50%;
+background:rgba(255,255,255,.92);
+font-size:19px;
+}
+
+.property-content{
+padding:20px;
+}
+
+.property-type{
+font-size:12px;
+font-weight:800;
+color:#006CC2;
+text-transform:uppercase;
+letter-spacing:.7px;
+margin-bottom:7px;
+}
+
+.property-content h3{
+font-size:20px;
+margin-bottom:7px;
+color:#081b2e;
+}
+
+.location{
+font-size:14px;
+color:#718096;
+margin-bottom:14px;
+}
+
+.property-meta{
+display:flex;
+gap:8px;
+flex-wrap:wrap;
+margin-bottom:17px;
+}
+
+.meta-item{
+padding:7px 9px;
+background:#f4f8fc;
+border-radius:9px;
+font-size:12px;
+color:#53677a;
+font-weight:700;
+}
+
+.property-bottom{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:10px;
+}
+
+.price{
+font-size:22px;
+font-weight:900;
 color:#006CC2;
 }
 
-.badge-red{
-background:#ffebec;
-color:#E5484D;
+.price small{
+font-size:11px;
+font-weight:600;
+color:#718096;
 }
 
-.search-box{
-display:grid;
-grid-template-columns:2fr 1fr 1fr 1fr auto;
-gap:10px;
-background:rgba(255,255,255,.9);
-padding:15px;
-border-radius:16px;
-margin-bottom:25px;
-border:1px solid rgba(13,61,98,.10);
-box-shadow:0 12px 35px rgba(9,44,73,.06);
+.view-btn{
+padding:10px 14px;
+font-size:13px;
 }
 
+.no-results{
+display:none;
+text-align:center;
+padding:60px 20px;
+background:#fff;
+border:1px solid var(--border);
+border-radius:22px;
+}
 
-/* ==========================================
-   BEAUTIFUL CUSTOMER CARE
-========================================== */
+.no-results.show{
+display:block;
+}
 
-.care-page-header{
-margin-bottom:25px;
+.no-results-icon{
+font-size:50px;
+margin-bottom:15px;
+}
+
+.no-results p{
+color:#718096;
+margin-bottom:18px;
 }
 
 .care-hero{
-position:relative;
-overflow:hidden;
 min-height:340px;
 border-radius:28px;
 padding:48px;
 color:#fff;
-background:
-linear-gradient(135deg,rgba(2,31,55,.96),rgba(0,92,158,.94));
+background:linear-gradient(135deg,rgba(2,31,55,.96),rgba(0,92,158,.94));
 box-shadow:0 25px 70px rgba(0,74,130,.20);
-isolation:isolate;
-}
-
-.care-hero:before{
-content:"";
-position:absolute;
-width:330px;
-height:330px;
-right:-110px;
-top:-150px;
-border-radius:50%;
-background:rgba(46,176,255,.18);
-filter:blur(3px);
-animation:careOrb 7s ease-in-out infinite;
-}
-
-.care-hero:after{
-content:"";
-position:absolute;
-width:220px;
-height:220px;
-left:42%;
-bottom:-150px;
-border-radius:50%;
-background:rgba(32,178,107,.12);
-animation:careOrb 9s ease-in-out infinite reverse;
-}
-
-.care-hero-content{
-position:relative;
-z-index:3;
-max-width:700px;
-animation:careHeroIn .75s cubic-bezier(.2,.8,.2,1) both;
-}
-
-.care-status{
-display:inline-flex;
-align-items:center;
-gap:8px;
-padding:8px 13px;
-border-radius:30px;
-background:rgba(255,255,255,.11);
-border:1px solid rgba(255,255,255,.18);
-font-size:13px;
-font-weight:700;
-margin-bottom:18px;
-backdrop-filter:blur(10px);
-}
-
-.care-status-dot{
-width:9px;
-height:9px;
-border-radius:50%;
-background:#39e994;
-box-shadow:0 0 0 5px rgba(57,233,148,.12);
-animation:statusPulse 2s infinite;
 }
 
 .care-hero h1{
 font-size:clamp(34px,5vw,54px);
-line-height:1.08;
-letter-spacing:-1.5px;
 margin-bottom:16px;
 }
 
@@ -964,40 +726,27 @@ color:rgba(255,255,255,.84);
 margin-bottom:25px;
 }
 
+.care-status{
+display:inline-flex;
+align-items:center;
+gap:8px;
+padding:8px 13px;
+border-radius:30px;
+background:rgba(255,255,255,.11);
+margin-bottom:18px;
+}
+
+.care-status-dot{
+width:9px;
+height:9px;
+border-radius:50%;
+background:#39e994;
+}
+
 .care-hero-buttons{
 display:flex;
 gap:12px;
 flex-wrap:wrap;
-}
-
-.care-hero-buttons .btn{
-min-width:145px;
-}
-
-.care-hero-decoration{
-position:absolute;
-right:8%;
-top:50%;
-transform:translateY(-50%);
-width:180px;
-height:180px;
-border-radius:50%;
-display:flex;
-align-items:center;
-justify-content:center;
-background:rgba(255,255,255,.08);
-border:1px solid rgba(255,255,255,.13);
-box-shadow:
-0 0 0 25px rgba(255,255,255,.025),
-0 0 0 50px rgba(255,255,255,.015);
-z-index:2;
-animation:careFloat 4s ease-in-out infinite;
-}
-
-.care-hero-decoration span{
-font-size:78px;
-filter:drop-shadow(0 15px 20px rgba(0,0,0,.20));
-animation:careIconFloat 3s ease-in-out infinite;
 }
 
 .care-grid{
@@ -1012,34 +761,8 @@ background:#fff;
 padding:30px;
 border-radius:22px;
 text-align:center;
-border:1px solid rgba(13,61,98,.10);
+border:1px solid var(--border);
 box-shadow:0 10px 35px rgba(9,44,73,.055);
-transition:.35s cubic-bezier(.2,.75,.25,1);
-position:relative;
-overflow:hidden;
-}
-
-.care-card:before{
-content:"";
-position:absolute;
-left:0;
-right:0;
-top:0;
-height:4px;
-background:linear-gradient(90deg,#006CC2,#28a8ff);
-transform:scaleX(0);
-transform-origin:left;
-transition:.35s ease;
-}
-
-.care-card:hover:before{
-transform:scaleX(1);
-}
-
-.care-card:hover{
-transform:translateY(-10px);
-box-shadow:0 25px 65px rgba(0,108,194,.18);
-border-color:rgba(0,108,194,.16);
 }
 
 .care-icon{
@@ -1050,21 +773,11 @@ display:flex;
 align-items:center;
 justify-content:center;
 border-radius:24px;
-background:linear-gradient(135deg,#eaf5ff,#f8fcff);
-box-shadow:
-0 12px 30px rgba(0,108,194,.10),
-inset 0 0 0 1px rgba(0,108,194,.05);
+background:#eaf5ff;
 font-size:43px;
-transition:.4s cubic-bezier(.2,.75,.25,1);
-}
-
-.care-card:hover .care-icon{
-transform:translateY(-5px) rotate(-5deg) scale(1.08);
-box-shadow:0 18px 38px rgba(0,108,194,.17);
 }
 
 .care-card h3{
-font-size:20px;
 margin-bottom:10px;
 color:#081b2e;
 }
@@ -1072,69 +785,25 @@ color:#081b2e;
 .care-card p{
 color:#718096;
 line-height:1.65;
-min-height:52px;
-}
-
-.care-card a,
-.care-card button{
-margin-top:20px;
-text-decoration:none;
-}
-
-.care-card.whatsapp-card .care-icon{
-background:linear-gradient(135deg,#e8fff3,#f8fffb);
-}
-
-.care-card.call-card .care-icon{
-background:linear-gradient(135deg,#eaf5ff,#f8fcff);
-}
-
-.care-card.email-card .care-icon{
-background:linear-gradient(135deg,#fff5df,#fffaf0);
-}
-
-.care-help-section{
-margin-top:26px;
-}
-
-.care-help-title{
-text-align:center;
 margin-bottom:18px;
-}
-
-.care-help-title h2{
-font-size:27px;
-color:#081b2e;
-margin-bottom:7px;
-}
-
-.care-help-title p{
-color:#718096;
 }
 
 .care-help-grid{
 display:grid;
 grid-template-columns:repeat(4,1fr);
 gap:14px;
+margin-top:18px;
 }
 
 .care-help-card{
 background:#fff;
-border:1px solid rgba(13,61,98,.10);
+border:1px solid var(--border);
 border-radius:18px;
 padding:22px 18px;
 display:flex;
 align-items:center;
 gap:14px;
 cursor:pointer;
-box-shadow:0 8px 28px rgba(9,44,73,.05);
-transition:.3s cubic-bezier(.2,.75,.25,1);
-}
-
-.care-help-card:hover{
-transform:translateY(-5px);
-border-color:rgba(0,108,194,.18);
-box-shadow:0 18px 45px rgba(0,108,194,.13);
 }
 
 .care-help-icon{
@@ -1147,23 +816,6 @@ justify-content:center;
 border-radius:14px;
 background:#eaf5ff;
 font-size:23px;
-transition:.3s ease;
-}
-
-.care-help-card:hover .care-help-icon{
-transform:rotate(-8deg) scale(1.08);
-}
-
-.care-help-card h3{
-font-size:15px;
-margin-bottom:4px;
-color:#081b2e;
-}
-
-.care-help-card p{
-font-size:12px;
-color:#718096;
-line-height:1.4;
 }
 
 .care-contact-strip{
@@ -1176,121 +828,15 @@ display:flex;
 align-items:center;
 justify-content:space-between;
 gap:20px;
-box-shadow:0 12px 35px rgba(0,108,194,.07);
-position:relative;
-overflow:hidden;
 }
-
-.care-contact-strip:after{
-content:"";
-position:absolute;
-width:180px;
-height:180px;
-right:-80px;
-bottom:-100px;
-border-radius:50%;
-background:rgba(0,108,194,.07);
-}
-
-.care-contact-info{
-position:relative;
-z-index:2;
-}
-
-.care-contact-info h3{
-font-size:22px;
-color:#081b2e;
-margin-bottom:7px;
-}
-
-.care-contact-info p{
-color:#718096;
-line-height:1.5;
-}
-
-.care-contact-actions{
-display:flex;
-gap:10px;
-flex-wrap:wrap;
-position:relative;
-z-index:2;
-}
-
-.care-phone-number{
-font-weight:800;
-color:#006CC2;
-}
-
-.care-mini-card{
-background:#fff;
-border:1px solid rgba(13,61,98,.10);
-border-radius:20px;
-padding:25px;
-text-align:center;
-box-shadow:0 10px 35px rgba(9,44,73,.055);
-transition:.3s ease;
-}
-
-.care-mini-card:hover{
-transform:translateY(-5px);
-box-shadow:0 18px 45px rgba(0,108,194,.13);
-}
-
-.care-mini-icon{
-font-size:30px;
-margin-bottom:12px;
-}
-
-.care-mini-card h4{
-font-size:17px;
-color:#081b2e;
-margin-bottom:7px;
-}
-
-.care-mini-card p{
-font-size:13px;
-color:#718096;
-line-height:1.5;
-}
-
-.care-note{
-margin-top:20px;
-padding:16px 18px;
-border-radius:15px;
-background:rgba(0,108,194,.055);
-border:1px dashed rgba(0,108,194,.18);
-color:#006CC2;
-text-align:center;
-font-size:14px;
-line-height:1.6;
-}
-
-body.dark .care-help-title h2{
-color:#f1f5f9;
-}
-
-body.dark .care-help-title p{
-color:#91a0b1;
-}
-
-body.dark .care-note{
-background:rgba(66,169,255,.07);
-color:#42a9ff;
-border-color:rgba(66,169,255,.20);
-}
-
-
-/* ==========================================
-   FORM
-========================================== */
 
 .form-container{
 max-width:1000px;
 background:rgba(255,255,255,.93);
 padding:38px;
 border-radius:25px;
-border:1px solid rgba(13,61,98,.10);
-box-shadow:0 18px 55px rgba(11,49,78,.10);
+border:1px solid var(--border);
+box-shadow:0 18px 55px rgba(11,49,78,.1);
 }
 
 .form-section{
@@ -1299,24 +845,9 @@ padding:22px 0;
 border-bottom:1px solid #edf2f6;
 }
 
-.form-section:last-of-type{
-border-bottom:0;
-}
-
 .form-section h3{
 color:#006CC2;
 margin-bottom:18px;
-display:flex;
-align-items:center;
-gap:10px;
-}
-
-.form-section h3:before{
-content:"";
-width:5px;
-height:23px;
-border-radius:8px;
-background:linear-gradient(#006CC2,#37aaff);
 }
 
 .form-grid{
@@ -1332,6 +863,16 @@ font-size:14px;
 font-weight:600;
 }
 
+.input{
+width:100%;
+padding:15px 17px;
+border:1px solid #dce4ec;
+border-radius:13px;
+outline:none;
+margin-bottom:15px;
+font-size:15px;
+}
+
 textarea.input{
 min-height:130px;
 resize:vertical;
@@ -1342,39 +883,8 @@ border:2px dashed #a9cde8;
 padding:35px;
 text-align:center;
 border-radius:15px;
-background:linear-gradient(135deg,#eff8ff,#f8fcff);
-transition:.3s ease;
+background:#eff8ff;
 }
-
-.upload:hover{
-border-color:#006CC2;
-background:#edf7ff;
-transform:translateY(-2px);
-}
-
-body.dark .form-container{
-background:rgba(19,28,38,.95);
-border-color:rgba(255,255,255,.08);
-box-shadow:0 18px 55px rgba(0,0,0,.25);
-}
-
-body.dark .form-section{
-border-bottom-color:#263340;
-}
-
-body.dark .upload{
-background:linear-gradient(135deg,#122535,#16212b);
-border-color:#31526b;
-}
-
-body.dark .upload:hover{
-background:#142c40;
-}
-
-
-/* ==========================================
-   SETTINGS
-========================================== */
 
 .settings-grid{
 display:grid;
@@ -1386,7 +896,7 @@ gap:20px;
 background:#fff;
 padding:30px;
 border-radius:20px;
-border:1px solid rgba(13,61,98,.10);
+border:1px solid var(--border);
 box-shadow:0 10px 35px rgba(9,44,73,.055);
 }
 
@@ -1406,59 +916,15 @@ margin-top:18px;
 padding:14px 10px;
 border:1px solid #dce4ec;
 background:#fff;
-color:#243447;
 border-radius:13px;
 cursor:pointer;
 font-weight:700;
-transition:.25s;
-}
-
-.theme-button:hover{
-transform:translateY(-2px);
-border-color:#006CC2;
 }
 
 .theme-button.active{
 background:#eaf5ff;
 border-color:#006CC2;
 color:#006CC2;
-box-shadow:0 6px 18px rgba(0,108,194,.12);
-}
-
-body.dark .setting-card{
-background:#131c26;
-border-color:rgba(255,255,255,.08);
-box-shadow:0 10px 35px rgba(0,0,0,.20);
-}
-
-body.dark .setting-card h3{
-color:#f1f5f9;
-}
-
-body.dark .setting-card p{
-color:#91a0b1;
-}
-
-body.dark .theme-button{
-background:#151e28;
-border-color:#2b3948;
-color:#dce6ef;
-}
-
-body.dark .theme-button.active{
-background:#122f45;
-border-color:#168ce0;
-color:#42a9ff;
-}
-
-.theme-status{
-font-size:13px;
-color:#718096;
-margin-top:12px;
-}
-
-body.dark .theme-status{
-color:#8292a5;
 }
 
 .country-time{
@@ -1466,33 +932,17 @@ margin-top:15px;
 padding:17px;
 border-radius:15px;
 background:#EAF5FF;
-border:1px solid rgba(0,108,194,.10);
 color:#006CC2;
 font-weight:800;
 text-align:center;
 font-size:18px;
-line-height:1.5;
-box-shadow:0 8px 22px rgba(0,108,194,.07);
 }
 
 .country-time-label{
 font-size:12px;
-font-weight:600;
-opacity:.75;
 display:block;
 margin-bottom:4px;
 }
-
-body.dark .country-time{
-background:#122b40;
-border-color:rgba(66,169,255,.14);
-color:#42a9ff;
-}
-
-
-/* ==========================================
-   FLOATING CARE
-========================================== */
 
 .floating-care{
 position:fixed;
@@ -1509,13 +959,7 @@ border:0;
 background:linear-gradient(135deg,#006CC2,#0a9bff);
 color:#fff;
 font-size:25px;
-cursor:pointer;
 box-shadow:0 14px 35px rgba(0,108,194,.35);
-animation:carePulse 2.6s infinite;
-}
-
-.care-button:hover{
-transform:translateY(-4px) scale(1.04);
 }
 
 .care-menu{
@@ -1526,14 +970,13 @@ width:210px;
 background:#fff;
 padding:12px;
 border-radius:18px;
-border:1px solid rgba(13,61,98,.10);
+border:1px solid var(--border);
 box-shadow:0 20px 55px rgba(0,25,50,.16);
 display:none;
 }
 
 .care-menu.show{
 display:block;
-animation:scaleIn .25s ease;
 }
 
 .care-menu a{
@@ -1542,26 +985,18 @@ padding:12px;
 text-decoration:none;
 color:#1d3044;
 border-radius:10px;
-transition:.2s ease;
 }
 
 .care-menu a:hover{
 background:#eaf5ff;
 color:#006CC2;
-transform:translateX(4px);
 }
-
-
-/* ==========================================
-   MODALS
-========================================== */
 
 .modal{
 position:fixed;
 inset:0;
 background:rgba(3,19,33,.68);
 backdrop-filter:blur(7px);
--webkit-backdrop-filter:blur(7px);
 display:none;
 align-items:center;
 justify-content:center;
@@ -1577,21 +1012,11 @@ display:flex;
 position:relative;
 background:#fff;
 width:100%;
-max-width:450px;
+max-width:500px;
 padding:35px;
 border-radius:25px;
 text-align:center;
-border:1px solid rgba(255,255,255,.45);
 box-shadow:0 30px 90px rgba(0,0,0,.25);
-animation:scaleIn .3s ease;
-}
-
-.modal.show .modal-box{
-animation:modalIn .38s cubic-bezier(.2,.8,.2,1);
-}
-
-.modal-box h2{
-margin-bottom:12px;
 }
 
 .details-close{
@@ -1604,12 +1029,14 @@ border:0;
 background:transparent;
 font-size:28px;
 color:#718096;
-cursor:pointer;
 }
 
-.details-icon{
-font-size:50px;
-margin-bottom:10px;
+.details-image{
+width:100%;
+height:220px;
+object-fit:cover;
+border-radius:17px;
+margin-bottom:18px;
 }
 
 .details-text{
@@ -1625,12 +1052,6 @@ border-radius:15px;
 margin-bottom:20px;
 }
 
-.details-contact-label{
-font-size:14px;
-color:#718096;
-margin-bottom:7px;
-}
-
 .details-phone{
 font-size:20px;
 color:#006CC2;
@@ -1640,45 +1061,12 @@ color:#006CC2;
 display:flex;
 gap:10px;
 justify-content:center;
-}
-
-.call-button{
-text-decoration:none;
+flex-wrap:wrap;
 }
 
 .mobile-nav{
 display:none;
 }
-
-body:before{
-content:"";
-position:fixed;
-inset:0;
-pointer-events:none;
-z-index:-1;
-background-image:
-linear-gradient(rgba(0,108,194,.025) 1px,transparent 1px),
-linear-gradient(90deg,rgba(0,108,194,.025) 1px,transparent 1px);
-background-size:34px 34px;
-}
-
-::-webkit-scrollbar{
-width:9px;
-}
-
-::-webkit-scrollbar-track{
-background:#edf3f8;
-}
-
-::-webkit-scrollbar-thumb{
-background:linear-gradient(#006CC2,#43aaff);
-border-radius:20px;
-}
-
-
-/* ==========================================
-   RESPONSIVE
-========================================== */
 
 @media(max-width:1100px){
 
@@ -1703,7 +1091,11 @@ grid-template-columns:repeat(2,1fr);
 grid-template-columns:1fr;
 }
 
-.care-grid{
+.search-grid{
+grid-template-columns:1fr 1fr;
+}
+
+.advanced-filters{
 grid-template-columns:repeat(3,1fr);
 }
 
@@ -1711,31 +1103,9 @@ grid-template-columns:repeat(3,1fr);
 grid-template-columns:repeat(2,1fr);
 }
 
-.search-box{
-grid-template-columns:1fr 1fr;
-}
-
-.hero{
-padding:45px;
-}
-
-.care-hero-decoration{
-right:4%;
-width:150px;
-height:150px;
-}
-
-.care-hero-decoration span{
-font-size:60px;
-}
-
 }
 
 @media(max-width:850px){
-
-.care-hero-decoration{
-display:none;
-}
 
 .care-grid{
 grid-template-columns:1fr;
@@ -1766,14 +1136,12 @@ bottom:0;
 left:0;
 right:0;
 height:70px;
-background:rgba(255,255,255,.90);
+background:rgba(255,255,255,.94);
 backdrop-filter:blur(16px);
--webkit-backdrop-filter:blur(16px);
-border-top:1px solid rgba(13,61,98,.10);
+border-top:1px solid var(--border);
 z-index:900;
 justify-content:space-around;
 align-items:center;
-box-shadow:0 -5px 20px rgba(0,0,0,.1);
 }
 
 .mobile-nav button{
@@ -1781,10 +1149,8 @@ border:0;
 background:none;
 color:#718096;
 font-size:12px;
-cursor:pointer;
 padding:8px 12px;
 border-radius:12px;
-transition:.2s ease;
 }
 
 .mobile-nav button.active{
@@ -1796,15 +1162,10 @@ background:#eef7ff;
 .hero{
 min-height:500px;
 padding:30px 24px;
-border-radius:21px;
 }
 
 .hero h1{
 font-size:40px;
-}
-
-.hero p{
-font-size:16px;
 }
 
 .services,
@@ -1813,63 +1174,36 @@ font-size:16px;
 grid-template-columns:1fr;
 }
 
-.search-box{
+.search-grid{
 grid-template-columns:1fr;
 }
 
-.form-grid{
-grid-template-columns:1fr;
-}
-
-.topbar{
-height:62px;
-margin-bottom:15px;
-padding:0 15px;
-}
-
-.modal-box{
-max-width:95%;
-padding:30px 20px;
-}
-
-.section{
-margin-top:32px;
-}
-
-.form-container{
-padding:24px 18px;
-}
-
-.property-image{
-height:205px;
-}
-
-.theme-options{
+.advanced-filters{
 grid-template-columns:1fr 1fr;
 }
 
-.country-time{
-font-size:16px;
+.property-header{
+align-items:flex-start;
+flex-direction:column;
 }
 
+.search-actions{
+flex-direction:column;
+align-items:stretch;
+}
 
-/* Mobile Customer Care */
+.filter-buttons{
+display:grid;
+grid-template-columns:1fr 1fr;
+}
 
 .care-hero{
 min-height:430px;
 padding:32px 23px;
-border-radius:22px;
-display:flex;
-align-items:center;
 }
 
 .care-hero h1{
 font-size:39px;
-}
-
-.care-hero p{
-font-size:15px;
-line-height:1.7;
 }
 
 .care-hero-buttons{
@@ -1881,34 +1215,22 @@ grid-template-columns:1fr;
 width:100%;
 }
 
-.care-grid{
-gap:15px;
-}
-
-.care-card{
-padding:27px 20px;
-}
-
 .care-help-grid{
 grid-template-columns:1fr;
 }
 
-.care-help-card{
-padding:18px;
-}
-
-.care-contact-strip{
-padding:24px 20px;
-}
-
-.care-contact-actions{
-width:100%;
-display:grid;
+.form-grid{
 grid-template-columns:1fr;
 }
 
-.care-contact-actions .btn{
-width:100%;
+.form-container{
+padding:24px 18px;
+}
+
+.topbar{
+height:62px;
+margin-bottom:15px;
+padding:0 15px;
 }
 
 .floating-care{
@@ -1918,465 +1240,44 @@ bottom:82px;
 
 }
 
+@media(max-width:450px){
 
-/* ==========================================
-   ANIMATIONS
-========================================== */
-
-@keyframes fadeUp{
-from{
-opacity:0;
-transform:translateY(25px);
-}
-to{
-opacity:1;
-transform:translateY(0);
-}
+.advanced-filters{
+grid-template-columns:1fr;
 }
 
-@keyframes scaleIn{
-from{
-opacity:0;
-transform:scale(.85);
+.property-image-wrap{
+height:210px;
 }
-to{
-opacity:1;
-transform:scale(1);
+
+.property-bottom{
+align-items:flex-start;
+flex-direction:column;
 }
+
+.view-btn{
+width:100%;
+}
+
 }
 
 @keyframes pageIn{
 from{
 opacity:0;
-transform:translateY(18px) scale(.995);
-}
-to{
-opacity:1;
-transform:translateY(0) scale(1);
-}
-}
-
-@keyframes heroText{
-from{
-opacity:0;
-transform:translateY(28px);
+transform:translateY(15px);
 }
 to{
 opacity:1;
 transform:translateY(0);
 }
-}
-
-@keyframes floatOrb{
-0%,100%{
-transform:translate(0,0);
-}
-50%{
-transform:translate(-20px,25px);
-}
-}
-
-@keyframes carePulse{
-0%,70%,100%{
-box-shadow:0 14px 35px rgba(0,108,194,.35),0 0 0 0 rgba(0,108,194,.25);
-}
-85%{
-box-shadow:0 14px 35px rgba(0,108,194,.35),0 0 0 14px rgba(0,108,194,0);
-}
-}
-
-@keyframes modalIn{
-from{
-opacity:0;
-transform:translateY(25px) scale(.92);
-}
-to{
-opacity:1;
-transform:translateY(0) scale(1);
-}
-}
-
-@keyframes cardIn{
-from{
-opacity:0;
-transform:translateY(22px);
-}
-to{
-opacity:1;
-transform:translateY(0);
-}
-}
-
-@keyframes careHeroIn{
-from{
-opacity:0;
-transform:translateY(30px);
-}
-to{
-opacity:1;
-transform:translateY(0);
-}
-}
-
-@keyframes careOrb{
-0%,100%{
-transform:translate(0,0) scale(1);
-}
-50%{
-transform:translate(-25px,25px) scale(1.08);
-}
-}
-
-@keyframes careFloat{
-0%,100%{
-transform:translateY(-50%) translateY(0);
-}
-50%{
-transform:translateY(-50%) translateY(-12px);
-}
-}
-
-@keyframes careIconFloat{
-0%,100%{
-transform:translateY(0);
-}
-50%{
-transform:translateY(-8px) rotate(3deg);
-}
-}
-
-@keyframes statusPulse{
-0%,100%{
-box-shadow:0 0 0 5px rgba(57,233,148,.12);
-}
-50%{
-box-shadow:0 0 0 10px rgba(57,233,148,0);
-}
-}
-
-.services .card,
-.property-grid .property-card,
-.status-grid .status-card,
-.care-grid .care-card,
-.settings-grid .setting-card,
-.care-help-card{
-animation:cardIn .65s both;
-}
-
-.services .card:nth-child(2),
-.property-grid .property-card:nth-child(2),
-.status-grid .status-card:nth-child(2),
-.care-grid .care-card:nth-child(2),
-.settings-grid .setting-card:nth-child(2),
-.care-help-card:nth-child(2){
-animation-delay:.08s;
-}
-
-.services .card:nth-child(3),
-.property-grid .property-card:nth-child(3),
-.status-grid .status-card:nth-child(3),
-.care-grid .care-card:nth-child(3),
-.settings-grid .setting-card:nth-child(3),
-.care-help-card:nth-child(3){
-animation-delay:.16s;
-}
-
-.services .card:nth-child(4),
-.property-grid .property-card:nth-child(4),
-.care-grid .care-card:nth-child(4),
-.care-help-card:nth-child(4){
-animation-delay:.24s;
-}
-
-@media(prefers-reduced-motion:reduce){
-
-*,*:before,*:after{
-animation-duration:.001ms!important;
-animation-iteration-count:1!important;
-scroll-behavior:auto!important;
-transition-duration:.001ms!important;
-}
-
-}
-
-
-
-/* =========================================================
-   HALEEL AUTHENTICATION GATE
-========================================================= */
-body.auth-locked{overflow:hidden;}
-body.auth-locked .app{display:none!important;}
-
-.auth-gate{
-position:fixed;
-inset:0;
-z-index:99999;
-display:none;
-align-items:center;
-justify-content:center;
-padding:22px;
-overflow:auto;
-background:
-radial-gradient(circle at 15% 15%,rgba(0,108,194,.18),transparent 28%),
-radial-gradient(circle at 85% 85%,rgba(0,108,194,.12),transparent 30%),
-#f5f9fd;
-}
-body.auth-locked .auth-gate{display:flex;}
-
-.auth-card{
-width:min(1040px,100%);
-min-height:610px;
-display:grid;
-grid-template-columns:1fr 1fr;
-overflow:hidden;
-background:rgba(255,255,255,.97);
-border:1px solid rgba(13,61,98,.10);
-border-radius:30px;
-box-shadow:0 30px 90px rgba(0,54,100,.18);
-animation:authIn .55s ease;
-}
-.auth-visual{
-position:relative;
-overflow:hidden;
-padding:50px;
-color:#fff;
-display:flex;
-flex-direction:column;
-justify-content:center;
-background:
-radial-gradient(circle at 80% 20%,rgba(255,255,255,.20),transparent 25%),
-radial-gradient(circle at 10% 90%,rgba(255,255,255,.10),transparent 28%),
-linear-gradient(145deg,#006CC2,#073a64);
-}
-.auth-visual:before,.auth-visual:after{
-content:"";
-position:absolute;
-border-radius:50%;
-background:rgba(255,255,255,.08);
-}
-.auth-visual:before{width:280px;height:280px;right:-120px;top:-110px;}
-.auth-visual:after{width:220px;height:220px;left:-120px;bottom:-100px;}
-.auth-brand{position:relative;z-index:2;font-size:38px;font-weight:950;letter-spacing:4px;}
-.auth-brand-sub{position:relative;z-index:2;margin-top:4px;opacity:.78;letter-spacing:2px;text-transform:uppercase;font-size:12px;}
-.auth-visual h1{position:relative;z-index:2;font-size:43px;line-height:1.1;margin:55px 0 18px;}
-.auth-visual p{position:relative;z-index:2;color:rgba(255,255,255,.86);line-height:1.8;max-width:450px;}
-.auth-points{position:relative;z-index:2;display:grid;gap:13px;margin-top:30px;}
-.auth-point{display:flex;align-items:center;gap:12px;font-weight:750;}
-.auth-point span:first-child{width:35px;height:35px;display:flex;align-items:center;justify-content:center;border-radius:11px;background:rgba(255,255,255,.14);}
-.auth-form-side{padding:48px;display:flex;align-items:center;}
-.auth-form{width:100%;max-width:450px;margin:auto;}
-.auth-header{margin-bottom:25px;}
-.auth-header h2{font-size:31px;color:#081b2e;margin-bottom:8px;}
-.auth-header p{color:#718096;line-height:1.6;}
-.auth-field{margin-bottom:17px;}
-.auth-field label{display:block;margin-bottom:8px;font-size:13px;font-weight:850;color:#53677a;}
-.auth-input-wrap{position:relative;}
-.auth-input{width:100%;height:54px;border:1px solid #dce4ec;border-radius:14px;outline:none;padding:0 50px 0 16px;font-size:15px;background:#fff;color:#243447;transition:.25s;}
-.auth-input:focus{border-color:#006CC2;box-shadow:0 0 0 4px rgba(0,108,194,.09);}
-.auth-eye{position:absolute;right:7px;top:7px;width:40px;height:40px;border:0;background:transparent;border-radius:10px;cursor:pointer;font-size:18px;}
-.auth-eye:hover{background:#EAF5FF;}
-.auth-button{width:100%;height:55px;border:0;border-radius:14px;background:linear-gradient(135deg,#006CC2,#0b8bea);color:#fff;font-size:15px;font-weight:900;cursor:pointer;box-shadow:0 12px 28px rgba(0,108,194,.24);transition:.25s;}
-.auth-button:hover{transform:translateY(-2px);box-shadow:0 16px 34px rgba(0,108,194,.31);}
-.auth-button:disabled{opacity:.7;cursor:wait;transform:none;}
-.auth-switch{text-align:center;margin-top:19px;color:#718096;font-size:13px;}
-.auth-switch button{border:0;background:none;color:#006CC2;font-weight:850;cursor:pointer;font-size:13px;}
-.auth-message{display:none;margin-top:14px;padding:12px 14px;border-radius:12px;font-size:13px;line-height:1.5;}
-.auth-message.show{display:block;}
-.auth-error{background:#fff0f0;border:1px solid rgba(229,72,77,.16);color:#c9363b;}
-.auth-success{background:#eafaf2;border:1px solid rgba(32,178,107,.16);color:#12824d;}
-.auth-loading{display:none;}
-.auth-button.loading .auth-loading{display:inline-block;}
-.auth-spinner{display:inline-block;width:17px;height:17px;border:3px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;vertical-align:-3px;margin-right:7px;animation:authSpin .7s linear infinite;}
-.auth-id-box{margin:20px 0;padding:18px;border-radius:16px;background:#EAF5FF;border:1px solid rgba(0,108,194,.12);text-align:center;}
-.auth-id-box small{display:block;color:#718096;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px;}
-.auth-id-number{font-size:34px;font-weight:950;letter-spacing:5px;color:#006CC2;}
-.auth-copy{border:0;background:transparent;color:#006CC2;font-weight:850;cursor:pointer;margin-top:8px;}
-.auth-back{margin-top:12px;width:100%;height:48px;border:1px solid #dce4ec;border-radius:13px;background:#fff;color:#53677a;font-weight:800;cursor:pointer;}
-.auth-back:hover{border-color:#006CC2;color:#006CC2;}
-body.dark .auth-gate{background:#07131f;}
-body.dark .auth-card{background:#131c26;border-color:rgba(255,255,255,.08);}
-body.dark .auth-header h2{color:#f1f5f9;}
-body.dark .auth-header p,body.dark .auth-field label,body.dark .auth-switch{color:#91a0b1;}
-body.dark .auth-input{background:#151e28;color:#e8eef5;border-color:#2b3948;}
-body.dark .auth-back{background:#151e28;color:#cbd5e1;border-color:#2b3948;}
-
-.auth-logout{margin-top:10px;width:100%;height:38px;border:0;border-radius:10px;background:#fff0f0;color:#c9363b;font-weight:800;cursor:pointer;}
-.auth-logout:hover{background:#ffe2e2;}
-
-@keyframes authIn{from{opacity:0;transform:translateY(20px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
-@keyframes authSpin{to{transform:rotate(360deg)}}
-
-@media(max-width:850px){
-.auth-card{grid-template-columns:1fr;min-height:auto;}
-.auth-visual{display:none;}
-.auth-form-side{padding:34px 24px;min-height:590px;}
-}
-@media(max-width:480px){
-.auth-gate{padding:10px;}
-.auth-card{border-radius:22px;}
-.auth-form-side{padding:28px 18px;}
-.auth-header h2{font-size:27px;}
-.auth-id-number{font-size:29px;}
 }
 
 </style>
-
-<link rel="manifest" href="./manifest.webmanifest">
-
-<meta name="theme-color" content="#FFFFFF">
-<meta name="color-scheme" content="light dark">
-<meta name="supported-color-schemes" content="light dark">
-
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="Haleel">
-
-<link rel="apple-touch-icon" href="./icons/Haleel icons.png">
-<link rel="icon" type="image/png" sizes="192x192" href="./icons/Haleel icons.png">
-
-<script>
-(function(){
-
-const savedTheme=localStorage.getItem("haleelTheme");
-
-if(savedTheme==="dark"){
-document.documentElement.classList.add("dark");
-}else{
-document.documentElement.classList.remove("dark");
-}
-
-})();
-</script>
-
 </head>
 
-<body class="auth-locked">
+<body>
 
-
-
-<!-- =========================================================
-     HALEEL SIGN IN / SIGN UP
-========================================================= -->
-<section class="auth-gate" id="authGate" aria-label="Haleel authentication">
-<div class="auth-card">
-
-<div class="auth-visual">
-<div class="auth-brand">HALEEL</div>
-<div class="auth-brand-sub">Real Estate</div>
-<h1>Ku soo dhawoow Haleel.</h1>
-<p>Geli account-kaaga si aad u isticmaasho adeegyada Haleel Real Estate iyo adeegyada guryaha.</p>
-<div class="auth-points">
-<div class="auth-point"><span>🔐</span><span>Login ammaan ah</span></div>
-<div class="auth-point"><span>🆔</span><span>Haleel ID 7-digit ah</span></div>
-<div class="auth-point"><span>🏠</span><span>Hel oo maamul adeegyada guryaha</span></div>
-<div class="auth-point"><span>🛡️</span><span>Password-ka server-ka ayaa ilaaliya</span></div>
-</div>
-</div>
-
-<div class="auth-form-side">
-<div class="auth-form">
-
-<!-- SIGN IN -->
-<div id="authLoginView">
-<div class="auth-header">
-<h2>Sign In</h2>
-<p>Geli Haleel ID-gaaga 7-digit ah iyo password-kaaga.</p>
-</div>
-
-<div class="auth-field">
-<label for="authAccountId">Haleel ID</label>
-<input id="authAccountId" class="auth-input" type="text" inputmode="numeric" autocomplete="username" maxlength="7" placeholder="Tusaale: 0000001">
-</div>
-
-<div class="auth-field">
-<label for="authLoginPassword">Password</label>
-<div class="auth-input-wrap">
-<input id="authLoginPassword" class="auth-input" type="password" autocomplete="current-password" placeholder="Geli password-kaaga">
-<button type="button" class="auth-eye" onclick="toggleAuthPassword('authLoginPassword',this)">👁️</button>
-</div>
-</div>
-
-<button id="authLoginButton" class="auth-button" onclick="haleelLogin()">
-<span class="auth-loading"><span class="auth-spinner"></span></span>
-<span id="authLoginButtonText">🔐 Sign In</span>
-</button>
-
-<div id="authLoginError" class="auth-message auth-error"></div>
-
-<div class="auth-switch">
-Ma lihid account? <button type="button" onclick="showHaleelSignup()">Create New Account</button>
-</div>
-</div>
-
-<!-- SIGN UP -->
-<div id="authSignupView" style="display:none">
-<div id="authSignupFormArea">
-<div class="auth-header">
-<h2>Create New Account</h2>
-<p>Samee account cusub. Haleel ayaa kuu samaynaya ID-gaaga 7-digit ah si automatic ah.</p>
-</div>
-
-<div class="auth-id-box" style="text-align:left">
-<strong style="color:#006CC2">🆔 ID-ga adiga ma dooranaysid</strong>
-<div style="font-size:12px;color:#718096;margin-top:5px">Website-ka ayaa kuu siinaya ID sida 0000001, 0000002, 0000003...</div>
-</div>
-
-<div class="auth-field">
-<label for="authSignupPassword">Password</label>
-<div class="auth-input-wrap">
-<input id="authSignupPassword" class="auth-input" type="password" autocomplete="new-password" maxlength="128" placeholder="Ugu yaraan 8 xaraf">
-<button type="button" class="auth-eye" onclick="toggleAuthPassword('authSignupPassword',this)">👁️</button>
-</div>
-</div>
-
-<div class="auth-field">
-<label for="authSignupConfirm">Confirm Password</label>
-<div class="auth-input-wrap">
-<input id="authSignupConfirm" class="auth-input" type="password" autocomplete="new-password" maxlength="128" placeholder="Ku celi password-kaaga">
-<button type="button" class="auth-eye" onclick="toggleAuthPassword('authSignupConfirm',this)">👁️</button>
-</div>
-</div>
-
-<label style="display:flex;gap:9px;align-items:flex-start;font-size:12px;color:#718096;line-height:1.5;margin:12px 0 18px">
-<input type="checkbox" id="authAgreement" style="margin-top:3px;accent-color:#006CC2">
-<span>Waxaan xaqiijinayaa in password-kan aniga ii gaar yahay oo aanan la wadaagin qof kale.</span>
-</label>
-
-<button id="authSignupButton" class="auth-button" onclick="haleelSignup()">
-<span class="auth-loading"><span class="auth-spinner"></span></span>
-<span id="authSignupButtonText">✨ Create New Account</span>
-</button>
-
-<div id="authSignupError" class="auth-message auth-error"></div>
-
-<div class="auth-switch">
-Account ma leedahay? <button type="button" onclick="showHaleelLogin()">Sign In</button>
-</div>
-</div>
-
-<div id="authSignupSuccess" style="display:none;text-align:center">
-<div style="font-size:55px;margin-bottom:12px">✅</div>
-<h2 style="color:#081b2e;margin-bottom:8px">Account-ka waa la sameeyay!</h2>
-<p style="color:#718096;line-height:1.6">Hambalyo! Account-kaaga Haleel si guul leh ayaa loo sameeyay.</p>
-<div class="auth-id-box">
-<small>Your Haleel ID</small>
-<div id="authGeneratedId" class="auth-id-number">0000000</div>
-<button type="button" class="auth-copy" onclick="copyHaleelAuthId()">📋 Copy ID</button>
-</div>
-<p style="font-size:13px;color:#718096"><strong>Fadlan ID-gaaga meel ammaan ah ku kaydi.</strong></p>
-<button type="button" class="auth-button" style="margin-top:18px" onclick="enterHaleelAfterSignup()">🏠 Continue to Haleel</button>
-</div>
-</div>
-
-<button id="authSignupBack" class="auth-back" style="display:none" onclick="showHaleelLogin()">← Back to Sign In</button>
-
-</div>
-</div>
-</div>
-</section>
-
-<section class="app" id="app">
+<section class="app">
 
 <aside class="sidebar">
 
@@ -2387,32 +1288,17 @@ Account ma leedahay? <button type="button" onclick="showHaleelLogin()">Sign In</
 
 <div class="nav">
 
-<button class="active" onclick="openPage('home',this)">
-🏠 Home
-</button>
-
-<button onclick="openPage('property',this)">
-🏘 Property
-</button>
-
-<button onclick="openPage('care',this)">
-💬 Customer Care
-</button>
-
-<button onclick="openPage('submit',this)">
-📝 Submit Property
-</button>
-
-<button onclick="openPage('settings',this)">
-⚙️ Settings
-</button>
+<button class="active" onclick="openPage('home',this)">🏠 Home</button>
+<button onclick="openPage('property',this)">🏘 Property</button>
+<button onclick="openPage('care',this)">💬 Customer Care</button>
+<button onclick="openPage('submit',this)">📝 Submit Property</button>
+<button onclick="openPage('settings',this)">⚙️ Settings</button>
 
 </div>
 
 <div class="user">
-<strong id="haleelUserName">Haleel Customer</strong>
-<small id="haleelUserSubtitle">Welcome to Haleel Real Estate</small>
-<button class="auth-logout" type="button" onclick="haleelLogout()">↪ Log Out</button>
+<strong>Haleel Customer</strong>
+<small>Welcome to Haleel Real Estate</small>
 </div>
 
 </aside>
@@ -2421,22 +1307,16 @@ Account ma leedahay? <button type="button" onclick="showHaleelLogin()">Sign In</
 
 <div class="topbar">
 
-<strong id="pageTitle">
-Home
-</strong>
+<strong id="pageTitle">Home</strong>
 
-<button
-class="btn btn-outline"
-onclick="openPage('care')">
+<button class="btn btn-outline" onclick="openPage('care')">
 Customer Care
 </button>
 
 </div>
 
 
-<!-- ==========================================
-     HOME
-========================================== -->
+<!-- HOME -->
 
 <div class="page active" id="home">
 
@@ -2444,24 +1324,21 @@ Customer Care
 
 <div class="hero-content">
 
-<h1>
-Hogaanka Kiraynta!
-</h1>
+<h1>Hogaanka Kiraynta!</h1>
 
 <p>
-Macmiil soo dhawoow, waxaad si fudud u heli kartaa guri kiro ah sidoo kalena waad iska kirayn kartaa, adiga oo jooga gurigaaga, waxaan kuu haynaa adeeg casri ah oo qiimo jaban!.
+Macmiil soo dhawoow, waxaad si fudud u heli kartaa guri kiro ah
+sidoo kalena waad iska kirayn kartaa, adiga oo jooga gurigaaga.
 </p>
 
 <div class="hero-buttons">
 
-<button
-class="btn btn-primary"
+<button class="btn btn-primary"
 onclick="openPage('property')">
 Raadi Guri
 </button>
 
-<button
-class="btn"
+<button class="btn"
 style="background:white;color:#006CC2"
 onclick="openPage('submit')">
 Diiwaangeli Guri
@@ -2484,33 +1361,25 @@ Diiwaangeli Guri
 <div class="card">
 <div class="service-icon">🏠</div>
 <h3>Adeega Ejaar</h3>
-<p>
-Macmiil adeega ejaar wuxuu kaa saacidayaa helida guri kiro ah & inaad kiraysid gurigaaga si fudud.
-</p>
+<p>Hel guri kiro ah ama si fudud u kirayso gurigaaga.</p>
 </div>
 
 <div class="card">
 <div class="service-icon">📢</div>
 <h3>Adeega Soohel</h3>
-<p>
-Macmiil waxaad haddii aad soo gudbisid guri kiro ah waxaad helaysaa khidmad lacageed.
-</p>
+<p>Haddii aad soo gudbiso guri kiro ah waxaad heli kartaa khidmad.</p>
 </div>
 
 <div class="card">
 <div class="service-icon">🤝</div>
 <h3>Adeega Dilaal</h3>
-<p>
-Macmiil waxaad ku iibin kartaa gurigaaga & bugcadaada, sidoo kalena waxaad helaysaa guryo & bugcado iib ah.
-</p>
+<p>Waxaad iibin kartaa gurigaaga iyo bugcadaada.</p>
 </div>
 
 <div class="card">
 <div class="service-icon">💻</div>
 <h3>Qancinta Macaamiisha</h3>
-<p>
-Macmiil waxaan diyaar u nahay xalinta cabashadaada & qancintaada.
-</p>
+<p>Waxaan diyaar u nahay xalinta cabashadaada.</p>
 </div>
 
 </div>
@@ -2526,8 +1395,8 @@ Macmiil waxaan diyaar u nahay xalinta cabashadaada & qancintaada.
 <div class="status-grid">
 
 <div class="status-card available">
-<h2>1,375</h2>
-<p>Guryaha banaan</p>
+<h2>20+</h2>
+<p>Guryaha Available</p>
 </div>
 
 <div class="status-card rented">
@@ -2541,10 +1410,9 @@ Macmiil waxaan diyaar u nahay xalinta cabashadaada & qancintaada.
 <p>Downloads</p>
 
 <button
-class="btn btn-outline"
+class="btn"
 id="installAppButton"
-type="button"
-style="margin-top:14px;background:rgba(255,255,255,.95);color:#006CC2;border:0;width:100%;"
+style="margin-top:14px;background:#fff;color:#006CC2;width:100%;"
 onclick="installHaleel()">
 📲 Download / Install App
 </button>
@@ -2559,333 +1427,248 @@ onclick="installHaleel()">
 
 <div class="section-header">
 
-<h2>Guryaha</h2>
+<h2>Guryaha Available</h2>
 
-<button
-class="btn btn-outline"
+<button class="btn btn-outline"
 onclick="openPage('property')">
 View All
 </button>
 
 </div>
 
-<div class="property-grid">
+<div class="property-grid" id="homePropertyGrid"></div>
 
-<div class="property-card">
-
-<img
-class="property-image"
-src="https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=900&q=80"
-loading="lazy"
-decoding="async">
-
-<div class="property-content">
-
-<span class="badge badge-green">Banaan</span>
-
-<h3>Apartment</h3>
-
-<div class="location">
-📍 Garowe
-</div>
-
-<div class="price">
-$350 / Month
-</div>
-
-</div>
-</div>
-
-
-<div class="property-card">
-
-<img
-class="property-image"
-src="https://images.unsplash.com/photo-1600607688969-a5bfcd646154?auto=format&fit=crop&w=900&q=80"
-loading="lazy"
-decoding="async">
-
-<div class="property-content">
-
-<span class="badge badge-green">Banaan</span>
-
-<h3>Dabaq-suge</h3>
-
-<div class="location">
-📍 Gaalkacyo
-</div>
-
-<div class="price">
-$500 / Month
-</div>
-
-</div>
-</div>
-
-
-<div class="property-card">
-
-<img
-class="property-image"
-src="https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=900&q=80"
-loading="lazy"
-decoding="async">
-
-<div class="property-content">
-
-<span class="badge badge-blue">La dagay</span>
-
-<h3>Fiilo</h3>
-
-<div class="location">
-📍 Laascanod
-</div>
-
-<div class="price">
-$150 / Month
-</div>
-
-</div>
-</div>
-
-</div>
 </section>
 
 </div>
 
 
-<!-- ==========================================
-     PROPERTY
-========================================== -->
+<!-- PROPERTY -->
 
 <div class="page" id="property">
 
-<div class="section-header">
+<div class="property-header">
 
 <div>
 
 <h2>Raadi Guri</h2>
 
-<p style="color:#718096">
-Macmiil raadi nooca guri aad rabtid.
+<p>
+Ka raadi guryaha Haleel Real Estate adigoo isticmaalaya filters-ka hoose.
 </p>
 
 </div>
 
+<div class="result-count" id="resultCount">
+20 Guri
+</div>
+
 </div>
 
 
-<div class="search-box">
+<div class="search-panel">
+
+<div class="search-top">
+
+<div class="search-title">
+🔎 Search & Filter
+</div>
+
+<span>Guryaha Available</span>
+
+</div>
+
+
+<div class="search-grid">
+
+<div class="search-field">
 
 <input
-class="input"
-style="margin:0"
-placeholder="Raadi goobta...">
+id="propertySearch"
+class="search-input"
+type="search"
+placeholder="Raadi magaalada, xaafadda, magaca guriga..."
+autocomplete="off">
 
-<select
-class="input"
-style="margin:0">
-
-<option>Nooca Guriga</option>
-<option>Fiilo</option>
-<option>Apartment</option>
-<option>Qol Ganacsi</option>
-<option>Qol Irid-banaan</option>
-<option>Qolal guri ka banaan</option>
-<option>Dabaq-suge</option>
-<option>Guri goglan</option>
-
-</select>
-
-<select
-class="input"
-style="margin:0">
-
-<option>Marxalada</option>
-<option>Guri kiro ah</option>
-<option>Guri Iib ah</option>
-
-</select>
-
-<select
-class="input"
-style="margin:0">
-
-<option>Qolalka</option>
-<option>1+</option>
-<option>2+</option>
-<option>3+</option>
-<option>4+</option>
-
-</select>
-
-<button class="btn btn-primary">
-Raadi
-</button>
+<span class="search-icon">🔍</span>
 
 </div>
 
 
-<div class="property-grid">
+<select id="typeFilter" class="filter-select">
 
-<div class="property-card">
+<option value="">Nooca Guriga — Dhammaan</option>
+<option value="Fiilo">Fiilo</option>
+<option value="Apartment">Apartment</option>
+<option value="Dabaq-suge">Dabaq-suge</option>
+<option value="Guri Goglan">Guri Goglan</option>
+<option value="Qol Irid-banaan">Qol Irid-banaan</option>
+<option value="Qol Ganacsi">Qol Ganacsi</option>
 
-<img
-class="property-image"
-src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=80"
-loading="lazy"
-decoding="async">
+</select>
 
-<div class="property-content">
 
-<span class="badge badge-green">
-Banaan
-</span>
+<select id="cityFilter" class="filter-select">
 
-<h3>
-Fiilo
-</h3>
+<option value="">Magaalada — Dhammaan</option>
 
-<div class="location">
-📍 Bosaaso
+</select>
+
+
+<select id="bedroomFilter" class="filter-select">
+
+<option value="">Qolalka — Dhammaan</option>
+<option value="1">1+ Qol</option>
+<option value="2">2+ Qol</option>
+<option value="3">3+ Qol</option>
+<option value="4">4+ Qol</option>
+
+</select>
+
 </div>
 
-<p>
-🛏 3 Qol &nbsp; 🛁 2 Suuli
-</p>
 
-<br>
+<div class="advanced-filters">
 
-<div class="price">
-$300 / Month
+<div>
+
+<label class="filter-label">Qiimaha ugu yar</label>
+
+<input
+id="minPrice"
+class="search-input"
+type="number"
+min="0"
+placeholder="$ Min">
+
 </div>
 
-<br>
+
+<div>
+
+<label class="filter-label">Qiimaha ugu badan</label>
+
+<input
+id="maxPrice"
+class="search-input"
+type="number"
+min="0"
+placeholder="$ Max">
+
+</div>
+
+
+<div>
+
+<label class="filter-label">Marxaladda</label>
+
+<select id="statusFilter" class="filter-select">
+<option value="Available">Available</option>
+<option value="">Dhammaan</option>
+</select>
+
+</div>
+
+
+<div>
+
+<label class="filter-label">Kala hormari</label>
+
+<select id="sortFilter" class="filter-select">
+<option value="newest">Newest</option>
+<option value="priceLow">Qiimaha: Low → High</option>
+<option value="priceHigh">Qiimaha: High → Low</option>
+<option value="bedrooms">Qolal badan</option>
+</select>
+
+</div>
+
+
+<div>
+
+<label class="filter-label">&nbsp;</label>
 
 <button
 class="btn btn-primary"
-onclick="openDetails()">
-Call Now
+style="width:100%;height:52px"
+onclick="filterProperties()">
+🔎 Raadi
 </button>
 
 </div>
+
 </div>
 
 
-<div class="property-card">
+<div class="search-actions">
 
-<img
-class="property-image"
-src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=900&q=80"
-loading="lazy"
-decoding="async">
-
-<div class="property-content">
-
-<span class="badge badge-green">
-Banaan
-</span>
-
-<h3>
-Guri goglan
-</h3>
-
-<div class="location">
-📍 Garowe
+<div
+class="active-filter-text"
+id="activeFilterText">
+20 guri ayaa diyaar ah
 </div>
+
+<div class="filter-buttons">
+
+<button
+class="btn btn-outline"
+onclick="resetFilters()">
+↻ Reset
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="property-grid" id="propertyGrid"></div>
+
+
+<div class="no-results" id="noResults">
+
+<div class="no-results-icon">🏠</div>
+
+<h3>Guri lama helin</h3>
 
 <p>
-🛏 4 Qol &nbsp; 🛁 3 Suuli
+Wax guri ah oo ku habboon raadintaada lama helin.
+Isku day inaad beddesho filters-ka.
 </p>
-
-<br>
-
-<div class="price">
-$450 / Month
-</div>
-
-<br>
 
 <button
 class="btn btn-primary"
-onclick="openDetails()">
-Call Now
+onclick="resetFilters()">
+Reset Filters
 </button>
 
 </div>
-</div>
-
-
-<div class="property-card">
-
-<img
-class="property-image"
-src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=900&q=80"
-loading="lazy"
-decoding="async">
-
-<div class="property-content">
-
-<span class="badge badge-blue">
-La dagay
-</span>
-
-<h3>
-Apartment
-</h3>
-
-<div class="location">
-📍 Gaalkacyo
-</div>
-
-<p>
-🛏 2 Qol &nbsp; 🛁 1 Suuli
-</p>
-
-<br>
-
-<div class="price">
-$180 / Month
-</div>
-
-</div>
-</div>
-
-</div>
 
 </div>
 
 
-<!-- ==========================================
-     NEW CUSTOMER CARE
-========================================== -->
+<!-- CUSTOMER CARE -->
 
 <div class="page" id="care">
 
-<div class="care-page-header">
-
 <div class="care-hero">
-
-<div class="care-hero-content">
 
 <div class="care-status">
 <span class="care-status-dot"></span>
 Haleel Customer Care Online
 </div>
 
-<h1>
-Sideen kuu caawin karnaa?
-</h1>
+<h1>Sideen kuu caawin karnaa?</h1>
 
 <p>
-Macmiil soo dhawoow. Kooxda Haleel Customer Care waxay diyaar u tahay inay kaa caawiso kirada, iibka, gudbinta guryaha, cabashooyinka iyo su'aalahaaga.
+Kooxda Haleel Customer Care waxay diyaar u tahay inay kaa caawiso
+kirada, iibka, gudbinta guryaha, cabashooyinka iyo su'aalahaaga.
 </p>
 
 <div class="care-hero-buttons">
 
-<button
-class="btn btn-primary"
-onclick="openChat()">
+<button class="btn btn-primary" onclick="openChat()">
 💬 La Hadal Haleel
 </button>
 
@@ -2893,24 +1676,16 @@ onclick="openChat()">
 class="btn"
 href="https://wa.me/252907469995"
 target="_blank"
-style="background:#20B26B;color:#fff;text-decoration:none;">
+style="background:#20B26B;color:#fff;text-decoration:none">
 🟢 WhatsApp
 </a>
 
 <a
 class="btn"
 href="tel:+252907469995"
-style="background:#fff;color:#006CC2;text-decoration:none;">
+style="background:#fff;color:#006CC2;text-decoration:none">
 📞 Wac Hadda
 </a>
-
-</div>
-
-</div>
-
-<div class="care-hero-decoration">
-<span>💬</span>
-</div>
 
 </div>
 
@@ -2921,40 +1696,28 @@ style="background:#fff;color:#006CC2;text-decoration:none;">
 
 <div class="care-card">
 
-<div class="care-icon">
-💬
-</div>
+<div class="care-icon">💬</div>
 
-<h3>
-Chat Care
-</h3>
+<h3>Chat Care</h3>
 
 <p>
-Haddii aad qabto su'aal, cabasho ama aad u baahan tahay caawimo, fariin noogu soo dir.
+Haddii aad qabto su'aal ama cabasho, fariin noo soo dir.
 </p>
 
-<button
-class="btn btn-primary"
-onclick="openChat()">
+<button class="btn btn-primary" onclick="openChat()">
 Start Chat
 </button>
 
 </div>
 
 
-<div class="care-card whatsapp-card">
+<div class="care-card">
 
-<div class="care-icon">
-🟢
-</div>
+<div class="care-icon">🟢</div>
 
-<h3>
-WhatsApp
-</h3>
+<h3>WhatsApp</h3>
 
-<p>
-Si toos ah WhatsApp ugula xiriir kooxda Haleel Real Estate.
-</p>
+<p>Si toos ah WhatsApp ugula xiriir Haleel.</p>
 
 <a
 class="btn btn-primary"
@@ -2966,19 +1729,13 @@ WhatsApp Us
 </div>
 
 
-<div class="care-card call-card">
+<div class="care-card">
 
-<div class="care-icon">
-📞
-</div>
+<div class="care-icon">📞</div>
 
-<h3>
-Voice Call
-</h3>
+<h3>Voice Call</h3>
 
-<p>
-Haddii aad rabto inaad si toos ah ula hadasho Haleel, hadda naga soo wac.
-</p>
+<p>Hadda si toos ah ula hadal Haleel.</p>
 
 <a
 class="btn btn-primary"
@@ -2991,141 +1748,86 @@ Call Now
 </div>
 
 
-<div class="care-help-section">
+<div class="section">
 
-<div class="care-help-title">
-
-<h2>
-Maxaad u baahan tahay?
-</h2>
-
-<p>
-Dooro adeegga aad rabto, waxaan kuu tilmaamaynaa habka ugu fudud.
-</p>
-
+<div class="section-header">
+<h2>Maxaad u baahan tahay?</h2>
 </div>
-
 
 <div class="care-help-grid">
 
-<div
-class="care-help-card"
+<div class="care-help-card"
 onclick="openChatWithMessage('Waxaan rabaa guri aan kireysto.')">
 
-<div class="care-help-icon">
-🏠
-</div>
+<div class="care-help-icon">🏠</div>
 
 <div>
-
-<h3>
-Guri Kiro
-</h3>
-
-<p>
-Raadi guri aad degto.
-</p>
-
+<h3>Guri Kiro</h3>
+<p>Raadi guri aad degto.</p>
 </div>
 
 </div>
 
 
-<div
-class="care-help-card"
+<div class="care-help-card"
 onclick="openChatWithMessage('Waxaan rabaa inaan gurigayga iibiyo.')">
 
-<div class="care-help-icon">
-🏷️
-</div>
+<div class="care-help-icon">🏷️</div>
 
 <div>
-
-<h3>
-Guri Iib
-</h3>
-
-<p>
-Gurigaaga iib uga raadi.
-</p>
-
+<h3>Guri Iib</h3>
+<p>Gurigaaga iib uga raadi.</p>
 </div>
 
 </div>
 
 
-<div
-class="care-help-card"
+<div class="care-help-card"
 onclick="openChatWithMessage('Waxaan rabaa inaan guri gudbiyo.')">
 
-<div class="care-help-icon">
-📢
-</div>
+<div class="care-help-icon">📢</div>
 
 <div>
-
-<h3>
-Gudbi Guri
-</h3>
-
-<p>
-Guri cusub nagu soo gudbi.
-</p>
-
+<h3>Gudbi Guri</h3>
+<p>Guri cusub nagu soo gudbi.</p>
 </div>
 
 </div>
 
 
-<div
-class="care-help-card"
+<div class="care-help-card"
 onclick="openChatWithMessage('Waxaan qabaa cabasho ama dhibaato.')">
 
-<div class="care-help-icon">
-🛡️
-</div>
+<div class="care-help-icon">🛡️</div>
 
 <div>
-
-<h3>
-Cabasho
-</h3>
-
-<p>
-Cabashadaada nala wadaag.
-</p>
-
+<h3>Cabasho</h3>
+<p>Cabashadaada nala wadaag.</p>
 </div>
 
 </div>
 
 </div>
-
 </div>
 
 
 <div class="care-contact-strip">
 
-<div class="care-contact-info">
+<div>
 
-<h3>
-📞 Waxaan joognaa diyaar
-</h3>
+<h3>📞 Waxaan joognaa diyaar</h3>
 
 <p>
 Waxaad nagala soo xiriiri kartaa telefoon, WhatsApp ama Email.
 <br>
-<span class="care-phone-number">
-+252 90 7469995
-</span>
+<strong>+252 90 7469995</strong>
 </p>
 
 </div>
 
-<div class="care-contact-actions">
+<div>
 
-<a
-class="btn btn-primary"
+<a class="btn btn-primary"
 href="tel:+252907469995">
 📞 Call
 </a>
@@ -3134,7 +1836,7 @@ href="tel:+252907469995">
 class="btn"
 href="https://wa.me/252907469995"
 target="_blank"
-style="background:#20B26B;color:#fff;text-decoration:none;">
+style="background:#20B26B;color:#fff;text-decoration:none">
 🟢 WhatsApp
 </a>
 
@@ -3148,154 +1850,46 @@ href="mailto:haleelrealestate@gmail.com">
 
 </div>
 
-
-<div class="section" style="margin-top:25px">
-
-<div class="care-grid">
-
-<div class="care-mini-card">
-
-<div class="care-mini-icon">
-⚡
-</div>
-
-<h4>
-Jawaab Degdeg ah
-</h4>
-
-<p>
-Waxaan ku dadaalaynaa inaan si dhaqso ah uga jawaabno fariimaha macaamiisha.
-</p>
-
 </div>
 
 
-<div class="care-mini-card">
-
-<div class="care-mini-icon">
-🔐
-</div>
-
-<h4>
-Xogtaada waa Ammaan
-</h4>
-
-<p>
-Macluumaadka aad nala wadaagto waxaa loo isticmaalaa adeegga aad codsatay.
-</p>
-
-</div>
-
-
-<div class="care-mini-card">
-
-<div class="care-mini-icon">
-🤝
-</div>
-
-<h4>
-Adeeg Macmiil
-</h4>
-
-<p>
-Hadafkeennu waa inaan ku siino adeeg fudud, cad oo lagu kalsoonaan karo.
-</p>
-
-</div>
-
-</div>
-
-<div class="care-note">
-💙 <strong>Haleel Real Estate</strong> — Hogaanka Kiraynta. Waxaan diyaar u nahay inaan kaa caawino baahidaada guri.
-</div>
-
-</div>
-
-</div>
-
-
-<!-- ==========================================
-     SUBMIT PROPERTY
-========================================== -->
+<!-- SUBMIT PROPERTY -->
 
 <div class="page" id="submit">
 
 <div class="form-container">
 
-<h2>
-Geli Xogtaada
-</h2>
+<h2>Geli Xogtaada</h2>
 
-<p
-style="color:#718096;margin:10px 0 30px">
-
-Mudane / Marwo diiwaan-geli guriga la rabo In la kireeyo adiga oo gudbinaya dhammaan macluumaadkiisa.
-
+<p style="color:#718096;margin:10px 0 30px">
+Diiwaangeli guriga aad rabto in la kireeyo.
 </p>
 
 
 <div class="form-section">
 
-<h3>
-Xogta Mulkiilaha
-</h3>
+<h3>Xogta Mulkiilaha</h3>
 
 <div class="form-grid">
 
 <div class="form-group">
-
-<label>
-Full Name
-</label>
-
-<input
-class="input"
-id="ownerName"
-placeholder="Full Name">
-
+<label>Full Name</label>
+<input class="input" id="ownerName" placeholder="Full Name">
 </div>
 
-
 <div class="form-group">
-
-<label>
-Phone Number
-</label>
-
-<input
-class="input"
-id="ownerPhone"
-placeholder="Phone Number">
-
+<label>Phone Number</label>
+<input class="input" id="ownerPhone" placeholder="Phone Number">
 </div>
 
-
 <div class="form-group">
-
-<label>
-Email
-</label>
-
-<input
-class="input"
-id="ownerEmail"
-type="email"
-placeholder="Email">
-
+<label>Email</label>
+<input class="input" id="ownerEmail" type="email" placeholder="Email">
 </div>
 
-
 <div class="form-group">
-
-<label>
-WhatsApp
-</label>
-
-<input
-class="input"
-id="ownerWhatsapp"
-placeholder="WhatsApp">
-
+<label>WhatsApp</label>
+<input class="input" id="ownerWhatsapp" placeholder="WhatsApp">
 </div>
 
 </div>
@@ -3304,74 +1898,38 @@ placeholder="WhatsApp">
 
 <div class="form-section">
 
-<h3>
-Geli Macluumaadka Guriga
-</h3>
+<h3>Macluumaadka Guriga</h3>
 
 <div class="form-grid">
 
 <div class="form-group">
-
-<label>
-Magaca soo gudbiyaha
-</label>
-
+<label>Magaca soo gudbiyaha</label>
 <input
 class="input"
 id="propertyTitle"
 placeholder="Magaca soo gudbiyaha">
-
 </div>
-
 
 <div class="form-group">
 
-<label>
-Nooca Guriga
-</label>
+<label>Nooca Guriga</label>
 
-<select
-class="input"
-id="propertyType">
+<select class="input" id="propertyType">
 
-<option>
-Fiilo
-</option>
-
-<option>
-Apartment
-</option>
-
-<option>
-Qol Ganacsi
-</option>
-
-<option>
-Qol Irid-banaan
-</option>
-
-<option>
-Qolal guri ka banaan
-</option>
-
-<option>
-Dabaq-suge
-</option>
-
-<option>
-Guri goglan
-</option>
+<option>Fiilo</option>
+<option>Apartment</option>
+<option>Qol Ganacsi</option>
+<option>Qol Irid-banaan</option>
+<option>Dabaq-suge</option>
+<option>Guri Goglan</option>
 
 </select>
 
 </div>
 
-
 <div class="form-group">
 
-<label>
-Magaalada
-</label>
+<label>Magaalada</label>
 
 <input
 class="input"
@@ -3380,12 +1938,9 @@ placeholder="Magaalada">
 
 </div>
 
-
 <div class="form-group">
 
-<label>
-Xaafadda
-</label>
+<label>Xaafadda</label>
 
 <input
 class="input"
@@ -3394,12 +1949,9 @@ placeholder="Xaafadda">
 
 </div>
 
-
 <div class="form-group">
 
-<label>
-Qiimaha Kirada
-</label>
+<label>Qiimaha Kirada</label>
 
 <input
 class="input"
@@ -3409,12 +1961,9 @@ placeholder="Qiimaha Kirada">
 
 </div>
 
-
 <div class="form-group">
 
-<label>
-Tirada Qolalka
-</label>
+<label>Tirada Qolalka</label>
 
 <input
 class="input"
@@ -3423,12 +1972,9 @@ type="number">
 
 </div>
 
-
 <div class="form-group">
 
-<label>
-Tirada Suuliyada
-</label>
+<label>Tirada Suuliyada</label>
 
 <input
 class="input"
@@ -3437,12 +1983,9 @@ type="number">
 
 </div>
 
-
 <div class="form-group">
 
-<label>
-Cabirka Guriga
-</label>
+<label>Cabirka Guriga</label>
 
 <input
 class="input"
@@ -3457,31 +2000,25 @@ placeholder="Cabirka Guriga">
 
 <div class="form-section">
 
-<h3>
-Faah-faahinta Guriga
-</h3>
+<h3>Faahfaahinta Guriga</h3>
 
 <textarea
 class="input"
 id="description"
-placeholder="Faah-faahinta Guriga"></textarea>
+placeholder="Faahfaahinta Guriga"></textarea>
 
 </div>
 
 
 <div class="form-section">
 
-<h3>
-Sawirka Guriga
-</h3>
+<h3>Sawirka Guriga</h3>
 
 <div class="upload">
 
 📷
 
-<h3>
-Geli sawirka guriga
-</h3>
+<h3>Geli sawirka guriga</h3>
 
 <p style="color:#718096">
 Dooro sawirka guriga.
@@ -3511,12 +2048,11 @@ Gudbi
 </button>
 
 </div>
+
 </div>
 
 
-<!-- ==========================================
-     SETTINGS
-========================================== -->
+<!-- SETTINGS -->
 
 <div class="page" id="settings">
 
@@ -3524,9 +2060,7 @@ Gudbi
 
 <div>
 
-<h2>
-Settings
-</h2>
+<h2>Settings</h2>
 
 <p style="color:#718096">
 Website Settings.
@@ -3539,20 +2073,13 @@ Website Settings.
 
 <div class="settings-grid">
 
-
 <div class="setting-card">
 
-<div class="setting-icon">
-🎨
-</div>
+<div class="setting-icon">🎨</div>
 
-<h3>
-Appearance
-</h3>
+<h3>Appearance</h3>
 
-<p>
-Choose how Haleel should look.
-</p>
+<p>Choose how Haleel should look.</p>
 
 <div class="theme-options">
 
@@ -3583,36 +2110,24 @@ Current theme: Light Mode
 
 <div class="setting-card">
 
-<div class="setting-icon">
-🌍
-</div>
+<div class="setting-icon">🌍</div>
 
-<h3>
-Country
-</h3>
+<h3>Country</h3>
 
 <p>
 Choose your country to view its current local time.
 </p>
 
-<br>
-
 <select
 class="input"
 id="countrySelect"
-onchange="changeCountry">
+onchange="changeCountry()">
 </select>
 
 <div
 class="country-time"
 id="countryTime">
-
-<span class="country-time-label">
-Current Local Time
-</span>
-
-🇸🇴 Somalia — 6:40:00 PM
-
+Loading...
 </div>
 
 </div>
@@ -3620,17 +2135,11 @@ Current Local Time
 
 <div class="setting-card">
 
-<div class="setting-icon">
-💬
-</div>
+<div class="setting-icon">💬</div>
 
-<h3>
-Customer Care
-</h3>
+<h3>Customer Care</h3>
 
-<p>
-Need help? Contact Haleel Customer Care.
-</p>
+<p>Need help? Contact Haleel Customer Care.</p>
 
 <br>
 
@@ -3645,26 +2154,16 @@ Contact Us
 
 <div class="setting-card">
 
-<div class="setting-icon">
-🌐
-</div>
+<div class="setting-icon">🌐</div>
 
-<h3>
-Language
-</h3>
+<h3>Language</h3>
 
-<p>
-Choose your preferred language.
-</p>
+<p>Choose your preferred language.</p>
 
 <br>
 
 <select class="input">
-
-<option>
-English
-</option>
-
+<option>English</option>
 </select>
 
 </div>
@@ -3672,13 +2171,9 @@ English
 
 <div class="setting-card">
 
-<div class="setting-icon">
-ℹ️
-</div>
+<div class="setting-icon">ℹ️</div>
 
-<h3>
-About
-</h3>
+<h3>About</h3>
 
 <p>
 Haleel Real Estate — Hogaanka Kiraynta.
@@ -3686,9 +2181,7 @@ Haleel Real Estate — Hogaanka Kiraynta.
 
 <br>
 
-<strong>
-Version 1.0.0
-</strong>
+<strong>Version 1.0.0</strong>
 
 </div>
 
@@ -3711,22 +2204,19 @@ onclick="openPage('home',this)">
 Home
 </button>
 
-<button
-onclick="openPage('property',this)">
+<button onclick="openPage('property',this)">
 🏘
 <br>
 Property
 </button>
 
-<button
-onclick="openPage('care',this)">
+<button onclick="openPage('care',this)">
 💬
 <br>
 Care
 </button>
 
-<button
-onclick="openPage('settings',this)">
+<button onclick="openPage('settings',this)">
 ⚙️
 <br>
 Settings
@@ -3743,30 +2233,23 @@ Settings
 class="care-menu"
 id="careMenu">
 
-<a
-href="https://wa.me/252907469995"
-target="_blank">
+<a href="https://wa.me/252907469995" target="_blank">
 🟢 WhatsApp
 </a>
 
-<a
-href="tel:+252907469995">
+<a href="tel:+252907469995">
 📞 Call
 </a>
 
-<a
-href="mailto:haleelrealestate@gmail.com">
+<a href="mailto:haleelrealestate@gmail.com">
 📧 Email
 </a>
 
-<a
-href="#"
-onclick="openChat();return false;">
+<a href="#" onclick="openChat();return false;">
 💬 Chat Care
 </a>
 
 </div>
-
 
 <button
 class="care-button"
@@ -3776,10 +2259,8 @@ onclick="toggleCare()">
 
 </div>
 
-</section>
 
-
-<!-- PROPERTY DETAILS MODAL -->
+<!-- PROPERTY DETAILS -->
 
 <div
 class="modal"
@@ -3793,25 +2274,26 @@ onclick="closeDetails()">
 ×
 </button>
 
-<div class="details-icon">
-🏠
-</div>
+<img
+id="detailsImage"
+class="details-image"
+src=""
+alt="Property">
 
-<h2>
+<div style="font-size:50px">🏠</div>
+
+<h2 id="detailsTitle">
 Faahfaahinta Guriga
 </h2>
 
-<p class="details-text">
-
-Haddii aad doonaysid gurigan, la xiriir xarumaheena si aad u hesho faahfaahin dheeraad ah.
-
+<p
+id="detailsDescription"
+class="details-text">
 </p>
 
 <div class="details-contact">
 
-<div class="details-contact-label">
-📞 Nala Xiriir
-</div>
+<div>📞 Nala Xiriir</div>
 
 <strong class="details-phone">
 +252 90 7469995
@@ -3829,8 +2311,16 @@ Close
 
 <a
 href="tel:+252907469995"
-class="btn btn-primary call-button">
+class="btn btn-primary">
 📞 Call Now
+</a>
+
+<a
+href="https://wa.me/252907469995"
+target="_blank"
+class="btn"
+style="background:#20B26B;color:#fff">
+WhatsApp
 </a>
 
 </div>
@@ -3839,7 +2329,7 @@ class="btn btn-primary call-button">
 </div>
 
 
-<!-- CHAT MODAL -->
+<!-- CHAT -->
 
 <div
 class="modal"
@@ -3847,13 +2337,11 @@ id="chatModal">
 
 <div class="modal-box">
 
-<div style="font-size:50px;margin-bottom:10px;">
+<div style="font-size:50px">
 💬
 </div>
 
-<h2>
-Qancinta Macaamiisha!
-</h2>
+<h2>Qancinta Macaamiisha!</h2>
 
 <p style="color:#718096;line-height:1.6">
 Macmiil maxaan kaa caawiyaa?
@@ -3870,7 +2358,7 @@ placeholder="Write your message..."></textarea>
 
 <button
 class="btn btn-outline"
-onclick="document.getElementById('chatModal').classList.remove('show')">
+onclick="closeChat()">
 Close
 </button>
 
@@ -3886,7 +2374,7 @@ Send
 </div>
 
 
-<!-- SUCCESS MODAL -->
+<!-- SUCCESS -->
 
 <div
 class="modal"
@@ -3898,15 +2386,11 @@ id="successModal">
 ✅
 </div>
 
-<h2>
-Mahadsanid!
-</h2>
+<h2>Mahadsanid!</h2>
 
-<p
-style="color:#718096;margin:15px 0">
-
-Waad ku mahadsantahay macmiil, hadda waad gudbisay macluumaadkii.
-
+<p style="color:#718096;margin:15px 0">
+Macluumaadka gurigaaga waa la gudbiyey.
+Kooxda Haleel ayaa heli doonta xogta aad soo dirtay.
 </p>
 
 <button
@@ -3919,78 +2403,767 @@ Dib u noqo!
 </div>
 
 
+<!-- HIDDEN SUBMISSION TARGET -->
+
 <iframe
 name="haleelSubmitFrame"
 id="haleelSubmitFrame"
-style="display:none;width:0;height:0;border:0;">
+style="display:none;width:0;height:0;border:0"
+title="Haleel submission">
 </iframe>
 
 
 <script>
+
+/* =========================================================
+   HALEEL REAL ESTATE
+========================================================= */
 
 function $(id){
 return document.getElementById(id);
 }
 
 
-/* ==========================================
+/* =========================================================
    GOOGLE APPS SCRIPT BACKEND
-========================================== */
+========================================================= */
 
 const HALEEL_BACKEND_URL =
 "https://script.google.com/macros/s/AKfycby5_MaPFQpcRDObAVYomJ0Pm89gOqASiS59J7I31sSEO-0dsGmGvv6x29CfTx6ft35a/exec";
 
 
-/* ==========================================
-   THEME SYSTEM
-========================================== */
+/* =========================================================
+   PROPERTY DATABASE
+========================================================= */
+
+const properties=[
+
+{
+id:1,
+title:"Luxury Fiilo",
+type:"Fiilo",
+city:"Garowe",
+neighborhood:"Mubaarak",
+rent:350,
+bedrooms:4,
+bathrooms:3,
+size:"220 m²",
+status:"Available",
+image:"https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=80",
+description:"Fiilo casri ah oo ku taalla Garowe, xaafadda Mubaarak."
+},
+
+{
+id:2,
+title:"Modern Apartment",
+type:"Apartment",
+city:"Garowe",
+neighborhood:"Hantiwadaag",
+rent:280,
+bedrooms:3,
+bathrooms:2,
+size:"160 m²",
+status:"Available",
+image:"https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=900&q=80",
+description:"Apartment nadiif ah oo ku habboon qoys."
+},
+
+{
+id:3,
+title:"Family Villa",
+type:"Fiilo",
+city:"Garowe",
+neighborhood:"Halgan",
+rent:450,
+bedrooms:5,
+bathrooms:4,
+size:"300 m²",
+status:"Available",
+image:"https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=900&q=80",
+description:"Villa ballaaran oo ku habboon qoys weyn."
+},
+
+{
+id:4,
+title:"Dabaq-suge Center",
+type:"Dabaq-suge",
+city:"Garowe",
+neighborhood:"1da August",
+rent:220,
+bedrooms:2,
+bathrooms:2,
+size:"120 m²",
+status:"Available",
+image:"https://images.unsplash.com/photo-1600607688969-a5bfcd646154?auto=format&fit=crop&w=900&q=80",
+description:"Dabaq-suge ku yaalla meel muhiim ah."
+},
+
+{
+id:5,
+title:"Elegant Apartment",
+type:"Apartment",
+city:"Gaalkacyo",
+neighborhood:"Wadajir",
+rent:300,
+bedrooms:3,
+bathrooms:2,
+size:"150 m²",
+status:"Available",
+image:"https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=900&q=80",
+description:"Apartment qurux badan oo Gaalkacyo ku yaalla."
+},
+
+{
+id:6,
+title:"Family Home",
+type:"Fiilo",
+city:"Gaalkacyo",
+neighborhood:"Hodan",
+rent:380,
+bedrooms:4,
+bathrooms:3,
+size:"230 m²",
+status:"Available",
+image:"https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=900&q=80",
+description:"Guri qoys oo leh qolal badan."
+},
+
+{
+id:7,
+title:"Cozy Apartment",
+type:"Apartment",
+city:"Bosaaso",
+neighborhood:"Waaberi",
+rent:250,
+bedrooms:2,
+bathrooms:1,
+size:"110 m²",
+status:"Available",
+image:"https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=900&q=80",
+description:"Apartment yar oo qurux badan."
+},
+
+{
+id:8,
+title:"Premium Villa",
+type:"Fiilo",
+city:"Bosaaso",
+neighborhood:"Hantiwadaag",
+rent:600,
+bedrooms:5,
+bathrooms:4,
+size:"350 m²",
+status:"Available",
+image:"https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?auto=format&fit=crop&w=900&q=80",
+description:"Villa premium ah oo leh adeegyo casri ah."
+},
+
+{
+id:9,
+title:"Guri Goglan Deluxe",
+type:"Guri Goglan",
+city:"Garowe",
+neighborhood:"New Garowe",
+rent:500,
+bedrooms:4,
+bathrooms:3,
+size:"210 m²",
+status:"Available",
+image:"https://images.unsplash.com/photo-1600566753051-f0b89df2dd90?auto=format&fit=crop&w=900&q=80",
+description:"Guri goglan oo diyaar u ah degitaan."
+},
+
+{
+id:10,
+title:"Modern Family Home",
+type:"Fiilo",
+city:"Qardho",
+neighborhood:"Waaberi",
+rent:270,
+bedrooms:3,
+bathrooms:2,
+size:"170 m²",
+status:"Available",
+image:"https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=900&q=80",
+description:"Guri casri ah oo Qardho ku yaalla."
+},
+
+{
+id:11,
+title:"Small Apartment",
+type:"Apartment",
+city:"Qardho",
+neighborhood:"Hodan",
+rent:180,
+bedrooms:1,
+bathrooms:1,
+size:"80 m²",
+status:"Available",
+image:"https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=900&q=80",
+description:"Apartment ku habboon qof ama lamaane."
+},
+
+{
+id:12,
+title:"Luxury Apartment",
+type:"Apartment",
+city:"Laascaanood",
+neighborhood:"Horseed",
+rent:320,
+bedrooms:3,
+bathrooms:2,
+size:"155 m²",
+status:"Available",
+image:"https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=900&q=80",
+description:"Apartment casri ah oo Laascaanood ku yaalla."
+},
+
+{
+id:13,
+title:"Large Villa",
+type:"Fiilo",
+city:"Laascaanood",
+neighborhood:"Waaberi",
+rent:420,
+bedrooms:5,
+bathrooms:3,
+size:"280 m²",
+status:"Available",
+image:"https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=900&q=80",
+description:"Villa ballaaran oo qoysaska ku habboon."
+},
+
+{
+id:14,
+title:"Affordable Apartment",
+type:"Apartment",
+city:"Buurtinle",
+neighborhood:"Hantiwadaag",
+rent:150,
+bedrooms:2,
+bathrooms:1,
+size:"95 m²",
+status:"Available",
+image:"https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=900&q=80",
+description:"Apartment qiimo jaban leh."
+},
+
+{
+id:15,
+title:"Dabaq-suge Plus",
+type:"Dabaq-suge",
+city:"Buurtinle",
+neighborhood:"Mubaarak",
+rent:200,
+bedrooms:2,
+bathrooms:2,
+size:"115 m²",
+status:"Available",
+image:"https://images.unsplash.com/photo-1493809842364-78817add7ffb?auto=format&fit=crop&w=900&q=80",
+description:"Dabaq-suge ku habboon qoys yar."
+},
+
+{
+id:16,
+title:"Modern Fiilo",
+type:"Fiilo",
+city:"Goldogob",
+neighborhood:"Wadajir",
+rent:260,
+bedrooms:3,
+bathrooms:2,
+size:"180 m²",
+status:"Available",
+image:"https://images.unsplash.com/photo-1600047509782-20d39509f26d?auto=format&fit=crop&w=900&q=80",
+description:"Fiilo casri ah oo Goldogob ku taalla."
+},
+
+{
+id:17,
+title:"Guri Goglan Premium",
+type:"Guri Goglan",
+city:"Goldogob",
+neighborhood:"Hodan",
+rent:390,
+bedrooms:4,
+bathrooms:3,
+size:"210 m²",
+status:"Available",
+image:"https://images.unsplash.com/photo-1600210491892-03d54c0aaf87?auto=format&fit=crop&w=900&q=80",
+description:"Guri goglan oo tayo sare leh."
+},
+
+{
+id:18,
+title:"Qol Irid-banaan",
+type:"Qol Irid-banaan",
+city:"Garowe",
+neighborhood:"Israac",
+rent:120,
+bedrooms:1,
+bathrooms:1,
+size:"55 m²",
+status:"Available",
+image:"https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=900&q=80",
+description:"Qol irid-banaan oo qiimo jaban."
+},
+
+{
+id:19,
+title:"Commercial Room",
+type:"Qol Ganacsi",
+city:"Garowe",
+neighborhood:"Sunaami",
+rent:550,
+bedrooms:0,
+bathrooms:1,
+size:"90 m²",
+status:"Available",
+image:"https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=900&q=80",
+description:"Qol ganacsi oo ku yaalla goob ganacsi."
+},
+
+{
+id:20,
+title:"Executive Villa",
+type:"Fiilo",
+city:"Garowe",
+neighborhood:"New Garowe",
+rent:750,
+bedrooms:6,
+bathrooms:5,
+size:"420 m²",
+status:"Available",
+image:"https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=900&q=80",
+description:"Villa executive ah oo aad u ballaaran."
+}
+
+];
+
+
+/* =========================================================
+   PROPERTY RENDER
+========================================================= */
+
+function renderProperties(list,targetId="propertyGrid"){
+
+const grid=$(targetId);
+
+if(!grid)return;
+
+grid.innerHTML="";
+
+list.forEach(property=>{
+
+const card=document.createElement("div");
+
+card.className="property-card";
+
+card.innerHTML=`
+
+<div class="property-image-wrap">
+
+<img
+class="property-image"
+src="${property.image}"
+alt="${escapeHTML(property.title)}"
+loading="lazy"
+onerror="this.style.opacity='.35'">
+
+<span class="property-status">
+${escapeHTML(property.status)}
+</span>
+
+<button
+class="property-favorite"
+type="button"
+onclick="toggleFavorite(this)">
+♡
+</button>
+
+</div>
+
+<div class="property-content">
+
+<div class="property-type">
+${escapeHTML(property.type)}
+</div>
+
+<h3>
+${escapeHTML(property.title)}
+</h3>
+
+<div class="location">
+📍 ${escapeHTML(property.city)} —
+${escapeHTML(property.neighborhood)}
+</div>
+
+<div class="property-meta">
+
+<span class="meta-item">
+🛏 ${property.bedrooms} Qol
+</span>
+
+<span class="meta-item">
+🚿 ${property.bathrooms} Suuli
+</span>
+
+<span class="meta-item">
+📐 ${escapeHTML(property.size)}
+</span>
+
+</div>
+
+<div class="property-bottom">
+
+<div class="price">
+$${property.rent}
+<small>/ Month</small>
+</div>
+
+<button
+class="btn btn-primary view-btn"
+onclick="openPropertyDetails(${property.id})">
+View Details
+</button>
+
+</div>
+
+</div>
+`;
+
+grid.appendChild(card);
+
+});
+
+}
+
+
+function renderHomeProperties(){
+
+renderProperties(
+properties.slice(0,3),
+"homePropertyGrid"
+);
+
+}
+
+
+/* =========================================================
+   FILTER
+========================================================= */
+
+function filterProperties(){
+
+const search=$("propertySearch").value.trim().toLowerCase();
+const type=$("typeFilter").value;
+const city=$("cityFilter").value;
+const bedrooms=$("bedroomFilter").value;
+const minPrice=parseFloat($("minPrice").value);
+const maxPrice=parseFloat($("maxPrice").value);
+const status=$("statusFilter").value;
+const sort=$("sortFilter").value;
+
+let filtered=properties.filter(property=>{
+
+const searchable=`
+${property.title}
+${property.type}
+${property.city}
+${property.neighborhood}
+${property.description}
+`.toLowerCase();
+
+return(
+(!search || searchable.includes(search)) &&
+(!type || property.type===type) &&
+(!city || property.city===city) &&
+(!bedrooms || property.bedrooms>=Number(bedrooms)) &&
+(isNaN(minPrice) || property.rent>=minPrice) &&
+(isNaN(maxPrice) || property.rent<=maxPrice) &&
+(!status || property.status===status)
+);
+
+});
+
+if(sort==="priceLow"){
+filtered.sort((a,b)=>a.rent-b.rent);
+}
+else if(sort==="priceHigh"){
+filtered.sort((a,b)=>b.rent-a.rent);
+}
+else if(sort==="bedrooms"){
+filtered.sort((a,b)=>b.bedrooms-a.bedrooms);
+}
+else{
+filtered.sort((a,b)=>b.id-a.id);
+}
+
+renderProperties(filtered);
+
+$("resultCount").textContent=`${filtered.length} Guri`;
+
+$("activeFilterText").textContent=
+filtered.length===0
+?"Wax natiijo ah lama helin"
+:`${filtered.length} guri ayaa ku habboon raadintaada`;
+
+$("noResults").classList.toggle(
+"show",
+filtered.length===0
+);
+
+}
+
+
+function loadCityFilter(){
+
+const select=$("cityFilter");
+
+if(!select)return;
+
+const cities=[
+...new Set(properties.map(p=>p.city))
+].sort();
+
+cities.forEach(city=>{
+
+const option=document.createElement("option");
+
+option.value=city;
+option.textContent=city;
+
+select.appendChild(option);
+
+});
+
+}
+
+
+function resetFilters(){
+
+$("propertySearch").value="";
+$("typeFilter").value="";
+$("cityFilter").value="";
+$("bedroomFilter").value="";
+$("minPrice").value="";
+$("maxPrice").value="";
+$("statusFilter").value="Available";
+$("sortFilter").value="newest";
+
+filterProperties();
+
+}
+
+
+function enableLiveSearch(){
+
+[
+"propertySearch",
+"typeFilter",
+"cityFilter",
+"bedroomFilter",
+"minPrice",
+"maxPrice",
+"statusFilter",
+"sortFilter"
+
+].forEach(id=>{
+
+const element=$(id);
+
+if(!element)return;
+
+element.addEventListener("input",filterProperties);
+element.addEventListener("change",filterProperties);
+
+});
+
+}
+
+
+/* =========================================================
+   DETAILS
+========================================================= */
+
+function openPropertyDetails(id){
+
+const property=properties.find(
+item=>item.id===id
+);
+
+if(!property)return;
+
+$("detailsImage").src=property.image;
+
+$("detailsTitle").textContent=property.title;
+
+$("detailsDescription").innerHTML=`
+
+<strong>${escapeHTML(property.type)}</strong><br>
+📍 ${escapeHTML(property.city)} —
+${escapeHTML(property.neighborhood)}<br><br>
+
+🛏 ${property.bedrooms} Qol &nbsp;
+🚿 ${property.bathrooms} Suuli<br>
+
+📐 ${escapeHTML(property.size)}<br>
+
+💰 <strong>$${property.rent} / Month</strong><br><br>
+
+${escapeHTML(property.description)}
+
+`;
+
+$("detailsModal").classList.add("show");
+
+}
+
+
+function closeDetails(){
+
+$("detailsModal").classList.remove("show");
+
+}
+
+
+function toggleFavorite(button){
+
+if(button.textContent.trim()==="♡"){
+
+button.textContent="♥";
+button.style.color="#E5484D";
+
+}else{
+
+button.textContent="♡";
+button.style.color="";
+
+}
+
+}
+
+
+function escapeHTML(value){
+
+return String(value)
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;");
+
+}
+
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+function openPage(page,button){
+
+document
+.querySelectorAll(".page")
+.forEach(p=>p.classList.remove("active"));
+
+const selected=$(page);
+
+if(selected){
+selected.classList.add("active");
+}
+
+const titles={
+home:"Home",
+property:"Properties",
+care:"Customer Care",
+submit:"Submit Property",
+settings:"Settings"
+};
+
+$("pageTitle").textContent=
+titles[page]||"Haleel Real Estate";
+
+document
+.querySelectorAll(".nav button,.mobile-nav button")
+.forEach(b=>b.classList.remove("active"));
+
+const map={
+home:0,
+property:1,
+care:2,
+submit:3,
+settings:4
+};
+
+if(button){
+
+button.classList.add("active");
+
+}else{
+
+const index=map[page];
+
+const desktop=
+document.querySelectorAll(".nav button")[index];
+
+if(desktop)
+desktop.classList.add("active");
+
+let mobileIndex=index;
+
+if(page==="submit" || page==="settings"){
+mobileIndex=3;
+}
+
+const mobile=
+document.querySelectorAll(".mobile-nav button")[mobileIndex];
+
+if(mobile)
+mobile.classList.add("active");
+
+}
+
+window.scrollTo({
+top:0,
+behavior:"smooth"
+});
+
+}
+
+
+/* =========================================================
+   THEME
+========================================================= */
 
 function applyTheme(theme){
 
-const html=document.documentElement;
-const body=document.body;
-
 if(theme==="dark"){
 
-html.classList.add("dark");
-body.classList.add("dark");
+document.body.classList.add("dark");
 
-html.style.colorScheme="dark";
-body.style.colorScheme="dark";
+$("themeStatus").textContent=
+"Current theme: Dark Mode";
 
-if($("themeStatus"))
-$("themeStatus").textContent="Current theme: Dark Mode";
-
-if($("darkThemeButton"))
 $("darkThemeButton").classList.add("active");
-
-if($("lightThemeButton"))
 $("lightThemeButton").classList.remove("active");
 
 document
 .querySelector('meta[name="theme-color"]')
-?.setAttribute("content","#0B1118");
+.setAttribute("content","#0B1118");
 
 }else{
 
-html.classList.remove("dark");
-body.classList.remove("dark");
+document.body.classList.remove("dark");
 
-html.style.colorScheme="light";
-body.style.colorScheme="light";
+$("themeStatus").textContent=
+"Current theme: Light Mode";
 
-if($("themeStatus"))
-$("themeStatus").textContent="Current theme: Light Mode";
-
-if($("lightThemeButton"))
 $("lightThemeButton").classList.add("active");
-
-if($("darkThemeButton"))
 $("darkThemeButton").classList.remove("active");
 
 document
 .querySelector('meta[name="theme-color"]')
-?.setAttribute("content","#FFFFFF");
+.setAttribute("content","#FFFFFF");
 
 }
 
@@ -4000,194 +3173,34 @@ localStorage.setItem("haleelTheme",theme);
 
 
 function setTheme(theme){
+
 applyTheme(theme);
+
 }
 
 
-/* ==========================================
-   COUNTRY + WORLD TIME SYSTEM
-========================================== */
+/* =========================================================
+   COUNTRY CLOCK
+========================================================= */
 
 const countries=[
 
-["🇦🇫","Afghanistan","Asia/Kabul"],
-["🇦🇱","Albania","Europe/Tirane"],
-["🇩🇿","Algeria","Africa/Algiers"],
-["🇦🇩","Andorra","Europe/Andorra"],
-["🇦🇴","Angola","Africa/Luanda"],
-["🇦🇬","Antigua and Barbuda","America/Antigua"],
-["🇦🇷","Argentina","America/Argentina/Buenos_Aires"],
-["🇦🇲","Armenia","Asia/Yerevan"],
-["🇦🇺","Australia","Australia/Sydney"],
-["🇦🇹","Austria","Europe/Vienna"],
-["🇦🇿","Azerbaijan","Asia/Baku"],
-["🇧🇸","Bahamas","America/Nassau"],
-["🇧🇭","Bahrain","Asia/Bahrain"],
-["🇧🇩","Bangladesh","Asia/Dhaka"],
-["🇧🇧","Barbados","America/Barbados"],
-["🇧🇾","Belarus","Europe/Minsk"],
-["🇧🇪","Belgium","Europe/Brussels"],
-["🇧🇿","Belize","America/Belize"],
-["🇧🇯","Benin","Africa/Porto-Novo"],
-["🇧🇹","Bhutan","Asia/Thimphu"],
-["🇧🇴","Bolivia","America/La_Paz"],
-["🇧🇦","Bosnia and Herzegovina","Europe/Sarajevo"],
-["🇧🇼","Botswana","Africa/Gaborone"],
-["🇧🇷","Brazil","America/Sao_Paulo"],
-["🇧🇳","Brunei","Asia/Brunei"],
-["🇧🇬","Bulgaria","Europe/Sofia"],
-["🇧🇫","Burkina Faso","Africa/Ouagadougou"],
-["🇧🇮","Burundi","Africa/Bujumbura"],
-["🇨🇻","Cape Verde","Atlantic/Cape_Verde"],
-["🇰🇭","Cambodia","Asia/Phnom_Penh"],
-["🇨🇲","Cameroon","Africa/Douala"],
-["🇨🇦","Canada","America/Toronto"],
-["🇨🇫","Central African Republic","Africa/Bangui"],
-["🇹🇩","Chad","Africa/Ndjamena"],
-["🇨🇱","Chile","America/Santiago"],
-["🇨🇳","China","Asia/Shanghai"],
-["🇨🇴","Colombia","America/Bogota"],
-["🇨🇩","DR Congo","Africa/Kinshasa"],
-["🇨🇬","Republic of the Congo","Africa/Brazzaville"],
-["🇨🇷","Costa Rica","America/Costa_Rica"],
-["🇨🇮","Côte d'Ivoire","Africa/Abidjan"],
-["🇭🇷","Croatia","Europe/Zagreb"],
-["🇨🇺","Cuba","America/Havana"],
-["🇨🇾","Cyprus","Asia/Nicosia"],
-["🇨🇿","Czech Republic","Europe/Prague"],
-["🇩🇰","Denmark","Europe/Copenhagen"],
-["🇩🇯","Djibouti","Africa/Djibouti"],
-["🇩🇲","Dominica","America/Dominica"],
-["🇩🇴","Dominican Republic","America/Santo_Domingo"],
-["🇪🇨","Ecuador","America/Guayaquil"],
-["🇪🇬","Egypt","Africa/Cairo"],
-["🇸🇻","El Salvador","America/El_Salvador"],
-["🇬🇶","Equatorial Guinea","Africa/Malabo"],
-["🇪🇷","Eritrea","Africa/Asmara"],
-["🇪🇪","Estonia","Europe/Tallinn"],
-["🇸🇿","Eswatini","Africa/Mbabane"],
-["🇪🇹","Ethiopia","Africa/Addis_Ababa"],
-["🇫🇯","Fiji","Pacific/Fiji"],
-["🇫🇮","Finland","Europe/Helsinki"],
-["🇫🇷","France","Europe/Paris"],
-["🇬🇦","Gabon","Africa/Libreville"],
-["🇬🇲","Gambia","Africa/Banjul"],
-["🇬🇪","Georgia","Asia/Tbilisi"],
-["🇩🇪","Germany","Europe/Berlin"],
-["🇬🇭","Ghana","Africa/Accra"],
-["🇬🇷","Greece","Europe/Athens"],
-["🇬🇩","Grenada","America/Grenada"],
-["🇬🇹","Guatemala","America/Guatemala"],
-["🇬🇳","Guinea","Africa/Conakry"],
-["🇬🇼","Guinea-Bissau","Africa/Bissau"],
-["🇬🇾","Guyana","America/Guyana"],
-["🇭🇹","Haiti","America/Port-au-Prince"],
-["🇭🇳","Honduras","America/Tegucigalpa"],
-["🇭🇺","Hungary","Europe/Budapest"],
-["🇮🇸","Iceland","Atlantic/Reykjavik"],
-["🇮🇳","India","Asia/Kolkata"],
-["🇮🇩","Indonesia","Asia/Jakarta"],
-["🇮🇷","Iran","Asia/Tehran"],
-["🇮🇶","Iraq","Asia/Baghdad"],
-["🇮🇪","Ireland","Europe/Dublin"],
-["🇮🇱","Israel","Asia/Jerusalem"],
-["🇮🇹","Italy","Europe/Rome"],
-["🇯🇲","Jamaica","America/Jamaica"],
-["🇯🇵","Japan","Asia/Tokyo"],
-["🇯🇴","Jordan","Asia/Amman"],
-["🇰🇿","Kazakhstan","Asia/Almaty"],
-["🇰🇪","Kenya","Africa/Nairobi"],
-["🇰🇮","Kiribati","Pacific/Tarawa"],
-["🇰🇼","Kuwait","Asia/Kuwait"],
-["🇰🇬","Kyrgyzstan","Asia/Bishkek"],
-["🇱🇦","Laos","Asia/Vientiane"],
-["🇱🇻","Latvia","Europe/Riga"],
-["🇱🇧","Lebanon","Asia/Beirut"],
-["🇱🇸","Lesotho","Africa/Maseru"],
-["🇱🇷","Liberia","Africa/Monrovia"],
-["🇱🇾","Libya","Africa/Tripoli"],
-["🇱🇮","Liechtenstein","Europe/Vaduz"],
-["🇱🇹","Lithuania","Europe/Vilnius"],
-["🇱🇺","Luxembourg","Europe/Luxembourg"],
-["🇲🇬","Madagascar","Indian/Antananarivo"],
-["🇲🇼","Malawi","Africa/Blantyre"],
-["🇲🇾","Malaysia","Asia/Kuala_Lumpur"],
-["🇲🇻","Maldives","Indian/Maldives"],
-["🇲🇱","Mali","Africa/Bamako"],
-["🇲🇹","Malta","Europe/Malta"],
-["🇲🇷","Mauritania","Africa/Nouakchott"],
-["🇲🇺","Mauritius","Indian/Mauritius"],
-["🇲🇽","Mexico","America/Mexico_City"],
-["🇲🇩","Moldova","Europe/Chisinau"],
-["🇲🇨","Monaco","Europe/Monaco"],
-["🇲🇳","Mongolia","Asia/Ulaanbaatar"],
-["🇲🇪","Montenegro","Europe/Podgorica"],
-["🇲🇦","Morocco","Africa/Casablanca"],
-["🇲🇿","Mozambique","Africa/Maputo"],
-["🇲🇲","Myanmar","Asia/Yangon"],
-["🇳🇦","Namibia","Africa/Windhoek"],
-["🇳🇵","Nepal","Asia/Kathmandu"],
-["🇳🇱","Netherlands","Europe/Amsterdam"],
-["🇳🇿","New Zealand","Pacific/Auckland"],
-["🇳🇮","Nicaragua","America/Managua"],
-["🇳🇪","Niger","Africa/Niamey"],
-["🇳🇬","Nigeria","Africa/Lagos"],
-["🇰🇵","North Korea","Asia/Pyongyang"],
-["🇲🇰","North Macedonia","Europe/Skopje"],
-["🇳🇴","Norway","Europe/Oslo"],
-["🇴🇲","Oman","Asia/Muscat"],
-["🇵🇰","Pakistan","Asia/Karachi"],
-["🇵🇦","Panama","America/Panama"],
-["🇵🇬","Papua New Guinea","Pacific/Port_Moresby"],
-["🇵🇾","Paraguay","America/Asuncion"],
-["🇵🇪","Peru","America/Lima"],
-["🇵🇭","Philippines","Asia/Manila"],
-["🇵🇱","Poland","Europe/Warsaw"],
-["🇵🇹","Portugal","Europe/Lisbon"],
-["🇶🇦","Qatar","Asia/Qatar"],
-["🇷🇴","Romania","Europe/Bucharest"],
-["🇷🇺","Russia","Europe/Moscow"],
-["🇷🇼","Rwanda","Africa/Kigali"],
-["🇸🇦","Saudi Arabia","Asia/Riyadh"],
-["🇸🇳","Senegal","Africa/Dakar"],
-["🇷🇸","Serbia","Europe/Belgrade"],
-["🇸🇨","Seychelles","Indian/Mahe"],
-["🇸🇱","Sierra Leone","Africa/Freetown"],
-["🇸🇬","Singapore","Asia/Singapore"],
-["🇸🇰","Slovakia","Europe/Bratislava"],
-["🇸🇮","Slovenia","Europe/Ljubljana"],
 ["🇸🇴","Somalia","Africa/Mogadishu"],
-["🇿🇦","South Africa","Africa/Johannesburg"],
-["🇰🇷","South Korea","Asia/Seoul"],
-["🇸🇸","South Sudan","Africa/Juba"],
-["🇪🇸","Spain","Europe/Madrid"],
-["🇱🇰","Sri Lanka","Asia/Colombo"],
-["🇸🇩","Sudan","Africa/Khartoum"],
-["🇸🇪","Sweden","Europe/Stockholm"],
-["🇨🇭","Switzerland","Europe/Zurich"],
-["🇸🇾","Syria","Asia/Damascus"],
-["🇹🇼","Taiwan","Asia/Taipei"],
-["🇹🇯","Tajikistan","Asia/Dushanbe"],
-["🇹🇿","Tanzania","Africa/Dar_es_Salaam"],
-["🇹🇭","Thailand","Asia/Bangkok"],
-["🇹🇱","Timor-Leste","Asia/Dili"],
-["🇹🇬","Togo","Africa/Lome"],
-["🇹🇹","Trinidad and Tobago","America/Port_of_Spain"],
-["🇹🇳","Tunisia","Africa/Tunis"],
-["🇹🇷","Türkiye","Europe/Istanbul"],
-["🇹🇲","Turkmenistan","Asia/Ashgabat"],
-["🇺🇬","Uganda","Africa/Kampala"],
-["🇺🇦","Ukraine","Europe/Kyiv"],
+["🇰🇪","Kenya","Africa/Nairobi"],
+["🇪🇹","Ethiopia","Africa/Addis_Ababa"],
+["🇩🇯","Djibouti","Africa/Djibouti"],
+["🇸🇦","Saudi Arabia","Asia/Riyadh"],
 ["🇦🇪","United Arab Emirates","Asia/Dubai"],
+["🇹🇷","Türkiye","Europe/Istanbul"],
 ["🇬🇧","United Kingdom","Europe/London"],
 ["🇺🇸","United States","America/New_York"],
-["🇺🇾","Uruguay","America/Montevideo"],
-["🇺🇿","Uzbekistan","Asia/Tashkent"],
-["🇻🇪","Venezuela","America/Caracas"],
-["🇻🇳","Vietnam","Asia/Ho_Chi_Minh"],
-["🇾🇪","Yemen","Asia/Aden"],
-["🇿🇲","Zambia","Africa/Lusaka"],
-["🇿🇼","Zimbabwe","Africa/Harare"]
+["🇨🇦","Canada","America/Toronto"],
+["🇩🇪","Germany","Europe/Berlin"],
+["🇫🇷","France","Europe/Paris"],
+["🇮🇳","India","Asia/Kolkata"],
+["🇨🇳","China","Asia/Shanghai"],
+["🇯🇵","Japan","Asia/Tokyo"],
+["🇦🇺","Australia","Australia/Sydney"]
 
 ];
 
@@ -4196,13 +3209,11 @@ function loadCountries(){
 
 const select=$("countrySelect");
 
-if(!select) return;
+if(!select)return;
 
 select.innerHTML="";
 
-countries
-.sort((a,b)=>a[1].localeCompare(b[1]))
-.forEach(country=>{
+countries.forEach(country=>{
 
 const option=document.createElement("option");
 
@@ -4215,15 +3226,11 @@ select.appendChild(option);
 
 });
 
-const savedCountry=
+const saved=
 localStorage.getItem("haleelCountry")
 ||"Africa/Mogadishu";
 
-select.value=savedCountry;
-
-if(!select.value){
-select.value="Africa/Mogadishu";
-}
+select.value=saved;
 
 changeCountry();
 
@@ -4234,13 +3241,11 @@ function changeCountry(){
 
 const select=$("countrySelect");
 
-if(!select) return;
-
-const timezone=select.value;
+if(!select)return;
 
 localStorage.setItem(
 "haleelCountry",
-timezone
+select.value
 );
 
 updateCountryTime();
@@ -4251,24 +3256,21 @@ updateCountryTime();
 function updateCountryTime(){
 
 const select=$("countrySelect");
-const timeBox=$("countryTime");
+const box=$("countryTime");
 
-if(!select || !timeBox) return;
+if(!select || !box)return;
 
-const timezone=select.value;
-
-const country=
-countries.find(
-country=>country[2]===timezone
+const country=countries.find(
+item=>item[2]===select.value
 );
 
-if(!country) return;
+if(!country)return;
 
 const time=
 new Intl.DateTimeFormat(
 "en-US",
 {
-timeZone:timezone,
+timeZone:select.value,
 hour:"numeric",
 minute:"2-digit",
 second:"2-digit",
@@ -4276,7 +3278,7 @@ hour12:true
 }
 ).format(new Date());
 
-timeBox.innerHTML=`
+box.innerHTML=`
 
 <span class="country-time-label">
 Current Local Time
@@ -4289,153 +3291,31 @@ ${country[0]} ${country[1]} — ${time}
 }
 
 
-/* ==========================================
-   PAGE NAVIGATION
-========================================== */
-
-function openPage(page,button){
-
-document
-.querySelectorAll(".page")
-.forEach(p=>{
-p.classList.remove("active");
-});
-
-const selected=$(page);
-
-if(selected){
-selected.classList.add("active");
-}
-
-const titles={
-
-home:"Home",
-property:"Properties",
-care:"Customer Care",
-submit:"Submit Property",
-settings:"Settings"
-
-};
-
-$("pageTitle").textContent=
-titles[page]||"Haleel Real Estate";
-
-
-document
-.querySelectorAll(".nav button,.mobile-nav button")
-.forEach(b=>{
-b.classList.remove("active");
-});
-
-
-if(button){
-
-button.classList.add("active");
-
-}else{
-
-const map={
-
-home:0,
-property:1,
-care:2,
-submit:3,
-settings:4
-
-};
-
-const index=map[page];
-
-if(index!==undefined){
-
-const desktop=
-document.querySelectorAll(".nav button")[index];
-
-if(desktop){
-desktop.classList.add("active");
-}
-
-let mobileIndex=index;
-
-if(page==="submit"){
-mobileIndex=3;
-}
-
-if(page==="settings"){
-mobileIndex=3;
-}
-
-const mobile=
-document
-.querySelectorAll(".mobile-nav button")[mobileIndex];
-
-if(mobile){
-mobile.classList.add("active");
-}
-
-}
-
-}
-
-window.scrollTo({
-top:0,
-behavior:"smooth"
-});
-
-}
-
-
-/* ==========================================
-   PROPERTY DETAILS
-========================================== */
-
-function openDetails(){
-
-$("detailsModal")
-.classList.add("show");
-
-}
-
-
-function closeDetails(){
-
-$("detailsModal")
-.classList.remove("show");
-
-}
-
-
-$("detailsModal").addEventListener(
-"click",
-function(e){
-
-if(e.target===e.currentTarget){
-closeDetails();
-}
-
-});
-
-
-/* ==========================================
+/* =========================================================
    CUSTOMER CARE
-========================================== */
+========================================================= */
 
 function toggleCare(){
 
-$("careMenu")
-.classList.toggle("show");
+$("careMenu").classList.toggle("show");
 
 }
 
 
 function openChat(){
 
-$("chatModal")
-.classList.add("show");
+$("chatModal").classList.add("show");
 
 setTimeout(()=>{
 $("chatMessage").focus();
 },200);
+
+}
+
+
+function closeChat(){
+
+$("chatModal").classList.remove("show");
 
 }
 
@@ -4451,23 +3331,21 @@ $("chatMessage").value=message;
 
 function sendEmail(){
 
-const message=
-$("chatMessage").value.trim();
+const message=$("chatMessage").value.trim();
 
 if(!message){
 
 alert("Please write a message.");
+
 return;
 
 }
 
-const subject=
-encodeURIComponent(
+const subject=encodeURIComponent(
 "Haleel Customer Care"
 );
 
-const body=
-encodeURIComponent(message);
+const body=encodeURIComponent(message);
 
 window.location.href=
 `mailto:haleelrealestate@gmail.com?subject=${subject}&body=${body}`;
@@ -4475,108 +3353,302 @@ window.location.href=
 }
 
 
-/* ==========================================
-   PROPERTY SUBMISSION
-========================================== */
+/* =========================================================
+   SUBMIT PROPERTY
+   IMPORTANT:
+   This function uses the existing Apps Script
+   and hidden iframe.
+
+   Gmail will NOT open.
+   The visitor remains on Haleel website.
+========================================================= */
+
+let propertySubmissionInProgress=false;
+
 
 function submitProperty(){
 
-const owner=$("ownerName").value.trim();
-const phone=$("ownerPhone").value.trim();
-const submitterName=$("propertyTitle").value.trim();
-const city=$("city").value.trim();
+if(propertySubmissionInProgress){
 
-if(!owner || !phone || !submitterName || !city){
-
-alert("Fadlan geli macluumaadka muhiimka ah.");
 return;
 
 }
 
-const submitButton=$("submitPropertyButton");
-const originalText=submitButton.textContent;
 
-submitButton.disabled=true;
-submitButton.textContent="⏳ Waa la dirayaa...";
+const owner=
+$("ownerName").value.trim();
 
-const data={
-ownerName:owner,
-ownerPhone:phone,
-ownerEmail:$("ownerEmail").value.trim(),
-ownerWhatsapp:$("ownerWhatsapp").value.trim(),
-propertyTitle:submitterName,
-propertyType:$("propertyType").value,
-city:city,
-neighborhood:$("neighborhood").value.trim(),
-rent:$("rent").value.trim(),
-bedrooms:$("bedrooms").value.trim(),
-bathrooms:$("bathrooms").value.trim(),
-size:$("size").value.trim(),
-description:$("description").value.trim()
-};
+const phone=
+$("ownerPhone").value.trim();
+
+const submitterName=
+$("propertyTitle").value.trim();
+
+const city=
+$("city").value.trim();
 
 
-const form=document.createElement("form");
+/* REQUIRED FIELDS */
 
-form.method="POST";
-form.action=HALEEL_BACKEND_URL;
-form.target="haleelSubmitFrame";
-form.style.display="none";
+if(!owner || !phone || !submitterName || !city){
 
+alert(
+"Fadlan geli macluumaadka muhiimka ah."
+);
 
-const input=document.createElement("input");
-
-input.type="hidden";
-input.name="payload";
-input.value=JSON.stringify(data);
-
-form.appendChild(input);
-document.body.appendChild(form);
-
-form.submit();
-
-
-setTimeout(()=>{
-form.remove();
-},1000);
-
-
-setTimeout(()=>{
-
-submitButton.disabled=false;
-submitButton.textContent=originalText;
-
-
-$("ownerName").value="";
-$("ownerPhone").value="";
-$("ownerEmail").value="";
-$("ownerWhatsapp").value="";
-$("propertyTitle").value="";
-$("city").value="";
-$("neighborhood").value="";
-$("rent").value="";
-$("bedrooms").value="";
-$("bathrooms").value="";
-$("size").value="";
-$("description").value="";
-
-const images=$("images");
-
-if(images)
-images.value="";
-
-
-$("successModal")
-.classList.add("show");
-
-},2000);
+return;
 
 }
 
 
-/* ==========================================
-   SUCCESS MODAL
-========================================== */
+/* START SUBMISSION */
+
+propertySubmissionInProgress=true;
+
+const button=
+$("submitPropertyButton");
+
+const originalText=
+button.textContent;
+
+button.disabled=true;
+
+button.style.opacity="0.75";
+
+button.style.cursor="wait";
+
+button.textContent=
+"⏳ Waa la dirayaa...";
+
+
+/* DATA SENT TO GOOGLE APPS SCRIPT */
+
+const data={
+
+ownerName:owner,
+
+ownerPhone:phone,
+
+ownerEmail:
+$("ownerEmail").value.trim(),
+
+ownerWhatsapp:
+$("ownerWhatsapp").value.trim(),
+
+propertyTitle:
+submitterName,
+
+propertyType:
+$("propertyType").value,
+
+city:city,
+
+neighborhood:
+$("neighborhood").value.trim(),
+
+rent:
+$("rent").value.trim(),
+
+bedrooms:
+$("bedrooms").value.trim(),
+
+bathrooms:
+$("bathrooms").value.trim(),
+
+size:
+$("size").value.trim(),
+
+description:
+$("description").value.trim()
+
+};
+
+
+/*
+IMPORTANT:
+
+Apps Script-kaaga wuxuu filayaa:
+
+e.parameter.payload
+
+Sidaas darteed waxaan si gaar ah
+hidden input ugu diraynaa magaca "payload".
+*/
+
+
+const form=
+document.createElement("form");
+
+form.method="POST";
+
+form.action=
+HALEEL_BACKEND_URL;
+
+form.target=
+"haleelSubmitFrame";
+
+form.style.display="none";
+
+form.setAttribute(
+"aria-hidden",
+"true"
+);
+
+
+const input=
+document.createElement("input");
+
+input.type="hidden";
+
+input.name="payload";
+
+input.value=
+JSON.stringify(data);
+
+
+form.appendChild(input);
+
+document.body.appendChild(form);
+
+
+/*
+SUBMIT:
+
+Browser-ku wuxuu xogta u dirayaa
+Google Apps Script gudaha hidden iframe.
+
+Gmail page/app ma furmayo.
+*/
+
+
+try{
+
+form.submit();
+
+}catch(error){
+
+console.error(
+"Haleel submission error:",
+error
+);
+
+propertySubmissionInProgress=false;
+
+button.disabled=false;
+
+button.style.opacity="1";
+
+button.style.cursor="pointer";
+
+button.textContent=originalText;
+
+alert(
+"Xogta lama diri karin. Fadlan isku day mar kale."
+);
+
+form.remove();
+
+return;
+
+}
+
+
+/*
+Remove temporary form after submission.
+*/
+
+setTimeout(()=>{
+
+if(form && form.parentNode){
+
+form.remove();
+
+}
+
+},1500);
+
+
+/*
+The browser cannot read Google's cross-origin
+response directly.
+
+Therefore, without changing your Apps Script,
+we cannot technically verify Gmail delivery
+from the frontend.
+
+After giving Apps Script enough time to process,
+we show the success screen.
+*/
+
+setTimeout(()=>{
+
+/* RESET BUTTON */
+
+button.disabled=false;
+
+button.style.opacity="1";
+
+button.style.cursor="pointer";
+
+button.textContent=originalText;
+
+
+/* CLEAR FORM */
+
+[
+"ownerName",
+"ownerPhone",
+"ownerEmail",
+"ownerWhatsapp",
+"propertyTitle",
+"city",
+"neighborhood",
+"rent",
+"bedrooms",
+"bathrooms",
+"size",
+"description"
+
+].forEach(id=>{
+
+const element=$(id);
+
+if(element){
+
+element.value="";
+
+}
+
+});
+
+
+/* CLEAR IMAGE INPUT */
+
+if($("images")){
+
+$("images").value="";
+
+}
+
+
+/* FINISH */
+
+propertySubmissionInProgress=false;
+
+
+/* SUCCESS MODAL */
+
+$("successModal")
+.classList.add("show");
+
+},2500);
+
+}
+
+
+/* =========================================================
+   SUCCESS
+========================================================= */
 
 function closeSuccess(){
 
@@ -4588,363 +3660,16 @@ openPage("home");
 }
 
 
-
-
 /* =========================================================
-   HALEEL AUTHENTICATION
-========================================================= */
-
-function showHaleelLogin(){
-const login=document.getElementById("authLoginView");
-const signup=document.getElementById("authSignupView");
-const back=document.getElementById("authSignupBack");
-if(login) login.style.display="block";
-if(signup) signup.style.display="none";
-if(back) back.style.display="none";
-clearAuthMessages();
-setTimeout(()=>document.getElementById("authAccountId")?.focus(),120);
-}
-
-function showHaleelSignup(){
-const login=document.getElementById("authLoginView");
-const signup=document.getElementById("authSignupView");
-const back=document.getElementById("authSignupBack");
-if(login) login.style.display="none";
-if(signup) signup.style.display="block";
-if(back) back.style.display="block";
-clearAuthMessages();
-setTimeout(()=>document.getElementById("authSignupPassword")?.focus(),120);
-}
-
-function clearAuthMessages(){
-["authLoginError","authSignupError"].forEach(id=>{
-const el=document.getElementById(id);
-if(el){el.classList.remove("show");el.textContent="";}
-});
-}
-
-function showAuthError(id,message){
-const el=document.getElementById(id);
-if(!el)return;
-el.textContent="⚠️ "+message;
-el.classList.remove("show");
-void el.offsetWidth;
-el.classList.add("show");
-}
-
-function toggleAuthPassword(id,button){
-const input=document.getElementById(id);
-if(!input)return;
-if(input.type==="password"){
-input.type="text";
-button.textContent="🙈";
-}else{
-input.type="password";
-button.textContent="👁️";
-}
-}
-
-function setAuthButtonLoading(buttonId,textId,loading,text){
-const button=document.getElementById(buttonId);
-const textEl=document.getElementById(textId);
-if(!button)return;
-button.disabled=loading;
-button.classList.toggle("loading",loading);
-if(textEl) textEl.textContent=text;
-}
-
-async function haleelLogin(){
-const accountId=(document.getElementById("authAccountId")?.value||"").trim();
-const password=document.getElementById("authLoginPassword")?.value||"";
-
-const cleanId=accountId.replace(/\D/g,"");
-const errorId="authLoginError";
-
-clearAuthMessages();
-
-if(!/^\d{7}$/.test(cleanId)){
-showAuthError(errorId,"Haleel ID-ga waa inuu noqdaa 7 digits, tusaale 0000001.");
-return;
-}
-
-if(!password){
-showAuthError(errorId,"Fadlan geli password-kaaga.");
-return;
-}
-
-setAuthButtonLoading("authLoginButton","authLoginButtonText",true,"Signing in...");
-
-try{
-const response=await fetch("/api/login",{
-method:"POST",
-headers:{"Content-Type":"application/json"},
-credentials:"same-origin",
-body:JSON.stringify({accountId:cleanId,password})
-});
-
-let data=null;
-try{data=await response.json();}catch{}
-
-if(!response.ok || !data?.success){
-throw new Error(data?.message||"Haleel ID ama password waa khalad.");
-}
-
-await openHaleelApp(data.accountId||cleanId);
-
-}catch(error){
-showAuthError(errorId,error.message||"Login-ku wuu fashilmay. Fadlan isku day mar kale.");
-}finally{
-setAuthButtonLoading("authLoginButton","authLoginButtonText",false,"🔐 Sign In");
-}
-}
-
-async function haleelSignup(){
-const password=document.getElementById("authSignupPassword")?.value||"";
-const confirm=document.getElementById("authSignupConfirm")?.value||"";
-const agreement=document.getElementById("authAgreement")?.checked;
-const errorId="authSignupError";
-
-clearAuthMessages();
-
-if(password.length<8){
-showAuthError(errorId,"Password-ku waa inuu leeyahay ugu yaraan 8 xaraf.");
-return;
-}
-if(password.length>128){
-showAuthError(errorId,"Password-ku aad ayuu u dheer yahay.");
-return;
-}
-if(password!==confirm){
-showAuthError(errorId,"Labada password isku mid ma aha.");
-return;
-}
-if(!agreement){
-showAuthError(errorId,"Fadlan xaqiiji inaad ilaalinayso password-kaaga.");
-return;
-}
-
-setAuthButtonLoading("authSignupButton","authSignupButtonText",true,"Creating account...");
-
-try{
-const response=await fetch("/api/signup",{
-method:"POST",
-headers:{"Content-Type":"application/json"},
-credentials:"same-origin",
-body:JSON.stringify({password})
-});
-
-let data=null;
-try{data=await response.json();}catch{}
-
-if(!response.ok || !data?.success){
-throw new Error(data?.message||"Account-ka lama samayn karin.");
-}
-
-const accountId=data.accountId||"";
-document.getElementById("authGeneratedId").textContent=accountId;
-document.getElementById("authSignupFormArea").style.display="none";
-document.getElementById("authSignupSuccess").style.display="block";
-document.getElementById("authSignupBack").style.display="none";
-
-}catch(error){
-showAuthError(errorId,error.message||"Account-ka lama samayn karin. Fadlan isku day mar kale.");
-}finally{
-setAuthButtonLoading("authSignupButton","authSignupButtonText",false,"✨ Create New Account");
-}
-}
-
-async function enterHaleelAfterSignup(){
-const id=document.getElementById("authGeneratedId")?.textContent||"";
-await openHaleelApp(id);
-}
-
-async function openHaleelApp(accountId){
-const gate=document.getElementById("authGate");
-const app=document.getElementById("app");
-
-if(gate) gate.style.display="none";
-if(app) app.style.display="block";
-document.body.classList.remove("auth-locked");
-
-const displayId=accountId||"";
-const userName=document.getElementById("haleelUserName");
-const userSubtitle=document.getElementById("haleelUserSubtitle");
-if(userName) userName.textContent=displayId?"Haleel Customer · "+displayId:"Haleel Customer";
-if(userSubtitle) userSubtitle.textContent=displayId?"Haleel ID: "+displayId:"Welcome to Haleel Real Estate";
-
-window.scrollTo({top:0,behavior:"auto"});
-}
-
-async function checkHaleelSession(){
-try{
-const response=await fetch("/api/me",{
-method:"GET",
-credentials:"same-origin",
-cache:"no-store"
-});
-
-let data=null;
-try{data=await response.json();}catch{}
-
-if(response.ok && data?.success){
-await openHaleelApp(data.accountId||"");
-}else{
-showHaleelLogin();
-}
-}catch{
-showHaleelLogin();
-}
-}
-
-async function haleelLogout(){
-try{
-await fetch("/api/logout",{
-method:"POST",
-credentials:"same-origin"
-});
-}catch{}
-
-const gate=document.getElementById("authGate");
-const app=document.getElementById("app");
-if(app) app.style.display="none";
-if(gate) gate.style.display="flex";
-document.body.classList.add("auth-locked");
-
-const idInput=document.getElementById("authAccountId");
-const passInput=document.getElementById("authLoginPassword");
-if(idInput) idInput.value="";
-if(passInput) passInput.value="";
-
-const signupForm=document.getElementById("authSignupFormArea");
-const signupSuccess=document.getElementById("authSignupSuccess");
-if(signupForm) signupForm.style.display="block";
-if(signupSuccess) signupSuccess.style.display="none";
-
-showHaleelLogin();
-}
-
-async function copyHaleelAuthId(){
-const id=document.getElementById("authGeneratedId")?.textContent||"";
-if(!id)return;
-try{
-await navigator.clipboard.writeText(id);
-alert("Haleel ID-ga waa la copy gareeyay: "+id);
-}catch{
-alert("Haleel ID-gaaga: "+id);
-}
-}
-
-
-/* ==========================================
-   PAGE LOAD
-========================================== */
-
-document.addEventListener(
-"DOMContentLoaded",
-()=>{
-
-checkHaleelSession();
-
-const savedTheme=
-localStorage.getItem("haleelTheme")
-||"light";
-
-applyTheme(savedTheme);
-
-loadCountries();
-
-updateCountryTime();
-
-
-document
-.querySelectorAll(".property-card img")
-.forEach(img=>{
-
-img.addEventListener(
-"error",
-()=>{
-
-img.style.opacity=".35";
-
-});
-
-});
-
-
-document.addEventListener(
-"keydown",
-(e)=>{
-
-if(e.key==="Escape"){
-
-document
-.querySelectorAll(".modal.show")
-.forEach(m=>
-m.classList.remove("show")
-);
-
-const menu=
-document.getElementById(
-"careMenu"
-);
-
-if(menu)
-menu.classList.remove("show");
-
-}
-
-});
-
-
-document.addEventListener(
-"click",
-(e)=>{
-
-const wrap=
-document.querySelector(
-".floating-care"
-);
-
-const menu=
-document.getElementById(
-"careMenu"
-);
-
-if(
-wrap &&
-menu &&
-!wrap.contains(e.target)
-){
-
-menu.classList.remove("show");
-
-}
-
-});
-
-});
-
-
-/* ==========================================
-   LIVE COUNTRY CLOCK
-========================================== */
-
-setInterval(
-updateCountryTime,
-1000
-);
-
-
-/* ==========================================
    PWA INSTALL
-========================================== */
+========================================================= */
 
 let deferredInstallPrompt=null;
 
 
 window.addEventListener(
 "beforeinstallprompt",
-(event)=>{
+event=>{
 
 event.preventDefault();
 
@@ -4960,9 +3685,7 @@ window.addEventListener(
 deferredInstallPrompt=null;
 
 const button=
-document.getElementById(
-"installAppButton"
-);
+$("installAppButton");
 
 if(button){
 
@@ -4987,16 +3710,10 @@ await deferredInstallPrompt.userChoice;
 
 deferredInstallPrompt=null;
 
-
-if(
-choice &&
-choice.outcome==="accepted"
-){
+if(choice.outcome==="accepted"){
 
 const button=
-document.getElementById(
-"installAppButton"
-);
+$("installAppButton");
 
 if(button)
 button.textContent=
@@ -5029,19 +3746,23 @@ window.navigator.standalone===true;
 if(isStandalone){
 
 alert(
-"Macmiil wuu kuugu jiraa Application-ka Haleel."
+"Macmiil waxaad hore ugu jirtaa Application-ka Haleel."
 );
 
-}else if(isIOS){
+}
+
+else if(isIOS){
 
 alert(
 "iPhone/iPad: Safari → Share → Add to Home Screen."
 );
 
-}else{
+}
+
+else{
 
 alert(
-"Install lama soo bandhigin. Hubi HTTPS iyo in manifest.webmanifest iyo sw.js ay sax yihiin, kadib Chrome/Edge ku tijaabi."
+"Install lama soo bandhigin. Hubi HTTPS, manifest.webmanifest iyo sw.js."
 );
 
 }
@@ -5049,13 +3770,11 @@ alert(
 }
 
 
-/* ==========================================
+/* =========================================================
    SERVICE WORKER
-========================================== */
+========================================================= */
 
-if(
-"serviceWorker" in navigator
-){
+if("serviceWorker" in navigator){
 
 window.addEventListener(
 "load",
@@ -5063,102 +3782,168 @@ window.addEventListener(
 
 navigator.serviceWorker
 .register("./sw.js")
-
-.then(
-()=>{
+.then(()=>{
 
 console.log(
 "Haleel Service Worker registered"
 );
 
 })
+.catch(error=>{
 
-.catch(
-error=>
 console.error(
 "Haleel Service Worker error:",
 error
-)
-
 );
+
+});
 
 });
 
 }
 
 
-/* ==========================================
-   ZOOM LOCK
-========================================== */
+/* =========================================================
+   GLOBAL EVENTS
+========================================================= */
 
 document.addEventListener(
-"gesturestart",
+"DOMContentLoaded",
+()=>{
+
+
+/* THEME */
+
+const savedTheme=
+localStorage.getItem("haleelTheme")
+||"light";
+
+applyTheme(savedTheme);
+
+
+/* PROPERTIES */
+
+loadCityFilter();
+
+renderProperties(properties);
+
+renderHomeProperties();
+
+enableLiveSearch();
+
+filterProperties();
+
+
+/* COUNTRIES */
+
+loadCountries();
+
+
+/* CLOSE PROPERTY DETAILS */
+
+$("detailsModal")
+.addEventListener(
+"click",
 function(e){
 
-e.preventDefault();
+if(e.target===e.currentTarget){
 
-},
-{passive:false}
-);
-
-
-document.addEventListener(
-"gesturechange",
-function(e){
-
-e.preventDefault();
-
-},
-{passive:false}
-);
-
-
-document.addEventListener(
-"gestureend",
-function(e){
-
-e.preventDefault();
-
-},
-{passive:false}
-);
-
-
-document.addEventListener(
-"touchmove",
-function(e){
-
-if(e.touches.length>1){
-
-e.preventDefault();
+closeDetails();
 
 }
 
-},
-{passive:false}
-);
+});
 
 
-let lastTouchEnd=0;
+/* CLOSE SUCCESS MODAL WHEN BACKDROP IS CLICKED */
 
-
-document.addEventListener(
-"touchend",
+$("successModal")
+.addEventListener(
+"click",
 function(e){
 
-const now=Date.now();
+if(e.target===e.currentTarget){
+
+closeSuccess();
+
+}
+
+});
+
+
+/* CLOSE CHAT MODAL WHEN BACKDROP IS CLICKED */
+
+$("chatModal")
+.addEventListener(
+"click",
+function(e){
+
+if(e.target===e.currentTarget){
+
+closeChat();
+
+}
+
+});
+
+
+/* ESC */
+
+document.addEventListener(
+"keydown",
+e=>{
+
+if(e.key==="Escape"){
+
+document
+.querySelectorAll(".modal.show")
+.forEach(
+modal=>
+modal.classList.remove("show")
+);
+
+$("careMenu")
+?.classList.remove("show");
+
+}
+
+});
+
+
+/* CLICK OUTSIDE CARE */
+
+document.addEventListener(
+"click",
+e=>{
+
+const wrap=
+document.querySelector(
+".floating-care"
+);
 
 if(
-now-lastTouchEnd<=300
+wrap &&
+!wrap.contains(e.target)
 ){
 
-e.preventDefault();
+$("careMenu")
+?.classList.remove("show");
 
 }
 
-lastTouchEnd=now;
+});
 
 });
+
+
+/* =========================================================
+   LIVE CLOCK
+========================================================= */
+
+setInterval(
+updateCountryTime,
+1000
+);
 
 </script>
 
