@@ -1,6 +1,6 @@
 const MAX_ACCOUNT_ID = 9999999;
 const SESSION_DAYS = 30;
-const PBKDF2_ITERATIONS = 200000;
+const PBKDF2_ITERATIONS = 10000;
 
 export default {
   async fetch(request, env) {
