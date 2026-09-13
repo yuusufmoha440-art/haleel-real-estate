@@ -68,17 +68,80 @@ async function signup(request, env) {
 
   const body = await readJSON(request);
 
-  if (!body || typeof body.password !== "string") {
+  // ----------------------------------------------------------
+  // READ NAME + PASSWORD
+  // ----------------------------------------------------------
+
+  if (
+    !body ||
+    typeof body.firstName !== "string" ||
+    typeof body.middleName !== "string" ||
+    typeof body.lastName !== "string" ||
+    typeof body.password !== "string"
+  ) {
     return json(
       {
         success: false,
-        message: "Password is required."
+        message:
+          "First name, middle name, last name and password are required."
       },
       400
     );
   }
 
+  const firstName = body.firstName.trim();
+  const middleName = body.middleName.trim();
+  const lastName = body.lastName.trim();
   const password = body.password;
+
+  // ----------------------------------------------------------
+  // NAME VALIDATION
+  // ----------------------------------------------------------
+
+  if (!firstName || !middleName || !lastName) {
+    return json(
+      {
+        success: false,
+        message:
+          "First name, middle name and last name are required."
+      },
+      400
+    );
+  }
+
+  if (firstName.length > 100) {
+    return json(
+      {
+        success: false,
+        message: "First name is too long."
+      },
+      400
+    );
+  }
+
+  if (middleName.length > 100) {
+    return json(
+      {
+        success: false,
+        message: "Middle name is too long."
+      },
+      400
+    );
+  }
+
+  if (lastName.length > 100) {
+    return json(
+      {
+        success: false,
+        message: "Last name is too long."
+      },
+      400
+    );
+  }
+
+  // ----------------------------------------------------------
+  // PASSWORD VALIDATION
+  // ----------------------------------------------------------
 
   if (password.length < 8) {
     return json(
@@ -199,18 +262,33 @@ async function signup(request, env) {
 
   try {
     await env.ACCOUNTS_DB.batch([
+
+      // ------------------------------------------------------
+      // CREATE USER
+      // ------------------------------------------------------
+
       env.ACCOUNTS_DB
         .prepare(`
           INSERT INTO users (
             account_id,
+            first_name,
+            middle_name,
+            last_name,
             password_hash
           )
-          VALUES (?, ?)
+          VALUES (?, ?, ?, ?, ?)
         `)
         .bind(
           accountId,
+          firstName,
+          middleName,
+          lastName,
           passwordHash
         ),
+
+      // ------------------------------------------------------
+      // UPDATE ACCOUNT SEQUENCE
+      // ------------------------------------------------------
 
       env.ACCOUNTS_DB
         .prepare(`
@@ -220,6 +298,10 @@ async function signup(request, env) {
             AND next_id = ?
         `)
         .bind(accountId),
+
+      // ------------------------------------------------------
+      // CREATE SESSION
+      // ------------------------------------------------------
 
       env.ACCOUNTS_DB
         .prepare(`
@@ -236,6 +318,7 @@ async function signup(request, env) {
           session.expiresAt
         )
     ]);
+
   } catch (error) {
     console.error("SIGNUP DATABASE ERROR:", error);
 
@@ -248,6 +331,10 @@ async function signup(request, env) {
     );
   }
 
+  // ----------------------------------------------------------
+  // FORMAT ACCOUNT ID
+  // ----------------------------------------------------------
+
   const formattedAccountId =
     String(accountId).padStart(7, "0");
 
@@ -255,6 +342,9 @@ async function signup(request, env) {
     JSON.stringify({
       success: true,
       accountId: formattedAccountId,
+      firstName: firstName,
+      middleName: middleName,
+      lastName: lastName,
       message: "Account created successfully."
     }),
     {
@@ -349,6 +439,9 @@ async function login(request, env) {
       .prepare(`
         SELECT
           account_id,
+          first_name,
+          middle_name,
+          last_name,
           password_hash
         FROM users
         WHERE account_id = ?
@@ -356,6 +449,7 @@ async function login(request, env) {
       `)
       .bind(numericAccountId)
       .first();
+
   } catch (error) {
     console.error("LOGIN DATABASE ERROR:", error);
 
@@ -383,6 +477,7 @@ async function login(request, env) {
       password,
       user.password_hash
     );
+
   } catch (error) {
     console.error("PASSWORD VERIFY ERROR:", error);
 
@@ -409,8 +504,12 @@ async function login(request, env) {
     session = await buildSession(
       Number(user.account_id)
     );
+
   } catch (error) {
-    console.error("LOGIN SESSION BUILD ERROR:", error);
+    console.error(
+      "LOGIN SESSION BUILD ERROR:",
+      error
+    );
 
     return json(
       {
@@ -420,6 +519,10 @@ async function login(request, env) {
       500
     );
   }
+
+  // ----------------------------------------------------------
+  // SAVE LOGIN SESSION
+  // ----------------------------------------------------------
 
   try {
     await env.ACCOUNTS_DB
@@ -437,6 +540,7 @@ async function login(request, env) {
         session.expiresAt
       )
       .run();
+
   } catch (error) {
     console.error("LOGIN SESSION ERROR:", error);
 
@@ -449,15 +553,32 @@ async function login(request, env) {
     );
   }
 
+  // ----------------------------------------------------------
+  // LOGIN SUCCESS
+  // ----------------------------------------------------------
+
   return new Response(
     JSON.stringify({
       success: true,
+
       accountId:
-        String(user.account_id).padStart(7, "0"),
+        String(user.account_id)
+          .padStart(7, "0"),
+
+      firstName:
+        user.first_name || "",
+
+      middleName:
+        user.middle_name || "",
+
+      lastName:
+        user.last_name || "",
+
       message: "Login successful."
     }),
     {
       status: 200,
+
       headers: {
         "Content-Type":
           "application/json; charset=UTF-8",
@@ -513,6 +634,10 @@ async function getCurrentUser(request, env) {
     );
   }
 
+  // ----------------------------------------------------------
+  // GET SESSION COOKIE
+  // ----------------------------------------------------------
+
   const token =
     getCookie(request, "haleel_session");
 
@@ -526,10 +651,15 @@ async function getCurrentUser(request, env) {
     );
   }
 
+  // ----------------------------------------------------------
+  // HASH SESSION TOKEN
+  // ----------------------------------------------------------
+
   let tokenHash;
 
   try {
     tokenHash = await sha256(token);
+
   } catch (error) {
     console.error("TOKEN HASH ERROR:", error);
 
@@ -541,6 +671,10 @@ async function getCurrentUser(request, env) {
       500
     );
   }
+
+  // ----------------------------------------------------------
+  // FIND ACTIVE SESSION
+  // ----------------------------------------------------------
 
   let session;
 
@@ -560,6 +694,7 @@ async function getCurrentUser(request, env) {
         new Date().toISOString()
       )
       .first();
+
   } catch (error) {
     console.error("SESSION LOOKUP ERROR:", error);
 
@@ -572,6 +707,10 @@ async function getCurrentUser(request, env) {
     );
   }
 
+  // ----------------------------------------------------------
+  // SESSION INVALID / EXPIRED
+  // ----------------------------------------------------------
+
   if (!session) {
     return new Response(
       JSON.stringify({
@@ -580,6 +719,7 @@ async function getCurrentUser(request, env) {
       }),
       {
         status: 401,
+
         headers: {
           "Content-Type":
             "application/json; charset=UTF-8",
@@ -594,12 +734,62 @@ async function getCurrentUser(request, env) {
     );
   }
 
+  // ----------------------------------------------------------
+  // GET USER INFORMATION
+  // ----------------------------------------------------------
+
+  let user;
+
+  try {
+    user = await env.ACCOUNTS_DB
+      .prepare(`
+        SELECT
+          first_name,
+          middle_name,
+          last_name
+        FROM users
+        WHERE account_id = ?
+        LIMIT 1
+      `)
+      .bind(Number(session.account_id))
+      .first();
+
+  } catch (error) {
+    console.error(
+      "CURRENT USER DATABASE ERROR:",
+      error
+    );
+
+    return json(
+      {
+        success: false,
+        loggedIn: false
+      },
+      500
+    );
+  }
+
+  // ----------------------------------------------------------
+  // RETURN CURRENT USER
+  // ----------------------------------------------------------
+
   return json({
     success: true,
+
     loggedIn: true,
+
     accountId:
       String(session.account_id)
-        .padStart(7, "0")
+        .padStart(7, "0"),
+
+    firstName:
+      user?.first_name || "",
+
+    middleName:
+      user?.middle_name || "",
+
+    lastName:
+      user?.last_name || ""
   });
 }
 
@@ -634,6 +824,7 @@ async function logout(request, env) {
         `)
         .bind(tokenHash)
         .run();
+
     } catch (error) {
       console.error(
         "LOGOUT DATABASE ERROR:",
@@ -649,6 +840,7 @@ async function logout(request, env) {
     }),
     {
       status: 200,
+
       headers: {
         "Content-Type":
           "application/json; charset=UTF-8",
@@ -755,18 +947,28 @@ async function hashPassword(password) {
     await crypto.subtle.deriveBits(
       {
         name: "PBKDF2",
+
         salt,
-        iterations: PBKDF2_ITERATIONS,
-        hash: "SHA-256"
+
+        iterations:
+          PBKDF2_ITERATIONS,
+
+        hash:
+          "SHA-256"
       },
+
       keyMaterial,
+
       256
     );
 
   return [
     "pbkdf2",
+
     PBKDF2_ITERATIONS,
+
     bytesToBase64Url(salt),
+
     bytesToBase64Url(
       new Uint8Array(derivedBits)
     )
@@ -817,10 +1019,14 @@ async function verifyPassword(
 
   try {
     const salt =
-      base64UrlToBytes(saltString);
+      base64UrlToBytes(
+        saltString
+      );
 
     const expectedHash =
-      base64UrlToBytes(hashString);
+      base64UrlToBytes(
+        hashString
+      );
 
     if (
       salt.length === 0 ||
@@ -835,11 +1041,15 @@ async function verifyPassword(
     const keyMaterial =
       await crypto.subtle.importKey(
         "raw",
+
         encoder.encode(password),
+
         {
           name: "PBKDF2"
         },
+
         false,
+
         ["deriveBits"]
       );
 
@@ -847,11 +1057,16 @@ async function verifyPassword(
       await crypto.subtle.deriveBits(
         {
           name: "PBKDF2",
+
           salt,
+
           iterations,
+
           hash: "SHA-256"
         },
+
         keyMaterial,
+
         expectedHash.length * 8
       );
 
@@ -859,6 +1074,7 @@ async function verifyPassword(
       new Uint8Array(derivedBits),
       expectedHash
     );
+
   } catch (error) {
     console.error(
       "VERIFY ERROR:",
@@ -876,7 +1092,9 @@ async function verifyPassword(
 
 async function sha256(value) {
   const data =
-    new TextEncoder().encode(value);
+    new TextEncoder().encode(
+      value
+    );
 
   const hash =
     await crypto.subtle.digest(
@@ -901,8 +1119,13 @@ function timingSafeEqual(a, b) {
 
   let difference = 0;
 
-  for (let i = 0; i < a.length; i++) {
-    difference |= a[i] ^ b[i];
+  for (
+    let i = 0;
+    i < a.length;
+    i++
+  ) {
+    difference |=
+      a[i] ^ b[i];
   }
 
   return difference === 0;
@@ -936,10 +1159,15 @@ function getCookie(request, name) {
     }
 
     const key =
-      trimmed.slice(0, separator);
+      trimmed.slice(
+        0,
+        separator
+      );
 
     const value =
-      trimmed.slice(separator + 1);
+      trimmed.slice(
+        separator + 1
+      );
 
     if (key === name) {
       return value || null;
@@ -967,11 +1195,15 @@ async function readJSON(request) {
 // JSON RESPONSE
 // ============================================================
 
-function json(data, status = 200) {
+function json(
+  data,
+  status = 200
+) {
   return new Response(
     JSON.stringify(data),
     {
       status,
+
       headers: {
         "Content-Type":
           "application/json; charset=UTF-8",
