@@ -155,7 +155,7 @@ color:#d9e3ec;
 
 
 /* =========================================================
-   HALEEL AUTHENTICATION DESIGN
+   HALEEL AUTHENTICATION DESIGN
 ========================================================= */
 
 .auth-screen{
@@ -785,7 +785,7 @@ transition:none !important;
 
 
 /* =========================================================
-   ORIGINAL HALEEL WEBSITE CSS
+   ORIGINAL HALEEL WEBSITE CSS
 ========================================================= */
 
 .app{
@@ -1914,7 +1914,7 @@ transform:translateY(0);
 
 
 <!-- =========================================================
-    HALEEL AUTH SCREEN
+     HALEEL AUTH SCREEN
 ========================================================= -->
 
 <section class="auth-screen" id="authScreen">
@@ -1945,7 +1945,7 @@ Welcome Back
 </h2>
 
 <p class="auth-subtitle">
-Geli Account ID-gaaga, Phone Number, iyo Password-ka si aad ugu sii wadato Haleel Real Estate.
+Geli Account ID-gaaga iyo password-ka si aad ugu sii wadato Haleel Real Estate.
 </p>
 
 <div
@@ -1977,34 +1977,6 @@ required>
 
 <span class="auth-input-icon">
 #
-</span>
-
-</div>
-
-</div>
-
-
-<!-- LOGIN NUMBER FIELD -->
-
-<div class="auth-group">
-
-<label for="loginNumber">
-NUMBER
-</label>
-
-<div class="auth-input-wrap">
-
-<input
-class="auth-input"
-id="loginNumber"
-type="tel"
-maxlength="20"
-placeholder="Phone Number"
-autocomplete="tel"
-required>
-
-<span class="auth-input-icon">
-📞
 </span>
 
 </div>
@@ -2175,34 +2147,6 @@ required>
 </div>
 
 
-<!-- SIGNUP NUMBER FIELD -->
-
-<div class="auth-group">
-
-<label for="signupNumber">
-NUMBER
-</label>
-
-<div class="auth-input-wrap">
-
-<input
-class="auth-input"
-id="signupNumber"
-type="tel"
-maxlength="20"
-placeholder="Phone Number"
-autocomplete="tel"
-required>
-
-<span class="auth-input-icon">
-📞
-</span>
-
-</div>
-
-</div>
-
-
 <!-- PASSWORD -->
 
 <div class="auth-group">
@@ -2334,7 +2278,7 @@ Continue to Haleel
 
 
 <!-- =========================================================
-    HALEEL MAIN APP
+     HALEEL MAIN APP
 ========================================================= -->
 
 <section
@@ -2389,464 +2333,4 @@ onclick="openPage('settings',this)">
 </div>
 
 
-<div class="user">
-<strong id="userName">User</strong>
-<small id="userAccountId">ID: 0000000</small>
-</div>
-
-</aside>
-
-
-<main class="main">
-
-<div class="topbar">
-<strong id="topbarTitle">Home</strong>
-<button class="btn btn-outline" onclick="signOut()">Sign Out</button>
-</div>
-
-
-<!-- HOME PAGE -->
-
-<div id="home" class="page active">
-
-<div class="hero">
-<div class="hero-content">
-<h1>Soo Dhowow Haleel Real Estate</h1>
-<p>Hogaanka kiraynta iyo kala iibsiga guryaha ugu wanaagsan.</p>
-<div class="hero-buttons">
-<button class="btn btn-primary" onclick="openPage('property')">Eeg Guryaha</button>
-<button class="btn btn-outline" onclick="openPage('submit')">Dhiib Guri</button>
-</div>
-</div>
-</div>
-
-<div class="section">
-<div class="section-header">
-<h2>Adeegyada Ugu Muhiimsan</h2>
-</div>
-<div class="services">
-<div class="card">
-<div class="service-icon">🏠</div>
-<h3>Kireynta Guryaha</h3>
-<p>Puntland iyo dhammaan gobollada leh guryo tayo leh.</p>
-</div>
-<div class="card">
-<div class="service-icon">🔑</div>
-<h3>Iibinta Guryaha</h3>
-<p>Kala iibso guryo iyo dhulal ku habboon baahidaada.</p>
-</div>
-<div class="card">
-<div class="service-icon">📋</div>
-<h3>Maamulka Guryaha</h3>
-<p>Kireeye iyo kireyste si fudud ku heshiinaya.</p>
-</div>
-<div class="card">
-<div class="service-icon">🎧</div>
-<h3>Taageerada 24/7</h3>
-<p>Markasta diyaar u ah inay kaa caawiyaan meel kasta.</p>
-</div>
-</div>
-</div>
-
-</div>
-
-
-<!-- PROPERTY PAGE -->
-
-<div id="property" class="page">
-<div class="property-header">
-<div>
-<h2>Guryaha Diyaar Ah</h2>
-<p>Ka hel guri ku habboon adiga iyo oilaadaada.</p>
-</div>
-<div class="result-count">3 Guri ayaa ku jira</div>
-</div>
-
-<div class="search-panel">
-<div class="search-top">
-<div class="search-title">Radi Guri</div>
-<span>Haleel Search</span>
-</div>
-<div class="search-grid">
-<div class="search-field">
-<input type="text" class="search-input" placeholder="Raadi magaalada, xaafada...">
-</div>
-<select class="filter-select">
-<option value="">Dhammaan Nuucyada</option>
-<option value="apartment">Apartment</option>
-<option value="villa">Villa</option>
-</select>
-<select class="filter-select">
-<option value="">Qiimaha</option>
-<option value="low">Ugu Hooseeya</option>
-<option value="high">Ugu Sarreeya</option>
-</select>
-<button class="btn btn-primary">Search</button>
-</div>
-</div>
-
-<div class="property-grid">
-
-<div class="property-card">
-<div class="property-image-wrap">
-<img class="property-image" src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=800&q=80" alt="Guri">
-<span class="property-status">Kireyn</span>
-</div>
-<div class="property-content">
-<div class="property-type">Apartment</div>
-<h3>Guri Modern Ah</h3>
-<p class="location">Mugadisho, Hodan</p>
-<div class="property-meta">
-<span class="meta-item">3 Qol</span>
-<span class="meta-item">2 Banyo</span>
-</div>
-<div class="property-bottom">
-<div class="price">$350 <small>/bishi</small></div>
-<button class="btn btn-outline view-btn">Eeg Faahfaahin</button>
-</div>
-</div>
-</div>
-
-</div>
-</div>
-
-
-<!-- CUSTOMER CARE PAGE -->
-
-<div id="care" class="page">
-<div class="care-hero">
-<div class="care-status">
-<span class="care-status-dot"></span> Online - Diyaar Kuu Ah
-</div>
-<h1>Customer Care</h1>
-<p>Wax walba oo aad u baahan tahay oo caawinaad ah nagala soo xiriir.</p>
-</div>
-
-<div class="care-grid">
-<div class="care-card">
-<div class="care-icon">📞</div>
-<h3>Direct Call</h3>
-<p>Naga soo wac lambarka rasmiga ah.</p>
-</div>
-<div class="care-card">
-<div class="care-icon">💬</div>
-<h3>WhatsApp Support</h3>
-<p>Nagala soo xiriir WhatsApp si fariin degdeg ah loo helo.</p>
-</div>
-<div class="care-card">
-<div class="care-icon">✉️</div>
-<h3>Email Support</h3>
-<p>Noo soo dir fariin email ah.</p>
-</div>
-</div>
-</div>
-
-
-<!-- SUBMIT PROPERTY PAGE -->
-
-<div id="submit" class="page">
-<div class="form-container">
-<h2>Dhiib Guri Cusub</h2>
-<p style="margin-bottom:20px;color:#718096;">Geli xogta guriga aad rabto inaad kireyso ama iibiso.</p>
-
-<form onsubmit="event.preventDefault(); alert('Si guul leh ayaa loo soo gudbiyay!');">
-<div class="form-section">
-<h3>Xogta Guriga</h3>
-<div class="form-grid">
-<div class="form-group">
-<label>Magaca Guriga / Cinwaanka</label>
-<input type="text" class="input" placeholder="Tus: Villa modern ah" required>
-</div>
-<div class="form-group">
-<label>Nuuca Guriga</label>
-<select class="input">
-<option>Apartment</option>
-<option>Villa</option>
-<option>Guri Jiingad ah</option>
-</select>
-</div>
-<div class="form-group">
-<label>Magaalada</label>
-<input type="text" class="input" placeholder="Mugadisho, Garowe, etc" required>
-</div>
-<div class="form-group">
-<label>Qiimaha ($)</label>
-<input type="number" class="input" placeholder="300" required>
-</div>
-</div>
-</div>
-
-<div class="form-section">
-<h3>Sawirrada Guriga</h3>
-<div class="upload">
-<p>Soo rar sawirrada guriga (Upload Images)</p>
-<input type="file" style="margin-top:10px;" multiple>
-</div>
-</div>
-
-<button type="submit" class="btn btn-primary" style="width:100%;">Gudbi Guriga</button>
-</form>
-</div>
-</div>
-
-
-<!-- SETTINGS PAGE -->
-
-<div id="settings" class="page">
-<h2>Settings</h2>
-<br>
-<div class="settings-grid">
-<div class="setting-card">
-<div class="setting-icon">🌙</div>
-<h3>Theme Display</h3>
-<p>Aad u kala doorato Light mode ama Dark mode.</p>
-<div class="theme-options">
-<button class="theme-button active" onclick="setTheme('light', this)">Light</button>
-<button class="theme-button" onclick="setTheme('dark', this)">Dark</button>
-</div>
-</div>
-</div>
-</div>
-
-</main>
-
-
-<!-- MOBILE NAVIGATION -->
-
-<nav class="mobile-nav">
-<button class="active" onclick="openPage('home',this)">🏠<br>Home</button>
-<button onclick="openPage('property',this)">🏘<br>Property</button>
-<button onclick="openPage('care',this)">💬<br>Care</button>
-<button onclick="openPage('submit',this)">📝<br>Submit</button>
-<button onclick="openPage('settings',this)">⚙️<br>Settings</button>
-</nav>
-
-</section>
-
-
-<!-- SCRIPT / AUTH LOGIC -->
-
-<script>
-
-function toggleAuthPassword(id, btn){
-const input = document.getElementById(id);
-if(input.type === "password"){
-input.type = "text";
-btn.innerText = "👁";
-} else {
-input.type = "password";
-btn.innerText = "◉";
-}
-}
-
-function showSignup(){
-document.getElementById('loginPanel').style.display = 'none';
-document.getElementById('signupPanel').style.display = 'block';
-document.getElementById('accountCreatedPanel').style.display = 'none';
-}
-
-function showLogin(){
-document.getElementById('signupPanel').style.display = 'none';
-document.getElementById('loginPanel').style.display = 'block';
-document.getElementById('accountCreatedPanel').style.display = 'none';
-}
-
-function showAuthMessage(elementId, text, type){
-const msg = document.getElementById(elementId);
-msg.innerText = text;
-msg.className = "auth-message show " + type;
-}
-
-function generateAccountId(){
-return Math.floor(1000000 + Math.random() * 9000000).toString();
-}
-
-async function createAccount(e){
-e.preventDefault();
-
-const btn = document.getElementById('signupButton');
-const firstName = document.getElementById('signupFirstName').value.trim();
-const middleName = document.getElementById('signupMiddleName').value.trim();
-const lastName = document.getElementById('signupLastName').value.trim();
-const number = document.getElementById('signupNumber').value.trim();
-const password = document.getElementById('signupPassword').value;
-const confirmPassword = document.getElementById('signupConfirmPassword').value;
-
-if(password !== confirmPassword){
-showAuthMessage('signupMessage', 'Password-ku isku mid ma ahan!', 'error');
-return;
-}
-
-btn.disabled = true;
-btn.innerHTML = '<span class="auth-spinner"></span> Creating Account...';
-
-const payload = {
-first_name: firstName,
-middle_name: middleName,
-last_name: lastName,
-number: number,
-password: password
-};
-
-try {
-/* If calling backend API, use payload:
-const response = await fetch('/api/signup', {
-method: 'POST',
-headers: { 'Content-Type': 'application/json' },
-body: JSON.stringify(payload)
-});
-*/
-
-setTimeout(() => {
-const accountId = generateAccountId();
-const userData = {
-account_id: accountId,
-first_name: firstName,
-middle_name: middleName,
-last_name: lastName,
-number: number
-};
-
-localStorage.setItem('haleel_user', JSON.stringify(userData));
-
-document.getElementById('createdAccountId').innerText = accountId;
-document.getElementById('signupPanel').style.display = 'none';
-document.getElementById('accountCreatedPanel').style.display = 'block';
-
-btn.disabled = false;
-btn.innerText = 'Create Account';
-}, 1000);
-
-} catch(err) {
-showAuthMessage('signupMessage', 'Cillad ayaa dhacday, fadlan dib u try-gasho.', 'error');
-btn.disabled = false;
-btn.innerText = 'Create Account';
-}
-}
-
-async function signIn(e){
-e.preventDefault();
-
-const btn = document.getElementById('signInButton');
-const accountId = document.getElementById('loginAccountId').value.trim();
-const number = document.getElementById('loginNumber').value.trim();
-const password = document.getElementById('loginPassword').value;
-
-btn.disabled = true;
-btn.innerHTML = '<span class="auth-spinner"></span> Signing In...';
-
-const payload = {
-account_id: accountId,
-number: number,
-password: password
-};
-
-try {
-/* If calling backend API:
-const response = await fetch('/api/login', {
-method: 'POST',
-headers: { 'Content-Type': 'application/json' },
-body: JSON.stringify(payload)
-});
-*/
-
-setTimeout(() => {
-const saved = localStorage.getItem('haleel_user');
-let user = saved ? JSON.parse(saved) : null;
-
-if(!user){
-user = {
-account_id: accountId,
-first_name: "User",
-middle_name: "",
-last_name: "",
-number: number
-};
-localStorage.setItem('haleel_user', JSON.stringify(user));
-}
-
-btn.disabled = false;
-btn.innerText = 'Sign In';
-
-document.getElementById('authScreen').classList.add('hidden');
-document.getElementById('haleelApp').style.display = 'block';
-
-document.getElementById('userName').innerText = user.first_name + " " + user.last_name;
-document.getElementById('userAccountId').innerText = "ID: " + user.account_id;
-
-}, 1000);
-
-} catch(err) {
-showAuthMessage('authMessage', 'Account ID, Number ama Password-ka waa meel ku qaldan!', 'error');
-btn.disabled = false;
-btn.innerText = 'Sign In';
-}
-}
-
-function continueToApp(){
-const saved = localStorage.getItem('haleel_user');
-if(saved){
-const user = JSON.parse(saved);
-document.getElementById('userName').innerText = user.first_name + " " + user.last_name;
-document.getElementById('userAccountId').innerText = "ID: " + user.account_id;
-}
-document.getElementById('authScreen').classList.add('hidden');
-document.getElementById('haleelApp').style.display = 'block';
-}
-
-function signOut(){
-localStorage.removeItem('haleel_user');
-document.getElementById('haleelApp').style.display = 'none';
-document.getElementById('authScreen').classList.remove('hidden');
-showLogin();
-}
-
-function openPage(pageId, btn){
-const pages = document.querySelectorAll('.page');
-pages.forEach(p => p.classList.remove('active'));
-
-const target = document.getElementById(pageId);
-if(target) target.classList.add('active');
-
-const titles = {
-'home': 'Home',
-'property': 'Property',
-'care': 'Customer Care',
-'submit': 'Submit Property',
-'settings': 'Settings'
-};
-
-document.getElementById('topbarTitle').innerText = titles[pageId] || 'Haleel';
-
-if(btn){
-const navBtns = document.querySelectorAll('.nav button, .mobile-nav button');
-navBtns.forEach(b => b.classList.remove('active'));
-btn.classList.add('active');
-}
-}
-
-function setTheme(mode, btn){
-if(mode === 'dark'){
-document.body.classList.add('dark');
-} else {
-document.body.classList.remove('dark');
-}
-
-if(btn){
-const btns = document.querySelectorAll('.theme-button');
-btns.forEach(b => b.classList.remove('active'));
-btn.classList.add('active');
-}
-}
-
-window.addEventListener('DOMContentLoaded', () => {
-const saved = localStorage.getItem('haleel_user');
-if(saved){
-continueToApp();
-}
-});
-
-</script>
-
-</body>
-</html>
+<div class=
