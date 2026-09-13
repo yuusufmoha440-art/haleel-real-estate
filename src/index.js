@@ -1,4 +1,3 @@
-```javascript
 const MAX_ACCOUNT_ID = 9999999;
 const SESSION_DAYS = 30;
 const PBKDF2_ITERATIONS = 200000;
@@ -90,6 +89,7 @@ async function signup(request, env) {
     );
   }
 
+  // Hash password before storing it.
   const passwordHash = await hashPassword(password);
 
   // Read the next automatic account ID.
@@ -114,7 +114,8 @@ async function signup(request, env) {
 
   const accountId = Number(sequence.next_id);
 
-  // IDs are 0000001 through 9999999.
+  // Allowed IDs:
+  // 0000001 through 9999999
   if (
     !Number.isInteger(accountId) ||
     accountId < 1 ||
@@ -129,17 +130,16 @@ async function signup(request, env) {
     );
   }
 
-  /*
-   * Create the account and advance the sequence.
-   *
-   * accountId 1 = 0000001
-   * accountId 2 = 0000002
-   * ...
-   * accountId 9999999 = 9999999
-   */
+  // Create secure session token.
+  const session = await buildSession(accountId);
 
   try {
+    /*
+     * Account creation, ID increment and session creation
+     * are performed together.
+     */
     await env.ACCOUNTS_DB.batch([
+
       env.ACCOUNTS_DB
         .prepare(`
           INSERT INTO users (
@@ -162,7 +162,22 @@ async function signup(request, env) {
           WHERE id = 1
             AND next_id = ?
         `)
-        .bind(accountId)
+        .bind(accountId),
+
+      env.ACCOUNTS_DB
+        .prepare(`
+          INSERT INTO sessions (
+            account_id,
+            token_hash,
+            expires_at
+          )
+          VALUES (?, ?, ?)
+        `)
+        .bind(
+          accountId,
+          session.tokenHash,
+          session.expiresAt
+        )
     ]);
 
   } catch (error) {
@@ -180,63 +195,6 @@ async function signup(request, env) {
     );
   }
 
-  // Create login session automatically.
-  let session;
-
-  try {
-    session = await createSession(
-      accountId,
-      env
-    );
-
-  } catch (error) {
-    console.error(
-      "Signup session error:",
-      error
-    );
-
-    /*
-     * Roll back the account if session creation fails.
-     */
-
-    try {
-      await env.ACCOUNTS_DB
-        .prepare(`
-          DELETE FROM users
-          WHERE account_id = ?
-        `)
-        .bind(accountId)
-        .run();
-
-      await env.ACCOUNTS_DB
-        .prepare(`
-          UPDATE account_sequence
-          SET next_id = ?
-          WHERE id = 1
-            AND next_id = ?
-        `)
-        .bind(
-          accountId,
-          accountId + 1
-        )
-        .run();
-
-    } catch (rollbackError) {
-      console.error(
-        "Signup rollback error:",
-        rollbackError
-      );
-    }
-
-    return json(
-      {
-        success: false,
-        message: "Unable to create login session."
-      },
-      500
-    );
-  }
-
   return new Response(
     JSON.stringify({
       success: true,
@@ -245,6 +203,7 @@ async function signup(request, env) {
     }),
     {
       status: 201,
+
       headers: {
         "Content-Type":
           "application/json; charset=UTF-8",
@@ -295,6 +254,7 @@ async function login(request, env) {
     body.password || ""
   );
 
+  // ID must contain exactly 7 digits.
   if (!/^\d{7}$/.test(accountId)) {
     return json(
       {
@@ -315,6 +275,21 @@ async function login(request, env) {
     );
   }
 
+  const numericAccountId = Number(accountId);
+
+  if (
+    numericAccountId < 1 ||
+    numericAccountId > MAX_ACCOUNT_ID
+  ) {
+    return json(
+      {
+        success: false,
+        message: "Invalid ID or password."
+      },
+      401
+    );
+  }
+
   const user = await env.ACCOUNTS_DB
     .prepare(`
       SELECT
@@ -324,7 +299,7 @@ async function login(request, env) {
       WHERE account_id = ?
       LIMIT 1
     `)
-    .bind(Number(accountId))
+    .bind(numericAccountId)
     .first();
 
   if (!user) {
@@ -352,10 +327,41 @@ async function login(request, env) {
     );
   }
 
-  const session = await createSession(
-    Number(user.account_id),
-    env
+  const session = await buildSession(
+    Number(user.account_id)
   );
+
+  try {
+    await env.ACCOUNTS_DB
+      .prepare(`
+        INSERT INTO sessions (
+          account_id,
+          token_hash,
+          expires_at
+        )
+        VALUES (?, ?, ?)
+      `)
+      .bind(
+        Number(user.account_id),
+        session.tokenHash,
+        session.expiresAt
+      )
+      .run();
+
+  } catch (error) {
+    console.error(
+      "Login session error:",
+      error
+    );
+
+    return json(
+      {
+        success: false,
+        message: "Unable to create login session."
+      },
+      500
+    );
+  }
 
   return new Response(
     JSON.stringify({
@@ -367,6 +373,7 @@ async function login(request, env) {
     }),
     {
       status: 200,
+
       headers: {
         "Content-Type":
           "application/json; charset=UTF-8",
@@ -435,6 +442,7 @@ async function getCurrentUser(request, env) {
       }),
       {
         status: 401,
+
         headers: {
           "Content-Type":
             "application/json; charset=UTF-8",
@@ -498,6 +506,7 @@ async function logout(request, env) {
     }),
     {
       status: 200,
+
       headers: {
         "Content-Type":
           "application/json; charset=UTF-8",
@@ -514,10 +523,10 @@ async function logout(request, env) {
 
 
 // ============================================================
-// CREATE SESSION
+// BUILD SESSION
 // ============================================================
 
-async function createSession(accountId, env) {
+async function buildSession(accountId) {
   const tokenBytes = new Uint8Array(32);
 
   crypto.getRandomValues(
@@ -528,7 +537,7 @@ async function createSession(accountId, env) {
     tokenBytes
   );
 
-  // Only the hash is stored in D1.
+  // Only the SHA-256 hash is stored in D1.
   const tokenHash = await sha256(token);
 
   const expiresAt = new Date(
@@ -540,22 +549,6 @@ async function createSession(accountId, env) {
       1000
   ).toISOString();
 
-  await env.ACCOUNTS_DB
-    .prepare(`
-      INSERT INTO sessions (
-        account_id,
-        token_hash,
-        expires_at
-      )
-      VALUES (?, ?, ?)
-    `)
-    .bind(
-      accountId,
-      tokenHash,
-      expiresAt
-    )
-    .run();
-
   const cookie =
     `haleel_session=${token}; ` +
     `HttpOnly; ` +
@@ -565,7 +558,10 @@ async function createSession(accountId, env) {
     `Max-Age=${SESSION_DAYS * 24 * 60 * 60}`;
 
   return {
+    accountId,
     token,
+    tokenHash,
+    expiresAt,
     cookie
   };
 }
@@ -648,7 +644,8 @@ async function verifyPassword(
 
     if (
       !Number.isInteger(iterations) ||
-      iterations < 10000
+      iterations < 10000 ||
+      iterations > 10000000
     ) {
       return false;
     }
@@ -805,6 +802,7 @@ function json(
     JSON.stringify(data),
     {
       status,
+
       headers: {
         "Content-Type":
           "application/json; charset=UTF-8",
@@ -872,4 +870,3 @@ function base64UrlToBytes(value) {
 
   return bytes;
 }
-```
