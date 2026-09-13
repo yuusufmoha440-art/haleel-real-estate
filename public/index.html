@@ -153,642 +153,6 @@ body.dark .care-menu a{
 color:#d9e3ec;
 }
 
-
-/* =========================================================
-   HALEEL AUTHENTICATION DESIGN
-   ONLY AUTHENTICATION DESIGN
-========================================================= */
-
-.auth-screen{
-position:fixed;
-inset:0;
-z-index:99999;
-min-height:100vh;
-display:flex;
-align-items:center;
-justify-content:center;
-padding:24px;
-overflow:hidden;
-
-background:
-radial-gradient(circle at 15% 20%,rgba(0,108,194,.18),transparent 28%),
-radial-gradient(circle at 85% 80%,rgba(32,178,107,.10),transparent 26%),
-linear-gradient(135deg,#f7fbff,#edf6fc);
-}
-
-.auth-screen.hidden{
-display:none;
-}
-
-.auth-screen::before,
-.auth-screen::after{
-content:"";
-position:absolute;
-border-radius:50%;
-pointer-events:none;
-}
-
-.auth-screen::before{
-width:380px;
-height:380px;
-background:rgba(0,108,194,.12);
-top:-170px;
-left:-130px;
-filter:blur(2px);
-animation:authFloatOne 8s ease-in-out infinite alternate;
-}
-
-.auth-screen::after{
-width:320px;
-height:320px;
-background:rgba(32,178,107,.09);
-right:-120px;
-bottom:-130px;
-filter:blur(2px);
-animation:authFloatTwo 10s ease-in-out infinite alternate;
-}
-
-@keyframes authFloatOne{
-from{
-transform:translate(0,0) scale(1);
-}
-to{
-transform:translate(55px,35px) scale(1.15);
-}
-}
-
-@keyframes authFloatTwo{
-from{
-transform:translate(0,0) scale(1);
-}
-to{
-transform:translate(-45px,-30px) scale(1.12);
-}
-}
-
-.auth-card{
-position:relative;
-z-index:2;
-width:min(100%,460px);
-padding:34px;
-border:1px solid rgba(255,255,255,.75);
-border-radius:30px;
-background:rgba(255,255,255,.76);
-backdrop-filter:blur(22px);
--webkit-backdrop-filter:blur(22px);
-
-box-shadow:
-0 30px 80px rgba(8,27,46,.16),
-inset 0 1px 0 rgba(255,255,255,.9);
-
-animation:authCardIn .65s cubic-bezier(.22,1,.36,1);
-}
-
-@keyframes authCardIn{
-from{
-opacity:0;
-transform:translateY(28px) scale(.96);
-}
-to{
-opacity:1;
-transform:translateY(0) scale(1);
-}
-}
-
-.auth-brand{
-text-align:center;
-margin-bottom:28px;
-}
-
-.auth-logo{
-width:68px;
-height:68px;
-margin:0 auto 13px;
-border-radius:21px;
-display:grid;
-place-items:center;
-
-background:linear-gradient(145deg,#006CC2,#008ff0);
-color:#fff;
-
-font-size:27px;
-font-weight:900;
-letter-spacing:2px;
-
-box-shadow:0 15px 30px rgba(0,108,194,.25);
-
-animation:authLogoPulse 3s ease-in-out infinite;
-}
-
-@keyframes authLogoPulse{
-0%,100%{
-transform:translateY(0);
-box-shadow:0 15px 30px rgba(0,108,194,.25);
-}
-50%{
-transform:translateY(-4px);
-box-shadow:0 20px 38px rgba(0,108,194,.32);
-}
-}
-
-.auth-brand h1{
-margin:0;
-font-size:30px;
-font-weight:900;
-letter-spacing:3px;
-color:#081b2e;
-}
-
-.auth-brand p{
-margin:5px 0 0;
-color:#718096;
-font-size:12px;
-font-weight:800;
-letter-spacing:1px;
-}
-
-.auth-panel{
-animation:authPanelIn .4s ease;
-}
-
-@keyframes authPanelIn{
-from{
-opacity:0;
-transform:translateX(14px);
-}
-to{
-opacity:1;
-transform:translateX(0);
-}
-}
-
-.auth-title{
-margin:0;
-color:#081b2e;
-font-size:27px;
-font-weight:900;
-}
-
-.auth-subtitle{
-margin:8px 0 23px;
-color:#718096;
-line-height:1.65;
-font-size:14px;
-}
-
-.auth-message{
-display:none;
-padding:13px 14px;
-margin-bottom:16px;
-border-radius:14px;
-font-size:13px;
-line-height:1.5;
-animation:authMessageIn .35s ease;
-}
-
-.auth-message.show{
-display:block;
-}
-
-.auth-message.error{
-color:#c52f35;
-background:#fff0f0;
-border:1px solid #ffd0d2;
-}
-
-.auth-message.success{
-color:#16824f;
-background:#eaf9f1;
-border:1px solid #bfead2;
-}
-
-@keyframes authMessageIn{
-from{
-opacity:0;
-transform:translateY(-6px);
-}
-to{
-opacity:1;
-transform:translateY(0);
-}
-}
-
-.auth-group{
-margin-bottom:16px;
-}
-
-.auth-group label{
-display:block;
-margin:0 0 8px 3px;
-color:#53677a;
-font-size:12px;
-font-weight:900;
-letter-spacing:.5px;
-}
-
-.auth-input-wrap{
-position:relative;
-}
-
-.auth-input{
-width:100%;
-min-height:54px;
-padding:0 50px 0 17px;
-
-border:1px solid #dce6ef;
-border-radius:16px;
-outline:none;
-
-background:rgba(255,255,255,.84);
-color:#243447;
-
-font-size:15px;
-font-weight:600;
-
-transition:.25s ease;
-}
-
-.auth-input::placeholder{
-color:#a0adba;
-}
-
-.auth-input:hover{
-border-color:#b9cddd;
-}
-
-.auth-input:focus{
-border-color:#006CC2;
-background:#fff;
-
-box-shadow:
-0 0 0 4px rgba(0,108,194,.10),
-0 8px 22px rgba(0,108,194,.08);
-
-transform:translateY(-1px);
-}
-
-.auth-account{
-letter-spacing:3px;
-font-weight:900;
-}
-
-.auth-input-icon{
-position:absolute;
-right:17px;
-top:50%;
-transform:translateY(-50%);
-color:#7d91a3;
-font-size:18px;
-pointer-events:none;
-}
-
-.auth-eye{
-position:absolute;
-right:8px;
-top:50%;
-transform:translateY(-50%);
-
-width:38px;
-height:38px;
-
-border:0;
-border-radius:11px;
-
-background:transparent;
-color:#718096;
-
-cursor:pointer;
-font-size:17px;
-
-transition:.2s ease;
-}
-
-.auth-eye:hover{
-color:#006CC2;
-background:#eaf5ff;
-}
-
-.auth-button{
-width:100%;
-min-height:54px;
-margin-top:5px;
-
-border:0;
-border-radius:16px;
-
-color:#fff;
-
-font-size:15px;
-font-weight:900;
-
-cursor:pointer;
-
-background:linear-gradient(135deg,#006CC2,#008df0);
-
-box-shadow:0 14px 28px rgba(0,108,194,.22);
-
-transition:
-transform .2s ease,
-box-shadow .2s ease,
-filter .2s ease;
-
-position:relative;
-overflow:hidden;
-}
-
-.auth-button::before{
-content:"";
-position:absolute;
-top:0;
-left:-120%;
-
-width:70%;
-height:100%;
-
-background:
-linear-gradient(
-90deg,
-transparent,
-rgba(255,255,255,.28),
-transparent
-);
-
-transform:skewX(-20deg);
-}
-
-.auth-button:hover{
-transform:translateY(-2px);
-box-shadow:0 18px 35px rgba(0,108,194,.28);
-filter:saturate(1.08);
-}
-
-.auth-button:hover::before{
-animation:authShine .7s ease;
-}
-
-.auth-button:active{
-transform:translateY(0) scale(.99);
-}
-
-.auth-button:disabled{
-cursor:not-allowed;
-transform:none;
-filter:none;
-}
-
-@keyframes authShine{
-from{
-left:-120%;
-}
-to{
-left:150%;
-}
-}
-
-.auth-link-button{
-width:100%;
-border:0;
-background:transparent;
-color:#006CC2;
-
-font-weight:900;
-font-size:14px;
-
-padding:14px;
-margin-top:9px;
-
-border-radius:12px;
-
-cursor:pointer;
-
-transition:.2s ease;
-}
-
-.auth-link-button:hover{
-background:#eaf5ff;
-transform:translateY(-1px);
-}
-
-.auth-divider{
-display:flex;
-align-items:center;
-gap:12px;
-
-margin:18px 0 2px;
-
-color:#9aa8b5;
-font-size:11px;
-font-weight:900;
-}
-
-.auth-divider::before,
-.auth-divider::after{
-content:"";
-flex:1;
-height:1px;
-background:#dfe8ef;
-}
-
-.account-id-box{
-position:relative;
-overflow:hidden;
-
-padding:24px 18px;
-margin:20px 0;
-
-text-align:center;
-
-border:1px solid rgba(0,108,194,.16);
-border-radius:20px;
-
-background:
-linear-gradient(
-135deg,
-#eaf5ff,
-#f5fbff
-);
-
-box-shadow:
-inset 0 1px 0 rgba(255,255,255,.9);
-
-animation:authAccountPop .5s cubic-bezier(.22,1,.36,1);
-}
-
-@keyframes authAccountPop{
-from{
-opacity:0;
-transform:scale(.94);
-}
-to{
-opacity:1;
-transform:scale(1);
-}
-}
-
-.account-id-box small{
-display:block;
-margin-bottom:8px;
-
-color:#718096;
-font-size:11px;
-font-weight:900;
-
-text-transform:uppercase;
-letter-spacing:1px;
-}
-
-.account-id-box strong{
-color:#006CC2;
-font-size:34px;
-font-weight:900;
-letter-spacing:5px;
-}
-
-.auth-spinner{
-display:inline-block;
-
-width:16px;
-height:16px;
-
-margin-right:8px;
-vertical-align:-3px;
-
-border:2px solid rgba(255,255,255,.4);
-border-top-color:#fff;
-
-border-radius:50%;
-
-animation:authSpin .7s linear infinite;
-}
-
-@keyframes authSpin{
-to{
-transform:rotate(360deg);
-}
-}
-
-body.dark .auth-screen{
-background:
-radial-gradient(circle at 15% 20%,rgba(0,108,194,.18),transparent 28%),
-radial-gradient(circle at 85% 80%,rgba(32,178,107,.08),transparent 26%),
-#081018;
-}
-
-body.dark .auth-card{
-background:rgba(15,25,35,.78);
-border-color:rgba(255,255,255,.08);
-
-box-shadow:
-0 30px 80px rgba(0,0,0,.35);
-}
-
-body.dark .auth-brand h1,
-body.dark .auth-title{
-color:#f3f7fb;
-}
-
-body.dark .auth-brand p,
-body.dark .auth-subtitle{
-color:#91a0b1;
-}
-
-body.dark .auth-group label{
-color:#aab7c4;
-}
-
-body.dark .auth-input{
-background:rgba(17,28,39,.88);
-border-color:#2c3b4a;
-color:#edf3f8;
-}
-
-body.dark .auth-input:hover{
-border-color:#426078;
-}
-
-body.dark .auth-input:focus{
-background:#121e2a;
-}
-
-body.dark .auth-link-button:hover{
-background:#102c42;
-}
-
-body.dark .auth-divider::before,
-body.dark .auth-divider::after{
-background:#2b3948;
-}
-
-body.dark .account-id-box{
-background:linear-gradient(135deg,#102b40,#11202d);
-border-color:#204d6d;
-}
-
-body.dark .auth-message.error{
-background:#351a1c;
-border-color:#6b2b2f;
-color:#ff9da1;
-}
-
-body.dark .auth-message.success{
-background:#123325;
-border-color:#245b43;
-color:#78e1aa;
-}
-
-@media(max-width:500px){
-
-.auth-screen{
-padding:14px;
-}
-
-.auth-card{
-padding:27px 20px;
-border-radius:25px;
-}
-
-.auth-logo{
-width:60px;
-height:60px;
-border-radius:18px;
-}
-
-.auth-brand h1{
-font-size:27px;
-}
-
-.auth-title{
-font-size:24px;
-}
-
-.auth-input,
-.auth-button{
-min-height:52px;
-}
-
-.account-id-box strong{
-font-size:29px;
-letter-spacing:4px;
-}
-
-}
-
-@media(prefers-reduced-motion:reduce){
-
-.auth-screen *,
-.auth-screen::before,
-.auth-screen::after{
-animation:none !important;
-transition:none !important;
-}
-
-}
-
-
-/* =========================================================
-   ORIGINAL HALEEL WEBSITE CSS
-========================================================= */
-
 .app{
 min-height:100vh;
 }
@@ -1913,364 +1277,39 @@ transform:translateY(0);
 
 <body>
 
-
-<!-- =========================================================
-     HALEEL AUTH SCREEN
-========================================================= -->
-
-<section class="auth-screen" id="authScreen">
-
-<div class="auth-card">
-
-<div class="auth-brand">
-
-<div class="auth-logo">
-H
-</div>
-
-<h1>HALEEL</h1>
-
-<p>
-REAL ESTATE • HOGAANKA KIRAYNTA
-</p>
-
-</div>
-
-
-<!-- LOGIN -->
-
-<div id="loginPanel" class="auth-panel">
-
-<h2 class="auth-title">
-Welcome Back
-</h2>
-
-<p class="auth-subtitle">
-Geli Account ID-gaaga iyo password-ka si aad ugu sii wadato Haleel Real Estate.
-</p>
-
-<div
-class="auth-message"
-id="authMessage">
-</div>
-
-
-<form onsubmit="signIn(event)">
-
-<div class="auth-group">
-
-<label for="loginAccountId">
-ACCOUNT ID
-</label>
-
-<div class="auth-input-wrap">
-
-<input
-class="auth-input auth-account"
-id="loginAccountId"
-type="text"
-inputmode="numeric"
-maxlength="7"
-pattern="[0-9]{7}"
-placeholder="0000001"
-autocomplete="username"
-required>
-
-<span class="auth-input-icon">
-#
-</span>
-
-</div>
-
-</div>
-
-
-<div class="auth-group">
-
-<label for="loginPassword">
-PASSWORD
-</label>
-
-<div class="auth-input-wrap">
-
-<input
-class="auth-input"
-id="loginPassword"
-type="password"
-maxlength="128"
-placeholder="Enter your password"
-autocomplete="current-password"
-required>
-
-<button
-class="auth-eye"
-type="button"
-onclick="toggleAuthPassword('loginPassword',this)"
-aria-label="Show password">
-◉
-</button>
-
-</div>
-
-</div>
-
-
-<button
-class="auth-button"
-id="signInButton"
-type="submit">
-Sign In
-</button>
-
-</form>
-
-
-<div class="auth-divider">
-<span>NEW TO HALEEL?</span>
-</div>
-
-
-<button
-class="auth-link-button"
-type="button"
-onclick="showSignup()">
-Create New Account →
-</button>
-
-</div>
-
-
-<!-- SIGNUP -->
-
-<div
-id="signupPanel"
-class="auth-panel"
-style="display:none">
-
-<h2 class="auth-title">
-Create Account
-</h2>
-
-<p class="auth-subtitle">
-Samee account cusub. Haleel ayaa kuu sameynaya Account ID 7-digit ah.
-</p>
-
-<div
-class="auth-message"
-id="signupMessage">
-</div>
-
-
-<form onsubmit="createAccount(event)">
-
-<div class="auth-group">
-
-<label for="signupPassword">
-PASSWORD
-</label>
-
-<div class="auth-input-wrap">
-
-<input
-class="auth-input"
-id="signupPassword"
-type="password"
-minlength="8"
-maxlength="128"
-placeholder="Minimum 8 characters"
-autocomplete="new-password"
-required>
-
-<button
-class="auth-eye"
-type="button"
-onclick="toggleAuthPassword('signupPassword',this)"
-aria-label="Show password">
-◉
-</button>
-
-</div>
-
-</div>
-
-
-<div class="auth-group">
-
-<label for="signupConfirmPassword">
-CONFIRM PASSWORD
-</label>
-
-<div class="auth-input-wrap">
-
-<input
-class="auth-input"
-id="signupConfirmPassword"
-type="password"
-minlength="8"
-maxlength="128"
-placeholder="Repeat your password"
-autocomplete="new-password"
-required>
-
-<button
-class="auth-eye"
-type="button"
-onclick="toggleAuthPassword('signupConfirmPassword',this)"
-aria-label="Show password">
-◉
-</button>
-
-</div>
-
-</div>
-
-
-<button
-class="auth-button"
-id="signupButton"
-type="submit">
-Create Account
-</button>
-
-</form>
-
-
-<button
-class="auth-link-button"
-type="button"
-onclick="showLogin()">
-← Back to Sign In
-</button>
-
-</div>
-
-
-<!-- ACCOUNT CREATED -->
-
-<div
-id="accountCreatedPanel"
-class="auth-panel"
-style="display:none">
-
-<h2 class="auth-title">
-Account Created ✓
-</h2>
-
-<p class="auth-subtitle">
-Account-kaaga si guul leh ayaa loo sameeyay. Kaydi Account ID-gaaga.
-</p>
-
-
-<div class="account-id-box">
-
-<small>
-Your Haleel Account ID
-</small>
-
-<strong id="createdAccountId">
-0000000
-</strong>
-
-</div>
-
-
-<button
-class="auth-button"
-type="button"
-onclick="continueToApp()">
-Continue to Haleel
-</button>
-
-</div>
-
-</div>
-
-</section>
-
-
-
-<!-- =========================================================
-     HALEEL MAIN APP
-========================================================= -->
-
-<section
-class="app"
-id="haleelApp"
-style="display:none;">
-
+<section class="app">
 
 <aside class="sidebar">
 
 <div class="brand">
-
-<h2>
-HALEEL
-</h2>
-
-<small>
-Real Estate
-</small>
-
+<h2>HALEEL</h2>
+<small>Real Estate</small>
 </div>
-
 
 <div class="nav">
 
-<button
-class="active"
-onclick="openPage('home',this)">
-🏠 Home
-</button>
-
-<button
-onclick="openPage('property',this)">
-🏘 Property
-</button>
-
-<button
-onclick="openPage('care',this)">
-💬 Customer Care
-</button>
-
-<button
-onclick="openPage('submit',this)">
-📝 Submit Property
-</button>
-
-<button
-onclick="openPage('settings',this)">
-⚙️ Settings
-</button>
+<button class="active" onclick="openPage('home',this)">🏠 Home</button>
+<button onclick="openPage('property',this)">🏘 Property</button>
+<button onclick="openPage('care',this)">💬 Customer Care</button>
+<button onclick="openPage('submit',this)">📝 Submit Property</button>
+<button onclick="openPage('settings',this)">⚙️ Settings</button>
 
 </div>
 
-
 <div class="user">
-
-<strong id="loggedUserName">
-Haleel Customer
-</strong>
-
-<small id="loggedUserId">
-Account ID: —
-</small>
-
+<strong>Haleel Customer</strong>
+<small>Welcome to Haleel Real Estate</small>
 </div>
 
 </aside>
-
 
 <main class="main">
 
 <div class="topbar">
 
-<strong id="pageTitle">
-Home
-</strong>
+<strong id="pageTitle">Home</strong>
 
-<button
-class="btn btn-outline"
-onclick="openPage('care')">
+<button class="btn btn-outline" onclick="openPage('care')">
 Customer Care
 </button>
 
@@ -2285,9 +1324,7 @@ Customer Care
 
 <div class="hero-content">
 
-<h1>
-Hogaanka Kiraynta!
-</h1>
+<h1>Hogaanka Kiraynta!</h1>
 
 <p>
 Macmiil soo dhawoow, waxaad si fudud u heli kartaa guri kiro ah
@@ -2296,14 +1333,12 @@ sidoo kalena waad iska kirayn kartaa, adiga oo jooga gurigaaga.
 
 <div class="hero-buttons">
 
-<button
-class="btn btn-primary"
+<button class="btn btn-primary"
 onclick="openPage('property')">
 Raadi Guri
 </button>
 
-<button
-class="btn"
+<button class="btn"
 style="background:white;color:#006CC2"
 onclick="openPage('submit')">
 Diiwaangeli Guri
@@ -2312,7 +1347,6 @@ Diiwaangeli Guri
 </div>
 
 </div>
-
 </div>
 
 
@@ -2325,74 +1359,30 @@ Diiwaangeli Guri
 <div class="services">
 
 <div class="card">
-
-<div class="service-icon">
-🏠
+<div class="service-icon">🏠</div>
+<h3>Adeega Ejaar</h3>
+<p>Hel guri kiro ah ama si fudud u kirayso gurigaaga.</p>
 </div>
-
-<h3>
-Adeega Ejaar
-</h3>
-
-<p>
-Hel guri kiro ah ama si fudud u kirayso gurigaaga.
-</p>
-
-</div>
-
 
 <div class="card">
-
-<div class="service-icon">
-📢
+<div class="service-icon">📢</div>
+<h3>Adeega Soohel</h3>
+<p>Haddii aad soo gudbiso guri kiro ah waxaad heli kartaa khidmad.</p>
 </div>
-
-<h3>
-Adeega Soohel
-</h3>
-
-<p>
-Haddii aad soo gudbiso guri kiro ah waxaad heli kartaa khidmad.
-</p>
-
-</div>
-
 
 <div class="card">
-
-<div class="service-icon">
-🤝
+<div class="service-icon">🤝</div>
+<h3>Adeega Dilaal</h3>
+<p>Waxaad iibin kartaa gurigaaga iyo bugcadaada.</p>
 </div>
-
-<h3>
-Adeega Dilaal
-</h3>
-
-<p>
-Waxaad iibin kartaa gurigaaga iyo bugcadaada.
-</p>
-
-</div>
-
 
 <div class="card">
-
-<div class="service-icon">
-💻
-</div>
-
-<h3>
-Qancinta Macaamiisha
-</h3>
-
-<p>
-Waxaan diyaar u nahay xalinta cabashadaada.
-</p>
-
+<div class="service-icon">💻</div>
+<h3>Qancinta Macaamiisha</h3>
+<p>Waxaan diyaar u nahay xalinta cabashadaada.</p>
 </div>
 
 </div>
-
 </section>
 
 
@@ -2402,45 +1392,22 @@ Waxaan diyaar u nahay xalinta cabashadaada.
 <h2>Heerka Isticmaalka</h2>
 </div>
 
-
 <div class="status-grid">
 
 <div class="status-card available">
-
-<h2>
-20+
-</h2>
-
-<p>
-Guryaha Available
-</p>
-
+<h2>20+</h2>
+<p>Guryaha Available</p>
 </div>
-
 
 <div class="status-card rented">
-
-<h2>
-5,885
-</h2>
-
-<p>
-Guryaha la dagay
-</p>
-
+<h2>5,885</h2>
+<p>Guryaha la dagay</p>
 </div>
-
 
 <div class="status-card new">
 
-<h2>
-100k+
-</h2>
-
-<p>
-Downloads
-</p>
-
+<h2>100k+</h2>
+<p>Downloads</p>
 
 <button
 class="btn"
@@ -2453,7 +1420,6 @@ onclick="installHaleel()">
 </div>
 
 </div>
-
 </section>
 
 
@@ -2461,23 +1427,16 @@ onclick="installHaleel()">
 
 <div class="section-header">
 
-<h2>
-Guryaha Available
-</h2>
+<h2>Guryaha Available</h2>
 
-<button
-class="btn btn-outline"
+<button class="btn btn-outline"
 onclick="openPage('property')">
 View All
 </button>
 
 </div>
 
-
-<div
-class="property-grid"
-id="homePropertyGrid">
-</div>
+<div class="property-grid" id="homePropertyGrid"></div>
 
 </section>
 
@@ -2492,9 +1451,7 @@ id="homePropertyGrid">
 
 <div>
 
-<h2>
-Raadi Guri
-</h2>
+<h2>Raadi Guri</h2>
 
 <p>
 Ka raadi guryaha Haleel Real Estate adigoo isticmaalaya filters-ka hoose.
@@ -2502,9 +1459,7 @@ Ka raadi guryaha Haleel Real Estate adigoo isticmaalaya filters-ka hoose.
 
 </div>
 
-<div
-class="result-count"
-id="resultCount">
+<div class="result-count" id="resultCount">
 20 Guri
 </div>
 
@@ -2519,9 +1474,7 @@ id="resultCount">
 🔎 Search & Filter
 </div>
 
-<span>
-Guryaha Available
-</span>
+<span>Guryaha Available</span>
 
 </div>
 
@@ -2537,82 +1490,38 @@ type="search"
 placeholder="Raadi magaalada, xaafadda, magaca guriga..."
 autocomplete="off">
 
-<span class="search-icon">
-🔍
-</span>
+<span class="search-icon">🔍</span>
 
 </div>
 
 
-<select
-id="typeFilter"
-class="filter-select">
+<select id="typeFilter" class="filter-select">
 
-<option value="">
-Nooca Guriga — Dhammaan
-</option>
-
-<option value="Fiilo">
-Fiilo
-</option>
-
-<option value="Apartment">
-Apartment
-</option>
-
-<option value="Dabaq-suge">
-Dabaq-suge
-</option>
-
-<option value="Guri Goglan">
-Guri Goglan
-</option>
-
-<option value="Qol Irid-banaan">
-Qol Irid-banaan
-</option>
-
-<option value="Qol Ganacsi">
-Qol Ganacsi
-</option>
+<option value="">Nooca Guriga — Dhammaan</option>
+<option value="Fiilo">Fiilo</option>
+<option value="Apartment">Apartment</option>
+<option value="Dabaq-suge">Dabaq-suge</option>
+<option value="Guri Goglan">Guri Goglan</option>
+<option value="Qol Irid-banaan">Qol Irid-banaan</option>
+<option value="Qol Ganacsi">Qol Ganacsi</option>
 
 </select>
 
 
-<select
-id="cityFilter"
-class="filter-select">
+<select id="cityFilter" class="filter-select">
 
-<option value="">
-Magaalada — Dhammaan
-</option>
+<option value="">Magaalada — Dhammaan</option>
 
 </select>
 
 
-<select
-id="bedroomFilter"
-class="filter-select">
+<select id="bedroomFilter" class="filter-select">
 
-<option value="">
-Qolalka — Dhammaan
-</option>
-
-<option value="1">
-1+ Qol
-</option>
-
-<option value="2">
-2+ Qol
-</option>
-
-<option value="3">
-3+ Qol
-</option>
-
-<option value="4">
-4+ Qol
-</option>
+<option value="">Qolalka — Dhammaan</option>
+<option value="1">1+ Qol</option>
+<option value="2">2+ Qol</option>
+<option value="3">3+ Qol</option>
+<option value="4">4+ Qol</option>
 
 </select>
 
@@ -2623,9 +1532,7 @@ Qolalka — Dhammaan
 
 <div>
 
-<label class="filter-label">
-Qiimaha ugu yar
-</label>
+<label class="filter-label">Qiimaha ugu yar</label>
 
 <input
 id="minPrice"
@@ -2639,9 +1546,7 @@ placeholder="$ Min">
 
 <div>
 
-<label class="filter-label">
-Qiimaha ugu badan
-</label>
+<label class="filter-label">Qiimaha ugu badan</label>
 
 <input
 id="maxPrice"
@@ -2655,22 +1560,11 @@ placeholder="$ Max">
 
 <div>
 
-<label class="filter-label">
-Marxaladda
-</label>
+<label class="filter-label">Marxaladda</label>
 
-<select
-id="statusFilter"
-class="filter-select">
-
-<option value="Available">
-Available
-</option>
-
-<option value="">
-Dhammaan
-</option>
-
+<select id="statusFilter" class="filter-select">
+<option value="Available">Available</option>
+<option value="">Dhammaan</option>
 </select>
 
 </div>
@@ -2678,30 +1572,13 @@ Dhammaan
 
 <div>
 
-<label class="filter-label">
-Kala hormari
-</label>
+<label class="filter-label">Kala hormari</label>
 
-<select
-id="sortFilter"
-class="filter-select">
-
-<option value="newest">
-Newest
-</option>
-
-<option value="priceLow">
-Qiimaha: Low → High
-</option>
-
-<option value="priceHigh">
-Qiimaha: High → Low
-</option>
-
-<option value="bedrooms">
-Qolal badan
-</option>
-
+<select id="sortFilter" class="filter-select">
+<option value="newest">Newest</option>
+<option value="priceLow">Qiimaha: Low → High</option>
+<option value="priceHigh">Qiimaha: High → Low</option>
+<option value="bedrooms">Qolal badan</option>
 </select>
 
 </div>
@@ -2709,9 +1586,7 @@ Qolal badan
 
 <div>
 
-<label class="filter-label">
-&nbsp;
-</label>
+<label class="filter-label">&nbsp;</label>
 
 <button
 class="btn btn-primary"
@@ -2748,23 +1623,14 @@ onclick="resetFilters()">
 </div>
 
 
-<div
-class="property-grid"
-id="propertyGrid">
-</div>
+<div class="property-grid" id="propertyGrid"></div>
 
 
-<div
-class="no-results"
-id="noResults">
+<div class="no-results" id="noResults">
 
-<div class="no-results-icon">
-🏠
-</div>
+<div class="no-results-icon">🏠</div>
 
-<h3>
-Guri lama helin
-</h3>
+<h3>Guri lama helin</h3>
 
 <p>
 Wax guri ah oo ku habboon raadintaada lama helin.
@@ -2789,17 +1655,11 @@ Reset Filters
 <div class="care-hero">
 
 <div class="care-status">
-
-<span class="care-status-dot">
-</span>
-
+<span class="care-status-dot"></span>
 Haleel Customer Care Online
-
 </div>
 
-<h1>
-Sideen kuu caawin karnaa?
-</h1>
+<h1>Sideen kuu caawin karnaa?</h1>
 
 <p>
 Kooxda Haleel Customer Care waxay diyaar u tahay inay kaa caawiso
@@ -2808,9 +1668,7 @@ kirada, iibka, gudbinta guryaha, cabashooyinka iyo su'aalahaaga.
 
 <div class="care-hero-buttons">
 
-<button
-class="btn btn-primary"
-onclick="openChat()">
+<button class="btn btn-primary" onclick="openChat()">
 💬 La Hadal Haleel
 </button>
 
@@ -2838,21 +1696,15 @@ style="background:#fff;color:#006CC2;text-decoration:none">
 
 <div class="care-card">
 
-<div class="care-icon">
-💬
-</div>
+<div class="care-icon">💬</div>
 
-<h3>
-Chat Care
-</h3>
+<h3>Chat Care</h3>
 
 <p>
 Haddii aad qabto su'aal ama cabasho, fariin noo soo dir.
 </p>
 
-<button
-class="btn btn-primary"
-onclick="openChat()">
+<button class="btn btn-primary" onclick="openChat()">
 Start Chat
 </button>
 
@@ -2861,17 +1713,11 @@ Start Chat
 
 <div class="care-card">
 
-<div class="care-icon">
-🟢
-</div>
+<div class="care-icon">🟢</div>
 
-<h3>
-WhatsApp
-</h3>
+<h3>WhatsApp</h3>
 
-<p>
-Si toos ah WhatsApp ugula xiriir Haleel.
-</p>
+<p>Si toos ah WhatsApp ugula xiriir Haleel.</p>
 
 <a
 class="btn btn-primary"
@@ -2885,17 +1731,11 @@ WhatsApp Us
 
 <div class="care-card">
 
-<div class="care-icon">
-📞
-</div>
+<div class="care-icon">📞</div>
 
-<h3>
-Voice Call
-</h3>
+<h3>Voice Call</h3>
 
-<p>
-Hadda si toos ah ula hadal Haleel.
-</p>
+<p>Hadda si toos ah ula hadal Haleel.</p>
 
 <a
 class="btn btn-primary"
@@ -2911,106 +1751,63 @@ Call Now
 <div class="section">
 
 <div class="section-header">
-<h2>
-Maxaad u baahan tahay?
-</h2>
+<h2>Maxaad u baahan tahay?</h2>
 </div>
-
 
 <div class="care-help-grid">
 
-<div
-class="care-help-card"
+<div class="care-help-card"
 onclick="openChatWithMessage('Waxaan rabaa guri aan kireysto.')">
 
-<div class="care-help-icon">
-🏠
-</div>
+<div class="care-help-icon">🏠</div>
 
 <div>
-<h3>
-Guri Kiro
-</h3>
-
-<p>
-Raadi guri aad degto.
-</p>
-
+<h3>Guri Kiro</h3>
+<p>Raadi guri aad degto.</p>
 </div>
 
 </div>
 
 
-<div
-class="care-help-card"
+<div class="care-help-card"
 onclick="openChatWithMessage('Waxaan rabaa inaan gurigayga iibiyo.')">
 
-<div class="care-help-icon">
-🏷️
-</div>
+<div class="care-help-icon">🏷️</div>
 
 <div>
-
-<h3>
-Guri Iib
-</h3>
-
-<p>
-Gurigaaga iib uga raadi.
-</p>
-
+<h3>Guri Iib</h3>
+<p>Gurigaaga iib uga raadi.</p>
 </div>
 
 </div>
 
 
-<div
-class="care-help-card"
+<div class="care-help-card"
 onclick="openChatWithMessage('Waxaan rabaa inaan guri gudbiyo.')">
 
-<div class="care-help-icon">
-📢
-</div>
+<div class="care-help-icon">📢</div>
 
 <div>
-
-<h3>
-Gudbi Guri
-</h3>
-
-<p>
-Guri cusub nagu soo gudbi.
-</p>
-
+<h3>Gudbi Guri</h3>
+<p>Guri cusub nagu soo gudbi.</p>
 </div>
 
 </div>
 
 
-<div
-class="care-help-card"
+<div class="care-help-card"
 onclick="openChatWithMessage('Waxaan qabaa cabasho ama dhibaato.')">
 
-<div class="care-help-icon">
-🛡️
-</div>
+<div class="care-help-icon">🛡️</div>
 
 <div>
-
-<h3>
-Cabasho
-</h3>
-
-<p>
-Cabashadaada nala wadaag.
-</p>
-
+<h3>Cabasho</h3>
+<p>Cabashadaada nala wadaag.</p>
 </div>
 
 </div>
 
 </div>
-
 </div>
 
 
@@ -3018,27 +1815,19 @@ Cabashadaada nala wadaag.
 
 <div>
 
-<h3>
-📞 Waxaan joognaa diyaar
-</h3>
+<h3>📞 Waxaan joognaa diyaar</h3>
 
 <p>
 Waxaad nagala soo xiriiri kartaa telefoon, WhatsApp ama Email.
 <br>
-
-<strong>
-+252 90 7469995
-</strong>
-
+<strong>+252 90 7469995</strong>
 </p>
 
 </div>
 
-
 <div>
 
-<a
-class="btn btn-primary"
+<a class="btn btn-primary"
 href="tel:+252907469995">
 📞 Call
 </a>
@@ -3070,151 +1859,77 @@ href="mailto:haleelrealestate@gmail.com">
 
 <div class="form-container">
 
-<h2>
-Geli Xogtaada
-</h2>
+<h2>Geli Xogtaada</h2>
 
-<p
-style="color:#718096;margin:10px 0 30px">
+<p style="color:#718096;margin:10px 0 30px">
 Diiwaangeli guriga aad rabto in la kireeyo.
 </p>
 
 
 <div class="form-section">
 
-<h3>
-Xogta Mulkiilaha
-</h3>
+<h3>Xogta Mulkiilaha</h3>
 
 <div class="form-grid">
 
 <div class="form-group">
-
-<label>
-Full Name
-</label>
-
-<input
-class="input"
-id="ownerName"
-placeholder="Full Name">
-
+<label>Full Name</label>
+<input class="input" id="ownerName" placeholder="Full Name">
 </div>
-
 
 <div class="form-group">
-
-<label>
-Phone Number
-</label>
-
-<input
-class="input"
-id="ownerPhone"
-placeholder="Phone Number">
-
+<label>Phone Number</label>
+<input class="input" id="ownerPhone" placeholder="Phone Number">
 </div>
-
 
 <div class="form-group">
-
-<label>
-Email
-</label>
-
-<input
-class="input"
-id="ownerEmail"
-type="email"
-placeholder="Email">
-
+<label>Email</label>
+<input class="input" id="ownerEmail" type="email" placeholder="Email">
 </div>
-
 
 <div class="form-group">
-
-<label>
-WhatsApp
-</label>
-
-<input
-class="input"
-id="ownerWhatsapp"
-placeholder="WhatsApp">
-
+<label>WhatsApp</label>
+<input class="input" id="ownerWhatsapp" placeholder="WhatsApp">
 </div>
 
 </div>
-
 </div>
 
 
 <div class="form-section">
 
-<h3>
-Macluumaadka Guriga
-</h3>
+<h3>Macluumaadka Guriga</h3>
 
 <div class="form-grid">
 
 <div class="form-group">
-
-<label>
-Magaca soo gudbiyaha
-</label>
-
+<label>Magaca soo gudbiyaha</label>
 <input
 class="input"
 id="propertyTitle"
 placeholder="Magaca soo gudbiyaha">
-
 </div>
-
 
 <div class="form-group">
 
-<label>
-Nooca Guriga
-</label>
+<label>Nooca Guriga</label>
 
-<select
-class="input"
-id="propertyType">
+<select class="input" id="propertyType">
 
-<option>
-Fiilo
-</option>
-
-<option>
-Apartment
-</option>
-
-<option>
-Qol Ganacsi
-</option>
-
-<option>
-Qol Irid-banaan
-</option>
-
-<option>
-Dabaq-suge
-</option>
-
-<option>
-Guri Goglan
-</option>
+<option>Fiilo</option>
+<option>Apartment</option>
+<option>Qol Ganacsi</option>
+<option>Qol Irid-banaan</option>
+<option>Dabaq-suge</option>
+<option>Guri Goglan</option>
 
 </select>
 
 </div>
 
-
 <div class="form-group">
 
-<label>
-Magaalada
-</label>
+<label>Magaalada</label>
 
 <input
 class="input"
@@ -3223,12 +1938,9 @@ placeholder="Magaalada">
 
 </div>
 
-
 <div class="form-group">
 
-<label>
-Xaafadda
-</label>
+<label>Xaafadda</label>
 
 <input
 class="input"
@@ -3237,12 +1949,9 @@ placeholder="Xaafadda">
 
 </div>
 
-
 <div class="form-group">
 
-<label>
-Qiimaha Kirada
-</label>
+<label>Qiimaha Kirada</label>
 
 <input
 class="input"
@@ -3252,12 +1961,9 @@ placeholder="Qiimaha Kirada">
 
 </div>
 
-
 <div class="form-group">
 
-<label>
-Tirada Qolalka
-</label>
+<label>Tirada Qolalka</label>
 
 <input
 class="input"
@@ -3266,12 +1972,9 @@ type="number">
 
 </div>
 
-
 <div class="form-group">
 
-<label>
-Tirada Suuliyada
-</label>
+<label>Tirada Suuliyada</label>
 
 <input
 class="input"
@@ -3280,12 +1983,9 @@ type="number">
 
 </div>
 
-
 <div class="form-group">
 
-<label>
-Cabirka Guriga
-</label>
+<label>Cabirka Guriga</label>
 
 <input
 class="input"
@@ -3295,38 +1995,30 @@ placeholder="Cabirka Guriga">
 </div>
 
 </div>
-
 </div>
 
 
 <div class="form-section">
 
-<h3>
-Faahfaahinta Guriga
-</h3>
+<h3>Faahfaahinta Guriga</h3>
 
 <textarea
 class="input"
 id="description"
-placeholder="Faahfaahinta Guriga">
-</textarea>
+placeholder="Faahfaahinta Guriga"></textarea>
 
 </div>
 
 
 <div class="form-section">
 
-<h3>
-Sawirka Guriga
-</h3>
+<h3>Sawirka Guriga</h3>
 
 <div class="upload">
 
 📷
 
-<h3>
-Geli sawirka guriga
-</h3>
+<h3>Geli sawirka guriga</h3>
 
 <p style="color:#718096">
 Dooro sawirka guriga.
@@ -3368,9 +2060,7 @@ Gudbi
 
 <div>
 
-<h2>
-Settings
-</h2>
+<h2>Settings</h2>
 
 <p style="color:#718096">
 Website Settings.
@@ -3383,20 +2073,13 @@ Website Settings.
 
 <div class="settings-grid">
 
-
 <div class="setting-card">
 
-<div class="setting-icon">
-🎨
-</div>
+<div class="setting-icon">🎨</div>
 
-<h3>
-Appearance
-</h3>
+<h3>Appearance</h3>
 
-<p>
-Choose how Haleel should look.
-</p>
+<p>Choose how Haleel should look.</p>
 
 <div class="theme-options">
 
@@ -3427,13 +2110,9 @@ Current theme: Light Mode
 
 <div class="setting-card">
 
-<div class="setting-icon">
-🌍
-</div>
+<div class="setting-icon">🌍</div>
 
-<h3>
-Country
-</h3>
+<h3>Country</h3>
 
 <p>
 Choose your country to view its current local time.
@@ -3456,17 +2135,11 @@ Loading...
 
 <div class="setting-card">
 
-<div class="setting-icon">
-💬
-</div>
+<div class="setting-icon">💬</div>
 
-<h3>
-Customer Care
-</h3>
+<h3>Customer Care</h3>
 
-<p>
-Need help? Contact Haleel Customer Care.
-</p>
+<p>Need help? Contact Haleel Customer Care.</p>
 
 <br>
 
@@ -3481,24 +2154,16 @@ Contact Us
 
 <div class="setting-card">
 
-<div class="setting-icon">
-🌐
-</div>
+<div class="setting-icon">🌐</div>
 
-<h3>
-Language
-</h3>
+<h3>Language</h3>
 
-<p>
-Choose your preferred language.
-</p>
+<p>Choose your preferred language.</p>
 
 <br>
 
 <select class="input">
-<option>
-English
-</option>
+<option>English</option>
 </select>
 
 </div>
@@ -3506,13 +2171,9 @@ English
 
 <div class="setting-card">
 
-<div class="setting-icon">
-ℹ️
-</div>
+<div class="setting-icon">ℹ️</div>
 
-<h3>
-About
-</h3>
+<h3>About</h3>
 
 <p>
 Haleel Real Estate — Hogaanka Kiraynta.
@@ -3520,51 +2181,7 @@ Haleel Real Estate — Hogaanka Kiraynta.
 
 <br>
 
-<strong>
-Version 1.0.0
-</strong>
-
-</div>
-
-
-<!-- ACCOUNT -->
-
-<div class="setting-card">
-
-<div class="setting-icon">
-👤
-</div>
-
-<h3>
-Account
-</h3>
-
-<p>
-Your Haleel Real Estate account.
-</p>
-
-<div
-class="country-time"
-style="margin-top:15px">
-
-<span class="country-time-label">
-Account ID
-</span>
-
-<strong id="settingsAccountId">
-—
-</strong>
-
-</div>
-
-<br>
-
-<button
-class="btn btn-primary"
-style="width:100%;background:linear-gradient(135deg,#E5484D,#c92f35)"
-onclick="logoutHaleel()">
-🚪 Log Out
-</button>
+<strong>Version 1.0.0</strong>
 
 </div>
 
@@ -3582,41 +2199,27 @@ onclick="logoutHaleel()">
 <button
 class="active"
 onclick="openPage('home',this)">
-
 🏠
 <br>
 Home
-
 </button>
 
-
-<button
-onclick="openPage('property',this)">
-
+<button onclick="openPage('property',this)">
 🏘
 <br>
 Property
-
 </button>
 
-
-<button
-onclick="openPage('care',this)">
-
+<button onclick="openPage('care',this)">
 💬
 <br>
 Care
-
 </button>
 
-
-<button
-onclick="openPage('settings',this)">
-
+<button onclick="openPage('settings',this)">
 ⚙️
 <br>
 Settings
-
 </button>
 
 </nav>
@@ -3630,30 +2233,23 @@ Settings
 class="care-menu"
 id="careMenu">
 
-<a
-href="https://wa.me/252907469995"
-target="_blank">
+<a href="https://wa.me/252907469995" target="_blank">
 🟢 WhatsApp
 </a>
 
-<a
-href="tel:+252907469995">
+<a href="tel:+252907469995">
 📞 Call
 </a>
 
-<a
-href="mailto:haleelrealestate@gmail.com">
+<a href="mailto:haleelrealestate@gmail.com">
 📧 Email
 </a>
 
-<a
-href="#"
-onclick="openChat();return false;">
+<a href="#" onclick="openChat();return false;">
 💬 Chat Care
 </a>
 
 </div>
-
 
 <button
 class="care-button"
@@ -3684,9 +2280,7 @@ class="details-image"
 src=""
 alt="Property">
 
-<div style="font-size:50px">
-🏠
-</div>
+<div style="font-size:50px">🏠</div>
 
 <h2 id="detailsTitle">
 Faahfaahinta Guriga
@@ -3699,16 +2293,13 @@ class="details-text">
 
 <div class="details-contact">
 
-<div>
-📞 Nala Xiriir
-</div>
+<div>📞 Nala Xiriir</div>
 
 <strong class="details-phone">
 +252 90 7469995
 </strong>
 
 </div>
-
 
 <div class="details-buttons">
 
@@ -3735,7 +2326,6 @@ WhatsApp
 </div>
 
 </div>
-
 </div>
 
 
@@ -3751,12 +2341,9 @@ id="chatModal">
 💬
 </div>
 
-<h2>
-Qancinta Macaamiisha!
-</h2>
+<h2>Qancinta Macaamiisha!</h2>
 
-<p
-style="color:#718096;line-height:1.6">
+<p style="color:#718096;line-height:1.6">
 Macmiil maxaan kaa caawiyaa?
 </p>
 
@@ -3765,8 +2352,7 @@ Macmiil maxaan kaa caawiyaa?
 <textarea
 class="input"
 id="chatMessage"
-placeholder="Write your message...">
-</textarea>
+placeholder="Write your message..."></textarea>
 
 <div style="display:flex;gap:10px">
 
@@ -3785,7 +2371,6 @@ Send
 </div>
 
 </div>
-
 </div>
 
 
@@ -3801,12 +2386,9 @@ id="successModal">
 ✅
 </div>
 
-<h2>
-Mahadsanid!
-</h2>
+<h2>Mahadsanid!</h2>
 
-<p
-style="color:#718096;margin:15px 0">
+<p style="color:#718096;margin:15px 0">
 Macluumaadka gurigaaga waa la gudbiyey.
 Kooxda Haleel ayaa heli doonta xogta aad soo dirtay.
 </p>
@@ -3818,7 +2400,6 @@ Dib u noqo!
 </button>
 
 </div>
-
 </div>
 
 
@@ -3840,633 +2421,6 @@ title="Haleel submission">
 
 function $(id){
 return document.getElementById(id);
-}
-
-
-/* =========================================================
-   HALEEL AUTHENTICATION
-========================================================= */
-
-let haleelAuthenticated=false;
-
-let haleelCurrentAccountId="";
-
-
-function showAuthScreen(){
-
-const auth=$("authScreen");
-const app=$("haleelApp");
-
-if(auth){
-auth.classList.remove("hidden");
-}
-
-if(app){
-app.style.display="none";
-}
-
-}
-
-
-function showApp(accountId){
-
-haleelAuthenticated=true;
-
-haleelCurrentAccountId=
-String(accountId || "");
-
-
-$("authScreen").classList.add("hidden");
-
-$("haleelApp").style.display="block";
-
-
-$("loggedUserName").textContent=
-"Haleel Customer";
-
-$("loggedUserId").textContent=
-`Account ID: ${haleelCurrentAccountId || "—"}`;
-
-$("settingsAccountId").textContent=
-haleelCurrentAccountId || "—";
-
-}
-
-
-function showAuthMessage(
-message,
-type="error"
-){
-
-const box=$("authMessage");
-
-if(!box)return;
-
-box.textContent=message;
-
-box.className=
-`auth-message show ${type}`;
-
-}
-
-
-function showSignupMessage(
-message,
-type="error"
-){
-
-const box=$("signupMessage");
-
-if(!box)return;
-
-box.textContent=message;
-
-box.className=
-`auth-message show ${type}`;
-
-}
-
-
-function clearAuthMessages(){
-
-[
-"authMessage",
-"signupMessage"
-].forEach(id=>{
-
-const box=$(id);
-
-if(box){
-
-box.textContent="";
-
-box.className="auth-message";
-
-}
-
-});
-
-}
-
-
-function showLogin(){
-
-clearAuthMessages();
-
-$("loginPanel").style.display="block";
-
-$("signupPanel").style.display="none";
-
-$("accountCreatedPanel").style.display="none";
-
-setTimeout(()=>{
-
-$("loginAccountId")?.focus();
-
-},100);
-
-}
-
-
-function showSignup(){
-
-clearAuthMessages();
-
-$("loginPanel").style.display="none";
-
-$("signupPanel").style.display="block";
-
-$("accountCreatedPanel").style.display="none";
-
-setTimeout(()=>{
-
-$("signupPassword")?.focus();
-
-},100);
-
-}
-
-
-function showAccountCreated(accountId){
-
-$("loginPanel").style.display="none";
-
-$("signupPanel").style.display="none";
-
-$("accountCreatedPanel").style.display="block";
-
-$("createdAccountId").textContent=
-String(accountId);
-
-}
-
-
-function toggleAuthPassword(
-inputId,
-button
-){
-
-const input=$(inputId);
-
-if(!input)return;
-
-const show=
-input.type==="password";
-
-input.type=
-show
-?"text"
-:"password";
-
-button.textContent=
-show
-?"◉"
-:"◌";
-
-button.setAttribute(
-"aria-label",
-show
-?"Hide password"
-:"Show password"
-);
-
-}
-
-
-/* =========================================================
-   SIGN IN
-========================================================= */
-
-async function signIn(event){
-
-event.preventDefault();
-
-
-const accountId=
-$("loginAccountId")
-.value
-.trim();
-
-const password=
-$("loginPassword")
-.value;
-
-
-if(!/^\d{7}$/.test(accountId)){
-
-showAuthMessage(
-"Account ID waa inuu ka koobnaadaa 7 digits."
-);
-
-return;
-
-}
-
-
-if(!password){
-
-showAuthMessage(
-"Fadlan geli password-ka."
-);
-
-return;
-
-}
-
-
-const button=
-$("signInButton");
-
-
-button.disabled=true;
-
-button.style.opacity=".85";
-
-button.innerHTML=
-`<span class="auth-spinner"></span> Signing In...`;
-
-clearAuthMessages();
-
-
-try{
-
-const response=
-await fetch(
-"/api/login",
-{
-method:"POST",
-credentials:"same-origin",
-cache:"no-store",
-
-headers:{
-"Content-Type":"application/json"
-},
-
-body:JSON.stringify({
-accountId,
-password
-})
-
-}
-);
-
-
-let data={};
-
-
-try{
-
-data=
-await response.json();
-
-}catch(_){}
-
-
-if(
-!response.ok ||
-!data.success
-){
-
-showAuthMessage(
-data.message ||
-"Account ID ama password waa khaldan yahay."
-);
-
-return;
-
-}
-
-
-const returnedId=
-data.accountId ||
-accountId;
-
-
-$("loginPassword").value="";
-
-
-showApp(returnedId);
-
-
-}catch(error){
-
-console.error(
-"Haleel login error:",
-error
-);
-
-showAuthMessage(
-"Server-ka Haleel lama xiriirin. Fadlan isku day mar kale."
-);
-
-}finally{
-
-button.disabled=false;
-
-button.style.opacity="1";
-
-button.textContent=
-"Sign In";
-
-}
-
-}
-
-
-/* =========================================================
-   CREATE ACCOUNT
-========================================================= */
-
-async function createAccount(event){
-
-event.preventDefault();
-
-
-const password=
-$("signupPassword").value;
-
-const confirm=
-$("signupConfirmPassword").value;
-
-
-clearAuthMessages();
-
-
-if(password.length<8){
-
-showSignupMessage(
-"Password-ku waa inuu ahaadaa ugu yaraan 8 characters."
-);
-
-return;
-
-}
-
-
-if(password.length>128){
-
-showSignupMessage(
-"Password-ku aad buu u dheer yahay."
-);
-
-return;
-
-}
-
-
-if(password!==confirm){
-
-showSignupMessage(
-"Labada password isku mid ma aha."
-);
-
-return;
-
-}
-
-
-const button=
-$("signupButton");
-
-
-button.disabled=true;
-
-button.style.opacity=".85";
-
-button.innerHTML=
-`<span class="auth-spinner"></span> Creating Account...`;
-
-
-try{
-
-const response=
-await fetch(
-"/api/signup",
-{
-method:"POST",
-credentials:"same-origin",
-cache:"no-store",
-
-headers:{
-"Content-Type":"application/json"
-},
-
-body:JSON.stringify({
-password
-})
-
-}
-);
-
-
-let data={};
-
-
-try{
-
-data=
-await response.json();
-
-}catch(_){}
-
-
-if(
-!response.ok ||
-!data.success
-){
-
-showSignupMessage(
-data.message ||
-"Account-ka lama abuuri karin. Fadlan isku day mar kale."
-);
-
-return;
-
-}
-
-
-if(!data.accountId){
-
-showSignupMessage(
-"Account waa la sameeyay laakiin Account ID lama helin."
-);
-
-return;
-
-}
-
-
-$("signupPassword").value="";
-
-$("signupConfirmPassword").value="";
-
-
-showAccountCreated(
-data.accountId
-);
-
-
-}catch(error){
-
-console.error(
-"Haleel signup error:",
-error
-);
-
-showSignupMessage(
-"Server-ka Haleel lama xiriirin. Fadlan isku day mar kale."
-);
-
-}finally{
-
-button.disabled=false;
-
-button.style.opacity="1";
-
-button.textContent=
-"Create Account";
-
-}
-
-}
-
-
-/* =========================================================
-   CONTINUE AFTER ACCOUNT CREATION
-========================================================= */
-
-function continueToApp(){
-
-const id=
-$("createdAccountId")
-.textContent
-.trim();
-
-
-if(!/^\d{7}$/.test(id)){
-
-return;
-
-}
-
-
-showApp(id);
-
-}
-
-
-/* =========================================================
-   CHECK EXISTING SESSION
-========================================================= */
-
-async function checkHaleelSession(){
-
-try{
-
-const response=
-await fetch(
-"/api/me",
-{
-method:"GET",
-credentials:"same-origin",
-cache:"no-store"
-}
-);
-
-
-if(!response.ok){
-
-showAuthScreen();
-
-return;
-
-}
-
-
-const data=
-await response.json();
-
-
-if(
-data.success &&
-data.accountId
-){
-
-showApp(
-data.accountId
-);
-
-}else{
-
-showAuthScreen();
-
-}
-
-}catch(error){
-
-console.error(
-"Haleel session check error:",
-error
-);
-
-showAuthScreen();
-
-}
-
-}
-
-
-/* =========================================================
-   LOGOUT
-========================================================= */
-
-async function logoutHaleel(){
-
-try{
-
-await fetch(
-"/api/logout",
-{
-method:"POST",
-credentials:"same-origin",
-cache:"no-store"
-}
-);
-
-}catch(error){
-
-console.error(
-"Haleel logout error:",
-error
-);
-
-}
-
-
-haleelAuthenticated=false;
-
-haleelCurrentAccountId="";
-
-
-$("loginAccountId").value="";
-
-$("loginPassword").value="";
-
-$("signupPassword").value="";
-
-$("signupConfirmPassword").value="";
-
-
-showLogin();
-
-showAuthScreen();
-
-
-window.scrollTo({
-top:0,
-behavior:"smooth"
-});
-
 }
 
 
@@ -4791,10 +2745,7 @@ description:"Villa executive ah oo aad u ballaaran."
    PROPERTY RENDER
 ========================================================= */
 
-function renderProperties(
-list,
-targetId="propertyGrid"
-){
+function renderProperties(list,targetId="propertyGrid"){
 
 const grid=$(targetId);
 
@@ -4802,15 +2753,11 @@ if(!grid)return;
 
 grid.innerHTML="";
 
-
 list.forEach(property=>{
 
-const card=
-document.createElement("div");
+const card=document.createElement("div");
 
-card.className=
-"property-card";
-
+card.className="property-card";
 
 card.innerHTML=`
 
@@ -4835,7 +2782,6 @@ onclick="toggleFavorite(this)">
 </button>
 
 </div>
-
 
 <div class="property-content">
 
@@ -4909,36 +2855,16 @@ properties.slice(0,3),
 
 function filterProperties(){
 
-const search=
-$("propertySearch")
-.value
-.trim()
-.toLowerCase();
+const search=$("propertySearch").value.trim().toLowerCase();
+const type=$("typeFilter").value;
+const city=$("cityFilter").value;
+const bedrooms=$("bedroomFilter").value;
+const minPrice=parseFloat($("minPrice").value);
+const maxPrice=parseFloat($("maxPrice").value);
+const status=$("statusFilter").value;
+const sort=$("sortFilter").value;
 
-const type=
-$("typeFilter").value;
-
-const city=
-$("cityFilter").value;
-
-const bedrooms=
-$("bedroomFilter").value;
-
-const minPrice=
-parseFloat($("minPrice").value);
-
-const maxPrice=
-parseFloat($("maxPrice").value);
-
-const status=
-$("statusFilter").value;
-
-const sort=
-$("sortFilter").value;
-
-
-let filtered=
-properties.filter(property=>{
+let filtered=properties.filter(property=>{
 
 const searchable=`
 ${property.title}
@@ -4948,80 +2874,39 @@ ${property.neighborhood}
 ${property.description}
 `.toLowerCase();
 
-
 return(
-
-(!search ||
-searchable.includes(search)) &&
-
-(!type ||
-property.type===type) &&
-
-(!city ||
-property.city===city) &&
-
-(!bedrooms ||
-property.bedrooms>=Number(bedrooms)) &&
-
-(isNaN(minPrice) ||
-property.rent>=minPrice) &&
-
-(isNaN(maxPrice) ||
-property.rent<=maxPrice) &&
-
-(!status ||
-property.status===status)
-
+(!search || searchable.includes(search)) &&
+(!type || property.type===type) &&
+(!city || property.city===city) &&
+(!bedrooms || property.bedrooms>=Number(bedrooms)) &&
+(isNaN(minPrice) || property.rent>=minPrice) &&
+(isNaN(maxPrice) || property.rent<=maxPrice) &&
+(!status || property.status===status)
 );
 
 });
 
-
 if(sort==="priceLow"){
-
-filtered.sort(
-(a,b)=>a.rent-b.rent
-);
-
+filtered.sort((a,b)=>a.rent-b.rent);
 }
-
 else if(sort==="priceHigh"){
-
-filtered.sort(
-(a,b)=>b.rent-a.rent
-);
-
+filtered.sort((a,b)=>b.rent-a.rent);
 }
-
 else if(sort==="bedrooms"){
-
-filtered.sort(
-(a,b)=>b.bedrooms-a.bedrooms
-);
-
+filtered.sort((a,b)=>b.bedrooms-a.bedrooms);
 }
-
 else{
-
-filtered.sort(
-(a,b)=>b.id-a.id
-);
-
+filtered.sort((a,b)=>b.id-a.id);
 }
-
 
 renderProperties(filtered);
 
-
-$("resultCount").textContent=
-`${filtered.length} Guri`;
-
+$("resultCount").textContent=`${filtered.length} Guri`;
 
 $("activeFilterText").textContent=
 filtered.length===0
 ?"Wax natiijo ah lama helin"
 :`${filtered.length} guri ayaa ku habboon raadintaada`;
-
 
 $("noResults").classList.toggle(
 "show",
@@ -5033,26 +2918,19 @@ filtered.length===0
 
 function loadCityFilter(){
 
-const select=
-$("cityFilter");
+const select=$("cityFilter");
 
 if(!select)return;
 
-
 const cities=[
-...new Set(
-properties.map(p=>p.city)
-)
+...new Set(properties.map(p=>p.city))
 ].sort();
-
 
 cities.forEach(city=>{
 
-const option=
-document.createElement("option");
+const option=document.createElement("option");
 
 option.value=city;
-
 option.textContent=city;
 
 select.appendChild(option);
@@ -5065,21 +2943,13 @@ select.appendChild(option);
 function resetFilters(){
 
 $("propertySearch").value="";
-
 $("typeFilter").value="";
-
 $("cityFilter").value="";
-
 $("bedroomFilter").value="";
-
 $("minPrice").value="";
-
 $("maxPrice").value="";
-
 $("statusFilter").value="Available";
-
 $("sortFilter").value="newest";
-
 
 filterProperties();
 
@@ -5104,15 +2974,8 @@ const element=$(id);
 
 if(!element)return;
 
-element.addEventListener(
-"input",
-filterProperties
-);
-
-element.addEventListener(
-"change",
-filterProperties
-);
+element.addEventListener("input",filterProperties);
+element.addEventListener("change",filterProperties);
 
 });
 
@@ -5125,83 +2988,55 @@ filterProperties
 
 function openPropertyDetails(id){
 
-const property=
-properties.find(
+const property=properties.find(
 item=>item.id===id
 );
 
 if(!property)return;
 
+$("detailsImage").src=property.image;
 
-$("detailsImage").src=
-property.image;
-
-$("detailsTitle").textContent=
-property.title;
-
+$("detailsTitle").textContent=property.title;
 
 $("detailsDescription").innerHTML=`
 
-<strong>
-${escapeHTML(property.type)}
-</strong>
-<br>
-
+<strong>${escapeHTML(property.type)}</strong><br>
 📍 ${escapeHTML(property.city)} —
-${escapeHTML(property.neighborhood)}
-
-<br><br>
+${escapeHTML(property.neighborhood)}<br><br>
 
 🛏 ${property.bedrooms} Qol &nbsp;
+🚿 ${property.bathrooms} Suuli<br>
 
-🚿 ${property.bathrooms} Suuli
+📐 ${escapeHTML(property.size)}<br>
 
-<br>
-
-📐 ${escapeHTML(property.size)}
-
-<br>
-
-💰 <strong>
-$${property.rent} / Month
-</strong>
-
-<br><br>
+💰 <strong>$${property.rent} / Month</strong><br><br>
 
 ${escapeHTML(property.description)}
 
 `;
 
-
-$("detailsModal")
-.classList.add("show");
+$("detailsModal").classList.add("show");
 
 }
 
 
 function closeDetails(){
 
-$("detailsModal")
-.classList.remove("show");
+$("detailsModal").classList.remove("show");
 
 }
 
 
 function toggleFavorite(button){
 
-if(
-button.textContent.trim()==="♡"
-){
+if(button.textContent.trim()==="♡"){
 
 button.textContent="♥";
-
-button.style.color=
-"#E5484D";
+button.style.color="#E5484D";
 
 }else{
 
 button.textContent="♡";
-
 button.style.color="";
 
 }
@@ -5212,31 +3047,11 @@ button.style.color="";
 function escapeHTML(value){
 
 return String(value)
-
-.replace(
-/&/g,
-"&amp;"
-)
-
-.replace(
-/</g,
-"&lt;"
-)
-
-.replace(
-/>/g,
-"&gt;"
-)
-
-.replace(
-/"/g,
-"&quot;"
-)
-
-.replace(
-/'/g,
-"&#039;"
-);
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;");
 
 }
 
@@ -5245,67 +3060,40 @@ return String(value)
    NAVIGATION
 ========================================================= */
 
-function openPage(
-page,
-button
-){
+function openPage(page,button){
 
 document
 .querySelectorAll(".page")
-.forEach(
-p=>p.classList.remove("active")
-);
-
+.forEach(p=>p.classList.remove("active"));
 
 const selected=$(page);
 
-
 if(selected){
-
 selected.classList.add("active");
-
 }
 
-
 const titles={
-
 home:"Home",
-
 property:"Properties",
-
 care:"Customer Care",
-
 submit:"Submit Property",
-
 settings:"Settings"
-
 };
 
-
 $("pageTitle").textContent=
-titles[page] ||
-"Haleel Real Estate";
-
+titles[page]||"Haleel Real Estate";
 
 document
-.querySelectorAll(
-".nav button,.mobile-nav button"
-)
-.forEach(
-b=>b.classList.remove("active")
-);
-
+.querySelectorAll(".nav button,.mobile-nav button")
+.forEach(b=>b.classList.remove("active"));
 
 const map={
-
 home:0,
 property:1,
 care:2,
 submit:3,
 settings:4
-
 };
-
 
 if(button){
 
@@ -5315,48 +3103,29 @@ button.classList.add("active");
 
 const index=map[page];
 
-
 const desktop=
-document.querySelectorAll(
-".nav button"
-)[index];
-
+document.querySelectorAll(".nav button")[index];
 
 if(desktop)
 desktop.classList.add("active");
 
-
 let mobileIndex=index;
 
-
-if(
-page==="submit" ||
-page==="settings"
-){
-
+if(page==="submit" || page==="settings"){
 mobileIndex=3;
-
 }
 
-
 const mobile=
-document.querySelectorAll(
-".mobile-nav button"
-)[mobileIndex];
-
+document.querySelectorAll(".mobile-nav button")[mobileIndex];
 
 if(mobile)
 mobile.classList.add("active");
 
 }
 
-
 window.scrollTo({
-
 top:0,
-
 behavior:"smooth"
-
 });
 
 }
@@ -5372,62 +3141,33 @@ if(theme==="dark"){
 
 document.body.classList.add("dark");
 
-
 $("themeStatus").textContent=
 "Current theme: Dark Mode";
 
-
-$("darkThemeButton")
-.classList.add("active");
-
-
-$("lightThemeButton")
-.classList.remove("active");
-
+$("darkThemeButton").classList.add("active");
+$("lightThemeButton").classList.remove("active");
 
 document
-.querySelector(
-'meta[name="theme-color"]'
-)
-.setAttribute(
-"content",
-"#0B1118"
-);
-
+.querySelector('meta[name="theme-color"]')
+.setAttribute("content","#0B1118");
 
 }else{
 
 document.body.classList.remove("dark");
 
-
 $("themeStatus").textContent=
 "Current theme: Light Mode";
 
-
-$("lightThemeButton")
-.classList.add("active");
-
-
-$("darkThemeButton")
-.classList.remove("active");
-
+$("lightThemeButton").classList.add("active");
+$("darkThemeButton").classList.remove("active");
 
 document
-.querySelector(
-'meta[name="theme-color"]'
-)
-.setAttribute(
-"content",
-"#FFFFFF"
-);
+.querySelector('meta[name="theme-color"]')
+.setAttribute("content","#FFFFFF");
 
 }
 
-
-localStorage.setItem(
-"haleelTheme",
-theme
-);
+localStorage.setItem("haleelTheme",theme);
 
 }
 
@@ -5446,35 +3186,20 @@ applyTheme(theme);
 const countries=[
 
 ["🇸🇴","Somalia","Africa/Mogadishu"],
-
 ["🇰🇪","Kenya","Africa/Nairobi"],
-
 ["🇪🇹","Ethiopia","Africa/Addis_Ababa"],
-
 ["🇩🇯","Djibouti","Africa/Djibouti"],
-
 ["🇸🇦","Saudi Arabia","Asia/Riyadh"],
-
 ["🇦🇪","United Arab Emirates","Asia/Dubai"],
-
 ["🇹🇷","Türkiye","Europe/Istanbul"],
-
 ["🇬🇧","United Kingdom","Europe/London"],
-
 ["🇺🇸","United States","America/New_York"],
-
 ["🇨🇦","Canada","America/Toronto"],
-
 ["🇩🇪","Germany","Europe/Berlin"],
-
 ["🇫🇷","France","Europe/Paris"],
-
 ["🇮🇳","India","Asia/Kolkata"],
-
 ["🇨🇳","China","Asia/Shanghai"],
-
 ["🇯🇵","Japan","Asia/Tokyo"],
-
 ["🇦🇺","Australia","Australia/Sydney"]
 
 ];
@@ -5482,22 +3207,17 @@ const countries=[
 
 function loadCountries(){
 
-const select=
-$("countrySelect");
+const select=$("countrySelect");
 
 if(!select)return;
 
-
 select.innerHTML="";
-
 
 countries.forEach(country=>{
 
-const option=
-document.createElement("option");
+const option=document.createElement("option");
 
-option.value=
-country[2];
+option.value=country[2];
 
 option.textContent=
 `${country[0]} ${country[1]}`;
@@ -5506,16 +3226,11 @@ select.appendChild(option);
 
 });
 
-
 const saved=
-localStorage.getItem(
-"haleelCountry"
-) ||
-"Africa/Mogadishu";
-
+localStorage.getItem("haleelCountry")
+||"Africa/Mogadishu";
 
 select.value=saved;
-
 
 changeCountry();
 
@@ -5524,17 +3239,14 @@ changeCountry();
 
 function changeCountry(){
 
-const select=
-$("countrySelect");
+const select=$("countrySelect");
 
 if(!select)return;
-
 
 localStorage.setItem(
 "haleelCountry",
 select.value
 );
-
 
 updateCountryTime();
 
@@ -5543,47 +3255,28 @@ updateCountryTime();
 
 function updateCountryTime(){
 
-const select=
-$("countrySelect");
+const select=$("countrySelect");
+const box=$("countryTime");
 
-const box=
-$("countryTime");
+if(!select || !box)return;
 
-
-if(!select || !box)
-return;
-
-
-const country=
-countries.find(
+const country=countries.find(
 item=>item[2]===select.value
 );
 
-
 if(!country)return;
-
 
 const time=
 new Intl.DateTimeFormat(
 "en-US",
 {
-
-timeZone:
-select.value,
-
+timeZone:select.value,
 hour:"numeric",
-
 minute:"2-digit",
-
 second:"2-digit",
-
 hour12:true
-
 }
-).format(
-new Date()
-);
-
+).format(new Date());
 
 box.innerHTML=`
 
@@ -5591,10 +3284,7 @@ box.innerHTML=`
 Current Local Time
 </span>
 
-${country[0]}
-${country[1]}
-—
-${time}
+${country[0]} ${country[1]} — ${time}
 
 `;
 
@@ -5607,22 +3297,17 @@ ${time}
 
 function toggleCare(){
 
-$("careMenu")
-.classList.toggle("show");
+$("careMenu").classList.toggle("show");
 
 }
 
 
 function openChat(){
 
-$("chatModal")
-.classList.add("show");
-
+$("chatModal").classList.add("show");
 
 setTimeout(()=>{
-
 $("chatMessage").focus();
-
 },200);
 
 }
@@ -5630,54 +3315,37 @@ $("chatMessage").focus();
 
 function closeChat(){
 
-$("chatModal")
-.classList.remove("show");
+$("chatModal").classList.remove("show");
 
 }
 
 
-function openChatWithMessage(
-message
-){
+function openChatWithMessage(message){
 
 openChat();
 
-$("chatMessage").value=
-message;
+$("chatMessage").value=message;
 
 }
 
 
 function sendEmail(){
 
-const message=
-$("chatMessage")
-.value
-.trim();
-
+const message=$("chatMessage").value.trim();
 
 if(!message){
 
-alert(
-"Please write a message."
-);
+alert("Please write a message.");
 
 return;
 
 }
 
-
-const subject=
-encodeURIComponent(
+const subject=encodeURIComponent(
 "Haleel Customer Care"
 );
 
-
-const body=
-encodeURIComponent(
-message
-);
-
+const body=encodeURIComponent(message);
 
 window.location.href=
 `mailto:haleelrealestate@gmail.com?subject=${subject}&body=${body}`;
@@ -5687,6 +3355,12 @@ window.location.href=
 
 /* =========================================================
    SUBMIT PROPERTY
+   IMPORTANT:
+   This function uses the existing Apps Script
+   and hidden iframe.
+
+   Gmail will NOT open.
+   The visitor remains on Haleel website.
 ========================================================= */
 
 let propertySubmissionInProgress=false;
@@ -5694,9 +3368,7 @@ let propertySubmissionInProgress=false;
 
 function submitProperty(){
 
-if(
-propertySubmissionInProgress
-){
+if(propertySubmissionInProgress){
 
 return;
 
@@ -5704,35 +3376,21 @@ return;
 
 
 const owner=
-$("ownerName")
-.value
-.trim();
-
+$("ownerName").value.trim();
 
 const phone=
-$("ownerPhone")
-.value
-.trim();
-
+$("ownerPhone").value.trim();
 
 const submitterName=
-$("propertyTitle")
-.value
-.trim();
-
+$("propertyTitle").value.trim();
 
 const city=
-$("city")
-.value
-.trim();
+$("city").value.trim();
 
 
-if(
-!owner ||
-!phone ||
-!submitterName ||
-!city
-){
+/* REQUIRED FIELDS */
+
+if(!owner || !phone || !submitterName || !city){
 
 alert(
 "Fadlan geli macluumaadka muhiimka ah."
@@ -5743,16 +3401,15 @@ return;
 }
 
 
-propertySubmissionInProgress=true;
+/* START SUBMISSION */
 
+propertySubmissionInProgress=true;
 
 const button=
 $("submitPropertyButton");
 
-
 const originalText=
 button.textContent;
-
 
 button.disabled=true;
 
@@ -5764,6 +3421,8 @@ button.textContent=
 "⏳ Waa la dirayaa...";
 
 
+/* DATA SENT TO GOOGLE APPS SCRIPT */
+
 const data={
 
 ownerName:owner,
@@ -5771,60 +3430,54 @@ ownerName:owner,
 ownerPhone:phone,
 
 ownerEmail:
-$("ownerEmail")
-.value
-.trim(),
+$("ownerEmail").value.trim(),
 
 ownerWhatsapp:
-$("ownerWhatsapp")
-.value
-.trim(),
+$("ownerWhatsapp").value.trim(),
 
 propertyTitle:
 submitterName,
 
 propertyType:
-$("propertyType")
-.value,
+$("propertyType").value,
 
 city:city,
 
 neighborhood:
-$("neighborhood")
-.value
-.trim(),
+$("neighborhood").value.trim(),
 
 rent:
-$("rent")
-.value
-.trim(),
+$("rent").value.trim(),
 
 bedrooms:
-$("bedrooms")
-.value
-.trim(),
+$("bedrooms").value.trim(),
 
 bathrooms:
-$("bathrooms")
-.value
-.trim(),
+$("bathrooms").value.trim(),
 
 size:
-$("size")
-.value
-.trim(),
+$("size").value.trim(),
 
 description:
-$("description")
-.value
-.trim()
+$("description").value.trim()
 
 };
 
 
+/*
+IMPORTANT:
+
+Apps Script-kaaga wuxuu filayaa:
+
+e.parameter.payload
+
+Sidaas darteed waxaan si gaar ah
+hidden input ugu diraynaa magaca "payload".
+*/
+
+
 const form=
 document.createElement("form");
-
 
 form.method="POST";
 
@@ -5845,7 +3498,6 @@ form.setAttribute(
 const input=
 document.createElement("input");
 
-
 input.type="hidden";
 
 input.name="payload";
@@ -5859,6 +3511,16 @@ form.appendChild(input);
 document.body.appendChild(form);
 
 
+/*
+SUBMIT:
+
+Browser-ku wuxuu xogta u dirayaa
+Google Apps Script gudaha hidden iframe.
+
+Gmail page/app ma furmayo.
+*/
+
+
 try{
 
 form.submit();
@@ -5870,7 +3532,6 @@ console.error(
 error
 );
 
-
 propertySubmissionInProgress=false;
 
 button.disabled=false;
@@ -5879,14 +3540,11 @@ button.style.opacity="1";
 
 button.style.cursor="pointer";
 
-button.textContent=
-originalText;
-
+button.textContent=originalText;
 
 alert(
 "Xogta lama diri karin. Fadlan isku day mar kale."
 );
-
 
 form.remove();
 
@@ -5895,12 +3553,13 @@ return;
 }
 
 
+/*
+Remove temporary form after submission.
+*/
+
 setTimeout(()=>{
 
-if(
-form &&
-form.parentNode
-){
+if(form && form.parentNode){
 
 form.remove();
 
@@ -5909,8 +3568,21 @@ form.remove();
 },1500);
 
 
+/*
+The browser cannot read Google's cross-origin
+response directly.
+
+Therefore, without changing your Apps Script,
+we cannot technically verify Gmail delivery
+from the frontend.
+
+After giving Apps Script enough time to process,
+we show the success screen.
+*/
+
 setTimeout(()=>{
 
+/* RESET BUTTON */
 
 button.disabled=false;
 
@@ -5918,9 +3590,10 @@ button.style.opacity="1";
 
 button.style.cursor="pointer";
 
-button.textContent=
-originalText;
+button.textContent=originalText;
 
+
+/* CLEAR FORM */
 
 [
 "ownerName",
@@ -5949,6 +3622,8 @@ element.value="";
 });
 
 
+/* CLEAR IMAGE INPUT */
+
 if($("images")){
 
 $("images").value="";
@@ -5956,12 +3631,15 @@ $("images").value="";
 }
 
 
+/* FINISH */
+
 propertySubmissionInProgress=false;
 
 
+/* SUCCESS MODAL */
+
 $("successModal")
 .classList.add("show");
-
 
 },2500);
 
@@ -5995,8 +3673,7 @@ event=>{
 
 event.preventDefault();
 
-deferredInstallPrompt=
-event;
+deferredInstallPrompt=event;
 
 });
 
@@ -6007,10 +3684,8 @@ window.addEventListener(
 
 deferredInstallPrompt=null;
 
-
 const button=
 $("installAppButton");
-
 
 if(button){
 
@@ -6030,29 +3705,21 @@ if(deferredInstallPrompt){
 
 deferredInstallPrompt.prompt();
 
-
 const choice=
-await deferredInstallPrompt
-.userChoice;
-
+await deferredInstallPrompt.userChoice;
 
 deferredInstallPrompt=null;
 
-
-if(
-choice.outcome==="accepted"
-){
+if(choice.outcome==="accepted"){
 
 const button=
 $("installAppButton");
-
 
 if(button)
 button.textContent=
 "✅ App Installed";
 
 }
-
 
 return;
 
@@ -6107,9 +3774,7 @@ alert(
    SERVICE WORKER
 ========================================================= */
 
-if(
-"serviceWorker" in navigator
-){
+if("serviceWorker" in navigator){
 
 window.addEventListener(
 "load",
@@ -6150,24 +3815,17 @@ document.addEventListener(
 /* THEME */
 
 const savedTheme=
-localStorage.getItem(
-"haleelTheme"
-) ||
-"light";
+localStorage.getItem("haleelTheme")
+||"light";
 
-
-applyTheme(
-savedTheme
-);
+applyTheme(savedTheme);
 
 
 /* PROPERTIES */
 
 loadCityFilter();
 
-renderProperties(
-properties
-);
+renderProperties(properties);
 
 renderHomeProperties();
 
@@ -6188,9 +3846,7 @@ $("detailsModal")
 "click",
 function(e){
 
-if(
-e.target===e.currentTarget
-){
+if(e.target===e.currentTarget){
 
 closeDetails();
 
@@ -6199,16 +3855,14 @@ closeDetails();
 });
 
 
-/* CLOSE SUCCESS MODAL */
+/* CLOSE SUCCESS MODAL WHEN BACKDROP IS CLICKED */
 
 $("successModal")
 .addEventListener(
 "click",
 function(e){
 
-if(
-e.target===e.currentTarget
-){
+if(e.target===e.currentTarget){
 
 closeSuccess();
 
@@ -6217,16 +3871,14 @@ closeSuccess();
 });
 
 
-/* CLOSE CHAT MODAL */
+/* CLOSE CHAT MODAL WHEN BACKDROP IS CLICKED */
 
 $("chatModal")
 .addEventListener(
 "click",
 function(e){
 
-if(
-e.target===e.currentTarget
-){
+if(e.target===e.currentTarget){
 
 closeChat();
 
@@ -6244,21 +3896,14 @@ e=>{
 if(e.key==="Escape"){
 
 document
-.querySelectorAll(
-".modal.show"
-)
+.querySelectorAll(".modal.show")
 .forEach(
 modal=>
-modal.classList.remove(
-"show"
-)
+modal.classList.remove("show")
 );
-
 
 $("careMenu")
-?.classList.remove(
-"show"
-);
+?.classList.remove("show");
 
 }
 
@@ -6276,27 +3921,17 @@ document.querySelector(
 ".floating-care"
 );
 
-
 if(
 wrap &&
 !wrap.contains(e.target)
 ){
 
 $("careMenu")
-?.classList.remove(
-"show"
-);
+?.classList.remove("show");
 
 }
 
 });
-
-
-/* =====================================================
-   CHECK HALEEL LOGIN SESSION
-===================================================== */
-
-checkHaleelSession();
 
 });
 
