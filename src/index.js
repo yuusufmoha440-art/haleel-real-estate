@@ -1,9 +1,6 @@
 const MAX_ACCOUNT_ID = 9999999;
 const SESSION_DAYS = 30;
 
-// Cloudflare Workers Free CPU limit awgeed
-const PBKDF2_ITERATIONS = 10000;
-
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -68,12 +65,21 @@ async function signup(request, env) {
 
   const body = await readJSON(request);
 
+  if (!body) {
+    return json(
+      {
+        success: false,
+        message: "Invalid request."
+      },
+      400
+    );
+  }
+
   // ----------------------------------------------------------
   // READ NAME + PASSWORD
   // ----------------------------------------------------------
 
   if (
-    !body ||
     typeof body.firstName !== "string" ||
     typeof body.middleName !== "string" ||
     typeof body.lastName !== "string" ||
@@ -147,7 +153,8 @@ async function signup(request, env) {
     return json(
       {
         success: false,
-        message: "Password must contain at least 8 characters."
+        message:
+          "Password must contain at least 8 characters."
       },
       400
     );
@@ -160,26 +167,6 @@ async function signup(request, env) {
         message: "Password is too long."
       },
       400
-    );
-  }
-
-  // ----------------------------------------------------------
-  // PASSWORD HASH
-  // ----------------------------------------------------------
-
-  let passwordHash;
-
-  try {
-    passwordHash = await hashPassword(password);
-  } catch (error) {
-    console.error("PASSWORD HASH ERROR:", error);
-
-    return json(
-      {
-        success: false,
-        message: "Unable to secure password."
-      },
-      500
     );
   }
 
@@ -199,7 +186,10 @@ async function signup(request, env) {
       `)
       .first();
   } catch (error) {
-    console.error("ACCOUNT SEQUENCE READ ERROR:", error);
+    console.error(
+      "ACCOUNT SEQUENCE READ ERROR:",
+      error
+    );
 
     return json(
       {
@@ -245,7 +235,10 @@ async function signup(request, env) {
   try {
     session = await buildSession(accountId);
   } catch (error) {
-    console.error("SESSION BUILD ERROR:", error);
+    console.error(
+      "SESSION BUILD ERROR:",
+      error
+    );
 
     return json(
       {
@@ -271,19 +264,19 @@ async function signup(request, env) {
         .prepare(`
           INSERT INTO users (
             account_id,
+            password,
             first_name,
             middle_name,
-            last_name,
-            password_hash
+            last_name
           )
           VALUES (?, ?, ?, ?, ?)
         `)
         .bind(
           accountId,
+          password,
           firstName,
           middleName,
-          lastName,
-          passwordHash
+          lastName
         ),
 
       // ------------------------------------------------------
@@ -320,7 +313,10 @@ async function signup(request, env) {
     ]);
 
   } catch (error) {
-    console.error("SIGNUP DATABASE ERROR:", error);
+    console.error(
+      "SIGNUP DATABASE ERROR:",
+      error
+    );
 
     return json(
       {
@@ -341,14 +337,25 @@ async function signup(request, env) {
   return new Response(
     JSON.stringify({
       success: true,
-      accountId: formattedAccountId,
-      firstName: firstName,
-      middleName: middleName,
-      lastName: lastName,
-      message: "Account created successfully."
+
+      accountId:
+        formattedAccountId,
+
+      firstName:
+        firstName,
+
+      middleName:
+        middleName,
+
+      lastName:
+        lastName,
+
+      message:
+        "Account created successfully."
     }),
     {
       status: 201,
+
       headers: {
         "Content-Type":
           "application/json; charset=UTF-8",
@@ -409,6 +416,10 @@ async function login(request, env) {
       ? body.password
       : "";
 
+  // ----------------------------------------------------------
+  // ACCOUNT ID VALIDATION
+  // ----------------------------------------------------------
+
   if (!/^\d{7}$/.test(accountId)) {
     return invalidLogin();
   }
@@ -439,10 +450,10 @@ async function login(request, env) {
       .prepare(`
         SELECT
           account_id,
+          password,
           first_name,
           middle_name,
-          last_name,
-          password_hash
+          last_name
         FROM users
         WHERE account_id = ?
         LIMIT 1
@@ -451,12 +462,16 @@ async function login(request, env) {
       .first();
 
   } catch (error) {
-    console.error("LOGIN DATABASE ERROR:", error);
+    console.error(
+      "LOGIN DATABASE ERROR:",
+      error
+    );
 
     return json(
       {
         success: false,
-        message: "Unable to access account database."
+        message:
+          "Unable to access account database."
       },
       500
     );
@@ -470,27 +485,10 @@ async function login(request, env) {
   // VERIFY PASSWORD
   // ----------------------------------------------------------
 
-  let validPassword = false;
-
-  try {
-    validPassword = await verifyPassword(
-      password,
-      user.password_hash
-    );
-
-  } catch (error) {
-    console.error("PASSWORD VERIFY ERROR:", error);
-
-    return json(
-      {
-        success: false,
-        message: "Unable to verify password."
-      },
-      500
-    );
-  }
-
-  if (!validPassword) {
+  if (
+    typeof user.password !== "string" ||
+    password !== user.password
+  ) {
     return invalidLogin();
   }
 
@@ -504,7 +502,6 @@ async function login(request, env) {
     session = await buildSession(
       Number(user.account_id)
     );
-
   } catch (error) {
     console.error(
       "LOGIN SESSION BUILD ERROR:",
@@ -514,7 +511,8 @@ async function login(request, env) {
     return json(
       {
         success: false,
-        message: "Unable to create login session."
+        message:
+          "Unable to create login session."
       },
       500
     );
@@ -542,12 +540,16 @@ async function login(request, env) {
       .run();
 
   } catch (error) {
-    console.error("LOGIN SESSION ERROR:", error);
+    console.error(
+      "LOGIN SESSION ERROR:",
+      error
+    );
 
     return json(
       {
         success: false,
-        message: "Unable to create login session."
+        message:
+          "Unable to create login session."
       },
       500
     );
@@ -574,7 +576,8 @@ async function login(request, env) {
       lastName:
         user.last_name || "",
 
-      message: "Login successful."
+      message:
+        "Login successful."
     }),
     {
       status: 200,
@@ -602,7 +605,8 @@ function invalidLogin() {
   return json(
     {
       success: false,
-      message: "Invalid ID or password."
+      message:
+        "Invalid ID or password."
     },
     401
   );
@@ -618,7 +622,8 @@ async function getCurrentUser(request, env) {
     return json(
       {
         success: false,
-        message: "Method not allowed."
+        message:
+          "Method not allowed."
       },
       405
     );
@@ -639,7 +644,10 @@ async function getCurrentUser(request, env) {
   // ----------------------------------------------------------
 
   const token =
-    getCookie(request, "haleel_session");
+    getCookie(
+      request,
+      "haleel_session"
+    );
 
   if (!token) {
     return json(
@@ -658,10 +666,14 @@ async function getCurrentUser(request, env) {
   let tokenHash;
 
   try {
-    tokenHash = await sha256(token);
+    tokenHash =
+      await sha256(token);
 
   } catch (error) {
-    console.error("TOKEN HASH ERROR:", error);
+    console.error(
+      "TOKEN HASH ERROR:",
+      error
+    );
 
     return json(
       {
@@ -696,7 +708,10 @@ async function getCurrentUser(request, env) {
       .first();
 
   } catch (error) {
-    console.error("SESSION LOOKUP ERROR:", error);
+    console.error(
+      "SESSION LOOKUP ERROR:",
+      error
+    );
 
     return json(
       {
@@ -751,7 +766,9 @@ async function getCurrentUser(request, env) {
         WHERE account_id = ?
         LIMIT 1
       `)
-      .bind(Number(session.account_id))
+      .bind(
+        Number(session.account_id)
+      )
       .first();
 
   } catch (error) {
@@ -803,14 +820,18 @@ async function logout(request, env) {
     return json(
       {
         success: false,
-        message: "Method not allowed."
+        message:
+          "Method not allowed."
       },
       405
     );
   }
 
   const token =
-    getCookie(request, "haleel_session");
+    getCookie(
+      request,
+      "haleel_session"
+    );
 
   if (token && env.ACCOUNTS_DB) {
     try {
@@ -836,7 +857,8 @@ async function logout(request, env) {
   return new Response(
     JSON.stringify({
       success: true,
-      message: "Logged out successfully."
+      message:
+        "Logged out successfully."
     }),
     {
       status: 200,
@@ -864,10 +886,14 @@ async function buildSession(accountId) {
   const tokenBytes =
     new Uint8Array(32);
 
-  crypto.getRandomValues(tokenBytes);
+  crypto.getRandomValues(
+    tokenBytes
+  );
 
   const token =
-    bytesToBase64Url(tokenBytes);
+    bytesToBase64Url(
+      tokenBytes
+    );
 
   const tokenHash =
     await sha256(token);
@@ -913,176 +939,6 @@ function clearSessionCookie() {
     "Path=/; " +
     "Max-Age=0"
   );
-}
-
-
-// ============================================================
-// PASSWORD HASHING
-// ============================================================
-
-async function hashPassword(password) {
-  const salt =
-    new Uint8Array(16);
-
-  crypto.getRandomValues(salt);
-
-  const encoder =
-    new TextEncoder();
-
-  const passwordBytes =
-    encoder.encode(password);
-
-  const keyMaterial =
-    await crypto.subtle.importKey(
-      "raw",
-      passwordBytes,
-      {
-        name: "PBKDF2"
-      },
-      false,
-      ["deriveBits"]
-    );
-
-  const derivedBits =
-    await crypto.subtle.deriveBits(
-      {
-        name: "PBKDF2",
-
-        salt,
-
-        iterations:
-          PBKDF2_ITERATIONS,
-
-        hash:
-          "SHA-256"
-      },
-
-      keyMaterial,
-
-      256
-    );
-
-  return [
-    "pbkdf2",
-
-    PBKDF2_ITERATIONS,
-
-    bytesToBase64Url(salt),
-
-    bytesToBase64Url(
-      new Uint8Array(derivedBits)
-    )
-  ].join("$");
-}
-
-
-// ============================================================
-// PASSWORD VERIFICATION
-// ============================================================
-
-async function verifyPassword(
-  password,
-  storedHash
-) {
-  if (typeof storedHash !== "string") {
-    return false;
-  }
-
-  const parts =
-    storedHash.split("$");
-
-  if (parts.length !== 4) {
-    return false;
-  }
-
-  const [
-    algorithm,
-    iterationsString,
-    saltString,
-    hashString
-  ] = parts;
-
-  if (algorithm !== "pbkdf2") {
-    return false;
-  }
-
-  const iterations =
-    Number(iterationsString);
-
-  if (
-    !Number.isInteger(iterations) ||
-    iterations < 10000 ||
-    iterations > 10000000
-  ) {
-    return false;
-  }
-
-  try {
-    const salt =
-      base64UrlToBytes(
-        saltString
-      );
-
-    const expectedHash =
-      base64UrlToBytes(
-        hashString
-      );
-
-    if (
-      salt.length === 0 ||
-      expectedHash.length === 0
-    ) {
-      return false;
-    }
-
-    const encoder =
-      new TextEncoder();
-
-    const keyMaterial =
-      await crypto.subtle.importKey(
-        "raw",
-
-        encoder.encode(password),
-
-        {
-          name: "PBKDF2"
-        },
-
-        false,
-
-        ["deriveBits"]
-      );
-
-    const derivedBits =
-      await crypto.subtle.deriveBits(
-        {
-          name: "PBKDF2",
-
-          salt,
-
-          iterations,
-
-          hash: "SHA-256"
-        },
-
-        keyMaterial,
-
-        expectedHash.length * 8
-      );
-
-    return timingSafeEqual(
-      new Uint8Array(derivedBits),
-      expectedHash
-    );
-
-  } catch (error) {
-    console.error(
-      "VERIFY ERROR:",
-      error
-    );
-
-    return false;
-  }
 }
 
 
@@ -1232,50 +1088,4 @@ function bytesToBase64Url(bytes) {
     .replace(/\+/g, "-")
     .replace(/\//g, "_")
     .replace(/=+$/g, "");
-}
-
-
-// ============================================================
-// BASE64URL → BYTES
-// ============================================================
-
-function base64UrlToBytes(value) {
-  if (
-    typeof value !== "string" ||
-    value.length === 0
-  ) {
-    throw new Error(
-      "Invalid base64url value."
-    );
-  }
-
-  const base64 =
-    value
-      .replace(/-/g, "+")
-      .replace(/_/g, "/");
-
-  const padded =
-    base64 +
-    "=".repeat(
-      (4 - (base64.length % 4)) % 4
-    );
-
-  const binary =
-    atob(padded);
-
-  const bytes =
-    new Uint8Array(
-      binary.length
-    );
-
-  for (
-    let i = 0;
-    i < binary.length;
-    i++
-  ) {
-    bytes[i] =
-      binary.charCodeAt(i);
-  }
-
-  return bytes;
 }
