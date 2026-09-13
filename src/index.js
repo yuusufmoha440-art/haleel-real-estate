@@ -1,3 +1,4 @@
+```javascript
 const MAX_ACCOUNT_ID = 9999999;
 const SESSION_DAYS = 30;
 const PBKDF2_ITERATIONS = 200000;
@@ -97,66 +98,92 @@ async function signup(request, env) {
     );
   }
 
-  // Hash password before storing it.
+  // Securely hash the password before storing it.
   const passwordHash = await hashPassword(password);
 
+  // Get the next automatic account ID.
+  const sequence = await env.ACCOUNTS_DB
+    .prepare(`
+      SELECT next_id
+      FROM account_sequence
+      WHERE id = 1
+      LIMIT 1
+    `)
+    .first();
+
+  if (!sequence) {
+    return json(
+      {
+        success: false,
+        message: "Account sequence is not configured."
+      },
+      500
+    );
+  }
+
+  const accountId = Number(sequence.next_id);
+
+  // Only 0000001 through 9999999 are allowed.
+  if (
+    !Number.isInteger(accountId) ||
+    accountId < 1 ||
+    accountId > MAX_ACCOUNT_ID
+  ) {
+    return json(
+      {
+        success: false,
+        message: "No more account IDs are available."
+      },
+      409
+    );
+  }
+
   /*
-   * IMPORTANT:
+   * Create the user and advance the sequence.
    *
-   * account_sequence.next_id is used as the account number.
+   * Example:
+   * next_id = 1
    *
-   * 1       -> 0000001
-   * 2       -> 0000002
-   * 3       -> 0000003
+   * user:
+   * id         = 1
+   * account_id = 1
    *
-   * ...
-   *
-   * 9999999 -> 9999999
-   *
-   * The INSERT and UPDATE are executed together
-   * in one D1 batch.
+   * returned to user as:
+   * 0000001
    */
 
-  const result = await env.ACCOUNTS_DB.batch([
-    env.ACCOUNTS_DB
-      .prepare(`
-        INSERT INTO users
-        (
-          id,
-          account_id,
-          password_hash
-        )
-        SELECT
-          next_id,
-          next_id,
-          ?
-        FROM account_sequence
-        WHERE id = 1
-          AND next_id <= ?
-      `)
-      .bind(
-        passwordHash,
-        MAX_ACCOUNT_ID
-      ),
+  try {
+    await env.ACCOUNTS_DB.batch([
+      env.ACCOUNTS_DB
+        .prepare(`
+          INSERT INTO users (
+            id,
+            account_id,
+            password_hash
+          )
+          VALUES (?, ?, ?)
+        `)
+        .bind(
+          accountId,
+          accountId,
+          passwordHash
+        ),
 
-    env.ACCOUNTS_DB
-      .prepare(`
-        UPDATE account_sequence
-        SET next_id = next_id + 1
-        WHERE id = 1
-          AND next_id <= ?
-      `)
-      .bind(MAX_ACCOUNT_ID)
-  ]);
+      env.ACCOUNTS_DB
+        .prepare(`
+          UPDATE account_sequence
+          SET next_id = next_id + 1
+          WHERE id = 1
+            AND next_id = ?
+        `)
+        .bind(accountId)
+    ]);
+  } catch (error) {
+    console.error(
+      "Signup database error:",
+      error
+    );
 
-  const insertResult = result[0];
-  const sequenceResult = result[1];
-
-  // Make sure exactly one user was created.
-  if (
-    !insertResult ||
-    insertResult.meta?.changes !== 1
-  ) {
     return json(
       {
         success: false,
@@ -166,50 +193,62 @@ async function signup(request, env) {
     );
   }
 
-  // Make sure the sequence advanced exactly once.
-  if (
-    !sequenceResult ||
-    sequenceResult.meta?.changes !== 1
-  ) {
-    return json(
-      {
-        success: false,
-        message: "Unable to allocate account ID."
-      },
-      500
-    );
-  }
-
-  /*
-   * users.id is intentionally set to next_id.
-   *
-   * Therefore last_row_id is the newly created
-   * account number.
-   */
-
-  const accountId = Number(
-    insertResult.meta?.last_row_id
-  );
-
-  if (
-    !Number.isInteger(accountId) ||
-    accountId < 1 ||
-    accountId > MAX_ACCOUNT_ID
-  ) {
-    return json(
-      {
-        success: false,
-        message: "Invalid account ID."
-      },
-      500
-    );
-  }
-
   // Automatically create a login session.
-  const session = await createSession(
-    accountId,
-    env
-  );
+  let session;
+
+  try {
+    session = await createSession(
+      accountId,
+      env
+    );
+  } catch (error) {
+    console.error(
+      "Signup session error:",
+      error
+    );
+
+    /*
+     * Roll back the account if session creation
+     * fails, so we do not leave a broken account.
+     */
+
+    try {
+      await env.ACCOUNTS_DB
+        .prepare(`
+          DELETE FROM users
+          WHERE account_id = ?
+        `)
+        .bind(accountId)
+        .run();
+
+      await env.ACCOUNTS_DB
+        .prepare(`
+          UPDATE account_sequence
+          SET next_id = ?
+          WHERE id = 1
+            AND next_id = ?
+        `)
+        .bind(
+          accountId,
+          accountId + 1
+        )
+        .run();
+
+    } catch (rollbackError) {
+      console.error(
+        "Signup rollback error:",
+        rollbackError
+      );
+    }
+
+    return json(
+      {
+        success: false,
+        message: "Unable to create login session."
+      },
+      500
+    );
+  }
 
   return new Response(
     JSON.stringify({
@@ -220,9 +259,14 @@ async function signup(request, env) {
     {
       status: 201,
       headers: {
-        "Content-Type": "application/json; charset=UTF-8",
-        "Cache-Control": "no-store",
-        "Set-Cookie": session.cookie
+        "Content-Type":
+          "application/json; charset=UTF-8",
+
+        "Cache-Control":
+          "no-store",
+
+        "Set-Cookie":
+          session.cookie
       }
     }
   );
@@ -264,10 +308,7 @@ async function login(request, env) {
     body.password || ""
   );
 
-  /*
-   * Account ID must be exactly 7 digits.
-   */
-
+  // ID must contain exactly 7 digits.
   if (!/^\d{7}$/.test(accountId)) {
     return json(
       {
@@ -325,7 +366,7 @@ async function login(request, env) {
     );
   }
 
-  // Create a new session after successful login.
+  // Create a fresh session after successful login.
   const session = await createSession(
     Number(user.account_id),
     env
@@ -342,9 +383,14 @@ async function login(request, env) {
     {
       status: 200,
       headers: {
-        "Content-Type": "application/json; charset=UTF-8",
-        "Cache-Control": "no-store",
-        "Set-Cookie": session.cookie
+        "Content-Type":
+          "application/json; charset=UTF-8",
+
+        "Cache-Control":
+          "no-store",
+
+        "Set-Cookie":
+          session.cookie
       }
     }
   );
@@ -407,7 +453,10 @@ async function getCurrentUser(request, env) {
         headers: {
           "Content-Type":
             "application/json; charset=UTF-8",
-          "Cache-Control": "no-store",
+
+          "Cache-Control":
+            "no-store",
+
           "Set-Cookie":
             "haleel_session=; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=0"
         }
@@ -467,7 +516,10 @@ async function logout(request, env) {
       headers: {
         "Content-Type":
           "application/json; charset=UTF-8",
-        "Cache-Control": "no-store",
+
+        "Cache-Control":
+          "no-store",
+
         "Set-Cookie":
           "haleel_session=; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=0"
       }
@@ -481,11 +533,7 @@ async function logout(request, env) {
 // ============================================================
 
 async function createSession(accountId, env) {
-  /*
-   * Generate a cryptographically secure
-   * 256-bit random session token.
-   */
-
+  // Generate a cryptographically secure 256-bit token.
   const tokenBytes = new Uint8Array(32);
 
   crypto.getRandomValues(
@@ -496,12 +544,7 @@ async function createSession(accountId, env) {
     tokenBytes
   );
 
-  /*
-   * Only the hash is stored in D1.
-   * The original token exists only inside
-   * the user's HttpOnly cookie.
-   */
-
+  // Store only the SHA-256 hash in D1.
   const tokenHash = await sha256(token);
 
   const expiresAt = new Date(
@@ -515,8 +558,7 @@ async function createSession(accountId, env) {
 
   await env.ACCOUNTS_DB
     .prepare(`
-      INSERT INTO sessions
-      (
+      INSERT INTO sessions (
         account_id,
         token_hash,
         expires_at
@@ -782,6 +824,7 @@ function json(
       headers: {
         "Content-Type":
           "application/json; charset=UTF-8",
+
         "Cache-Control":
           "no-store"
       }
@@ -845,3 +888,4 @@ function base64UrlToBytes(value) {
 
   return bytes;
 }
+```
