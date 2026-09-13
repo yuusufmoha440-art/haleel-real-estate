@@ -8,10 +8,6 @@ export default {
     const url = new URL(request.url);
 
     try {
-      // ================================
-      // API ROUTES
-      // ================================
-
       if (url.pathname === "/api/signup") {
         return await signup(request, env);
       }
@@ -27,10 +23,6 @@ export default {
       if (url.pathname === "/api/me") {
         return await getCurrentUser(request, env);
       }
-
-      // ================================
-      // WEBSITE FILES
-      // ================================
 
       return env.ASSETS.fetch(request);
 
@@ -98,10 +90,9 @@ async function signup(request, env) {
     );
   }
 
-  // Securely hash the password before storing it.
   const passwordHash = await hashPassword(password);
 
-  // Get the next automatic account ID.
+  // Read the next automatic account ID.
   const sequence = await env.ACCOUNTS_DB
     .prepare(`
       SELECT next_id
@@ -123,7 +114,7 @@ async function signup(request, env) {
 
   const accountId = Number(sequence.next_id);
 
-  // Only 0000001 through 9999999 are allowed.
+  // IDs are 0000001 through 9999999.
   if (
     !Number.isInteger(accountId) ||
     accountId < 1 ||
@@ -139,17 +130,12 @@ async function signup(request, env) {
   }
 
   /*
-   * Create the user and advance the sequence.
+   * Create the account and advance the sequence.
    *
-   * Example:
-   * next_id = 1
-   *
-   * user:
-   * id         = 1
-   * account_id = 1
-   *
-   * returned to user as:
-   * 0000001
+   * accountId 1 = 0000001
+   * accountId 2 = 0000002
+   * ...
+   * accountId 9999999 = 9999999
    */
 
   try {
@@ -178,6 +164,7 @@ async function signup(request, env) {
         `)
         .bind(accountId)
     ]);
+
   } catch (error) {
     console.error(
       "Signup database error:",
@@ -193,7 +180,7 @@ async function signup(request, env) {
     );
   }
 
-  // Automatically create a login session.
+  // Create login session automatically.
   let session;
 
   try {
@@ -201,6 +188,7 @@ async function signup(request, env) {
       accountId,
       env
     );
+
   } catch (error) {
     console.error(
       "Signup session error:",
@@ -208,8 +196,7 @@ async function signup(request, env) {
     );
 
     /*
-     * Roll back the account if session creation
-     * fails, so we do not leave a broken account.
+     * Roll back the account if session creation fails.
      */
 
     try {
@@ -308,7 +295,6 @@ async function login(request, env) {
     body.password || ""
   );
 
-  // ID must contain exactly 7 digits.
   if (!/^\d{7}$/.test(accountId)) {
     return json(
       {
@@ -366,7 +352,6 @@ async function login(request, env) {
     );
   }
 
-  // Create a fresh session after successful login.
   const session = await createSession(
     Number(user.account_id),
     env
@@ -533,7 +518,6 @@ async function logout(request, env) {
 // ============================================================
 
 async function createSession(accountId, env) {
-  // Generate a cryptographically secure 256-bit token.
   const tokenBytes = new Uint8Array(32);
 
   crypto.getRandomValues(
@@ -544,7 +528,7 @@ async function createSession(accountId, env) {
     tokenBytes
   );
 
-  // Store only the SHA-256 hash in D1.
+  // Only the hash is stored in D1.
   const tokenHash = await sha256(token);
 
   const expiresAt = new Date(
