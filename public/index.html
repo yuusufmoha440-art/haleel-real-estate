@@ -1906,7 +1906,6 @@ to{
 opacity:1;
 transform:translateY(0);
 }
-
 }
 
 </style>
@@ -2063,79 +2062,6 @@ id="signupMessage">
 
 
 <form onsubmit="createAccount(event)">
-
-<!-- FIRSTNAME -->
-
-<div class="auth-group">
-
-<label for="signupFirstname">
-FIRSTNAME
-</label>
-
-<div class="auth-input-wrap">
-
-<input
-class="auth-input"
-id="signupFirstname"
-type="text"
-maxlength="60"
-placeholder="Firstname"
-autocomplete="given-name"
-required>
-
-</div>
-
-</div>
-
-
-<!-- MIDDLENAME -->
-
-<div class="auth-group">
-
-<label for="signupMiddlename">
-MIDDLENAME
-</label>
-
-<div class="auth-input-wrap">
-
-<input
-class="auth-input"
-id="signupMiddlename"
-type="text"
-maxlength="60"
-placeholder="Middlename"
-autocomplete="additional-name">
-
-</div>
-
-</div>
-
-
-<!-- LASTNAME -->
-
-<div class="auth-group">
-
-<label for="signupLastname">
-LASTNAME
-</label>
-
-<div class="auth-input-wrap">
-
-<input
-class="auth-input"
-id="signupLastname"
-type="text"
-maxlength="60"
-placeholder="Lastname"
-autocomplete="family-name"
-required>
-
-</div>
-
-</div>
-
-
-<!-- PASSWORD -->
 
 <div class="auth-group">
 
@@ -3666,3 +3592,2725 @@ Home
 
 <button
 onclick="openPage('property',this)">
+
+🏘
+<br>
+Property
+
+</button>
+
+
+<button
+onclick="openPage('care',this)">
+
+💬
+<br>
+Care
+
+</button>
+
+
+<button
+onclick="openPage('settings',this)">
+
+⚙️
+<br>
+Settings
+
+</button>
+
+</nav>
+
+
+<!-- FLOATING CARE -->
+
+<div class="floating-care">
+
+<div
+class="care-menu"
+id="careMenu">
+
+<a
+href="https://wa.me/252907469995"
+target="_blank">
+🟢 WhatsApp
+</a>
+
+<a
+href="tel:+252907469995">
+📞 Call
+</a>
+
+<a
+href="mailto:haleelrealestate@gmail.com">
+📧 Email
+</a>
+
+<a
+href="#"
+onclick="openChat();return false;">
+💬 Chat Care
+</a>
+
+</div>
+
+
+<button
+class="care-button"
+onclick="toggleCare()">
+💬
+</button>
+
+</div>
+
+
+<!-- PROPERTY DETAILS -->
+
+<div
+class="modal"
+id="detailsModal">
+
+<div class="modal-box">
+
+<button
+class="details-close"
+onclick="closeDetails()">
+×
+</button>
+
+<img
+id="detailsImage"
+class="details-image"
+src=""
+alt="Property">
+
+<div style="font-size:50px">
+🏠
+</div>
+
+<h2 id="detailsTitle">
+Faahfaahinta Guriga
+</h2>
+
+<p
+id="detailsDescription"
+class="details-text">
+</p>
+
+<div class="details-contact">
+
+<div>
+📞 Nala Xiriir
+</div>
+
+<strong class="details-phone">
++252 90 7469995
+</strong>
+
+</div>
+
+
+<div class="details-buttons">
+
+<button
+class="btn btn-outline"
+onclick="closeDetails()">
+Close
+</button>
+
+<a
+href="tel:+252907469995"
+class="btn btn-primary">
+📞 Call Now
+</a>
+
+<a
+href="https://wa.me/252907469995"
+target="_blank"
+class="btn"
+style="background:#20B26B;color:#fff">
+WhatsApp
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- CHAT -->
+
+<div
+class="modal"
+id="chatModal">
+
+<div class="modal-box">
+
+<div style="font-size:50px">
+💬
+</div>
+
+<h2>
+Qancinta Macaamiisha!
+</h2>
+
+<p
+style="color:#718096;line-height:1.6">
+Macmiil maxaan kaa caawiyaa?
+</p>
+
+<br>
+
+<textarea
+class="input"
+id="chatMessage"
+placeholder="Write your message...">
+</textarea>
+
+<div style="display:flex;gap:10px">
+
+<button
+class="btn btn-outline"
+onclick="closeChat()">
+Close
+</button>
+
+<button
+class="btn btn-primary"
+onclick="sendEmail()">
+Send
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- SUCCESS -->
+
+<div
+class="modal"
+id="successModal">
+
+<div class="modal-box">
+
+<div style="font-size:55px">
+✅
+</div>
+
+<h2>
+Mahadsanid!
+</h2>
+
+<p
+style="color:#718096;margin:15px 0">
+Macluumaadka gurigaaga waa la gudbiyey.
+Kooxda Haleel ayaa heli doonta xogta aad soo dirtay.
+</p>
+
+<button
+class="btn btn-primary"
+onclick="closeSuccess()">
+Dib u noqo!
+</button>
+
+</div>
+
+</div>
+
+
+<!-- HIDDEN SUBMISSION TARGET -->
+
+<iframe
+name="haleelSubmitFrame"
+id="haleelSubmitFrame"
+style="display:none;width:0;height:0;border:0"
+title="Haleel submission">
+</iframe>
+
+
+<script>
+
+/* =========================================================
+   HALEEL REAL ESTATE
+========================================================= */
+
+function $(id){
+return document.getElementById(id);
+}
+
+
+/* =========================================================
+   HALEEL AUTHENTICATION
+========================================================= */
+
+let haleelAuthenticated=false;
+
+let haleelCurrentAccountId="";
+
+
+function showAuthScreen(){
+
+const auth=$("authScreen");
+const app=$("haleelApp");
+
+if(auth){
+auth.classList.remove("hidden");
+}
+
+if(app){
+app.style.display="none";
+}
+
+}
+
+
+function showApp(accountId){
+
+haleelAuthenticated=true;
+
+haleelCurrentAccountId=
+String(accountId || "");
+
+
+$("authScreen").classList.add("hidden");
+
+$("haleelApp").style.display="block";
+
+
+$("loggedUserName").textContent=
+"Haleel Customer";
+
+$("loggedUserId").textContent=
+`Account ID: ${haleelCurrentAccountId || "—"}`;
+
+$("settingsAccountId").textContent=
+haleelCurrentAccountId || "—";
+
+}
+
+
+function showAuthMessage(
+message,
+type="error"
+){
+
+const box=$("authMessage");
+
+if(!box)return;
+
+box.textContent=message;
+
+box.className=
+`auth-message show ${type}`;
+
+}
+
+
+function showSignupMessage(
+message,
+type="error"
+){
+
+const box=$("signupMessage");
+
+if(!box)return;
+
+box.textContent=message;
+
+box.className=
+`auth-message show ${type}`;
+
+}
+
+
+function clearAuthMessages(){
+
+[
+"authMessage",
+"signupMessage"
+].forEach(id=>{
+
+const box=$(id);
+
+if(box){
+
+box.textContent="";
+
+box.className="auth-message";
+
+}
+
+});
+
+}
+
+
+function showLogin(){
+
+clearAuthMessages();
+
+$("loginPanel").style.display="block";
+
+$("signupPanel").style.display="none";
+
+$("accountCreatedPanel").style.display="none";
+
+setTimeout(()=>{
+
+$("loginAccountId")?.focus();
+
+},100);
+
+}
+
+
+function showSignup(){
+
+clearAuthMessages();
+
+$("loginPanel").style.display="none";
+
+$("signupPanel").style.display="block";
+
+$("accountCreatedPanel").style.display="none";
+
+setTimeout(()=>{
+
+$("signupPassword")?.focus();
+
+},100);
+
+}
+
+
+function showAccountCreated(accountId){
+
+$("loginPanel").style.display="none";
+
+$("signupPanel").style.display="none";
+
+$("accountCreatedPanel").style.display="block";
+
+$("createdAccountId").textContent=
+String(accountId);
+
+}
+
+
+function toggleAuthPassword(
+inputId,
+button
+){
+
+const input=$(inputId);
+
+if(!input)return;
+
+const show=
+input.type==="password";
+
+input.type=
+show
+?"text"
+:"password";
+
+button.textContent=
+show
+?"◉"
+:"◌";
+
+button.setAttribute(
+"aria-label",
+show
+?"Hide password"
+:"Show password"
+);
+
+}
+
+
+/* =========================================================
+   SIGN IN
+========================================================= */
+
+async function signIn(event){
+
+event.preventDefault();
+
+
+const accountId=
+$("loginAccountId")
+.value
+.trim();
+
+const password=
+$("loginPassword")
+.value;
+
+
+if(!/^\d{7}$/.test(accountId)){
+
+showAuthMessage(
+"Account ID waa inuu ka koobnaadaa 7 digits."
+);
+
+return;
+
+}
+
+
+if(!password){
+
+showAuthMessage(
+"Fadlan geli password-ka."
+);
+
+return;
+
+}
+
+
+const button=
+$("signInButton");
+
+
+button.disabled=true;
+
+button.style.opacity=".85";
+
+button.innerHTML=
+`<span class="auth-spinner"></span> Signing In...`;
+
+clearAuthMessages();
+
+
+try{
+
+const response=
+await fetch(
+"/api/login",
+{
+method:"POST",
+credentials:"same-origin",
+cache:"no-store",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+accountId,
+password
+})
+
+}
+);
+
+
+let data={};
+
+
+try{
+
+data=
+await response.json();
+
+}catch(_){}
+
+
+if(
+!response.ok ||
+!data.success
+){
+
+showAuthMessage(
+data.message ||
+"Account ID ama password waa khaldan yahay."
+);
+
+return;
+
+}
+
+
+const returnedId=
+data.accountId ||
+accountId;
+
+
+$("loginPassword").value="";
+
+
+showApp(returnedId);
+
+
+}catch(error){
+
+console.error(
+"Haleel login error:",
+error
+);
+
+showAuthMessage(
+"Server-ka Haleel lama xiriirin. Fadlan isku day mar kale."
+);
+
+}finally{
+
+button.disabled=false;
+
+button.style.opacity="1";
+
+button.textContent=
+"Sign In";
+
+}
+
+}
+
+
+/* =========================================================
+   CREATE ACCOUNT
+========================================================= */
+
+async function createAccount(event){
+
+event.preventDefault();
+
+
+const password=
+$("signupPassword").value;
+
+const confirm=
+$("signupConfirmPassword").value;
+
+
+clearAuthMessages();
+
+
+if(password.length<8){
+
+showSignupMessage(
+"Password-ku waa inuu ahaadaa ugu yaraan 8 characters."
+);
+
+return;
+
+}
+
+
+if(password.length>128){
+
+showSignupMessage(
+"Password-ku aad buu u dheer yahay."
+);
+
+return;
+
+}
+
+
+if(password!==confirm){
+
+showSignupMessage(
+"Labada password isku mid ma aha."
+);
+
+return;
+
+}
+
+
+const button=
+$("signupButton");
+
+
+button.disabled=true;
+
+button.style.opacity=".85";
+
+button.innerHTML=
+`<span class="auth-spinner"></span> Creating Account...`;
+
+
+try{
+
+const response=
+await fetch(
+"/api/signup",
+{
+method:"POST",
+credentials:"same-origin",
+cache:"no-store",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+password
+})
+
+}
+);
+
+
+let data={};
+
+
+try{
+
+data=
+await response.json();
+
+}catch(_){}
+
+
+if(
+!response.ok ||
+!data.success
+){
+
+showSignupMessage(
+data.message ||
+"Account-ka lama abuuri karin. Fadlan isku day mar kale."
+);
+
+return;
+
+}
+
+
+if(!data.accountId){
+
+showSignupMessage(
+"Account waa la sameeyay laakiin Account ID lama helin."
+);
+
+return;
+
+}
+
+
+$("signupPassword").value="";
+
+$("signupConfirmPassword").value="";
+
+
+showAccountCreated(
+data.accountId
+);
+
+
+}catch(error){
+
+console.error(
+"Haleel signup error:",
+error
+);
+
+showSignupMessage(
+"Server-ka Haleel lama xiriirin. Fadlan isku day mar kale."
+);
+
+}finally{
+
+button.disabled=false;
+
+button.style.opacity="1";
+
+button.textContent=
+"Create Account";
+
+}
+
+}
+
+
+/* =========================================================
+   CONTINUE AFTER ACCOUNT CREATION
+========================================================= */
+
+function continueToApp(){
+
+const id=
+$("createdAccountId")
+.textContent
+.trim();
+
+
+if(!/^\d{7}$/.test(id)){
+
+return;
+
+}
+
+
+showApp(id);
+
+}
+
+
+/* =========================================================
+   CHECK EXISTING SESSION
+========================================================= */
+
+async function checkHaleelSession(){
+
+try{
+
+const response=
+await fetch(
+"/api/me",
+{
+method:"GET",
+credentials:"same-origin",
+cache:"no-store"
+}
+);
+
+
+if(!response.ok){
+
+showAuthScreen();
+
+return;
+
+}
+
+
+const data=
+await response.json();
+
+
+if(
+data.success &&
+data.accountId
+){
+
+showApp(
+data.accountId
+);
+
+}else{
+
+showAuthScreen();
+
+}
+
+}catch(error){
+
+console.error(
+"Haleel session check error:",
+error
+);
+
+showAuthScreen();
+
+}
+
+}
+
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+async function logoutHaleel(){
+
+try{
+
+await fetch(
+"/api/logout",
+{
+method:"POST",
+credentials:"same-origin",
+cache:"no-store"
+}
+);
+
+}catch(error){
+
+console.error(
+"Haleel logout error:",
+error
+);
+
+}
+
+
+haleelAuthenticated=false;
+
+haleelCurrentAccountId="";
+
+
+$("loginAccountId").value="";
+
+$("loginPassword").value="";
+
+$("signupPassword").value="";
+
+$("signupConfirmPassword").value="";
+
+
+showLogin();
+
+showAuthScreen();
+
+
+window.scrollTo({
+top:0,
+behavior:"smooth"
+});
+
+}
+
+
+/* =========================================================
+   GOOGLE APPS SCRIPT BACKEND
+========================================================= */
+
+const HALEEL_BACKEND_URL =
+"https://script.google.com/macros/s/AKfycby5_MaPFQpcRDObAVYomJ0Pm89gOqASiS59J7I31sSEO-0dsGmGvv6x29CfTx6ft35a/exec";
+
+
+/* =========================================================
+   PROPERTY DATABASE
+========================================================= */
+
+const properties=[
+
+{
+id:1,
+title:"Luxury Fiilo",
+type:"Fiilo",
+city:"Garowe",
+neighborhood:"Mubaarak",
+rent:350,
+bedrooms:4,
+bathrooms:3,
+size:"220 m²",
+status:"Available",
+image:"https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=80",
+description:"Fiilo casri ah oo ku taalla Garowe, xaafadda Mubaarak."
+},
+
+{
+id:2,
+title:"Modern Apartment",
+type:"Apartment",
+city:"Garowe",
+neighborhood:"Hantiwadaag",
+rent:280,
+bedrooms:3,
+bathrooms:2,
+size:"160 m²",
+status:"Available",
+image:"https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=900&q=80",
+description:"Apartment nadiif ah oo ku habboon qoys."
+},
+
+{
+id:3,
+title:"Family Villa",
+type:"Fiilo",
+city:"Garowe",
+neighborhood:"Halgan",
+rent:450,
+bedrooms:5,
+bathrooms:4,
+size:"300 m²",
+status:"Available",
+image:"https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=900&q=80",
+description:"Villa ballaaran oo ku habboon qoys weyn."
+},
+
+{
+id:4,
+title:"Dabaq-suge Center",
+type:"Dabaq-suge",
+city:"Garowe",
+neighborhood:"1da August",
+rent:220,
+bedrooms:2,
+bathrooms:2,
+size:"120 m²",
+status:"Available",
+image:"https://images.unsplash.com/photo-1600607688969-a5bfcd646154?auto=format&fit=crop&w=900&q=80",
+description:"Dabaq-suge ku yaalla meel muhiim ah."
+},
+
+{
+id:5,
+title:"Elegant Apartment",
+type:"Apartment",
+city:"Gaalkacyo",
+neighborhood:"Wadajir",
+rent:300,
+bedrooms:3,
+bathrooms:2,
+size:"150 m²",
+status:"Available",
+image:"https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=900&q=80",
+description:"Apartment qurux badan oo Gaalkacyo ku yaalla."
+},
+
+{
+id:6,
+title:"Family Home",
+type:"Fiilo",
+city:"Gaalkacyo",
+neighborhood:"Hodan",
+rent:380,
+bedrooms:4,
+bathrooms:3,
+size:"230 m²",
+status:"Available",
+image:"https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=900&q=80",
+description:"Guri qoys oo leh qolal badan."
+},
+
+{
+id:7,
+title:"Cozy Apartment",
+type:"Apartment",
+city:"Bosaaso",
+neighborhood:"Waaberi",
+rent:250,
+bedrooms:2,
+bathrooms:1,
+size:"110 m²",
+status:"Available",
+image:"https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=900&q=80",
+description:"Apartment yar oo qurux badan."
+},
+
+{
+id:8,
+title:"Premium Villa",
+type:"Fiilo",
+city:"Bosaaso",
+neighborhood:"Hantiwadaag",
+rent:600,
+bedrooms:5,
+bathrooms:4,
+size:"350 m²",
+status:"Available",
+image:"https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?auto=format&fit=crop&w=900&q=80",
+description:"Villa premium ah oo leh adeegyo casri ah."
+},
+
+{
+id:9,
+title:"Guri Goglan Deluxe",
+type:"Guri Goglan",
+city:"Garowe",
+neighborhood:"New Garowe",
+rent:500,
+bedrooms:4,
+bathrooms:3,
+size:"210 m²",
+status:"Available",
+image:"https://images.unsplash.com/photo-1600566753051-f0b89df2dd90?auto=format&fit=crop&w=900&q=80",
+description:"Guri goglan oo diyaar u ah degitaan."
+},
+
+{
+id:10,
+title:"Modern Family Home",
+type:"Fiilo",
+city:"Qardho",
+neighborhood:"Waaberi",
+rent:270,
+bedrooms:3,
+bathrooms:2,
+size:"170 m²",
+status:"Available",
+image:"https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=900&q=80",
+description:"Guri casri ah oo Qardho ku yaalla."
+},
+
+{
+id:11,
+title:"Small Apartment",
+type:"Apartment",
+city:"Qardho",
+neighborhood:"Hodan",
+rent:180,
+bedrooms:1,
+bathrooms:1,
+size:"80 m²",
+status:"Available",
+image:"https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=900&q=80",
+description:"Apartment ku habboon qof ama lamaane."
+},
+
+{
+id:12,
+title:"Luxury Apartment",
+type:"Apartment",
+city:"Laascaanood",
+neighborhood:"Horseed",
+rent:320,
+bedrooms:3,
+bathrooms:2,
+size:"155 m²",
+status:"Available",
+image:"https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=900&q=80",
+description:"Apartment casri ah oo Laascaanood ku yaalla."
+},
+
+{
+id:13,
+title:"Large Villa",
+type:"Fiilo",
+city:"Laascaanood",
+neighborhood:"Waaberi",
+rent:420,
+bedrooms:5,
+bathrooms:3,
+size:"280 m²",
+status:"Available",
+image:"https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=900&q=80",
+description:"Villa ballaaran oo qoysaska ku habboon."
+},
+
+{
+id:14,
+title:"Affordable Apartment",
+type:"Apartment",
+city:"Buurtinle",
+neighborhood:"Hantiwadaag",
+rent:150,
+bedrooms:2,
+bathrooms:1,
+size:"95 m²",
+status:"Available",
+image:"https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=900&q=80",
+description:"Apartment qiimo jaban leh."
+},
+
+{
+id:15,
+title:"Dabaq-suge Plus",
+type:"Dabaq-suge",
+city:"Buurtinle",
+neighborhood:"Mubaarak",
+rent:200,
+bedrooms:2,
+bathrooms:2,
+size:"115 m²",
+status:"Available",
+image:"https://images.unsplash.com/photo-1493809842364-78817add7ffb?auto=format&fit=crop&w=900&q=80",
+description:"Dabaq-suge ku habboon qoys yar."
+},
+
+{
+id:16,
+title:"Modern Fiilo",
+type:"Fiilo",
+city:"Goldogob",
+neighborhood:"Wadajir",
+rent:260,
+bedrooms:3,
+bathrooms:2,
+size:"180 m²",
+status:"Available",
+image:"https://images.unsplash.com/photo-1600047509782-20d39509f26d?auto=format&fit=crop&w=900&q=80",
+description:"Fiilo casri ah oo Goldogob ku taalla."
+},
+
+{
+id:17,
+title:"Guri Goglan Premium",
+type:"Guri Goglan",
+city:"Goldogob",
+neighborhood:"Hodan",
+rent:390,
+bedrooms:4,
+bathrooms:3,
+size:"210 m²",
+status:"Available",
+image:"https://images.unsplash.com/photo-1600210491892-03d54c0aaf87?auto=format&fit=crop&w=900&q=80",
+description:"Guri goglan oo tayo sare leh."
+},
+
+{
+id:18,
+title:"Qol Irid-banaan",
+type:"Qol Irid-banaan",
+city:"Garowe",
+neighborhood:"Israac",
+rent:120,
+bedrooms:1,
+bathrooms:1,
+size:"55 m²",
+status:"Available",
+image:"https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=900&q=80",
+description:"Qol irid-banaan oo qiimo jaban."
+},
+
+{
+id:19,
+title:"Commercial Room",
+type:"Qol Ganacsi",
+city:"Garowe",
+neighborhood:"Sunaami",
+rent:550,
+bedrooms:0,
+bathrooms:1,
+size:"90 m²",
+status:"Available",
+image:"https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=900&q=80",
+description:"Qol ganacsi oo ku yaalla goob ganacsi."
+},
+
+{
+id:20,
+title:"Executive Villa",
+type:"Fiilo",
+city:"Garowe",
+neighborhood:"New Garowe",
+rent:750,
+bedrooms:6,
+bathrooms:5,
+size:"420 m²",
+status:"Available",
+image:"https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=900&q=80",
+description:"Villa executive ah oo aad u ballaaran."
+}
+
+];
+
+
+/* =========================================================
+   PROPERTY RENDER
+========================================================= */
+
+function renderProperties(
+list,
+targetId="propertyGrid"
+){
+
+const grid=$(targetId);
+
+if(!grid)return;
+
+grid.innerHTML="";
+
+
+list.forEach(property=>{
+
+const card=
+document.createElement("div");
+
+card.className=
+"property-card";
+
+
+card.innerHTML=`
+
+<div class="property-image-wrap">
+
+<img
+class="property-image"
+src="${property.image}"
+alt="${escapeHTML(property.title)}"
+loading="lazy"
+onerror="this.style.opacity='.35'">
+
+<span class="property-status">
+${escapeHTML(property.status)}
+</span>
+
+<button
+class="property-favorite"
+type="button"
+onclick="toggleFavorite(this)">
+♡
+</button>
+
+</div>
+
+
+<div class="property-content">
+
+<div class="property-type">
+${escapeHTML(property.type)}
+</div>
+
+<h3>
+${escapeHTML(property.title)}
+</h3>
+
+<div class="location">
+📍 ${escapeHTML(property.city)} —
+${escapeHTML(property.neighborhood)}
+</div>
+
+<div class="property-meta">
+
+<span class="meta-item">
+🛏 ${property.bedrooms} Qol
+</span>
+
+<span class="meta-item">
+🚿 ${property.bathrooms} Suuli
+</span>
+
+<span class="meta-item">
+📐 ${escapeHTML(property.size)}
+</span>
+
+</div>
+
+<div class="property-bottom">
+
+<div class="price">
+$${property.rent}
+<small>/ Month</small>
+</div>
+
+<button
+class="btn btn-primary view-btn"
+onclick="openPropertyDetails(${property.id})">
+View Details
+</button>
+
+</div>
+
+</div>
+`;
+
+grid.appendChild(card);
+
+});
+
+}
+
+
+function renderHomeProperties(){
+
+renderProperties(
+properties.slice(0,3),
+"homePropertyGrid"
+);
+
+}
+
+
+/* =========================================================
+   FILTER
+========================================================= */
+
+function filterProperties(){
+
+const search=
+$("propertySearch")
+.value
+.trim()
+.toLowerCase();
+
+const type=
+$("typeFilter").value;
+
+const city=
+$("cityFilter").value;
+
+const bedrooms=
+$("bedroomFilter").value;
+
+const minPrice=
+parseFloat($("minPrice").value);
+
+const maxPrice=
+parseFloat($("maxPrice").value);
+
+const status=
+$("statusFilter").value;
+
+const sort=
+$("sortFilter").value;
+
+
+let filtered=
+properties.filter(property=>{
+
+const searchable=`
+${property.title}
+${property.type}
+${property.city}
+${property.neighborhood}
+${property.description}
+`.toLowerCase();
+
+
+return(
+
+(!search ||
+searchable.includes(search)) &&
+
+(!type ||
+property.type===type) &&
+
+(!city ||
+property.city===city) &&
+
+(!bedrooms ||
+property.bedrooms>=Number(bedrooms)) &&
+
+(isNaN(minPrice) ||
+property.rent>=minPrice) &&
+
+(isNaN(maxPrice) ||
+property.rent<=maxPrice) &&
+
+(!status ||
+property.status===status)
+
+);
+
+});
+
+
+if(sort==="priceLow"){
+
+filtered.sort(
+(a,b)=>a.rent-b.rent
+);
+
+}
+
+else if(sort==="priceHigh"){
+
+filtered.sort(
+(a,b)=>b.rent-a.rent
+);
+
+}
+
+else if(sort==="bedrooms"){
+
+filtered.sort(
+(a,b)=>b.bedrooms-a.bedrooms
+);
+
+}
+
+else{
+
+filtered.sort(
+(a,b)=>b.id-a.id
+);
+
+}
+
+
+renderProperties(filtered);
+
+
+$("resultCount").textContent=
+`${filtered.length} Guri`;
+
+
+$("activeFilterText").textContent=
+filtered.length===0
+?"Wax natiijo ah lama helin"
+:`${filtered.length} guri ayaa ku habboon raadintaada`;
+
+
+$("noResults").classList.toggle(
+"show",
+filtered.length===0
+);
+
+}
+
+
+function loadCityFilter(){
+
+const select=
+$("cityFilter");
+
+if(!select)return;
+
+
+const cities=[
+...new Set(
+properties.map(p=>p.city)
+)
+].sort();
+
+
+cities.forEach(city=>{
+
+const option=
+document.createElement("option");
+
+option.value=city;
+
+option.textContent=city;
+
+select.appendChild(option);
+
+});
+
+}
+
+
+function resetFilters(){
+
+$("propertySearch").value="";
+
+$("typeFilter").value="";
+
+$("cityFilter").value="";
+
+$("bedroomFilter").value="";
+
+$("minPrice").value="";
+
+$("maxPrice").value="";
+
+$("statusFilter").value="Available";
+
+$("sortFilter").value="newest";
+
+
+filterProperties();
+
+}
+
+
+function enableLiveSearch(){
+
+[
+"propertySearch",
+"typeFilter",
+"cityFilter",
+"bedroomFilter",
+"minPrice",
+"maxPrice",
+"statusFilter",
+"sortFilter"
+
+].forEach(id=>{
+
+const element=$(id);
+
+if(!element)return;
+
+element.addEventListener(
+"input",
+filterProperties
+);
+
+element.addEventListener(
+"change",
+filterProperties
+);
+
+});
+
+}
+
+
+/* =========================================================
+   DETAILS
+========================================================= */
+
+function openPropertyDetails(id){
+
+const property=
+properties.find(
+item=>item.id===id
+);
+
+if(!property)return;
+
+
+$("detailsImage").src=
+property.image;
+
+$("detailsTitle").textContent=
+property.title;
+
+
+$("detailsDescription").innerHTML=`
+
+<strong>
+${escapeHTML(property.type)}
+</strong>
+<br>
+
+📍 ${escapeHTML(property.city)} —
+${escapeHTML(property.neighborhood)}
+
+<br><br>
+
+🛏 ${property.bedrooms} Qol &nbsp;
+
+🚿 ${property.bathrooms} Suuli
+
+<br>
+
+📐 ${escapeHTML(property.size)}
+
+<br>
+
+💰 <strong>
+$${property.rent} / Month
+</strong>
+
+<br><br>
+
+${escapeHTML(property.description)}
+
+`;
+
+
+$("detailsModal")
+.classList.add("show");
+
+}
+
+
+function closeDetails(){
+
+$("detailsModal")
+.classList.remove("show");
+
+}
+
+
+function toggleFavorite(button){
+
+if(
+button.textContent.trim()==="♡"
+){
+
+button.textContent="♥";
+
+button.style.color=
+"#E5484D";
+
+}else{
+
+button.textContent="♡";
+
+button.style.color="";
+
+}
+
+}
+
+
+function escapeHTML(value){
+
+return String(value)
+
+.replace(
+/&/g,
+"&amp;"
+)
+
+.replace(
+/</g,
+"&lt;"
+)
+
+.replace(
+/>/g,
+"&gt;"
+)
+
+.replace(
+/"/g,
+"&quot;"
+)
+
+.replace(
+/'/g,
+"&#039;"
+);
+
+}
+
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+function openPage(
+page,
+button
+){
+
+document
+.querySelectorAll(".page")
+.forEach(
+p=>p.classList.remove("active")
+);
+
+
+const selected=$(page);
+
+
+if(selected){
+
+selected.classList.add("active");
+
+}
+
+
+const titles={
+
+home:"Home",
+
+property:"Properties",
+
+care:"Customer Care",
+
+submit:"Submit Property",
+
+settings:"Settings"
+
+};
+
+
+$("pageTitle").textContent=
+titles[page] ||
+"Haleel Real Estate";
+
+
+document
+.querySelectorAll(
+".nav button,.mobile-nav button"
+)
+.forEach(
+b=>b.classList.remove("active")
+);
+
+
+const map={
+
+home:0,
+property:1,
+care:2,
+submit:3,
+settings:4
+
+};
+
+
+if(button){
+
+button.classList.add("active");
+
+}else{
+
+const index=map[page];
+
+
+const desktop=
+document.querySelectorAll(
+".nav button"
+)[index];
+
+
+if(desktop)
+desktop.classList.add("active");
+
+
+let mobileIndex=index;
+
+
+if(
+page==="submit" ||
+page==="settings"
+){
+
+mobileIndex=3;
+
+}
+
+
+const mobile=
+document.querySelectorAll(
+".mobile-nav button"
+)[mobileIndex];
+
+
+if(mobile)
+mobile.classList.add("active");
+
+}
+
+
+window.scrollTo({
+
+top:0,
+
+behavior:"smooth"
+
+});
+
+}
+
+
+/* =========================================================
+   THEME
+========================================================= */
+
+function applyTheme(theme){
+
+if(theme==="dark"){
+
+document.body.classList.add("dark");
+
+
+$("themeStatus").textContent=
+"Current theme: Dark Mode";
+
+
+$("darkThemeButton")
+.classList.add("active");
+
+
+$("lightThemeButton")
+.classList.remove("active");
+
+
+document
+.querySelector(
+'meta[name="theme-color"]'
+)
+.setAttribute(
+"content",
+"#0B1118"
+);
+
+
+}else{
+
+document.body.classList.remove("dark");
+
+
+$("themeStatus").textContent=
+"Current theme: Light Mode";
+
+
+$("lightThemeButton")
+.classList.add("active");
+
+
+$("darkThemeButton")
+.classList.remove("active");
+
+
+document
+.querySelector(
+'meta[name="theme-color"]'
+)
+.setAttribute(
+"content",
+"#FFFFFF"
+);
+
+}
+
+
+localStorage.setItem(
+"haleelTheme",
+theme
+);
+
+}
+
+
+function setTheme(theme){
+
+applyTheme(theme);
+
+}
+
+
+/* =========================================================
+   COUNTRY CLOCK
+========================================================= */
+
+const countries=[
+
+["🇸🇴","Somalia","Africa/Mogadishu"],
+
+["🇰🇪","Kenya","Africa/Nairobi"],
+
+["🇪🇹","Ethiopia","Africa/Addis_Ababa"],
+
+["🇩🇯","Djibouti","Africa/Djibouti"],
+
+["🇸🇦","Saudi Arabia","Asia/Riyadh"],
+
+["🇦🇪","United Arab Emirates","Asia/Dubai"],
+
+["🇹🇷","Türkiye","Europe/Istanbul"],
+
+["🇬🇧","United Kingdom","Europe/London"],
+
+["🇺🇸","United States","America/New_York"],
+
+["🇨🇦","Canada","America/Toronto"],
+
+["🇩🇪","Germany","Europe/Berlin"],
+
+["🇫🇷","France","Europe/Paris"],
+
+["🇮🇳","India","Asia/Kolkata"],
+
+["🇨🇳","China","Asia/Shanghai"],
+
+["🇯🇵","Japan","Asia/Tokyo"],
+
+["🇦🇺","Australia","Australia/Sydney"]
+
+];
+
+
+function loadCountries(){
+
+const select=
+$("countrySelect");
+
+if(!select)return;
+
+
+select.innerHTML="";
+
+
+countries.forEach(country=>{
+
+const option=
+document.createElement("option");
+
+option.value=
+country[2];
+
+option.textContent=
+`${country[0]} ${country[1]}`;
+
+select.appendChild(option);
+
+});
+
+
+const saved=
+localStorage.getItem(
+"haleelCountry"
+) ||
+"Africa/Mogadishu";
+
+
+select.value=saved;
+
+
+changeCountry();
+
+}
+
+
+function changeCountry(){
+
+const select=
+$("countrySelect");
+
+if(!select)return;
+
+
+localStorage.setItem(
+"haleelCountry",
+select.value
+);
+
+
+updateCountryTime();
+
+}
+
+
+function updateCountryTime(){
+
+const select=
+$("countrySelect");
+
+const box=
+$("countryTime");
+
+
+if(!select || !box)
+return;
+
+
+const country=
+countries.find(
+item=>item[2]===select.value
+);
+
+
+if(!country)return;
+
+
+const time=
+new Intl.DateTimeFormat(
+"en-US",
+{
+
+timeZone:
+select.value,
+
+hour:"numeric",
+
+minute:"2-digit",
+
+second:"2-digit",
+
+hour12:true
+
+}
+).format(
+new Date()
+);
+
+
+box.innerHTML=`
+
+<span class="country-time-label">
+Current Local Time
+</span>
+
+${country[0]}
+${country[1]}
+—
+${time}
+
+`;
+
+}
+
+
+/* =========================================================
+   CUSTOMER CARE
+========================================================= */
+
+function toggleCare(){
+
+$("careMenu")
+.classList.toggle("show");
+
+}
+
+
+function openChat(){
+
+$("chatModal")
+.classList.add("show");
+
+
+setTimeout(()=>{
+
+$("chatMessage").focus();
+
+},200);
+
+}
+
+
+function closeChat(){
+
+$("chatModal")
+.classList.remove("show");
+
+}
+
+
+function openChatWithMessage(
+message
+){
+
+openChat();
+
+$("chatMessage").value=
+message;
+
+}
+
+
+function sendEmail(){
+
+const message=
+$("chatMessage")
+.value
+.trim();
+
+
+if(!message){
+
+alert(
+"Please write a message."
+);
+
+return;
+
+}
+
+
+const subject=
+encodeURIComponent(
+"Haleel Customer Care"
+);
+
+
+const body=
+encodeURIComponent(
+message
+);
+
+
+window.location.href=
+`mailto:haleelrealestate@gmail.com?subject=${subject}&body=${body}`;
+
+}
+
+
+/* =========================================================
+   SUBMIT PROPERTY
+========================================================= */
+
+let propertySubmissionInProgress=false;
+
+
+function submitProperty(){
+
+if(
+propertySubmissionInProgress
+){
+
+return;
+
+}
+
+
+const owner=
+$("ownerName")
+.value
+.trim();
+
+
+const phone=
+$("ownerPhone")
+.value
+.trim();
+
+
+const submitterName=
+$("propertyTitle")
+.value
+.trim();
+
+
+const city=
+$("city")
+.value
+.trim();
+
+
+if(
+!owner ||
+!phone ||
+!submitterName ||
+!city
+){
+
+alert(
+"Fadlan geli macluumaadka muhiimka ah."
+);
+
+return;
+
+}
+
+
+propertySubmissionInProgress=true;
+
+
+const button=
+$("submitPropertyButton");
+
+
+const originalText=
+button.textContent;
+
+
+button.disabled=true;
+
+button.style.opacity="0.75";
+
+button.style.cursor="wait";
+
+button.textContent=
+"⏳ Waa la dirayaa...";
+
+
+const data={
+
+ownerName:owner,
+
+ownerPhone:phone,
+
+ownerEmail:
+$("ownerEmail")
+.value
+.trim(),
+
+ownerWhatsapp:
+$("ownerWhatsapp")
+.value
+.trim(),
+
+propertyTitle:
+submitterName,
+
+propertyType:
+$("propertyType")
+.value,
+
+city:city,
+
+neighborhood:
+$("neighborhood")
+.value
+.trim(),
+
+rent:
+$("rent")
+.value
+.trim(),
+
+bedrooms:
+$("bedrooms")
+.value
+.trim(),
+
+bathrooms:
+$("bathrooms")
+.value
+.trim(),
+
+size:
+$("size")
+.value
+.trim(),
+
+description:
+$("description")
+.value
+.trim()
+
+};
+
+
+const form=
+document.createElement("form");
+
+
+form.method="POST";
+
+form.action=
+HALEEL_BACKEND_URL;
+
+form.target=
+"haleelSubmitFrame";
+
+form.style.display="none";
+
+form.setAttribute(
+"aria-hidden",
+"true"
+);
+
+
+const input=
+document.createElement("input");
+
+
+input.type="hidden";
+
+input.name="payload";
+
+input.value=
+JSON.stringify(data);
+
+
+form.appendChild(input);
+
+document.body.appendChild(form);
+
+
+try{
+
+form.submit();
+
+}catch(error){
+
+console.error(
+"Haleel submission error:",
+error
+);
+
+
+propertySubmissionInProgress=false;
+
+button.disabled=false;
+
+button.style.opacity="1";
+
+button.style.cursor="pointer";
+
+button.textContent=
+originalText;
+
+
+alert(
+"Xogta lama diri karin. Fadlan isku day mar kale."
+);
+
+
+form.remove();
+
+return;
+
+}
+
+
+setTimeout(()=>{
+
+if(
+form &&
+form.parentNode
+){
+
+form.remove();
+
+}
+
+},1500);
+
+
+setTimeout(()=>{
+
+
+button.disabled=false;
+
+button.style.opacity="1";
+
+button.style.cursor="pointer";
+
+button.textContent=
+originalText;
+
+
+[
+"ownerName",
+"ownerPhone",
+"ownerEmail",
+"ownerWhatsapp",
+"propertyTitle",
+"city",
+"neighborhood",
+"rent",
+"bedrooms",
+"bathrooms",
+"size",
+"description"
+
+].forEach(id=>{
+
+const element=$(id);
+
+if(element){
+
+element.value="";
+
+}
+
+});
+
+
+if($("images")){
+
+$("images").value="";
+
+}
+
+
+propertySubmissionInProgress=false;
+
+
+$("successModal")
+.classList.add("show");
+
+
+},2500);
+
+}
+
+
+/* =========================================================
+   SUCCESS
+========================================================= */
+
+function closeSuccess(){
+
+$("successModal")
+.classList.remove("show");
+
+openPage("home");
+
+}
+
+
+/* =========================================================
+   PWA INSTALL
+========================================================= */
+
+let deferredInstallPrompt=null;
+
+
+window.addEventListener(
+"beforeinstallprompt",
+event=>{
+
+event.preventDefault();
+
+deferredInstallPrompt=
+event;
+
+});
+
+
+window.addEventListener(
+"appinstalled",
+()=>{
+
+deferredInstallPrompt=null;
+
+
+const button=
+$("installAppButton");
+
+
+if(button){
+
+button.textContent=
+"✅ App Installed";
+
+button.disabled=true;
+
+}
+
+});
+
+
+async function installHaleel(){
+
+if(deferredInstallPrompt){
+
+deferredInstallPrompt.prompt();
+
+
+const choice=
+await deferredInstallPrompt
+.userChoice;
+
+
+deferredInstallPrompt=null;
+
+
+if(
+choice.outcome==="accepted"
+){
+
+const button=
+$("installAppButton");
+
+
+if(button)
+button.textContent=
+"✅ App Installed";
+
+}
+
+
+return;
+
+}
+
+
+const isIOS=
+/iphone|ipad|ipod/i.test(
+navigator.userAgent
+) ||
+(
+navigator.platform==="MacIntel" &&
+navigator.maxTouchPoints>1
+);
+
+
+const isStandalone=
+window.matchMedia(
+"(display-mode: standalone)"
+).matches ||
+window.navigator.standalone===true;
+
+
+if(isStandalone){
+
+alert(
+"Macmiil waxaad hore ugu jirtaa Application-ka Haleel."
+);
+
+}
+
+else if(isIOS){
+
+alert(
+"iPhone/iPad: Safari → Share → Add to Home Screen."
+);
+
+}
+
+else{
+
+alert(
+"Install lama soo bandhigin. Hubi HTTPS, manifest.webmanifest iyo sw.js."
+);
+
+}
+
+}
+
+
+/* =========================================================
+   SERVICE WORKER
+========================================================= */
+
+if(
+"serviceWorker" in navigator
+){
+
+window.addEventListener(
+"load",
+()=>{
+
+navigator.serviceWorker
+.register("./sw.js")
+.then(()=>{
+
+console.log(
+"Haleel Service Worker registered"
+);
+
+})
+.catch(error=>{
+
+console.error(
+"Haleel Service Worker error:",
+error
+);
+
+});
+
+});
+
+}
+
+
+/* =========================================================
+   GLOBAL EVENTS
+========================================================= */
+
+document.addEventListener(
+"DOMContentLoaded",
+()=>{
+
+
+/* THEME */
+
+const savedTheme=
+localStorage.getItem(
+"haleelTheme"
+) ||
+"light";
+
+
+applyTheme(
+savedTheme
+);
+
+
+/* PROPERTIES */
+
+loadCityFilter();
+
+renderProperties(
+properties
+);
+
+renderHomeProperties();
+
+enableLiveSearch();
+
+filterProperties();
+
+
+/* COUNTRIES */
+
+loadCountries();
+
+
+/* CLOSE PROPERTY DETAILS */
+
+$("detailsModal")
+.addEventListener(
+"click",
+function(e){
+
+if(
+e.target===e.currentTarget
+){
+
+closeDetails();
+
+}
+
+});
+
+
+/* CLOSE SUCCESS MODAL */
+
+$("successModal")
+.addEventListener(
+"click",
+function(e){
+
+if(
+e.target===e.currentTarget
+){
+
+closeSuccess();
+
+}
+
+});
+
+
+/* CLOSE CHAT MODAL */
+
+$("chatModal")
+.addEventListener(
+"click",
+function(e){
+
+if(
+e.target===e.currentTarget
+){
+
+closeChat();
+
+}
+
+});
+
+
+/* ESC */
+
+document.addEventListener(
+"keydown",
+e=>{
+
+if(e.key==="Escape"){
+
+document
+.querySelectorAll(
+".modal.show"
+)
+.forEach(
+modal=>
+modal.classList.remove(
+"show"
+)
+);
+
+
+$("careMenu")
+?.classList.remove(
+"show"
+);
+
+}
+
+});
+
+
+/* CLICK OUTSIDE CARE */
+
+document.addEventListener(
+"click",
+e=>{
+
+const wrap=
+document.querySelector(
+".floating-care"
+);
+
+
+if(
+wrap &&
+!wrap.contains(e.target)
+){
+
+$("careMenu")
+?.classList.remove(
+"show"
+);
+
+}
+
+});
+
+
+/* =====================================================
+   CHECK HALEEL LOGIN SESSION
+===================================================== */
+
+checkHaleelSession();
+
+});
+
+
+/* =========================================================
+   LIVE CLOCK
+========================================================= */
+
+setInterval(
+updateCountryTime,
+1000
+);
+
+</script>
+
+</body>
+</html>
