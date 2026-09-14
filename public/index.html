@@ -900,9 +900,85 @@ border:1px solid var(--border);
 box-shadow:0 10px 35px rgba(9,44,73,.055);
 }
 
-.setting-icon{
+ .setting-icon{
 font-size:35px;
 margin-bottom:20px;
+}
+
+.account-info-box{
+margin:18px 0;
+padding:5px 15px;
+border-radius:16px;
+background:#f7fbff;
+border:1px solid rgba(0,108,194,.12);
+}
+
+.account-info-row{
+display:flex;
+align-items:flex-start;
+justify-content:space-between;
+gap:14px;
+padding:13px 0;
+border-bottom:1px solid rgba(0,0,0,.06);
+font-size:14px;
+}
+
+.account-info-row:last-child{
+border-bottom:0;
+}
+
+.account-info-row span{
+color:#718096;
+font-weight:700;
+}
+
+.account-info-row strong{
+color:#1d3044;
+text-align:right;
+overflow-wrap:anywhere;
+}
+
+.account-info-row:last-child strong{
+color:#006CC2;
+font-size:20px;
+letter-spacing:1.5px;
+}
+
+.account-logout-button{
+width:100%;
+margin-top:2px;
+}
+
+body.dark .account-info-box{
+background:#10212f;
+border-color:#244967;
+}
+
+body.dark .account-info-row{
+border-bottom-color:rgba(255,255,255,.08);
+}
+
+body.dark .account-info-row span{
+color:#91a0b1;
+}
+
+body.dark .account-info-row strong{
+color:#e8eef5;
+}
+
+body.dark .account-info-row:last-child strong{
+color:#65b9ff;
+}
+
+@media(max-width:520px){
+.account-info-row{
+flex-direction:column;
+gap:4px;
+}
+
+.account-info-row strong{
+text-align:left;
+}
 }
 
 .theme-options{
@@ -2806,12 +2882,26 @@ Website Settings.
 
 <div class="settings-grid">
 
-<div class="setting-card">
-  <div class="setting-icon">🚪</div>
-  <h3>Log Out</h3>
-  <p>Ka bax account-kaaga Haleel.</p>
-  <br>
-  <button class="btn btn-primary" onclick="logout()">Log Out</button>
+<div class="setting-card account-setting-card">
+  <div class="setting-icon">👤</div>
+  <h3>ACCOUNT</h3>
+  <p>Macluumaadka akoonkaaga.</p>
+
+  <div class="account-info-box">
+    <div class="account-info-row">
+      <span>Name:</span>
+      <strong id="settingsAccountName">First Middle Last</strong>
+    </div>
+
+    <div class="account-info-row">
+      <span>ID Account:</span>
+      <strong id="settingsAccountId">0000000</strong>
+    </div>
+  </div>
+
+  <button class="btn btn-primary account-logout-button" onclick="logout()">
+    🚪 Log Out
+  </button>
 </div>
 
 
@@ -3294,6 +3384,26 @@ function setAuthBusy(button,busy,text){
   }
 }
 
+function updateSettingsAccount(user){
+  const name =
+    user?.name ||
+    [user?.firstName,user?.middleName,user?.lastName]
+      .filter(Boolean)
+      .join(" ") ||
+    "Haleel Customer";
+
+  const accountId =
+    user?.accountId ||
+    user?.account_id ||
+    "";
+
+  const nameEl=$("settingsAccountName");
+  const idEl=$("settingsAccountId");
+
+  if(nameEl) nameEl.textContent=name;
+  if(idEl) idEl.textContent=accountId || "0000000";
+}
+
 function openDashboardForUser(user){
   const name =
     user?.name ||
@@ -3314,6 +3424,8 @@ function openDashboardForUser(user){
   if(accountId){
     localStorage.setItem("haleelAccountId",String(accountId));
   }
+
+  updateSettingsAccount(user);
 
   const gate=$("authGate");
   if(gate)gate.style.display="none";
@@ -3364,7 +3476,19 @@ async function authLogin(){
     /* Worker-ku session-ka wuxuu ku kaydiyaa HttpOnly cookie. */
     localStorage.setItem("haleelAccountId",String(data.accountId));
 
-    openDashboardForUser(data);
+    /* Login kadib hel xogta account-ka oo dhamaystiran si Settings
+       loogu muujiyo Name iyo ID Account. */
+    let accountData=data;
+    try{
+      const me=await authApi("/api/me");
+      if(me && me.success && me.accountId){
+        accountData=me;
+      }
+    }catch(e){
+      /* Haddii /api/me uu fashilmo, isticmaal xogta login-ka. */
+    }
+
+    openDashboardForUser(accountData);
   }catch(error){
     const msg=String(error.message||"");
 
