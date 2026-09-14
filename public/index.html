@@ -969,6 +969,22 @@ color:#e8eef5;
 body.dark .account-info-row:last-child strong{
 color:#65b9ff;
 }
+/* ACCOUNT ONLINE / OFFLINE STATUS */
+.account-status-row{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:13px 0;border-bottom:1px solid rgba(0,0,0,.06);font-size:14px}
+.account-status-row>span{color:#718096;font-weight:700}
+.account-live-status{display:inline-flex;align-items:center;gap:8px;padding:7px 11px;border-radius:999px;font-size:13px;font-weight:900;background:#fff1f1;color:#E5484D;white-space:nowrap}
+.account-live-status-dot{width:9px;height:9px;border-radius:50%;background:#E5484D;box-shadow:0 0 0 4px rgba(229,72,77,.10)}
+.account-live-status.online{background:#e8f8ef;color:#159957}
+.account-live-status.online .account-live-status-dot{background:#20B26B;box-shadow:0 0 0 4px rgba(32,178,107,.12)}
+.account-live-status.checking{background:#fff8e6;color:#8a6800}
+.account-live-status.checking .account-live-status-dot{background:#F5B942;box-shadow:0 0 0 4px rgba(245,185,66,.12)}
+body.dark .account-status-row{border-bottom-color:rgba(255,255,255,.08)}
+body.dark .account-status-row>span{color:#91a0b1}
+body.dark .account-live-status{background:#351b1e;color:#ff8d91}
+body.dark .account-live-status.online{background:#123624;color:#65d59a}
+body.dark .account-live-status.checking{background:#332b12;color:#f2d675}
+@media(max-width:520px){.account-status-row{flex-direction:column;align-items:flex-start;gap:6px}}
+
 
 @media(max-width:520px){
 .account-info-row{
@@ -2897,6 +2913,14 @@ Website Settings.
       <span>ID Account:</span>
       <strong id="settingsAccountId">0000000</strong>
     </div>
+
+    <div class="account-status-row">
+      <span>Status:</span>
+      <strong id="settingsAccountStatus" class="account-live-status checking" aria-live="polite">
+        <span class="account-live-status-dot"></span>
+        <span id="settingsAccountStatusText">Checking...</span>
+      </strong>
+    </div>
   </div>
 
   <button class="btn btn-primary account-logout-button" onclick="logout()">
@@ -3384,7 +3408,7 @@ function setAuthBusy(button,busy,text){
   }
 }
 
-function updateSettingsAccount(user){
+\n/* ACCOUNT ONLINE / OFFLINE STATUS */\nlet haleelStatusTimer=null;\nfunction setAccountOnlineStatus(status){const box=$("settingsAccountStatus"),text=$("settingsAccountStatusText");if(!box||!text)return;box.classList.remove("online","checking");if(status==="online"){box.classList.add("online");text.textContent="Online";return}if(status==="checking"){box.classList.add("checking");text.textContent="Checking...";return}text.textContent="Offline"}\nasync function checkAccountOnlineStatus(){const id=String(localStorage.getItem("haleelAccountId")||"").trim();if(!id){setAccountOnlineStatus("offline");return}setAccountOnlineStatus("checking");try{const data=await authApi("/api/me");if(data&&data.success&&data.accountId){localStorage.setItem("haleelAccountId",String(data.accountId));setAccountOnlineStatus("online")}else setAccountOnlineStatus("offline")}catch(e){setAccountOnlineStatus("offline")}}\nfunction startAccountOnlineStatus(){if(haleelStatusTimer)clearInterval(haleelStatusTimer);checkAccountOnlineStatus();haleelStatusTimer=setInterval(checkAccountOnlineStatus,30000)}\nfunction stopAccountOnlineStatus(){if(haleelStatusTimer){clearInterval(haleelStatusTimer);haleelStatusTimer=null}setAccountOnlineStatus("offline")}\nfunction updateSettingsAccount(user){
   const name =
     user?.name ||
     [user?.firstName,user?.middleName,user?.lastName]
@@ -3426,6 +3450,7 @@ function openDashboardForUser(user){
   }
 
   updateSettingsAccount(user);
+  startAccountOnlineStatus();
 
   const gate=$("authGate");
   if(gate)gate.style.display="none";
@@ -3586,6 +3611,7 @@ async function restoreHaleelSession(){
     openDashboardForUser(data);
   }catch(error){
     localStorage.removeItem("haleelAccountId");
+    stopAccountOnlineStatus();
     showSignIn();
   }
 }
@@ -3598,6 +3624,7 @@ async function logout(){
   }
 
   localStorage.removeItem("haleelAccountId");
+  stopAccountOnlineStatus();
   lockDashboard();
   $("authLoginPassword").value="";
   showSignIn();
