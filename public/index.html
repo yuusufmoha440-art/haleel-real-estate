@@ -1500,6 +1500,25 @@ transform:translateY(0);
   letter-spacing:2px;
   margin-top:4px;
 }
+
+.auth-created-view{text-align:center}
+.auth-created-view h2{color:#159957;font-size:26px;line-height:1.25;margin:12px 0 8px}
+.auth-created-view>p{color:#718096;margin-bottom:20px}
+.auth-created-icon{width:72px;height:72px;margin:0 auto 10px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#e8f8ef;color:#159957;font-size:40px;font-weight:900;box-shadow:0 8px 25px rgba(21,153,87,.12)}
+.auth-created-card{text-align:left;padding:18px;margin:0 0 18px;border:1px solid rgba(0,108,194,.14);border-radius:18px;background:#f7fbff;box-shadow:0 10px 28px rgba(0,40,80,.07)}
+.auth-created-title{color:#006CC2;font-size:16px;font-weight:900;margin-bottom:14px;text-align:center}
+.auth-created-row{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:11px 0;border-bottom:1px solid rgba(0,0,0,.06);font-size:14px}
+.auth-created-row:last-child{border-bottom:0;padding-bottom:2px}
+.auth-created-row span{color:#718096;font-weight:700}.auth-created-row strong{color:#1d3044;text-align:right;overflow-wrap:anywhere}
+.auth-created-row:first-of-type strong{color:#006CC2;font-size:22px;letter-spacing:2px}
+.auth-open-account{margin-top:2px}
+.auth-created-warning{margin-top:15px;padding:12px 14px;border-radius:13px;background:#fff8e6;color:#765b00;font-size:12px;line-height:1.55}
+body.dark .auth-created-view h2{color:#65d59a} body.dark .auth-created-icon{background:#123624;color:#65d59a}
+body.dark .auth-created-card{background:#10212f;border-color:#244967} body.dark .auth-created-title{color:#65b9ff}
+body.dark .auth-created-row{border-bottom-color:rgba(255,255,255,.08)} body.dark .auth-created-row span{color:#91a0b1}
+body.dark .auth-created-row strong{color:#e8eef5} body.dark .auth-created-row:first-of-type strong{color:#65b9ff}
+body.dark .auth-created-warning{background:#332b12;color:#f2d675}
+@media(max-width:520px){.auth-created-row{flex-direction:column;gap:4px}.auth-created-row strong{text-align:left}}
 .auth-note{
   margin-top:12px;
   color:#718096;
@@ -1662,16 +1681,6 @@ body.dark .auth-account-preview{background:#102d43;color:#65b9ff}
           </div>
 
           <div class="auth-message" id="authSignupMessage"></div>
-
-          <div id="authCreatedAccount" style="display:none" class="auth-account-preview">
-            <div style="font-weight:700;margin-bottom:6px">Xusuuso Account-kaaga</div>
-            <div style="font-size:13px;color:#718096;margin-bottom:8px">Account ID-gaaga cusub:</div>
-            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-              <strong id="authCreatedAccountId" style="font-size:24px;letter-spacing:2px">0000000</strong>
-              <button class="auth-link" type="button" onclick="openCreatedAccount()" style="padding:8px 12px;border:1px solid rgba(0,108,194,.18);border-radius:10px;background:#eaf5ff;color:#006CC2;font-weight:800">Open</button>
-            </div>
-          </div>
-
           <button class="auth-primary" id="authCreateButton" type="button" onclick="createAccount()">
             ✨ Create Account
           </button>
@@ -1680,6 +1689,20 @@ body.dark .auth-account-preview{background:#102d43;color:#65b9ff}
             Hore account ma u leedahay?
             <button class="auth-link" type="button" onclick="showSignIn()">Sign In</button>
           </div>
+        </div>
+
+        <div class="auth-form-view auth-created-view" id="accountCreatedView" style="display:none">
+          <div class="auth-created-icon">✓</div>
+          <h2>WAA LAGUU FURAY ACCOUNT</h2>
+          <p>Account-kaaga si guul leh ayaa loo abuuray.</p>
+          <div class="auth-created-card">
+            <div class="auth-created-title">Fadlan xusuuso Akoonkaaga</div>
+            <div class="auth-created-row"><span>Account:</span><strong id="authCreatedAccountId">0000000</strong></div>
+            <div class="auth-created-row"><span>Name:</span><strong id="authCreatedAccountName">First Middle Last</strong></div>
+            <div class="auth-created-row"><span>Create at:</span><strong id="authCreatedAccountTime">--</strong></div>
+          </div>
+          <button class="auth-primary auth-open-account" id="authOpenAccountButton" type="button" onclick="openCreatedAccount()">🔓 Open Account</button>
+          <div class="auth-created-warning"><strong>⚠️ Mu xafid Account ID-gaaga.</strong><br>Waxaad u baahan doontaa Account ID iyo Password si aad mar dambe Sign In ugu gasho.</div>
         </div>
 
       </div>
@@ -2894,6 +2917,7 @@ function authMessage(id,message="",success=false){
 function showSignIn(){
   $("signInView").style.display="block";
   $("createAccountView").style.display="none";
+  $("accountCreatedView").style.display="none";
   authMessage("authLoginMessage","");
   setTimeout(()=>$('authLoginId')?.focus(),80);
 }
@@ -2901,21 +2925,28 @@ function showSignIn(){
 function showCreateAccount(){
   $("signInView").style.display="none";
   $("createAccountView").style.display="block";
+  $("accountCreatedView").style.display="none";
   authMessage("authSignupMessage","");
-  $("authCreatedAccount").style.display="none";
   setTimeout(()=>$('authFirstName')?.focus(),80);
+}
+
+function showAccountCreated(accountId,firstName,middleName,lastName,createdAt){
+  $("signInView").style.display="none";
+  $("createAccountView").style.display="none";
+  $("accountCreatedView").style.display="block";
+  $("authCreatedAccountId").textContent=String(accountId);
+  $("authCreatedAccountName").textContent=[firstName,middleName,lastName].filter(Boolean).join(" ");
+  $("authCreatedAccountTime").textContent=createdAt;
 }
 
 function openCreatedAccount(){
   const id=String($("authCreatedAccountId")?.textContent || "").trim();
   if(!/^\d{7}$/.test(id)) return;
-
   localStorage.setItem("haleelAccountId",id);
   $("authLoginId").value=id;
   $("authLoginPassword").value="";
-  $("authCreatedAccount").style.display="none";
   showSignIn();
-  setTimeout(()=>$("authLoginPassword")?.focus(),120);
+  setTimeout(()=>$('authLoginPassword')?.focus(),120);
 }
 
 function toggleAuthPassword(id,button){
@@ -3070,18 +3101,15 @@ async function createAccount(){
       throw new Error(data.message || "Backend-ku ma soo celin 7-digit Account ID.");
     }
 
-    $("authCreatedAccountId").textContent=String(newId);
-    $("authCreatedAccount").style.display="block";
+    const createdAt=new Intl.DateTimeFormat("en-GB",{
+      timeZone:"Africa/Mogadishu",year:"numeric",month:"2-digit",day:"2-digit",
+      hour:"2-digit",minute:"2-digit",second:"2-digit",hour12:false
+    }).format(new Date());
 
     $("authLoginId").value=String(newId);
     $("authLoginPassword").value="";
     localStorage.setItem("haleelAccountId",String(newId));
-
-    authMessage(
-      "authSignupMessage",
-      "Account-ka waa la sameeyay. Xusuuso Account ID-gaaga, kadibna riix Open si aad Sign In ugu gasho.",
-      true
-    );
+    showAccountCreated(String(newId),firstName,middleName,lastName,createdAt);
 
   }catch(error){
     authMessage(
