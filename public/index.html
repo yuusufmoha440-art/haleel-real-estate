@@ -1664,8 +1664,12 @@ body.dark .auth-account-preview{background:#102d43;color:#65b9ff}
           <div class="auth-message" id="authSignupMessage"></div>
 
           <div id="authCreatedAccount" style="display:none" class="auth-account-preview">
-            Account ID-gaaga cusub:
-            <strong id="authCreatedAccountId">0000000</strong>
+            <div style="font-weight:700;margin-bottom:6px">Xusuuso Account-kaaga</div>
+            <div style="font-size:13px;color:#718096;margin-bottom:8px">Account ID-gaaga cusub:</div>
+            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+              <strong id="authCreatedAccountId" style="font-size:24px;letter-spacing:2px">0000000</strong>
+              <button class="auth-link" type="button" onclick="openCreatedAccount()" style="padding:8px 12px;border:1px solid rgba(0,108,194,.18);border-radius:10px;background:#eaf5ff;color:#006CC2;font-weight:800">Open</button>
+            </div>
           </div>
 
           <button class="auth-primary" id="authCreateButton" type="button" onclick="createAccount()">
@@ -2902,6 +2906,18 @@ function showCreateAccount(){
   setTimeout(()=>$('authFirstName')?.focus(),80);
 }
 
+function openCreatedAccount(){
+  const id=String($("authCreatedAccountId")?.textContent || "").trim();
+  if(!/^\d{7}$/.test(id)) return;
+
+  localStorage.setItem("haleelAccountId",id);
+  $("authLoginId").value=id;
+  $("authLoginPassword").value="";
+  $("authCreatedAccount").style.display="none";
+  showSignIn();
+  setTimeout(()=>$("authLoginPassword")?.focus(),120);
+}
+
 function toggleAuthPassword(id,button){
   const input=$(id);
   if(!input)return;
@@ -3063,15 +3079,9 @@ async function createAccount(){
 
     authMessage(
       "authSignupMessage",
-      "Account-ka waa la sameeyay. ID-gaaga hoos ayuu ku qoran yahay.",
+      "Account-ka waa la sameeyay. Xusuuso Account ID-gaaga, kadibna riix Open si aad Sign In ugu gasho.",
       true
     );
-
-    setTimeout(()=>{
-      showSignIn();
-      $("authLoginId").value=String(newId);
-      $("authLoginPassword").focus();
-    },1200);
 
   }catch(error){
     authMessage(
