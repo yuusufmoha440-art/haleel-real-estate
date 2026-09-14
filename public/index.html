@@ -1196,11 +1196,6 @@ align-items:flex-start;
 
 @media(max-width:750px){
 
-#haleelSyncStatus{
-  font-size:10px !important;
-  padding:7px 9px !important;
-}
-
 .sidebar{
 display:none;
 }
@@ -2123,16 +2118,9 @@ body.dark .auth-secondary:hover{background:#1b3145}
 
 <strong id="pageTitle">Home</strong>
 
-<div style="display:flex;align-items:center;gap:10px">
-<span id="haleelSyncStatus"
-style="display:inline-flex;align-items:center;padding:8px 12px;border-radius:999px;background:#eef7ff;color:#006CC2;font-size:12px;font-weight:800;white-space:nowrap">
-🟢 Online
-</span>
-
 <button class="btn btn-outline" onclick="openPage('care')">
 Customer Care
 </button>
-</div>
 
 </div>
 
@@ -3232,8 +3220,9 @@ id="successModal">
 
 <h2>Mahadsanid!</h2>
 
-<p id="successModalMessage" style="color:#718096;margin:15px 0">
-Xogta gurigaaga si ammaan ah ayaa loo kaydiyey.
+<p style="color:#718096;margin:15px 0">
+Macluumaadka gurigaaga waa la gudbiyey.
+Kooxda Haleel ayaa heli doonta xogta aad soo dirtay.
 </p>
 
 <button
@@ -4582,539 +4571,286 @@ window.location.href=
    The visitor remains on Haleel website.
 ========================================================= */
 
-/* =========================================================
-   HALEEL ONLINE / OFFLINE DATABASE SYNC
-   - New submissions are first saved locally.
-   - When online, the queue is sent every 30 seconds.
-   - If the connection returns after being offline, sync starts immediately.
-   ========================================================= */
-
-const HALEEL_OFFLINE_DB_NAME="HaleelOfflineDB";
-const HALEEL_OFFLINE_STORE="pendingProperties";
-const HALEEL_OFFLINE_QUEUE_KEY="haleelOfflinePropertyQueue";
-const HALEEL_SYNC_INTERVAL=30000;
-let haleelSyncRunning=false;
-
-function setSyncStatus(mode,pendingCount=null){
-  const el=$("haleelSyncStatus");
-  if(!el)return;
-
-  if(mode==="online"){
-    el.textContent=`🟢 Online${pendingCount ? ` • ${pendingCount} sugaya` : ""}`;
-    el.title="Database sync: Online — xogta waxaa la dirayaa 30 ilbiriqsi kasta.";
-    el.dataset.mode="online";
-  }else if(mode==="syncing"){
-    el.textContent=`🔄 Syncing${pendingCount ? ` • ${pendingCount}` : ""}`;
-    el.title="Xogta sugaysa ayaa database-ka loo dirayaa.";
-    el.dataset.mode="syncing";
-  }else{
-    el.textContent=`🟠 Offline${pendingCount ? ` • ${pendingCount} sugaya` : ""}`;
-    el.title="Internet ma jiro. Xogta waxaa lagu kaydinayaa qalabka ilaa internet-ku soo noqdo.";
-    el.dataset.mode="offline";
-  }
-}
-
-function getOfflineQueueFallback(){
-  try{
-    const raw=localStorage.getItem(HALEEL_OFFLINE_QUEUE_KEY);
-    const parsed=raw ? JSON.parse(raw) : [];
-    return Array.isArray(parsed) ? parsed : [];
-  }catch(error){
-    console.error("Haleel offline queue read error:",error);
-    return [];
-  }
-}
-
-function setOfflineQueueFallback(queue){
-  localStorage.setItem(
-    HALEEL_OFFLINE_QUEUE_KEY,
-    JSON.stringify(Array.isArray(queue) ? queue : [])
-  );
-}
-
-function openHaleelOfflineDB(){
-  return new Promise((resolve,reject)=>{
-    if(!("indexedDB" in window)){
-      resolve(null);
-      return;
-    }
-
-    const request=indexedDB.open(HALEEL_OFFLINE_DB_NAME,1);
-
-    request.onupgradeneeded=()=>{
-      const db=request.result;
-      if(!db.objectStoreNames.contains(HALEEL_OFFLINE_STORE)){
-        db.createObjectStore(
-          HALEEL_OFFLINE_STORE,
-          {keyPath:"id"}
-        );
-      }
-    };
-
-    request.onsuccess=()=>resolve(request.result);
-    request.onerror=()=>reject(
-      request.error || new Error("IndexedDB could not open.")
-    );
-  });
-}
-
-async function addOfflineProperty(data){
-  const record={
-    id:`${Date.now()}_${Math.random().toString(36).slice(2,10)}`,
-    createdAt:new Date().toISOString(),
-    data
-  };
-
-  try{
-    const db=await openHaleelOfflineDB();
-
-    if(!db){
-      throw new Error("IndexedDB unavailable.");
-    }
-
-    await new Promise((resolve,reject)=>{
-      const tx=db.transaction(HALEEL_OFFLINE_STORE,"readwrite");
-      tx.objectStore(HALEEL_OFFLINE_STORE).add(record);
-      tx.oncomplete=resolve;
-      tx.onerror=()=>reject(
-        tx.error || new Error("Offline save failed.")
-      );
-    });
-
-    db.close();
-    return record;
-  }catch(error){
-    console.warn(
-      "IndexedDB save failed; using localStorage fallback.",
-      error
-    );
-
-    const queue=getOfflineQueueFallback();
-    queue.push(record);
-    setOfflineQueueFallback(queue);
-    return record;
-  }
-}
-
-async function getOfflineProperties(){
-  try{
-    const db=await openHaleelOfflineDB();
-
-    if(!db){
-      return getOfflineQueueFallback();
-    }
-
-    const records=await new Promise((resolve,reject)=>{
-      const tx=db.transaction(
-        HALEEL_OFFLINE_STORE,
-        "readonly"
-      );
-
-      const request=
-        tx.objectStore(HALEEL_OFFLINE_STORE).getAll();
-
-      request.onsuccess=()=>{
-        resolve(request.result || []);
-      };
-
-      request.onerror=()=>{
-        reject(
-          request.error ||
-          new Error("Offline queue read failed.")
-        );
-      };
-    });
-
-    db.close();
-
-    return records.concat(getOfflineQueueFallback());
-  }catch(error){
-    console.warn(
-      "IndexedDB read failed; using localStorage fallback.",
-      error
-    );
-
-    return getOfflineQueueFallback();
-  }
-}
-
-async function removeOfflineProperty(record){
-  try{
-    const db=await openHaleelOfflineDB();
-
-    if(db){
-      await new Promise((resolve,reject)=>{
-        const tx=db.transaction(
-          HALEEL_OFFLINE_STORE,
-          "readwrite"
-        );
-
-        tx.objectStore(HALEEL_OFFLINE_STORE)
-          .delete(record.id);
-
-        tx.oncomplete=resolve;
-
-        tx.onerror=()=>{
-          reject(
-            tx.error ||
-            new Error("Offline delete failed.")
-          );
-        };
-      });
-
-      db.close();
-    }
-  }catch(error){
-    console.warn(
-      "IndexedDB delete failed.",
-      error
-    );
-  }
-
-  const fallback=getOfflineQueueFallback();
-
-  const next=fallback.filter(
-    item=>item.id!==record.id
-  );
-
-  if(next.length!==fallback.length){
-    setOfflineQueueFallback(next);
-  }
-}
-
-async function sendPropertyToBackend(record){
-  /*
-    Apps Script expects e.parameter.payload.
-    URLSearchParams keeps this as a simple form POST.
-  */
-
-  const body=new URLSearchParams();
-
-  body.set(
-    "payload",
-    JSON.stringify({
-      ...record.data,
-      clientSubmissionId:record.id,
-      queuedAt:record.createdAt
-    })
-  );
-
-  await fetch(
-    HALEEL_BACKEND_URL,
-    {
-      method:"POST",
-      mode:"no-cors",
-      headers:{
-        "Content-Type":
-          "application/x-www-form-urlencoded;charset=UTF-8"
-      },
-      body
-    }
-  );
-}
-
-async function syncPendingProperties(){
-  if(haleelSyncRunning){
-    return;
-  }
-
-  if(!navigator.onLine){
-    const pending=
-      (await getOfflineProperties()).length;
-
-    setSyncStatus("offline",pending);
-    return;
-  }
-
-  haleelSyncRunning=true;
-
-  try{
-    const queue=
-      await getOfflineProperties();
-
-    setSyncStatus(
-      "syncing",
-      queue.length
-    );
-
-    for(const record of queue){
-
-      if(!navigator.onLine){
-        break;
-      }
-
-      try{
-        await sendPropertyToBackend(record);
-
-        /*
-          no-cors does not expose the Google response,
-          but a network failure rejects the fetch.
-          Successful fetch means the browser handed
-          the request to the backend.
-        */
-        await removeOfflineProperty(record);
-
-      }catch(error){
-
-        console.warn(
-          "Haleel sync failed; keeping record for retry.",
-          error
-        );
-
-        break;
-      }
-    }
-
-  }finally{
-
-    haleelSyncRunning=false;
-
-    const remaining=
-      (await getOfflineProperties()).length;
-
-    setSyncStatus(
-      navigator.onLine ? "online" : "offline",
-      remaining
-    );
-  }
-}
-
-function startHaleelOfflineSync(){
-
-  const refreshStatus=async()=>{
-    const pending=
-      (await getOfflineProperties()).length;
-
-    setSyncStatus(
-      navigator.onLine ? "online" : "offline",
-      pending
-    );
-  };
-
-  window.addEventListener(
-    "online",
-    ()=>{
-      refreshStatus();
-      syncPendingProperties();
-    }
-  );
-
-  window.addEventListener(
-    "offline",
-    ()=>{
-      refreshStatus();
-    }
-  );
-
-  refreshStatus();
-
-  /*
-    ONLINE:
-    Database queue is checked every 30 seconds.
-  */
-  setInterval(
-    syncPendingProperties,
-    HALEEL_SYNC_INTERVAL
-  );
-
-  /*
-    Page/app startup:
-    try to sync any records that were saved earlier.
-  */
-  setTimeout(
-    syncPendingProperties,
-    1200
-  );
-}
-
-
-/* =========================================================
-   SUBMIT PROPERTY
-   ========================================================= */
-
 let propertySubmissionInProgress=false;
 
-async function submitProperty(){
 
-  if(propertySubmissionInProgress){
-    return;
-  }
+function submitProperty(){
 
-  const owner=
-    $("ownerName").value.trim();
+if(propertySubmissionInProgress){
 
-  const phone=
-    $("ownerPhone").value.trim();
+return;
 
-  const submitterName=
-    $("propertyTitle").value.trim();
+}
 
-  const city=
-    $("city").value.trim();
 
-  if(
-    !owner ||
-    !phone ||
-    !submitterName ||
-    !city
-  ){
-    alert(
-      "Fadlan geli macluumaadka muhiimka ah."
-    );
-    return;
-  }
+const owner=
+$("ownerName").value.trim();
 
-  propertySubmissionInProgress=true;
+const phone=
+$("ownerPhone").value.trim();
 
-  const button=
-    $("submitPropertyButton");
+const submitterName=
+$("propertyTitle").value.trim();
 
-  const originalText=
-    button.textContent;
+const city=
+$("city").value.trim();
 
-  button.disabled=true;
-  button.style.opacity="0.75";
-  button.style.cursor="wait";
-  button.textContent=
-    "⏳ Xogta waa la kaydinayaa...";
 
-  const data={
+/* REQUIRED FIELDS */
 
-    ownerName:owner,
+if(!owner || !phone || !submitterName || !city){
 
-    ownerPhone:phone,
+alert(
+"Fadlan geli macluumaadka muhiimka ah."
+);
 
-    ownerEmail:
-      $("ownerEmail").value.trim(),
+return;
 
-    ownerWhatsapp:
-      $("ownerWhatsapp").value.trim(),
+}
 
-    propertyTitle:
-      submitterName,
 
-    propertyType:
-      $("propertyType").value,
+/* START SUBMISSION */
 
-    city:city,
+propertySubmissionInProgress=true;
 
-    neighborhood:
-      $("neighborhood").value.trim(),
+const button=
+$("submitPropertyButton");
 
-    rent:
-      $("rent").value.trim(),
+const originalText=
+button.textContent;
 
-    bedrooms:
-      $("bedrooms").value.trim(),
+button.disabled=true;
 
-    bathrooms:
-      $("bathrooms").value.trim(),
+button.style.opacity="0.75";
 
-    size:
-      $("size").value.trim(),
+button.style.cursor="wait";
 
-    description:
-      $("description").value.trim()
-  };
+button.textContent=
+"⏳ Waa la dirayaa...";
 
-  try{
 
-    /*
-      FIRST STEP:
-      Always save locally.
+/* DATA SENT TO GOOGLE APPS SCRIPT */
 
-      This makes the app safe even when the
-      internet disappears during submission.
-    */
-    await addOfflineProperty(data);
+const data={
 
-    /*
-      The form is considered successfully received
-      by the local offline database here.
-    */
-    [
-      "ownerName",
-      "ownerPhone",
-      "ownerEmail",
-      "ownerWhatsapp",
-      "propertyTitle",
-      "city",
-      "neighborhood",
-      "rent",
-      "bedrooms",
-      "bathrooms",
-      "size",
-      "description"
-    ].forEach(id=>{
-      const element=$(id);
+ownerName:owner,
 
-      if(element){
-        element.value="";
-      }
-    });
+ownerPhone:phone,
 
-    if($("images")){
-      $("images").value="";
-    }
+ownerEmail:
+$("ownerEmail").value.trim(),
 
-    const message=
-      $("successModalMessage");
+ownerWhatsapp:
+$("ownerWhatsapp").value.trim(),
 
-    if(message){
+propertyTitle:
+submitterName,
 
-      if(navigator.onLine){
+propertyType:
+$("propertyType").value,
 
-        message.textContent=
-          "Xogta gurigaaga si ammaan ah ayaa loo kaydiyey. " +
-          "Database-ka waxaa si toos ah loogu diri doonaa " +
-          "30 ilbiriqsi gudahood.";
+city:city,
 
-      }else{
+neighborhood:
+$("neighborhood").value.trim(),
 
-        message.textContent=
-          "Internet ma jiro. Xogta gurigaaga waxaa lagu kaydiyey " +
-          "Offline, waxaana si toos ah database-ka loogu diri doonaa " +
-          "marka internet-ku soo noqdo.";
+rent:
+$("rent").value.trim(),
 
-      }
-    }
+bedrooms:
+$("bedrooms").value.trim(),
 
-    $("successModal")
-      .classList.add("show");
+bathrooms:
+$("bathrooms").value.trim(),
 
-    /*
-      Do not send immediately.
-      The requested 30-second online sync controls delivery.
-    */
-    const pending=
-      (await getOfflineProperties()).length;
+size:
+$("size").value.trim(),
 
-    setSyncStatus(
-      navigator.onLine ? "online" : "offline",
-      pending
-    );
+description:
+$("description").value.trim()
 
-  }catch(error){
+};
 
-    console.error(
-      "Haleel offline database error:",
-      error
-    );
 
-    alert(
-      "Xogta lama kaydin karin qalabka. " +
-      "Fadlan hubi storage-ka browser-ka oo isku day mar kale."
-    );
+/*
+IMPORTANT:
 
-  }finally{
+Apps Script-kaaga wuxuu filayaa:
 
-    propertySubmissionInProgress=false;
+e.parameter.payload
 
-    button.disabled=false;
-    button.style.opacity="1";
-    button.style.cursor="pointer";
-    button.textContent=originalText;
-  }
+Sidaas darteed waxaan si gaar ah
+hidden input ugu diraynaa magaca "payload".
+*/
+
+
+const form=
+document.createElement("form");
+
+form.method="POST";
+
+form.action=
+HALEEL_BACKEND_URL;
+
+form.target=
+"haleelSubmitFrame";
+
+form.style.display="none";
+
+form.setAttribute(
+"aria-hidden",
+"true"
+);
+
+
+const input=
+document.createElement("input");
+
+input.type="hidden";
+
+input.name="payload";
+
+input.value=
+JSON.stringify(data);
+
+
+form.appendChild(input);
+
+document.body.appendChild(form);
+
+
+/*
+SUBMIT:
+
+Browser-ku wuxuu xogta u dirayaa
+Google Apps Script gudaha hidden iframe.
+
+Gmail page/app ma furmayo.
+*/
+
+
+try{
+
+form.submit();
+
+}catch(error){
+
+console.error(
+"Haleel submission error:",
+error
+);
+
+propertySubmissionInProgress=false;
+
+button.disabled=false;
+
+button.style.opacity="1";
+
+button.style.cursor="pointer";
+
+button.textContent=originalText;
+
+alert(
+"Xogta lama diri karin. Fadlan isku day mar kale."
+);
+
+form.remove();
+
+return;
+
+}
+
+
+/*
+Remove temporary form after submission.
+*/
+
+setTimeout(()=>{
+
+if(form && form.parentNode){
+
+form.remove();
+
+}
+
+},1500);
+
+
+/*
+The browser cannot read Google's cross-origin
+response directly.
+
+Therefore, without changing your Apps Script,
+we cannot technically verify Gmail delivery
+from the frontend.
+
+After giving Apps Script enough time to process,
+we show the success screen.
+*/
+
+setTimeout(()=>{
+
+/* RESET BUTTON */
+
+button.disabled=false;
+
+button.style.opacity="1";
+
+button.style.cursor="pointer";
+
+button.textContent=originalText;
+
+
+/* CLEAR FORM */
+
+[
+"ownerName",
+"ownerPhone",
+"ownerEmail",
+"ownerWhatsapp",
+"propertyTitle",
+"city",
+"neighborhood",
+"rent",
+"bedrooms",
+"bathrooms",
+"size",
+"description"
+
+].forEach(id=>{
+
+const element=$(id);
+
+if(element){
+
+element.value="";
+
+}
+
+});
+
+
+/* CLEAR IMAGE INPUT */
+
+if($("images")){
+
+$("images").value="";
+
+}
+
+
+/* FINISH */
+
+propertySubmissionInProgress=false;
+
+
+/* SUCCESS MODAL */
+
+$("successModal")
+.classList.add("show");
+
+},2500);
+
 }
 
 
@@ -5282,9 +5018,6 @@ error
 document.addEventListener(
 "DOMContentLoaded",
 ()=>{
-
-/* ONLINE / OFFLINE DATABASE SYNC */
-startHaleelOfflineSync();
 
 
 /* THEME */
