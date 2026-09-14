@@ -1,8 +1,13 @@
+```javascript
 const MAX_ACCOUNT_ID = 9999999;
 const SESSION_DAYS = 30;
 
 const PBKDF2_ITERATIONS = 10000;
 const PASSWORD_HASH_LENGTH = 256;
+
+// User-ka waxaa loo tixgelinayaa Online haddii heartbeat-kiisii
+// ugu dambeeyay uu dhacay 60 ilbiriqsi gudahood.
+const ONLINE_TIMEOUT_SECONDS = 60;
 
 
 // ============================================================
@@ -14,6 +19,7 @@ export default {
     const url = new URL(request.url);
 
     try {
+
       if (url.pathname === "/api/signup") {
         return await signup(request, env);
       }
@@ -30,9 +36,20 @@ export default {
         return await getCurrentUser(request, env);
       }
 
+      // NEW: Heartbeat
+      if (url.pathname === "/api/heartbeat") {
+        return await heartbeat(request, env);
+      }
+
+      // NEW: Online status
+      if (url.pathname === "/api/online-status") {
+        return await getOnlineStatus(request, env);
+      }
+
       return env.ASSETS.fetch(request);
 
     } catch (error) {
+
       console.error("WORKER ERROR:", error);
 
       return json(
@@ -48,12 +65,135 @@ export default {
 
 
 // ============================================================
+// PRESENCE TABLE
+// ============================================================
+// Worker-ku wuxuu iskii u samaynayaa table-kan haddii uusan jirin.
+//
+// Tani waxay ka dhigan tahay inaadan hadda users table-ka
+// wax column ah ku darin.
+//
+// Table:
+// user_presence
+//
+// account_id
+// last_seen
+// ============================================================
+
+async function ensurePresenceTable(env) {
+
+  await env.ACCOUNTS_DB
+    .prepare(`
+      CREATE TABLE IF NOT EXISTS user_presence (
+        account_id INTEGER PRIMARY KEY,
+        last_seen TEXT NOT NULL
+      )
+    `)
+    .run();
+}
+
+
+// ============================================================
+// UPDATE USER ONLINE
+// ============================================================
+
+async function markUserOnline(accountId, env) {
+
+  await ensurePresenceTable(env);
+
+  const now =
+    new Date().toISOString();
+
+  await env.ACCOUNTS_DB
+    .prepare(`
+      INSERT INTO user_presence (
+        account_id,
+        last_seen
+      )
+      VALUES (?, ?)
+
+      ON CONFLICT(account_id)
+      DO UPDATE SET
+        last_seen = excluded.last_seen
+    `)
+    .bind(
+      Number(accountId),
+      now
+    )
+    .run();
+
+  return now;
+}
+
+
+// ============================================================
+// UPDATE USER OFFLINE
+// ============================================================
+
+async function markUserOffline(accountId, env) {
+
+  try {
+
+    await ensurePresenceTable(env);
+
+    await env.ACCOUNTS_DB
+      .prepare(`
+        DELETE FROM user_presence
+        WHERE account_id = ?
+      `)
+      .bind(
+        Number(accountId)
+      )
+      .run();
+
+  } catch (error) {
+
+    console.error(
+      "MARK OFFLINE ERROR:",
+      error
+    );
+  }
+}
+
+
+// ============================================================
+// CHECK ONLINE STATUS
+// ============================================================
+
+function calculateOnline(lastSeen) {
+
+  if (!lastSeen) {
+    return false;
+  }
+
+  const last =
+    new Date(lastSeen).getTime();
+
+  if (!Number.isFinite(last)) {
+    return false;
+  }
+
+  const now =
+    Date.now();
+
+  const difference =
+    now - last;
+
+  return (
+    difference >= 0 &&
+    difference <=
+      ONLINE_TIMEOUT_SECONDS * 1000
+  );
+}
+
+
+// ============================================================
 // SIGN UP
 // ============================================================
 
 async function signup(request, env) {
 
   if (request.method !== "POST") {
+
     return json(
       {
         success: false,
@@ -64,18 +204,22 @@ async function signup(request, env) {
   }
 
   if (!env.ACCOUNTS_DB) {
+
     return json(
       {
         success: false,
-        message: "Accounts database is not connected."
+        message:
+          "Accounts database is not connected."
       },
       500
     );
   }
 
-  const body = await readJSON(request);
+  const body =
+    await readJSON(request);
 
   if (!body) {
+
     return json(
       {
         success: false,
@@ -97,6 +241,7 @@ async function signup(request, env) {
     typeof body.phoneNumber !== "string" ||
     typeof body.password !== "string"
   ) {
+
     return json(
       {
         success: false,
@@ -107,18 +252,32 @@ async function signup(request, env) {
     );
   }
 
-  const firstName = body.firstName.trim();
-  const middleName = body.middleName.trim();
-  const lastName = body.lastName.trim();
-  const phoneNumber = body.phoneNumber.trim();
-  const password = body.password;
+  const firstName =
+    body.firstName.trim();
+
+  const middleName =
+    body.middleName.trim();
+
+  const lastName =
+    body.lastName.trim();
+
+  const phoneNumber =
+    body.phoneNumber.trim();
+
+  const password =
+    body.password;
 
 
   // ----------------------------------------------------------
   // NAME VALIDATION
   // ----------------------------------------------------------
 
-  if (!firstName || !middleName || !lastName) {
+  if (
+    !firstName ||
+    !middleName ||
+    !lastName
+  ) {
+
     return json(
       {
         success: false,
@@ -130,30 +289,36 @@ async function signup(request, env) {
   }
 
   if (firstName.length > 100) {
+
     return json(
       {
         success: false,
-        message: "First name is too long."
+        message:
+          "First name is too long."
       },
       400
     );
   }
 
   if (middleName.length > 100) {
+
     return json(
       {
         success: false,
-        message: "Middle name is too long."
+        message:
+          "Middle name is too long."
       },
       400
     );
   }
 
   if (lastName.length > 100) {
+
     return json(
       {
         success: false,
-        message: "Last name is too long."
+        message:
+          "Last name is too long."
       },
       400
     );
@@ -165,30 +330,36 @@ async function signup(request, env) {
   // ----------------------------------------------------------
 
   if (!phoneNumber) {
+
     return json(
       {
         success: false,
-        message: "Phone number is required."
+        message:
+          "Phone number is required."
       },
       400
     );
   }
 
   if (phoneNumber.length > 30) {
+
     return json(
       {
         success: false,
-        message: "Phone number is too long."
+        message:
+          "Phone number is too long."
       },
       400
     );
   }
 
   if (!/^[0-9+\-\s()]+$/.test(phoneNumber)) {
+
     return json(
       {
         success: false,
-        message: "Invalid phone number."
+        message:
+          "Invalid phone number."
       },
       400
     );
@@ -200,6 +371,7 @@ async function signup(request, env) {
   // ----------------------------------------------------------
 
   if (password.length < 8) {
+
     return json(
       {
         success: false,
@@ -211,10 +383,12 @@ async function signup(request, env) {
   }
 
   if (password.length > 128) {
+
     return json(
       {
         success: false,
-        message: "Password is too long."
+        message:
+          "Password is too long."
       },
       400
     );
@@ -228,15 +402,17 @@ async function signup(request, env) {
   let existingPhone;
 
   try {
-    existingPhone = await env.ACCOUNTS_DB
-      .prepare(`
-        SELECT account_id
-        FROM users
-        WHERE phone_number = ?
-        LIMIT 1
-      `)
-      .bind(phoneNumber)
-      .first();
+
+    existingPhone =
+      await env.ACCOUNTS_DB
+        .prepare(`
+          SELECT account_id
+          FROM users
+          WHERE phone_number = ?
+          LIMIT 1
+        `)
+        .bind(phoneNumber)
+        .first();
 
   } catch (error) {
 
@@ -248,13 +424,15 @@ async function signup(request, env) {
     return json(
       {
         success: false,
-        message: "Unable to check phone number."
+        message:
+          "Unable to check phone number."
       },
       500
     );
   }
 
   if (existingPhone) {
+
     return json(
       {
         success: false,
@@ -274,14 +452,15 @@ async function signup(request, env) {
 
   try {
 
-    sequence = await env.ACCOUNTS_DB
-      .prepare(`
-        SELECT next_id
-        FROM account_sequence
-        WHERE id = 1
-        LIMIT 1
-      `)
-      .first();
+    sequence =
+      await env.ACCOUNTS_DB
+        .prepare(`
+          SELECT next_id
+          FROM account_sequence
+          WHERE id = 1
+          LIMIT 1
+        `)
+        .first();
 
   } catch (error) {
 
@@ -301,6 +480,7 @@ async function signup(request, env) {
   }
 
   if (!sequence) {
+
     return json(
       {
         success: false,
@@ -311,13 +491,15 @@ async function signup(request, env) {
     );
   }
 
-  const accountId = Number(sequence.next_id);
+  const accountId =
+    Number(sequence.next_id);
 
   if (
     !Number.isInteger(accountId) ||
     accountId < 1 ||
     accountId > MAX_ACCOUNT_ID
   ) {
+
     return json(
       {
         success: false,
@@ -460,27 +642,75 @@ async function signup(request, env) {
 
 
   // ----------------------------------------------------------
+  // MARK NEW USER ONLINE
+  // ----------------------------------------------------------
+
+  let lastSeen = null;
+
+  try {
+
+    lastSeen =
+      await markUserOnline(
+        accountId,
+        env
+      );
+
+  } catch (error) {
+
+    console.error(
+      "SIGNUP PRESENCE ERROR:",
+      error
+    );
+
+    // Signup-ka lama joojinayo haddii presence-ku
+    // uu fashilmo.
+  }
+
+
+  // ----------------------------------------------------------
   // FORMAT ACCOUNT ID
   // ----------------------------------------------------------
 
   const formattedAccountId =
-    String(accountId).padStart(7, "0");
+    String(accountId)
+      .padStart(7, "0");
 
 
   return new Response(
     JSON.stringify({
+
       success: true,
-      accountId: formattedAccountId,
-      firstName: firstName,
-      middleName: middleName,
-      lastName: lastName,
-      phoneNumber: phoneNumber,
-      message: "Account created successfully."
+
+      accountId:
+        formattedAccountId,
+
+      firstName:
+        firstName,
+
+      middleName:
+        middleName,
+
+      lastName:
+        lastName,
+
+      phoneNumber:
+        phoneNumber,
+
+      online:
+        true,
+
+      lastSeen:
+        lastSeen,
+
+      message:
+        "Account created successfully."
     }),
+
     {
       status: 201,
 
       headers: {
+
         "Content-Type":
           "application/json; charset=UTF-8",
 
@@ -502,16 +732,19 @@ async function signup(request, env) {
 async function login(request, env) {
 
   if (request.method !== "POST") {
+
     return json(
       {
         success: false,
-        message: "Method not allowed."
+        message:
+          "Method not allowed."
       },
       405
     );
   }
 
   if (!env.ACCOUNTS_DB) {
+
     return json(
       {
         success: false,
@@ -522,13 +755,16 @@ async function login(request, env) {
     );
   }
 
-  const body = await readJSON(request);
+  const body =
+    await readJSON(request);
 
   if (!body) {
+
     return json(
       {
         success: false,
-        message: "Invalid request."
+        message:
+          "Invalid request."
       },
       400
     );
@@ -536,7 +772,9 @@ async function login(request, env) {
 
 
   const accountId =
-    String(body.accountId || "").trim();
+    String(
+      body.accountId || ""
+    ).trim();
 
   const password =
     typeof body.password === "string"
@@ -564,6 +802,7 @@ async function login(request, env) {
     numericAccountId < 1 ||
     numericAccountId > MAX_ACCOUNT_ID
   ) {
+
     return invalidLogin();
   }
 
@@ -576,21 +815,22 @@ async function login(request, env) {
 
   try {
 
-    user = await env.ACCOUNTS_DB
-      .prepare(`
-        SELECT
-          account_id,
-          password_hash,
-          first_name,
-          middle_name,
-          last_name,
-          phone_number
-        FROM users
-        WHERE account_id = ?
-        LIMIT 1
-      `)
-      .bind(numericAccountId)
-      .first();
+    user =
+      await env.ACCOUNTS_DB
+        .prepare(`
+          SELECT
+            account_id,
+            password_hash,
+            first_name,
+            middle_name,
+            last_name,
+            phone_number
+          FROM users
+          WHERE account_id = ?
+          LIMIT 1
+        `)
+        .bind(numericAccountId)
+        .first();
 
   } catch (error) {
 
@@ -622,6 +862,7 @@ async function login(request, env) {
     typeof user.password_hash !== "string" ||
     !user.password_hash
   ) {
+
     return invalidLogin();
   }
 
@@ -722,11 +963,35 @@ async function login(request, env) {
 
 
   // ----------------------------------------------------------
+  // MARK USER ONLINE
+  // ----------------------------------------------------------
+
+  let lastSeen = null;
+
+  try {
+
+    lastSeen =
+      await markUserOnline(
+        Number(user.account_id),
+        env
+      );
+
+  } catch (error) {
+
+    console.error(
+      "LOGIN PRESENCE ERROR:",
+      error
+    );
+  }
+
+
+  // ----------------------------------------------------------
   // LOGIN SUCCESS
   // ----------------------------------------------------------
 
   return new Response(
     JSON.stringify({
+
       success: true,
 
       accountId:
@@ -745,13 +1010,21 @@ async function login(request, env) {
       phoneNumber:
         user.phone_number || "",
 
+      online:
+        true,
+
+      lastSeen:
+        lastSeen,
+
       message:
         "Login successful."
     }),
+
     {
       status: 200,
 
       headers: {
+
         "Content-Type":
           "application/json; charset=UTF-8",
 
@@ -790,6 +1063,7 @@ function invalidLogin() {
 async function getCurrentUser(request, env) {
 
   if (request.method !== "GET") {
+
     return json(
       {
         success: false,
@@ -801,6 +1075,7 @@ async function getCurrentUser(request, env) {
   }
 
   if (!env.ACCOUNTS_DB) {
+
     return json(
       {
         success: false,
@@ -822,6 +1097,7 @@ async function getCurrentUser(request, env) {
     );
 
   if (!token) {
+
     return json(
       {
         success: false,
@@ -868,21 +1144,22 @@ async function getCurrentUser(request, env) {
 
   try {
 
-    session = await env.ACCOUNTS_DB
-      .prepare(`
-        SELECT
-          account_id,
-          expires_at
-        FROM sessions
-        WHERE token_hash = ?
-          AND expires_at > ?
-        LIMIT 1
-      `)
-      .bind(
-        tokenHash,
-        new Date().toISOString()
-      )
-      .first();
+    session =
+      await env.ACCOUNTS_DB
+        .prepare(`
+          SELECT
+            account_id,
+            expires_at
+          FROM sessions
+          WHERE token_hash = ?
+            AND expires_at > ?
+          LIMIT 1
+        `)
+        .bind(
+          tokenHash,
+          new Date().toISOString()
+        )
+        .first();
 
   } catch (error) {
 
@@ -916,6 +1193,7 @@ async function getCurrentUser(request, env) {
         status: 401,
 
         headers: {
+
           "Content-Type":
             "application/json; charset=UTF-8",
 
@@ -938,21 +1216,22 @@ async function getCurrentUser(request, env) {
 
   try {
 
-    user = await env.ACCOUNTS_DB
-      .prepare(`
-        SELECT
-          first_name,
-          middle_name,
-          last_name,
-          phone_number
-        FROM users
-        WHERE account_id = ?
-        LIMIT 1
-      `)
-      .bind(
-        Number(session.account_id)
-      )
-      .first();
+    user =
+      await env.ACCOUNTS_DB
+        .prepare(`
+          SELECT
+            first_name,
+            middle_name,
+            last_name,
+            phone_number
+          FROM users
+          WHERE account_id = ?
+          LIMIT 1
+        `)
+        .bind(
+          Number(session.account_id)
+        )
+        .first();
 
   } catch (error) {
 
@@ -982,6 +1261,7 @@ async function getCurrentUser(request, env) {
         status: 401,
 
         headers: {
+
           "Content-Type":
             "application/json; charset=UTF-8",
 
@@ -997,11 +1277,52 @@ async function getCurrentUser(request, env) {
 
 
   // ----------------------------------------------------------
+  // GET PRESENCE
+  // ----------------------------------------------------------
+
+  let presence = null;
+
+  try {
+
+    await ensurePresenceTable(env);
+
+    presence =
+      await env.ACCOUNTS_DB
+        .prepare(`
+          SELECT
+            last_seen
+          FROM user_presence
+          WHERE account_id = ?
+          LIMIT 1
+        `)
+        .bind(
+          Number(session.account_id)
+        )
+        .first();
+
+  } catch (error) {
+
+    console.error(
+      "CURRENT USER PRESENCE ERROR:",
+      error
+    );
+  }
+
+
+  const online =
+    calculateOnline(
+      presence?.last_seen
+    );
+
+
+  // ----------------------------------------------------------
   // RETURN CURRENT USER
   // ----------------------------------------------------------
 
   return json({
+
     success: true,
+
     loggedIn: true,
 
     accountId:
@@ -1018,7 +1339,378 @@ async function getCurrentUser(request, env) {
       user.last_name || "",
 
     phoneNumber:
-      user.phone_number || ""
+      user.phone_number || "",
+
+    online:
+      online,
+
+    status:
+      online
+        ? "Online"
+        : "Offline",
+
+    lastSeen:
+      presence?.last_seen || null
+  });
+}
+
+
+// ============================================================
+// HEARTBEAT
+// ============================================================
+// Website-ku wuxuu endpoint-kan wacayaa qiyaastii 30 ilbiriqsi
+// kasta marka user-ku gudaha ku jiro.
+//
+// Haddii heartbeat-ku joogsado 60 ilbiriqsi,
+// user-ka waxaa loo tixgelinayaa Offline.
+// ============================================================
+
+async function heartbeat(request, env) {
+
+  if (request.method !== "POST") {
+
+    return json(
+      {
+        success: false,
+        message:
+          "Method not allowed."
+      },
+      405
+    );
+  }
+
+  if (!env.ACCOUNTS_DB) {
+
+    return json(
+      {
+        success: false,
+        online: false
+      },
+      500
+    );
+  }
+
+
+  // ----------------------------------------------------------
+  // GET SESSION COOKIE
+  // ----------------------------------------------------------
+
+  const token =
+    getCookie(
+      request,
+      "haleel_session"
+    );
+
+  if (!token) {
+
+    return json(
+      {
+        success: false,
+        online: false,
+        loggedIn: false
+      },
+      401
+    );
+  }
+
+
+  // ----------------------------------------------------------
+  // HASH TOKEN
+  // ----------------------------------------------------------
+
+  let tokenHash;
+
+  try {
+
+    tokenHash =
+      await sha256(token);
+
+  } catch (error) {
+
+    console.error(
+      "HEARTBEAT TOKEN HASH ERROR:",
+      error
+    );
+
+    return json(
+      {
+        success: false,
+        online: false
+      },
+      500
+    );
+  }
+
+
+  // ----------------------------------------------------------
+  // VERIFY SESSION
+  // ----------------------------------------------------------
+
+  let session;
+
+  try {
+
+    session =
+      await env.ACCOUNTS_DB
+        .prepare(`
+          SELECT
+            account_id,
+            expires_at
+          FROM sessions
+          WHERE token_hash = ?
+            AND expires_at > ?
+          LIMIT 1
+        `)
+        .bind(
+          tokenHash,
+          new Date().toISOString()
+        )
+        .first();
+
+  } catch (error) {
+
+    console.error(
+      "HEARTBEAT SESSION ERROR:",
+      error
+    );
+
+    return json(
+      {
+        success: false,
+        online: false
+      },
+      500
+    );
+  }
+
+
+  if (!session) {
+
+    return new Response(
+      JSON.stringify({
+        success: false,
+        online: false,
+        loggedIn: false
+      }),
+      {
+        status: 401,
+
+        headers: {
+
+          "Content-Type":
+            "application/json; charset=UTF-8",
+
+          "Cache-Control":
+            "no-store",
+
+          "Set-Cookie":
+            clearSessionCookie()
+        }
+      }
+    );
+  }
+
+
+  // ----------------------------------------------------------
+  // UPDATE PRESENCE
+  // ----------------------------------------------------------
+
+  let lastSeen;
+
+  try {
+
+    lastSeen =
+      await markUserOnline(
+        Number(session.account_id),
+        env
+      );
+
+  } catch (error) {
+
+    console.error(
+      "HEARTBEAT PRESENCE ERROR:",
+      error
+    );
+
+    return json(
+      {
+        success: false,
+        online: false,
+        message:
+          "Unable to update online status."
+      },
+      500
+    );
+  }
+
+
+  return json({
+
+    success: true,
+
+    loggedIn: true,
+
+    online: true,
+
+    status: "Online",
+
+    accountId:
+      String(session.account_id)
+        .padStart(7, "0"),
+
+    lastSeen:
+      lastSeen
+  });
+}
+
+
+// ============================================================
+// GET ONLINE STATUS
+// ============================================================
+// Endpoint-kan wuxuu kuu ogolaanayaa inaad status-ka
+// account gaar ah ka eegto.
+// Tusaale:
+//
+// /api/online-status?accountId=0000001
+// ============================================================
+
+async function getOnlineStatus(request, env) {
+
+  if (request.method !== "GET") {
+
+    return json(
+      {
+        success: false,
+        message:
+          "Method not allowed."
+      },
+      405
+    );
+  }
+
+  if (!env.ACCOUNTS_DB) {
+
+    return json(
+      {
+        success: false
+      },
+      500
+    );
+  }
+
+  const url =
+    new URL(request.url);
+
+  const accountId =
+    String(
+      url.searchParams.get(
+        "accountId"
+      ) || ""
+    ).trim();
+
+
+  if (!/^\d{7}$/.test(accountId)) {
+
+    return json(
+      {
+        success: false,
+        message:
+          "Invalid account ID."
+      },
+      400
+    );
+  }
+
+
+  const numericAccountId =
+    Number(accountId);
+
+
+  // ----------------------------------------------------------
+  // MAKE SURE PRESENCE TABLE EXISTS
+  // ----------------------------------------------------------
+
+  try {
+
+    await ensurePresenceTable(env);
+
+  } catch (error) {
+
+    console.error(
+      "ONLINE STATUS TABLE ERROR:",
+      error
+    );
+
+    return json(
+      {
+        success: false
+      },
+      500
+    );
+  }
+
+
+  // ----------------------------------------------------------
+  // GET PRESENCE
+  // ----------------------------------------------------------
+
+  let presence;
+
+  try {
+
+    presence =
+      await env.ACCOUNTS_DB
+        .prepare(`
+          SELECT
+            last_seen
+          FROM user_presence
+          WHERE account_id = ?
+          LIMIT 1
+        `)
+        .bind(
+          numericAccountId
+        )
+        .first();
+
+  } catch (error) {
+
+    console.error(
+      "ONLINE STATUS ERROR:",
+      error
+    );
+
+    return json(
+      {
+        success: false
+      },
+      500
+    );
+  }
+
+
+  const online =
+    calculateOnline(
+      presence?.last_seen
+    );
+
+
+  return json({
+
+    success: true,
+
+    accountId:
+      accountId,
+
+    online:
+      online,
+
+    status:
+      online
+        ? "Online"
+        : "Offline",
+
+    lastSeen:
+      presence?.last_seen || null
   });
 }
 
@@ -1030,6 +1722,7 @@ async function getCurrentUser(request, env) {
 async function logout(request, env) {
 
   if (request.method !== "POST") {
+
     return json(
       {
         success: false,
@@ -1054,6 +1747,27 @@ async function logout(request, env) {
       const tokenHash =
         await sha256(token);
 
+
+      // ------------------------------------------------------
+      // FIND ACCOUNT BEFORE DELETE
+      // ------------------------------------------------------
+
+      const session =
+        await env.ACCOUNTS_DB
+          .prepare(`
+            SELECT account_id
+            FROM sessions
+            WHERE token_hash = ?
+            LIMIT 1
+          `)
+          .bind(tokenHash)
+          .first();
+
+
+      // ------------------------------------------------------
+      // DELETE SESSION
+      // ------------------------------------------------------
+
       await env.ACCOUNTS_DB
         .prepare(`
           DELETE FROM sessions
@@ -1061,6 +1775,19 @@ async function logout(request, env) {
         `)
         .bind(tokenHash)
         .run();
+
+
+      // ------------------------------------------------------
+      // MARK USER OFFLINE
+      // ------------------------------------------------------
+
+      if (session) {
+
+        await markUserOffline(
+          Number(session.account_id),
+          env
+        );
+      }
 
     } catch (error) {
 
@@ -1074,14 +1801,22 @@ async function logout(request, env) {
 
   return new Response(
     JSON.stringify({
+
       success: true,
+
+      online: false,
+
+      status: "Offline",
+
       message:
         "Logged out successfully."
     }),
+
     {
       status: 200,
 
       headers: {
+
         "Content-Type":
           "application/json; charset=UTF-8",
 
@@ -1141,10 +1876,15 @@ async function buildSession(accountId) {
 
 
   return {
+
     accountId,
+
     token,
+
     tokenHash,
+
     expiresAt,
+
     cookie
   };
 }
@@ -1174,9 +1914,8 @@ function clearSessionCookie() {
 async function sha256(value) {
 
   const data =
-    new TextEncoder().encode(
-      value
-    );
+    new TextEncoder()
+      .encode(value);
 
 
   const hash =
@@ -1209,7 +1948,8 @@ async function hashPassword(password) {
   const key =
     await crypto.subtle.importKey(
       "raw",
-      new TextEncoder().encode(password),
+      new TextEncoder()
+        .encode(password),
       {
         name: "PBKDF2"
       },
@@ -1269,6 +2009,7 @@ async function verifyPassword(
     parts.length !== 4 ||
     parts[0] !== "pbkdf2"
   ) {
+
     return false;
   }
 
@@ -1281,6 +2022,7 @@ async function verifyPassword(
     !Number.isInteger(iterations) ||
     iterations < 1
   ) {
+
     return false;
   }
 
@@ -1311,6 +2053,7 @@ async function verifyPassword(
     salt.length === 0 ||
     expectedHash.length === 0
   ) {
+
     return false;
   }
 
@@ -1318,7 +2061,8 @@ async function verifyPassword(
   const key =
     await crypto.subtle.importKey(
       "raw",
-      new TextEncoder().encode(password),
+      new TextEncoder()
+        .encode(password),
       {
         name: "PBKDF2"
       },
@@ -1389,10 +2133,15 @@ function timingSafeEqual(a, b) {
 // COOKIE READER
 // ============================================================
 
-function getCookie(request, name) {
+function getCookie(
+  request,
+  name
+) {
 
   const cookieHeader =
-    request.headers.get("Cookie");
+    request.headers.get(
+      "Cookie"
+    );
 
 
   if (!cookieHeader) {
@@ -1404,7 +2153,9 @@ function getCookie(request, name) {
     cookieHeader.split(";");
 
 
-  for (const cookie of cookies) {
+  for (
+    const cookie of cookies
+  ) {
 
     const trimmed =
       cookie.trim();
@@ -1433,6 +2184,7 @@ function getCookie(request, name) {
 
 
     if (key === name) {
+
       return value || null;
     }
   }
@@ -1470,10 +2222,12 @@ function json(
 
   return new Response(
     JSON.stringify(data),
+
     {
       status,
 
       headers: {
+
         "Content-Type":
           "application/json; charset=UTF-8",
 
@@ -1494,10 +2248,14 @@ function bytesToBase64Url(bytes) {
   let binary = "";
 
 
-  for (const byte of bytes) {
+  for (
+    const byte of bytes
+  ) {
 
     binary +=
-      String.fromCharCode(byte);
+      String.fromCharCode(
+        byte
+      );
   }
 
 
@@ -1522,12 +2280,15 @@ function base64UrlToBytes(value) {
 
   const padding =
     "=".repeat(
-      (4 - (base64.length % 4)) % 4
+      (4 -
+        (base64.length % 4)) % 4
     );
 
 
   const binary =
-    atob(base64 + padding);
+    atob(
+      base64 + padding
+    );
 
 
   const bytes =
@@ -1549,3 +2310,4 @@ function base64UrlToBytes(value) {
 
   return bytes;
 }
+```
