@@ -2939,14 +2939,40 @@ function showAccountCreated(accountId,firstName,middleName,lastName,createdAt){
   $("authCreatedAccountTime").textContent=createdAt;
 }
 
-function openCreatedAccount(){
+async function openCreatedAccount(){
   const id=String($("authCreatedAccountId")?.textContent || "").trim();
   if(!/^\d{7}$/.test(id)) return;
-  localStorage.setItem("haleelAccountId",id);
-  $("authLoginId").value=id;
-  $("authLoginPassword").value="";
-  showSignIn();
-  setTimeout(()=>$('authLoginPassword')?.focus(),120);
+
+  const button=$("authOpenAccountButton");
+  setAuthBusy(button,true,"⏳ Opening Account...");
+
+  try{
+    /*
+      Signup-ku wuxuu Worker-ka ka sameeyaa session cusub oo HttpOnly cookie ah.
+      Sidaas darteed Open Account wuxuu marka hore xaqiijinayaa session-kaas,
+      kadibna si toos ah ayuu gudaha website-ka u furayaa account-ka.
+      Password dib looma weydiinayo, sababtoo ah account-ka hadda ayaa la abuuray
+      waxaana hore loo sameeyay session-ka authenticated.
+    */
+    const data=await authApi("/api/me");
+
+    if(!data.success || !data.accountId){
+      throw new Error("Session-ka account-ka lama xaqiijin.");
+    }
+
+    localStorage.setItem("haleelAccountId",String(data.accountId));
+    openDashboardForUser(data);
+  }catch(error){
+    /* Haddii session-ku aanu jirin, Sign In ayaa loo celinayaa. */
+    localStorage.setItem("haleelAccountId",id);
+    $("authLoginId").value=id;
+    $("authLoginPassword").value="";
+    showSignIn();
+    authMessage("authLoginMessage","Account-ka waa la sameeyay. Fadlan geli Password-kaaga si aad u gasho.");
+    setTimeout(()=>$("authLoginPassword")?.focus(),120);
+  }finally{
+    setAuthBusy(button,false);
+  }
 }
 
 function toggleAuthPassword(id,button){
