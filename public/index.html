@@ -1703,7 +1703,7 @@ body.dark .auth-account-preview{background:#102d43;color:#65b9ff}
 </div>
 
 <div class="user">
-<strong>Haleel Customer</strong>
+<strong id="userDisplay">Haleel Customer</strong>
 <small>Welcome to Haleel Real Estate</small>
 </div>
 
@@ -2847,21 +2847,35 @@ return document.getElementById(id);
 const HALEEL_AUTH_API =
   "https://haleel-real-estate121.yuusufmoha440.workers.dev";
 
+/* =========================================================
+   HALEEL AUTHENTICATION API
+   Uses the Worker HttpOnly session cookie.
+   No session token is stored in localStorage.
+========================================================= */
 function authApi(path, body=null){
-  const headers={"Content-Type":"application/json"};
-  const token=localStorage.getItem("haleelSessionToken");
-  if(token) headers.Authorization="Bearer "+token;
-
-  return fetch(HALEEL_AUTH_API+path,{
+  const options={
     method:body ? "POST" : "GET",
-    headers,
-    body:body ? JSON.stringify(body) : undefined
-  }).then(async response=>{
+    credentials:"include",
+    headers:{}
+  };
+
+  if(body!==null){
+    options.headers["Content-Type"]="application/json";
+    options.body=JSON.stringify(body);
+  }
+
+  return fetch(HALEEL_AUTH_API+path,options).then(async response=>{
     let data={};
     try{ data=await response.json(); }catch(e){}
+
     if(!response.ok){
-      throw new Error(data.error || "Request failed.");
+      throw new Error(data.error || data.message || "Request failed.");
     }
+
+    if(data && data.success===false){
+      throw new Error(data.error || data.message || "Request failed.");
+    }
+
     return data;
   });
 }
@@ -2877,7 +2891,7 @@ function showSignIn(){
   $("signInView").style.display="block";
   $("createAccountView").style.display="none";
   authMessage("authLoginMessage","");
-  setTimeout(()=>$("authLoginId")?.focus(),80);
+  setTimeout(()=>$('authLoginId')?.focus(),80);
 }
 
 function showCreateAccount(){
@@ -2885,7 +2899,7 @@ function showCreateAccount(){
   $("createAccountView").style.display="block";
   authMessage("authSignupMessage","");
   $("authCreatedAccount").style.display="none";
-  setTimeout(()=>$("authFirstName")?.focus(),80);
+  setTimeout(()=>$('authFirstName')?.focus(),80);
 }
 
 function toggleAuthPassword(id,button){
@@ -2893,7 +2907,7 @@ function toggleAuthPassword(id,button){
   if(!input)return;
   const visible=input.type==="text";
   input.type=visible?"password":"text";
-  button.textContent=visible?"👁️":"🙈";
+  if(button)button.textContent=visible?"👁️":"🙈";
 }
 
 function setAuthBusy(button,busy,text){
@@ -2921,23 +2935,28 @@ function openDashboardForUser(user){
   const display=$("userDisplay");
   if(display){
     display.innerHTML =
-      `${escapeHTML(name)}<small style="display:block;color:#718096;margin-top:3px">ID: ${escapeHTML(accountId)}</small>`;
+      `${escapeHTML(name)}<small style="display:block;color:#718096;margin-top:3px">ID: ${escapeHTML(String(accountId))}</small>`;
+  }
+
+  if(accountId){
+    localStorage.setItem("haleelAccountId",String(accountId));
   }
 
   const gate=$("authGate");
-  if(gate) gate.style.display="none";
+  if(gate)gate.style.display="none";
 
   const app=document.querySelector(".app");
-  if(app) app.style.display="block";
+  if(app)app.style.display="block";
 
   openPage("home");
 }
 
 function lockDashboard(){
   const app=document.querySelector(".app");
-  if(app) app.style.display="none";
+  if(app)app.style.display="none";
+
   const gate=$("authGate");
-  if(gate) gate.style.display="flex";
+  if(gate)gate.style.display="flex";
 }
 
 async function authLogin(){
@@ -2951,6 +2970,7 @@ async function authLogin(){
     authMessage("authLoginMessage","Fadlan geli Account ID ka kooban 7 lambar.");
     return;
   }
+
   if(!password){
     authMessage("authLoginMessage","Fadlan geli Password-kaaga.");
     return;
@@ -2964,14 +2984,14 @@ async function authLogin(){
       password
     });
 
-    if(!data.token || !data.user){
-      throw new Error("Login response-ku ma dhamaystirna.");
+    if(!data.success || !data.accountId){
+      throw new Error(data.message || data.error || "Login response-ku ma dhamaystirna.");
     }
 
-    localStorage.setItem("haleelSessionToken",data.token);
-    localStorage.setItem("haleelAccountId",data.user.accountId || accountId);
+    /* Worker-ku session-ka wuxuu ku kaydiyaa HttpOnly cookie. */
+    localStorage.setItem("haleelAccountId",String(data.accountId));
 
-    openDashboardForUser(data.user);
+    openDashboardForUser(data);
   }catch(error){
     const msg=String(error.message||"");
 
@@ -3020,7 +3040,8 @@ async function createAccount(){
       firstName,
       middleName,
       lastName,
-      number,
+      /* Worker-ku wuxuu filayaa phoneNumber, ma aha number. */
+      phoneNumber:number,
       password
     });
 
@@ -3030,7 +3051,7 @@ async function createAccount(){
       data.user?.accountId;
 
     if(!/^\d{7}$/.test(String(newId||""))){
-      throw new Error("Backend-ku ma soo celin 7-digit Account ID.");
+      throw new Error(data.message || "Backend-ku ma soo celin 7-digit Account ID.");
     }
 
     $("authCreatedAccountId").textContent=String(newId);
@@ -3038,6 +3059,7 @@ async function createAccount(){
 
     $("authLoginId").value=String(newId);
     $("authLoginPassword").value="";
+    localStorage.setItem("haleelAccountId",String(newId));
 
     authMessage(
       "authSignupMessage",
@@ -3045,8 +3067,6 @@ async function createAccount(){
       true
     );
 
-    /* Account ID-ga lama sameyn karo mar kale:
-       uniqueness-ka waxaa xaqiijinaya D1 primary key/autoincrement. */
     setTimeout(()=>{
       showSignIn();
       $("authLoginId").value=String(newId);
@@ -3066,25 +3086,29 @@ async function createAccount(){
 async function restoreHaleelSession(){
   lockDashboard();
 
-  const token=localStorage.getItem("haleelSessionToken");
-  if(!token){
-    showSignIn();
-    return;
-  }
-
   try{
+    /* /api/me reads the HttpOnly haleel_session cookie. */
     const data=await authApi("/api/me");
-    if(!data.user) throw new Error("Session invalid.");
-    openDashboardForUser(data.user);
+
+    if(!data.success || !data.accountId){
+      throw new Error("Session invalid.");
+    }
+
+    localStorage.setItem("haleelAccountId",String(data.accountId));
+    openDashboardForUser(data);
   }catch(error){
-    localStorage.removeItem("haleelSessionToken");
     localStorage.removeItem("haleelAccountId");
     showSignIn();
   }
 }
 
-function logout(){
-  localStorage.removeItem("haleelSessionToken");
+async function logout(){
+  try{
+    await authApi("/api/logout",{});
+  }catch(error){
+    /* Even if the network request fails, clear the local UI state. */
+  }
+
   localStorage.removeItem("haleelAccountId");
   lockDashboard();
   $("authLoginPassword").value="";
@@ -3102,10 +3126,13 @@ document.addEventListener("input",function(event){
 document.addEventListener("keydown",function(event){
   if(event.key!=="Enter")return;
   const target=event.target;
+
   if(target?.id==="authLoginId" || target?.id==="authLoginPassword"){
     event.preventDefault();
     authLogin();
+    return;
   }
+
   if(target?.id==="authConfirmPassword"){
     event.preventDefault();
     createAccount();
@@ -3115,6 +3142,7 @@ document.addEventListener("keydown",function(event){
 document.addEventListener("DOMContentLoaded",()=>{
   restoreHaleelSession();
 });
+
 
 /* =========================================================
    GOOGLE APPS SCRIPT BACKEND
