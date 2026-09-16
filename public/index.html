@@ -2427,6 +2427,30 @@ body:has(.auth-gate){
   touch-action:none !important;
 }
 
+/* AUTH INTERACTION FIX — keep all authentication controls clickable */
+.auth-gate,
+.auth-shell,
+.auth-form-panel,
+.auth-form-wrap,
+.auth-form-view{
+  pointer-events:auto !important;
+}
+
+.auth-gate button,
+.auth-gate input{
+  pointer-events:auto !important;
+}
+
+.auth-gate button{
+  position:relative;
+  z-index:10;
+  touch-action:manipulation !important;
+}
+
+.auth-gate .auth-eye{
+  z-index:20;
+}
+
 @keyframes authFullIn{
   from{opacity:0;transform:scale(.985)}
   to{opacity:1;transform:scale(1)}
