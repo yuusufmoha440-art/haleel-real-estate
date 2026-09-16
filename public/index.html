@@ -2806,6 +2806,31 @@ body.dark .auth-created-warning{background:#332b12;color:#f2d675}
 }
 </style>
 
+
+<style id="remove-blue-haleel-paper">
+/* Remove the decorative blue HALEEL paper/logo that appears on the form */
+.auth-form-panel::before,
+.auth-form-panel::after,
+.auth-form-wrap::before,
+.auth-form-wrap::after,
+.auth-shell::before,
+.auth-shell::after {
+  content: none !important;
+  display: none !important;
+  background: none !important;
+  box-shadow: none !important;
+}
+
+/* Keep the actual form/logo text clean; hide only the generated decorative mark */
+#authGate .haleel-auth-logo::before,
+#authGate .haleel-auth-logo::after,
+#authGate .auth-form-panel > .auth-brand,
+#authGate .auth-form-panel > .brand-mark {
+  display: none !important;
+  content: none !important;
+}
+</style>
+
 </head>
 
 <body>
