@@ -2831,6 +2831,48 @@ body.dark .auth-created-warning{background:#332b12;color:#f2d675}
 }
 </style>
 
+
+<style id="haleel-auth-button-fix">
+/* Restore working auth controls after the visual-only redesign */
+#authGate button,
+#authGate .auth-btn,
+#authGate .auth-back,
+#authGate [onclick] {
+  position: relative !important;
+  z-index: 1000 !important;
+  pointer-events: auto !important;
+  cursor: pointer !important;
+}
+
+/* Make sure decorative layers cannot sit over the buttons */
+#authGate::before,
+#authGate::after,
+#authGate .auth-shell::before,
+#authGate .auth-shell::after,
+#authGate .auth-form-panel::before,
+#authGate .auth-form-panel::after,
+#authGate .auth-form-wrap::before,
+#authGate .auth-form-wrap::after {
+  pointer-events: none !important;
+}
+
+/* Keep the two main auth actions clearly clickable */
+#authLoginButton,
+#authCreateButton,
+#authOpenAccountButton,
+#authSignInButton {
+  position: relative !important;
+  z-index: 1001 !important;
+  pointer-events: auto !important;
+}
+
+/* If the original buttons use these IDs/classes, preserve their click area */
+#authGate .auth-form-view {
+  position: relative !important;
+  z-index: 10 !important;
+}
+</style>
+
 </head>
 
 <body>
@@ -6038,6 +6080,39 @@ updateCountryTime,
 1000
 );
 
+</script>
+
+
+<script id="haleel-auth-button-js-fix">
+document.addEventListener('DOMContentLoaded', function () {
+  const openSelectors = [
+    '#authOpenAccountButton',
+    '[onclick="showCreateAccount()"]'
+  ];
+  const signInSelectors = [
+    '#authSignInButton',
+    '[onclick="showSignIn()"]'
+  ];
+
+  function bindOnce(selectors, handlerName) {
+    selectors.forEach(function(sel) {
+      document.querySelectorAll(sel).forEach(function(btn) {
+        btn.style.pointerEvents = 'auto';
+        btn.style.cursor = 'pointer';
+        btn.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          if (typeof window[handlerName] === 'function') {
+            window[handlerName]();
+          }
+        }, true);
+      });
+    });
+  }
+
+  bindOnce(openSelectors, 'showCreateAccount');
+  bindOnce(signInSelectors, 'showSignIn');
+});
 </script>
 
 </body>
