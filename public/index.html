@@ -2656,6 +2656,55 @@ body.dark .auth-created-warning{background:#332b12;color:#f2d675}
 }
 </style>
 
+
+<style id="haleel-fullscreen-form">
+/* FULL-SCREEN FORM */
+.auth-gate{
+  padding:0!important;
+  min-height:100vh!important;
+  height:100vh!important;
+  align-items:stretch!important;
+  justify-content:stretch!important;
+}
+.auth-shell{
+  width:100%!important;
+  min-height:100vh!important;
+  height:100vh!important;
+  max-width:none!important;
+  border-radius:0!important;
+  border:0!important;
+  box-shadow:none!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  overflow:auto!important;
+}
+.auth-form-panel{
+  width:min(760px,100%)!important;
+  max-width:760px!important;
+  padding:64px 70px!important;
+}
+.auth-form-panel::before{
+  margin-bottom:18px!important;
+  transform:scale(1.05);
+}
+.auth-form-panel h2{font-size:36px!important;}
+.auth-form-panel .auth-subtitle{font-size:15px!important;margin-bottom:34px!important;}
+.auth-field{margin-bottom:20px!important;}
+.auth-field input{height:58px!important;font-size:16px!important;border-radius:15px!important;}
+#authLoginButton,#authCreateButton{height:59px!important;font-size:16px!important;border-radius:16px!important;}
+.auth-secondary{height:56px!important;border-radius:15px!important;}
+@media(max-width:700px){
+  .auth-form-panel{width:100%!important;max-width:620px!important;padding:40px 28px!important;}
+  .auth-form-panel h2{font-size:30px!important;}
+}
+@media(max-width:430px){
+  .auth-form-panel{padding:30px 18px!important;}
+  .auth-form-panel h2{font-size:26px!important;}
+  .auth-form-panel .auth-subtitle{margin-bottom:25px!important;}
+}
+</style>
+
 </head>
 
 <body>
