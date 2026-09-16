@@ -2705,6 +2705,107 @@ body.dark .auth-created-warning{background:#332b12;color:#f2d675}
 }
 </style>
 
+
+<style id="haleel-complete-auth-fix">
+/* Final authentication layout fix:
+   Keep every Create Account field available and let the page scroll naturally
+   when the viewport is too short, without clipping the form. */
+#authGate{
+  min-height:100dvh !important;
+  height:auto !important;
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+  align-items:flex-start !important;
+  padding:clamp(18px,3vh,34px) 20px !important;
+}
+
+#authGate .auth-shell{
+  width:100% !important;
+  max-width:980px !important;
+  min-height:auto !important;
+  height:auto !important;
+  margin:auto !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  overflow:visible !important;
+  border-radius:28px !important;
+}
+
+#authGate .auth-form-panel{
+  width:min(760px,100%) !important;
+  max-width:760px !important;
+  min-height:0 !important;
+  height:auto !important;
+  max-height:none !important;
+  padding:42px clamp(22px,5vw,64px) !important;
+  overflow:visible !important;
+  align-items:flex-start !important;
+}
+
+#authGate .auth-form-wrap{
+  width:100% !important;
+  max-width:620px !important;
+  margin:0 auto !important;
+}
+
+#authGate .auth-form-view{
+  width:100% !important;
+  overflow:visible !important;
+}
+
+#authGate .auth-name-grid{
+  display:grid !important;
+  grid-template-columns:1fr 1fr !important;
+  gap:14px !important;
+}
+
+#authGate .auth-input{
+  width:100% !important;
+}
+
+#authGate .auth-primary,
+#authGate .auth-secondary{
+  width:100% !important;
+}
+
+@media (max-width:700px){
+  #authGate{
+    padding:14px 12px !important;
+  }
+  #authGate .auth-shell{
+    border-radius:22px !important;
+  }
+  #authGate .auth-form-panel{
+    padding:30px 20px 34px !important;
+  }
+  #authGate .auth-name-grid{
+    grid-template-columns:1fr 1fr !important;
+  }
+}
+
+@media (max-width:480px){
+  #authGate .auth-form-panel{
+    padding:24px 16px 30px !important;
+  }
+  #authGate .auth-name-grid{
+    grid-template-columns:1fr !important;
+    gap:0 !important;
+  }
+}
+
+@media (max-height:700px) and (min-width:481px){
+  #authGate{
+    padding-top:12px !important;
+    padding-bottom:12px !important;
+  }
+  #authGate .auth-form-panel{
+    padding-top:24px !important;
+    padding-bottom:24px !important;
+  }
+}
+</style>
+
 </head>
 
 <body>
