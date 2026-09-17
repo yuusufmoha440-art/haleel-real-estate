@@ -3033,7 +3033,7 @@ View All
         <div class="premium-service-icon">💻</div>
         <h3>Farsamo Tech</h3>
         <p>Technology, IT iyo xalal digital ah oo kaa caawinaya shaqada iyo adeegyada casriga ah.</p>
-        <button class="service-register-btn" id="serviceBtn0" data-service="Farsamo Tech" onclick="handleServiceButton('Farsamo Tech',this)">Register Now →</button>
+        <button class="service-register-btn service-open-btn" id="serviceBtn0" data-service="Farsamo Tech" onclick="openServiceDirect('Farsamo Tech')">Open →</button>
       </div>
     </article>
 
@@ -3045,7 +3045,7 @@ View All
         <div class="premium-service-icon">🎓</div>
         <h3>Phub Academy</h3>
         <p>Waxbarasho, tababarro iyo koorsooyin loogu talagalay horumarinta aqoonta iyo xirfadaha.</p>
-        <button class="service-register-btn" id="serviceBtn1" data-service="Phub Academy" onclick="handleServiceButton('Phub Academy',this)">Register Now →</button>
+        <button class="service-register-btn service-open-btn" id="serviceBtn1" data-service="Phub Academy" onclick="openServiceDirect('Phub Academy')">Open →</button>
       </div>
     </article>
 
@@ -3057,7 +3057,7 @@ View All
         <div class="premium-service-icon">🏠</div>
         <h3>Checking House</h3>
         <p>Adeeg ku saabsan hubinta iyo qiimeynta xogta guryaha si go'aan xog-ogaal ah loo qaato.</p>
-        <button class="service-register-btn" id="serviceBtn2" data-service="Checking House" onclick="handleServiceButton('Checking House',this)">Register Now →</button>
+        <button class="service-register-btn service-open-btn" id="serviceBtn2" data-service="Checking House" onclick="openServiceDirect('Checking House')">Open →</button>
       </div>
     </article>
 
@@ -3069,7 +3069,7 @@ View All
         <div class="premium-service-icon">🌱</div>
         <h3>Nagaad Agro</h3>
         <p>Adeegyo la xiriira beeraha, wax-soo-saarka iyo xalalka Agro ee casriga ah.</p>
-        <button class="service-register-btn" id="serviceBtn3" data-service="Nagaad Agro" onclick="handleServiceButton('Nagaad Agro',this)">Register Now →</button>
+        <button class="service-register-btn service-open-btn" id="serviceBtn3" data-service="Nagaad Agro" onclick="openServiceDirect('Nagaad Agro')">Open →</button>
       </div>
     </article>
 
@@ -3081,7 +3081,7 @@ View All
         <div class="premium-service-icon">🐄</div>
         <h3>Barako Livestock</h3>
         <p>Adeegyo iyo fursado la xiriira xoolaha iyo horumarinta livestock-ka.</p>
-        <button class="service-register-btn" id="serviceBtn4" data-service="Barako Livestock" onclick="handleServiceButton('Barako Livestock',this)">Register Now →</button>
+        <button class="service-register-btn service-open-btn" id="serviceBtn4" data-service="Barako Livestock" onclick="openServiceDirect('Barako Livestock')">Open →</button>
       </div>
     </article>
 
@@ -5293,25 +5293,19 @@ function isServiceRegistered(serviceName){
 
 function refreshServiceButtons(){
   document.querySelectorAll(".service-register-btn[data-service]").forEach(button=>{
-    const serviceName=button.dataset.service;
-    const registered=isServiceRegistered(serviceName);
-    button.textContent=registered ? "🔓 Open" : "Register Now →";
-    button.classList.toggle("service-open-btn",registered);
+    button.textContent="Open →";
+    button.classList.add("service-open-btn");
   });
 }
 
-function handleServiceButton(serviceName,button){
-  if(isServiceRegistered(serviceName)){
-    if(serviceName==="Farsamo Tech"){
-      openPage("farsamo");
-    }else if(serviceName==="Phub Academy"){
-      openPage("phub");
-    }else{
-      alert("Adeegga "+serviceName+" waa kuu furan yahay.");
-    }
-    return;
+function openServiceDirect(serviceName){
+  if(serviceName==="Farsamo Tech"){
+    openPage("farsamo");
+  }else if(serviceName==="Phub Academy"){
+    openPage("phub");
+  }else{
+    alert("Qaybta "+serviceName+" waa la diyaarinayaa.");
   }
-  openServiceRegistration(serviceName);
 }
 
 function openServiceRegistration(serviceName){
