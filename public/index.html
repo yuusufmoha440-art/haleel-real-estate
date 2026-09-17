@@ -2519,6 +2519,47 @@ body.dark .auth-created-warning{background:#332b12;color:#f2d675}
 /* =========================================================
    FARSAMO TECH SERVICES
 ========================================================= */
+
+/* =========================================================
+   PHUB ACADEMY
+========================================================= */
+.phub-page{padding:28px 0 70px}
+.phub-hero{
+  position:relative;overflow:hidden;border-radius:26px;padding:42px 34px;min-height:250px;
+  display:flex;align-items:flex-end;margin-bottom:28px;
+  background:linear-gradient(135deg,rgba(15,23,42,.92),rgba(37,99,235,.72)),url("https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1600&q=85") center/cover;
+  color:#fff;box-shadow:0 18px 45px rgba(15,23,42,.16)
+}
+.phub-hero h1{margin:0 0 10px;font-size:clamp(30px,4vw,48px);font-weight:950}
+.phub-hero p{margin:0;max-width:760px;line-height:1.7;color:rgba(255,255,255,.88)}
+.phub-back{margin-bottom:18px}
+.phub-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.phub-card{position:relative;overflow:hidden;min-height:260px;border-radius:22px;padding:28px;display:flex;flex-direction:column;justify-content:flex-end;color:#fff;background:#111827;box-shadow:0 14px 35px rgba(15,23,42,.12);transition:.3s ease}
+.phub-card:hover{transform:translateY(-6px);box-shadow:0 20px 45px rgba(15,23,42,.18)}
+.phub-card::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,23,42,.05),rgba(15,23,42,.9));z-index:0}
+.phub-card-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-1}
+.phub-card>*:not(.phub-card-bg){position:relative;z-index:1}
+.phub-icon{font-size:42px;margin-bottom:8px}
+.phub-card h3{font-size:25px;margin:0 0 8px;font-weight:950}
+.phub-card p{margin:0 0 17px;color:rgba(255,255,255,.86);line-height:1.55}
+.phub-open{align-self:flex-start;border:0;border-radius:13px;padding:11px 17px;font-weight:900;cursor:pointer;background:#fff;color:#111827;transition:.25s}
+.phub-open:hover{transform:translateY(-2px);background:#f3f4f6}
+.phub-islamic{grid-column:1/-1;min-height:290px;background:linear-gradient(135deg,#0f5132,#166534)}
+.islamic-page{padding:28px 0 70px}
+.islamic-hero{border-radius:26px;padding:38px 30px;color:#fff;background:linear-gradient(135deg,rgba(6,78,59,.94),rgba(21,128,61,.78)),url("https://images.unsplash.com/photo-1609599006353-e629aaabfeae?auto=format&fit=crop&w=1600&q=85") center/cover;box-shadow:0 18px 45px rgba(6,78,59,.15);margin-bottom:26px}
+.islamic-hero h1{margin:0 0 8px;font-size:clamp(28px,4vw,44px);font-weight:950}
+.islamic-hero p{margin:0;max-width:760px;line-height:1.7;color:rgba(255,255,255,.9)}
+.islamic-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.islamic-card{background:#fff;border:1px solid #e5e7eb;border-radius:20px;padding:24px;box-shadow:0 12px 30px rgba(15,23,42,.08);transition:.3s}
+.islamic-card:hover{transform:translateY(-5px)}
+.islamic-card .book-icon{font-size:40px;margin-bottom:10px}
+.islamic-card h3{margin:0 0 8px;font-size:21px;font-weight:950}
+.islamic-card p{color:#64748b;line-height:1.6;margin:0 0 16px}
+.islamic-open{border:0;border-radius:12px;padding:10px 15px;background:#0f766e;color:#fff;font-weight:900;cursor:pointer}
+body.dark .islamic-card{background:#111827;border-color:#253047;color:#fff}
+body.dark .islamic-card p{color:#a8b3c7}
+@media(max-width:760px){.phub-grid,.islamic-grid{grid-template-columns:1fr}.phub-islamic{grid-column:auto}.phub-hero{padding:30px 22px;min-height:230px}.phub-card{min-height:235px}.islamic-hero{padding:30px 22px}}
+
 .farsamo-page{
   padding-bottom:40px;
 }
@@ -3989,6 +4030,60 @@ onclick="toggleCare()">
 
 
 
+<!-- PHUB ACADEMY -->
+<div class="page phub-page" id="phub">
+  <button class="btn btn-outline phub-back" onclick="openPage('services')">← Back to Services</button>
+  <div class="phub-hero">
+    <div>
+      <div style="font-weight:900;letter-spacing:.08em;text-transform:uppercase;font-size:12px;margin-bottom:9px">🎓 Phub Academy</div>
+      <h1>Waxbarasho & Xirfado</h1>
+      <p>Baro xirfado casri ah iyo aqoon kala duwan adigoo hal meel ka heli kara qaybaha waxbarashada ee Phub Academy.</p>
+    </div>
+  </div>
+
+  <div class="section-header">
+    <div><h2>Qaybaha Waxbarashada</h2><p style="color:#718096;margin-top:5px">Dooro qaybta aad rabto inaad barato.</p></div>
+  </div>
+
+  <div class="phub-grid">
+    <article class="phub-card">
+      <img class="phub-card-bg" src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=85" alt="Multi-media">
+      <div class="phub-icon">🎬</div><h3>Multi-media</h3><p>Video editing, graphic design, content creation iyo xirfadaha multimedia.</p>
+      <button class="phub-open" onclick="alert('Qaybta Multi-media waa la diyaarinayaa.')">Open</button>
+    </article>
+    <article class="phub-card">
+      <img class="phub-card-bg" src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=85" alt="Data Analysis">
+      <div class="phub-icon">📊</div><h3>Data Analysis</h3><p>Baro sida xogta loo ururiyo, loo falanqeeyo loona fahmo natiijooyinka.</p>
+      <button class="phub-open" onclick="alert('Qaybta Data Analysis waa la diyaarinayaa.')">Open</button>
+    </article>
+    <article class="phub-card">
+      <img class="phub-card-bg" src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=85" alt="Web Development">
+      <div class="phub-icon">💻</div><h3>Web Development</h3><p>HTML, CSS, JavaScript iyo dhisidda websites casri ah oo responsive ah.</p>
+      <button class="phub-open" onclick="alert('Qaybta Web Development waa la diyaarinayaa.')">Open</button>
+    </article>
+    <article class="phub-card phub-islamic">
+      <img class="phub-card-bg" src="https://images.unsplash.com/photo-1584286595398-a59f21d31300?auto=format&fit=crop&w=1400&q=85" alt="Islamic Education">
+      <div class="phub-icon">📖</div><h3>Islamic Education</h3><p>Qur'aan Kariim, Axaadiis iyo kutub diini ah oo lagu diyaariyey meel gaar ah oo waxbarashada Islaamiga ah.</p>
+      <button class="phub-open" onclick="openPage('islamicEducation')">🔓 Open</button>
+    </article>
+  </div>
+</div>
+
+<!-- ISLAMIC EDUCATION -->
+<div class="page islamic-page" id="islamicEducation">
+  <button class="btn btn-outline" onclick="openPage('phub')">← Back to Phub Academy</button>
+  <div class="islamic-hero" style="margin-top:18px">
+    <div style="font-weight:900;letter-spacing:.08em;text-transform:uppercase;font-size:12px;margin-bottom:9px">📖 Islamic Education</div>
+    <h1>Waxbarashada Islaamiga ah</h1>
+    <p>Halkan waxaa lagu diyaarin karaa Qur'aanka Kariimka, Axaadiista iyo kutubta diini ah, si user-ku hal meel uga helo qaybaha uu doonayo inuu barto.</p>
+  </div>
+  <div class="islamic-grid">
+    <article class="islamic-card"><div class="book-icon">🕋</div><h3>Qur'aan Kariim</h3><p>Qayb loogu talagalay akhriska, barashada iyo raadinta suuradaha Qur'aanka Kariimka.</p><button class="islamic-open" onclick="alert('Qaybta Qur'aan Kariim waa la diyaarinayaa.')">Open</button></article>
+    <article class="islamic-card"><div class="book-icon">📜</div><h3>Axaadiista</h3><p>Qayb loogu talagalay ururinta iyo barashada Axaadiista, iyadoo ilaha iyo tixraacyada lagu dari karo.</p><button class="islamic-open" onclick="alert('Qaybta Axaadiista waa la diyaarinayaa.')">Open</button></article>
+    <article class="islamic-card"><div class="book-icon">📚</div><h3>Buugaag Diini ah</h3><p>Meel lagu habeeyo kutubta diini ah ee kala duwan, sida tafsiir, fiqhi, aqeedo iyo culuum Islaami ah.</p><button class="islamic-open" onclick="alert('Qaybta Kutubta Diiniga ah waa la diyaarinayaa.')">Open</button></article>
+  </div>
+</div>
+
 <!-- SERVICE REGISTRATION -->
 <div class="modal" id="serviceRegistrationModal">
   <div class="modal-box service-registration-box">
@@ -5214,6 +5309,8 @@ function handleServiceButton(serviceName,button){
   if(isServiceRegistered(serviceName)){
     if(serviceName==="Farsamo Tech"){
       openPage("farsamo");
+    }else if(serviceName==="Phub Academy"){
+      openPage("phub");
     }else{
       alert("Adeegga "+serviceName+" waa kuu furan yahay.");
     }
@@ -5261,6 +5358,8 @@ function submitServiceRegistration(){
     refreshServiceButtons();
     if(service==="Farsamo Tech"){
       openPage("farsamo");
+    }else if(service==="Phub Academy"){
+      openPage("phub");
     }
   },650);
 }
