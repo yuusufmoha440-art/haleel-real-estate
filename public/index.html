@@ -5639,6 +5639,7 @@ function getSpecificServiceData(){
 function submitServiceOrder(event){
   event.preventDefault();
 
+  const form=$("serviceOrderForm");
   const service=$("serviceOrderService").value.trim();
   const name=$("orderName").value.trim();
   const phone=$("orderPhone").value.trim();
@@ -5655,41 +5656,41 @@ function submitServiceOrder(event){
     return;
   }
 
-  let body=`DALAB ADEEG FARSAMO - HALEEL
+  let body=`DALAB ADEEG FARSAMO - HALEEL\n\nAdeegga: ${service}\nMagaca: ${name}\nTelefoon: ${phone}\nEmail: ${email || "Lama gelin"}\nMagaalada: ${city}\nGoobta/Cinwaanka: ${location}\n`;
+  getSpecificServiceData().forEach(([label,value])=>{ body += `${label}: ${value}\n`; });
+  body += `\nFaahfaahin:\n${details}\n\n---\nDalabkan waxaa laga soo gudbiyay Haleel Real Estate.`;
 
-Adeegga: ${service}
-Magaca: ${name}
-Telefoon: ${phone}
-Email: ${email || "Lama gelin"}
-Magaalada: ${city}
-Goobta/Cinwaanka: ${location}
-`;
-
-  getSpecificServiceData().forEach(([label,value])=>{
-    body += `${label}: ${value}\n`;
-  });
-
-  body += `
-Faahfaahin:
-${details}
-
----
-Dalabkan waxaa laga soo gudbiyay Haleel Real Estate.`;
-
-  const subject=encodeURIComponent(`Dalab Adeeg Farsamo - ${service} - ${name}`);
-  const encodedBody=encodeURIComponent(body);
+  // Silent/background submission. This endpoint must be your backend/Cloudflare Worker
+  // that forwards the submitted data to haleelrealestate@gmail.com.
+  const endpoint="YOUR_CLOUDFLARE_WORKER_EMAIL_ENDPOINT";
 
   button.disabled=true;
-  button.textContent="⏳ Email-ka waa la diyaarinayaa...";
-  message.textContent="Foomka waa diyaar. Waxaa la furayaa email-kaaga si aad u dirto dalabka.";
-  message.className="service-order-message success";
+  button.textContent="⏳ Waa la dirayaa...";
 
-  window.location.href=`mailto:haleelrealestate@gmail.com?subject=${subject}&body=${encodedBody}`;
+  const data=new FormData(form);
+  data.set("service",service);
+  data.set("message",body);
+  data.set("to","haleelrealestate@gmail.com");
 
-  setTimeout(()=>{
+  fetch(endpoint,{
+    method:"POST",
+    body:data,
+    mode:"cors",
+    credentials:"omit"
+  }).then(r=>{
+    if(!r.ok) throw new Error("Email endpoint failed");
+    message.textContent="✅ Dalabkaaga si toos ah ayaa loo diray.";
+    message.className="service-order-message success";
+    form.reset();
+    closeServiceOrder();
+  }).catch(err=>{
+    console.error(err);
+    message.textContent="❌ Dirista dalabka way fashilantay. Endpoint-ka email-ka ayaa u baahan in la xiro.";
+    message.className="service-order-message error";
+  }).finally(()=>{
     button.disabled=false;
     button.textContent="📨 Gudbi Dalabka";
-  },1800);
+  });
 }
 
 document.addEventListener("click",function(e){
