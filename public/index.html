@@ -3113,7 +3113,7 @@ View All
         <div class="premium-service-icon">🐔</div>
         <h3>Chicking House</h3>
         <p>Adeeg ku saabsan hubinta iyo qiimeynta xogta guryaha si go'aan xog-ogaal ah loo qaato.</p>
-        <button class="service-register-btn service-open-btn" id="serviceBtn2" onclick="alert('Chicking House waa la furayaa dhawaan.')">🔓 Open</button>
+        <button class="service-register-btn service-open-btn" id="serviceBtn2" onclick="openPage('chickingHouse')">🔓 Open</button>
       </div>
     </article>
 
@@ -3146,6 +3146,150 @@ View All
 
 
 <!-- FARSAMO TECH SERVICES -->
+
+<div class="page chicking-page" id="chickingHouse">
+  <button class="btn btn-outline chicking-back" onclick="openPage('services')">← Back to Services</button>
+
+  <div class="chicking-hero">
+    <div>
+      <div class="chicking-badge">🐔 CHICKING HOUSE</div>
+      <h1>Dalbo Chicking House</h1>
+      <p>Dooro Chiking-ka, Ukun ama Digaag. Isticmaal <strong>−</strong> iyo <strong>+</strong> si aad u dejiso tirada aad rabto.</p>
+    </div>
+  </div>
+
+  <div class="chicking-total-box" aria-live="polite">
+    <span>Tirada Guud</span>
+    <strong id="chickingGrandTotal">0</strong>
+    <small>qaybo / xabbo</small>
+  </div>
+
+  <div class="chicking-grid" id="chickingProducts"></div>
+
+  <section class="chicking-order-form-wrap">
+    <div class="chicking-form-head">
+      <span>📝</span>
+      <div>
+        <h2>Xogta Dalabka</h2>
+        <p>Geli xogtaada kadibna taabo “Dalbo Dalabkaaga”.</p>
+      </div>
+    </div>
+    <form id="chickingOrderForm" onsubmit="submitChickingOrder(event)">
+      <div class="chicking-form-grid">
+        <div class="chicking-field">
+          <label for="chickingName">Magacaaga *</label>
+          <input id="chickingName" name="name" required placeholder="Magacaaga">
+        </div>
+        <div class="chicking-field">
+          <label for="chickingCity">Magaalada *</label>
+          <input id="chickingCity" name="city" required placeholder="Magaalada">
+        </div>
+        <div class="chicking-field">
+          <label for="chickingNeighborhood">Xaafadda *</label>
+          <input id="chickingNeighborhood" name="neighborhood" required placeholder="Xaafadda">
+        </div>
+        <div class="chicking-field">
+          <label for="chickingPhone">Lambarka *</label>
+          <input id="chickingPhone" name="phone" type="tel" inputmode="tel" required placeholder="+252 ...">
+        </div>
+      </div>
+      <div class="chicking-form-note" id="chickingOrderNote">Fadlan dooro ugu yaraan hal alaab.</div>
+      <button class="chicking-submit" type="submit">🛒 Dalbo Dalabkaaga</button>
+    </form>
+  </section>
+</div>
+
+<style>
+.chicking-page{padding-bottom:55px}
+.chicking-back{margin-bottom:18px}
+.chicking-hero{
+  margin-top:8px;min-height:235px;border-radius:26px;padding:38px 42px;display:flex;align-items:center;
+  color:#fff;overflow:hidden;position:relative;
+  background:linear-gradient(110deg,rgba(73,35,10,.95),rgba(166,91,25,.78),rgba(245,170,65,.28)),
+  url("https://images.unsplash.com/photo-1604503468506-a8da13d82791?auto=format&fit=crop&w=1800&q=85");
+  background-size:cover;background-position:center;box-shadow:0 22px 60px rgba(80,45,10,.18)
+}
+.chicking-badge{font-size:12px;font-weight:900;letter-spacing:.14em;margin-bottom:10px}
+.chicking-hero h1{font-size:clamp(34px,5vw,54px);margin:0 0 10px}
+.chicking-hero p{margin:0;color:rgba(255,255,255,.93);font-size:17px;max-width:720px;line-height:1.65}
+.chicking-total-box{
+  margin:22px 0;display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;
+  padding:18px 22px;border-radius:20px;background:#fff;border:1px solid #eadfd2;box-shadow:0 12px 35px rgba(70,40,10,.08)
+}
+.chicking-total-box span{font-weight:900;color:#6b4a2d}.chicking-total-box strong{font-size:34px;color:#a85b19}.chicking-total-box small{color:#718096;font-weight:700}
+.chicking-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.chicking-card{
+  overflow:hidden;background:#fff;border:1px solid #eadfd2;border-radius:23px;box-shadow:0 13px 40px rgba(70,40,10,.08);
+  transition:.25s;animation:chickingUp .35s ease both
+}
+.chicking-card:hover{transform:translateY(-5px);box-shadow:0 22px 50px rgba(70,40,10,.13)}
+.chicking-card img{width:100%;height:205px;display:block;object-fit:cover}
+.chicking-card-body{padding:20px}
+.chicking-card-label{font-size:11px;font-weight:900;letter-spacing:.12em;color:#a85b19;text-transform:uppercase}
+.chicking-card h3{margin:5px 0 15px;font-size:24px}
+.chicking-qty-row{display:flex;align-items:center;justify-content:space-between;gap:10px;background:#faf7f3;border-radius:15px;padding:9px}
+.chicking-minus,.chicking-plus{width:48px;height:48px;border:0;border-radius:13px;font-size:25px;font-weight:900;cursor:pointer;transition:.2s}
+.chicking-minus{background:#ece7e1;color:#4a3423}.chicking-plus{background:linear-gradient(135deg,#a85b19,#d8872d);color:#fff}
+.chicking-minus:hover,.chicking-plus:hover{transform:scale(1.04)}
+.chicking-qty{min-width:70px;text-align:center;font-size:25px;font-weight:900;color:#1f2937}
+.chicking-hint{text-align:center;margin-top:9px;color:#8a7b6c;font-size:12px;font-weight:700}
+.chicking-order-form-wrap{margin-top:28px;background:#fff;border:1px solid #eadfd2;border-radius:24px;padding:28px;box-shadow:0 14px 42px rgba(70,40,10,.08)}
+.chicking-form-head{display:flex;gap:13px;align-items:center;margin-bottom:22px}.chicking-form-head>span{font-size:35px}.chicking-form-head h2{margin:0 0 5px}.chicking-form-head p{margin:0;color:#718096}
+.chicking-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.chicking-field{display:flex;flex-direction:column;gap:7px}.chicking-field label{font-weight:800;font-size:14px}
+.chicking-field input{width:100%;box-sizing:border-box;padding:14px;border:1px solid #dfe3e8;border-radius:12px;background:#fafafa;font:inherit;outline:none;transition:.2s}
+.chicking-field input:focus{border-color:#a85b19;box-shadow:0 0 0 3px rgba(168,91,25,.12);background:#fff}
+.chicking-form-note{margin:18px 0 12px;padding:12px 14px;border-radius:12px;background:#fff7ed;color:#8a4b14;font-size:13px;font-weight:700}
+.chicking-submit{width:100%;border:0;border-radius:14px;padding:15px 18px;background:linear-gradient(135deg,#a85b19,#d8872d);color:#fff;font-weight:900;font-size:16px;cursor:pointer;transition:.25s}
+.chicking-submit:hover{transform:translateY(-2px);box-shadow:0 10px 25px rgba(168,91,25,.2)}
+@keyframes chickFade{from{opacity:0}to{opacity:1}}@keyframes chickUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.chicking-card{animation-name:chickUp}
+@media(max-width:900px){.chicking-grid{grid-template-columns:1fr 1fr}.chicking-hero{padding:32px 28px}}
+@media(max-width:650px){.chicking-grid{grid-template-columns:1fr}.chicking-form-grid{grid-template-columns:1fr}.chicking-order-form-wrap{padding:21px}.chicking-hero{padding:28px 23px}.chicking-card img{height:220px}}
+</style>
+
+<script>
+const CHICKING_ITEMS=[
+  {name:'Chiking-ka',image:'https://images.unsplash.com/photo-1569058242253-92a9c755a0ec?auto=format&fit=crop&w=1000&q=85'},
+  {name:'Ukun',image:'https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?auto=format&fit=crop&w=1000&q=85'},
+  {name:'Digaag',image:'https://images.unsplash.com/photo-1606728035253-49e8a2318cf5?auto=format&fit=crop&w=1000&q=85'}
+];
+const chickingQty=Object.fromEntries(CHICKING_ITEMS.map(x=>[x.name,0]));
+function renderChickingProducts(){
+  const root=document.getElementById('chickingProducts'); if(!root)return;
+  root.innerHTML=CHICKING_ITEMS.map((item,i)=>`<article class="chicking-card" style="animation-delay:${i*70}ms">
+    <img src="${item.image}" alt="${item.name}">
+    <div class="chicking-card-body">
+      <div class="chicking-card-label">Chicking House</div><h3>${item.name}</h3>
+      <div class="chicking-qty-row">
+        <button type="button" class="chicking-minus" aria-label="Ka jar ${item.name}" onclick="changeChickingQty('${item.name}',-10)">−</button>
+        <strong class="chicking-qty" id="chickQty_${i}">0</strong>
+        <button type="button" class="chicking-plus" aria-label="Ku dar 10 ${item.name}" onclick="changeChickingQty('${item.name}',10)">+</button>
+      </div>
+      <div class="chicking-hint">+ = 10 ku dar</div>
+    </div></article>`).join('');
+}
+function changeChickingQty(name,change){
+  chickingQty[name]=Math.max(0,(chickingQty[name]||0)+change);
+  const index=CHICKING_ITEMS.findIndex(x=>x.name===name);
+  const el=document.getElementById('chickQty_'+index); if(el)el.textContent=chickingQty[name];
+  const total=Object.values(chickingQty).reduce((a,b)=>a+b,0);
+  const totalEl=document.getElementById('chickingGrandTotal'); if(totalEl)totalEl.textContent=total;
+  const note=document.getElementById('chickingOrderNote'); if(note)note.textContent=total>0?'Wadarta aad dooratay: '+total+' xabbo.':'Fadlan dooro ugu yaraan hal alaab.';
+}
+function submitChickingOrder(event){
+  event.preventDefault();
+  const total=Object.values(chickingQty).reduce((a,b)=>a+b,0);
+  const form=document.getElementById('chickingOrderForm');
+  if(!form||!form.reportValidity())return;
+  if(total<=0){alert('Fadlan dooro ugu yaraan hal alaab.');return;}
+  const d=new FormData(form);
+  const products=CHICKING_ITEMS.filter(x=>chickingQty[x.name]>0).map(x=>x.name+': '+chickingQty[x.name]+' xabbo').join('\n');
+  const body=['CHICKING HOUSE DALAB','--------------------',products,'','Tirada Guud: '+total+' xabbo','Magaca: '+d.get('name'),'Magaalada: '+d.get('city'),'Xaafadda: '+d.get('neighborhood'),'Lambarka: '+d.get('phone')].join('\n');
+  const subject=encodeURIComponent('Chicking House Dalab - '+total+' xabbo');
+  window.location.href='mailto:haleelrealestate@gmail.com?subject='+subject+'&body='+encodeURIComponent(body);
+}
+renderChickingProducts();
+</script>
 
 <div class="page nagaad-agro-page" id="nagaadAgro">
   <button class="btn btn-outline" onclick="openPage('services')">← Back to Services</button>
