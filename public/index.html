@@ -3078,6 +3078,275 @@ body.dark .farsamo-service-card{
 }
 </style>
 
+
+<style id="phub-barako-new-design">
+/* =========================================================
+   NEW COMPACT DESIGN — PHUB ACADEMY + BARAKO LIVESTOCK
+   Small image thumbnails, clean cards, responsive layout.
+========================================================= */
+.phub-page,
+.livestock-page{
+  width:100% !important;
+  max-width:100% !important;
+  min-width:0 !important;
+  padding:18px 0 55px !important;
+  overflow:visible !important;
+}
+
+/* Compact section headers */
+.phub-hero,
+.livestock-hero{
+  min-height:0 !important;
+  height:auto !important;
+  margin-bottom:22px !important;
+  padding:24px 26px !important;
+  border-radius:20px !important;
+  display:block !important;
+  background:#fff !important;
+  color:#111827 !important;
+  border:1px solid #e7edf4 !important;
+  box-shadow:0 10px 30px rgba(15,23,42,.07) !important;
+}
+.phub-hero > div,
+.livestock-hero > div{max-width:900px}
+.phub-hero > div > div:first-child,
+.livestock-hero > div > div:first-child{
+  color:#2563eb !important;
+  margin-bottom:6px !important;
+}
+.phub-hero h1,
+.livestock-hero h1{
+  color:#111827 !important;
+  font-size:clamp(25px,3vw,36px) !important;
+  line-height:1.15 !important;
+  margin:0 0 7px !important;
+}
+.phub-hero p,
+.livestock-hero p{
+  color:#64748b !important;
+  font-size:14px !important;
+  line-height:1.55 !important;
+  margin:0 !important;
+}
+
+/* Grid */
+.phub-grid,
+.livestock-grid{
+  display:grid !important;
+  grid-template-columns:repeat(auto-fit,minmax(270px,1fr)) !important;
+  gap:16px !important;
+  width:100% !important;
+  min-width:0 !important;
+  align-items:stretch !important;
+}
+
+/* Cards become compact white cards */
+.phub-card,
+.livestock-card{
+  position:relative !important;
+  display:grid !important;
+  grid-template-columns:92px minmax(0,1fr) !important;
+  grid-template-rows:auto auto auto !important;
+  column-gap:15px !important;
+  align-items:center !important;
+  min-height:0 !important;
+  height:auto !important;
+  padding:16px !important;
+  border-radius:18px !important;
+  overflow:hidden !important;
+  background:#fff !important;
+  color:#111827 !important;
+  border:1px solid #e6ebf1 !important;
+  box-shadow:0 8px 24px rgba(15,23,42,.07) !important;
+  transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease !important;
+}
+.phub-card:hover,
+.livestock-card:hover{
+  transform:translateY(-4px) !important;
+  box-shadow:0 14px 32px rgba(15,23,42,.12) !important;
+  border-color:#cbd5e1 !important;
+}
+
+/* Disable old full-card background overlay */
+.phub-card::before,
+.livestock-card::before{
+  display:none !important;
+}
+
+/* Small image thumbnail */
+.phub-card::after,
+.livestock-card::after{
+  content:"";
+  grid-column:1;
+  grid-row:1 / span 3;
+  width:92px;
+  height:92px;
+  border-radius:15px;
+  background-image:var(--phub-bg, var(--livestock-bg));
+  background-size:cover;
+  background-position:center;
+  box-shadow:inset 0 0 0 1px rgba(15,23,42,.06);
+}
+
+/* Keep text on the right */
+.phub-card > *,
+.livestock-card > *{
+  position:relative !important;
+  z-index:2 !important;
+  grid-column:2 !important;
+  color:#111827 !important;
+}
+
+/* Icons */
+.phub-icon,
+.livestock-icon{
+  grid-row:1 !important;
+  font-size:25px !important;
+  line-height:1 !important;
+  margin:0 0 5px !important;
+}
+
+/* Titles */
+.phub-card h3,
+.livestock-card h3{
+  grid-row:1 !important;
+  font-size:19px !important;
+  line-height:1.2 !important;
+  margin:0 !important;
+  font-weight:900 !important;
+}
+
+/* Descriptions */
+.phub-card p,
+.livestock-card p{
+  grid-row:2 !important;
+  margin:7px 0 10px !important;
+  color:#64748b !important;
+  font-size:13px !important;
+  line-height:1.45 !important;
+}
+
+/* Buttons */
+.phub-actions,
+.livestock-actions{
+  grid-row:3 !important;
+  width:100% !important;
+  display:flex !important;
+  gap:7px !important;
+  flex-wrap:nowrap !important;
+  margin:0 !important;
+}
+.phub-actions > *,
+.livestock-actions > *{
+  flex:1 1 0 !important;
+  min-width:0 !important;
+  width:auto !important;
+  min-height:38px !important;
+  padding:8px 9px !important;
+  border-radius:10px !important;
+  font-size:12px !important;
+  white-space:nowrap !important;
+}
+
+/* Make Phub's Islamic-wide card unaffected if it appears elsewhere */
+.phub-islamic{
+  grid-column:auto !important;
+}
+
+/* Mobile */
+@media (max-width:600px){
+  .phub-page,
+  .livestock-page{
+    padding:12px 0 40px !important;
+  }
+
+  .phub-hero,
+  .livestock-hero{
+    padding:19px !important;
+    border-radius:17px !important;
+    margin-bottom:17px !important;
+  }
+
+  .phub-hero h1,
+  .livestock-hero h1{
+    font-size:25px !important;
+  }
+
+  .phub-hero p,
+  .livestock-hero p{
+    font-size:13px !important;
+  }
+
+  .phub-grid,
+  .livestock-grid{
+    grid-template-columns:1fr !important;
+    gap:12px !important;
+  }
+
+  .phub-card,
+  .livestock-card{
+    grid-template-columns:78px minmax(0,1fr) !important;
+    padding:13px !important;
+    border-radius:15px !important;
+    column-gap:12px !important;
+  }
+
+  .phub-card::after,
+  .livestock-card::after{
+    width:78px;
+    height:78px;
+    border-radius:13px;
+  }
+
+  .phub-icon,
+  .livestock-icon{
+    font-size:22px !important;
+  }
+
+  .phub-card h3,
+  .livestock-card h3{
+    font-size:17px !important;
+  }
+
+  .phub-card p,
+  .livestock-card p{
+    font-size:12.5px !important;
+  }
+
+  .phub-actions,
+  .livestock-actions{
+    gap:6px !important;
+  }
+
+  .phub-actions > *,
+  .livestock-actions > *{
+    min-height:36px !important;
+    font-size:11px !important;
+    padding:7px 6px !important;
+  }
+}
+
+@media (max-width:370px){
+  .phub-card,
+  .livestock-card{
+    grid-template-columns:68px minmax(0,1fr) !important;
+    column-gap:10px !important;
+    padding:11px !important;
+  }
+  .phub-card::after,
+  .livestock-card::after{
+    width:68px;
+    height:68px;
+  }
+  .phub-card h3,
+  .livestock-card h3{font-size:16px !important}
+  .phub-card p,
+  .livestock-card p{font-size:11.5px !important}
+  .phub-actions > *,
+  .livestock-actions > *{font-size:10px !important}
+}
+</style>
+
 </head>
 
 <body>
@@ -4431,9 +4700,9 @@ onclick="toggleCare()">
 
   <div class="livestock-hero">
     <div>
-      <div style="font-weight:900;letter-spacing:.08em;text-transform:uppercase;font-size:12px;margin-bottom:9px">🐄 Barako Livestock</div>
-      <h1>Qaybaha Livestock</h1>
-      <p>Ka hel xoolaha aad rabto. Dooro Geel, Riyo, Ido ama Lo' kadibna isticmaal Buy Now ama Call Now si aad ula xiriirto Haleel.</p>
+      <div style="font-weight:900;letter-spacing:.08em;text-transform:uppercase;font-size:11px;margin-bottom:6px">🐄 Barako Livestock</div>
+      <h1>Qaybaha Xoolaha</h1>
+      <p>Dooro nooca xoolaha aad rabto. Sawirradu hadda waa thumbnails yaryar si kaararku u noqdaan kuwo fudud oo si fiican uga muuqda dhammaan shaashadaha.</p>
     </div>
   </div>
 
@@ -4442,43 +4711,43 @@ onclick="toggleCare()">
   </div>
 
   <div class="livestock-grid">
-    <article class="livestock-card" style='--livestock-bg:url("https://images.unsplash.com/photo-1722145822884-df3d3aa7643e?auto=format&fit=crop&w=1200&q=85")'>
+    <article class="livestock-card" style='--livestock-bg:url("https://images.unsplash.com/photo-1722145822884-df3d3aa7643e?auto=format&fit=crop&w=600&q=80")'>
       <div class="livestock-icon">🐪</div>
       <h3>Geella</h3>
       <p>Geel kala duwan oo loogu talagalay iib iyo xoolo dhaqasho.</p>
       <div class="livestock-actions">
-        <button class="livestock-action buy" onclick="openChat()">🛒 Buy Now</button>
-        <a class="livestock-action call" href="tel:+252907469995">📞 Call Now</a>
+        <button class="livestock-action buy" onclick="openChat()">🛒 Buy</button>
+        <a class="livestock-action call" href="tel:+252907469995">📞 Call</a>
       </div>
     </article>
 
-    <article class="livestock-card" style='--livestock-bg:url("https://images.unsplash.com/photo-1563460043308-316e99a8a486?auto=format&fit=crop&w=1200&q=85")'>
+    <article class="livestock-card" style='--livestock-bg:url("https://images.unsplash.com/photo-1563460043308-316e99a8a486?auto=format&fit=crop&w=600&q=80")'>
       <div class="livestock-icon">🐐</div>
       <h3>Riyaha</h3>
       <p>Riyo kala duwan oo diyaar u ah iib iyo dhaqasho.</p>
       <div class="livestock-actions">
-        <button class="livestock-action buy" onclick="openChat()">🛒 Buy Now</button>
-        <a class="livestock-action call" href="tel:+252907469995">📞 Call Now</a>
+        <button class="livestock-action buy" onclick="openChat()">🛒 Buy</button>
+        <a class="livestock-action call" href="tel:+252907469995">📞 Call</a>
       </div>
     </article>
 
-    <article class="livestock-card" style='--livestock-bg:url("https://images.unsplash.com/photo-1680537123580-d4986afad076?auto=format&fit=crop&w=1200&q=85")'>
+    <article class="livestock-card" style='--livestock-bg:url("https://images.unsplash.com/photo-1680537123580-d4986afad076?auto=format&fit=crop&w=600&q=80")'>
       <div class="livestock-icon">🐑</div>
       <h3>Idaha</h3>
       <p>Ido kala duwan oo loogu talagalay iib iyo xanaanayn.</p>
       <div class="livestock-actions">
-        <button class="livestock-action buy" onclick="openChat()">🛒 Buy Now</button>
-        <a class="livestock-action call" href="tel:+252907469995">📞 Call Now</a>
+        <button class="livestock-action buy" onclick="openChat()">🛒 Buy</button>
+        <a class="livestock-action call" href="tel:+252907469995">📞 Call</a>
       </div>
     </article>
 
-    <article class="livestock-card" style='--livestock-bg:url("https://images.unsplash.com/photo-1688998299787-8e9c66a8bfcf?auto=format&fit=crop&w=1200&q=85")'>
+    <article class="livestock-card" style='--livestock-bg:url("https://images.unsplash.com/photo-1688998299787-8e9c66a8bfcf?auto=format&fit=crop&w=600&q=80")'>
       <div class="livestock-icon">🐄</div>
       <h3>Lo'da</h3>
       <p>Lo' kala duwan oo diyaar u ah iib iyo xoolo dhaqasho.</p>
       <div class="livestock-actions">
-        <button class="livestock-action buy" onclick="openChat()">🛒 Buy Now</button>
-        <a class="livestock-action call" href="tel:+252907469995">📞 Call Now</a>
+        <button class="livestock-action buy" onclick="openChat()">🛒 Buy</button>
+        <a class="livestock-action call" href="tel:+252907469995">📞 Call</a>
       </div>
     </article>
   </div>
@@ -4487,11 +4756,12 @@ onclick="toggleCare()">
 <!-- PHUB ACADEMY -->
 <div class="page phub-page" id="phub">
   <button class="btn btn-outline phub-back" onclick="openPage('services')">← Back to Services</button>
+
   <div class="phub-hero">
     <div>
-      <div style="font-weight:900;letter-spacing:.08em;text-transform:uppercase;font-size:12px;margin-bottom:9px">🎓 Phub Academy</div>
+      <div style="font-weight:900;letter-spacing:.08em;text-transform:uppercase;font-size:11px;margin-bottom:6px">🎓 Phub Academy</div>
       <h1>Waxbarasho & Xirfado</h1>
-      <p>Baro xirfado casri ah iyo aqoon kala duwan adigoo hal meel ka heli kara qaybaha waxbarashada ee Phub Academy.</p>
+      <p>Dooro qaybta aad rabto inaad barato. Qayb kasta waxaa loo sameeyay qaab kooban oo si fiican uga shaqeeya laptop, tablet iyo mobile.</p>
     </div>
   </div>
 
@@ -4500,25 +4770,33 @@ onclick="toggleCare()">
   </div>
 
   <div class="phub-grid">
-    <article class="phub-card" style='--phub-bg:url("https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=85")'> 
-      <div class="phub-icon">🎬</div><h3>Multi-media</h3><p>Video editing, graphic design, content creation iyo xirfadaha multimedia.</p>
+    <article class="phub-card" style='--phub-bg:url("https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=600&q=80")'>
+      <div class="phub-icon">🎬</div>
+      <h3>Multi-media</h3>
+      <p>Video editing, graphic design, content creation iyo xirfadaha multimedia.</p>
       <div class="farsamo-actions phub-actions">
-        <button class="farsamo-action chat" onclick="openChat()">💬 Chat Now</button>
-        <a class="farsamo-action call" href="tel:+252907469995">📞 Call Now</a>
+        <button class="farsamo-action chat" onclick="openChat()">💬 Chat</button>
+        <a class="farsamo-action call" href="tel:+252907469995">📞 Call</a>
       </div>
     </article>
-    <article class="phub-card" style='--phub-bg:url("https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=85")'> 
-      <div class="phub-icon">📊</div><h3>Data Analysis</h3><p>Baro sida xogta loo ururiyo, loo falanqeeyo loona fahmo natiijooyinka.</p>
+
+    <article class="phub-card" style='--phub-bg:url("https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80")'>
+      <div class="phub-icon">📊</div>
+      <h3>Data Analysis</h3>
+      <p>Baro sida xogta loo ururiyo, loo falanqeeyo loona fahmo natiijooyinka.</p>
       <div class="farsamo-actions phub-actions">
-        <button class="farsamo-action chat" onclick="openChat()">💬 Chat Now</button>
-        <a class="farsamo-action call" href="tel:+252907469995">📞 Call Now</a>
+        <button class="farsamo-action chat" onclick="openChat()">💬 Chat</button>
+        <a class="farsamo-action call" href="tel:+252907469995">📞 Call</a>
       </div>
     </article>
-    <article class="phub-card" style='--phub-bg:url("https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=85")'> 
-      <div class="phub-icon">💻</div><h3>Web Development</h3><p>HTML, CSS, JavaScript iyo dhisidda websites casri ah oo responsive ah.</p>
+
+    <article class="phub-card" style='--phub-bg:url("https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=600&q=80")'>
+      <div class="phub-icon">💻</div>
+      <h3>Web Development</h3>
+      <p>HTML, CSS, JavaScript iyo dhisidda websites casri ah oo responsive ah.</p>
       <div class="farsamo-actions phub-actions">
-        <button class="farsamo-action chat" onclick="openChat()">💬 Chat Now</button>
-        <a class="farsamo-action call" href="tel:+252907469995">📞 Call Now</a>
+        <button class="farsamo-action chat" onclick="openChat()">💬 Chat</button>
+        <a class="farsamo-action call" href="tel:+252907469995">📞 Call</a>
       </div>
     </article>
   </div>
