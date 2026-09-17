@@ -3154,7 +3154,7 @@ View All
     <div>
       <div class="chicking-badge">🐔 CHICKING HOUSE</div>
       <h1>Dalbo Chicking House</h1>
-      <p>Dooro Digaag Nool, Ukun ama Digaag Nool. Isticmaal <strong>−</strong> iyo <strong>+</strong> si aad u dejiso tirada aad rabto.</p>
+      <p>Dooro Ukun ama Digaag Nool. Isticmaal <strong>−</strong> iyo <strong>+</strong> si aad u dejiso tirada aad rabto.</p>
     </div>
   </div>
 
@@ -3249,11 +3249,10 @@ View All
 
 <script>
 const CHICKING_ITEMS=[
-  {name:'Digaag Nool',image:'https://images.unsplash.com/photo-1569058242253-92a9c755a0ec?auto=format&fit=crop&w=1000&q=85'},
   {name:'Ukun',image:'https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?auto=format&fit=crop&w=1000&q=85'},
-  {name:'Digaag Nool',image:'https://images.unsplash.com/photo-1606728035253-49e8a2318cf5?auto=format&fit=crop&w=1000&q=85'}
+  {name:'Digaag Nool',image:'https://images.unsplash.com/photo-1569058242253-92a9c755a0ec?auto=format&fit=crop&w=1000&q=85'}
 ];
-const chickingQty=Object.fromEntries(CHICKING_ITEMS.map(x=>[x.name,0]));
+const chickingQty=CHICKING_ITEMS.map(()=>0);
 function renderChickingProducts(){
   const root=document.getElementById('chickingProducts'); if(!root)return;
   root.innerHTML=CHICKING_ITEMS.map((item,i)=>`<article class="chicking-card" style="animation-delay:${i*70}ms">
@@ -3261,24 +3260,26 @@ function renderChickingProducts(){
     <div class="chicking-card-body">
       <div class="chicking-card-label">Chicking House</div><h3>${item.name}</h3>
       <div class="chicking-qty-row">
-        <button type="button" class="chicking-minus" aria-label="Ka jar ${item.name}" onclick="changeChickingQty('${item.name}',-10)">−</button>
+        <button type="button" class="chicking-minus" aria-label="Ka jar ${item.name}" onclick="changeChickingQty(${i},-10)">−</button>
         <strong class="chicking-qty" id="chickQty_${i}">0</strong>
-        <button type="button" class="chicking-plus" aria-label="Ku dar 10 ${item.name}" onclick="changeChickingQty('${item.name}',10)">+</button>
+        <button type="button" class="chicking-plus" aria-label="Ku dar 10 ${item.name}" onclick="changeChickingQty(${i},10)">+</button>
       </div>
       <div class="chicking-hint">+ = 10 ku dar</div>
     </div></article>`).join('');
 }
-function changeChickingQty(name,change){
-  chickingQty[name]=Math.max(0,(chickingQty[name]||0)+change);
-  const index=CHICKING_ITEMS.findIndex(x=>x.name===name);
-  const el=document.getElementById('chickQty_'+index); if(el)el.textContent=chickingQty[name];
-  const total=Object.values(chickingQty).reduce((a,b)=>a+b,0);
-  const totalEl=document.getElementById('chickingGrandTotal'); if(totalEl)totalEl.textContent=total;
-  const note=document.getElementById('chickingOrderNote'); if(note)note.textContent=total>0?'Wadarta aad dooratay: '+total+' xabbo.':'Fadlan dooro ugu yaraan hal alaab.';
+function changeChickingQty(index,change){
+  chickingQty[index]=Math.max(0,(chickingQty[index]||0)+change);
+  const el=document.getElementById('chickQty_'+index);
+  if(el)el.textContent=chickingQty[index];
+  const total=chickingQty.reduce((a,b)=>a+b,0);
+  const totalEl=document.getElementById('chickingGrandTotal');
+  if(totalEl)totalEl.textContent=total;
+  const note=document.getElementById('chickingOrderNote');
+  if(note)note.textContent=total>0?'Dalabkaaga waa diyaar.':'Fadlan dooro ugu yaraan hal alaab.';
 }
 function submitChickingOrder(event){
   event.preventDefault();
-  const total=Object.values(chickingQty).reduce((a,b)=>a+b,0);
+  const total=chickingQty.reduce((a,b)=>a+b,0);
   const form=document.getElementById('chickingOrderForm');
   if(!form||!form.reportValidity())return;
   if(total<=0){alert('Fadlan dooro ugu yaraan hal alaab.');return;}
