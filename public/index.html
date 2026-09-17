@@ -4860,61 +4860,27 @@ $("chatMessage").value=message;
 
 
 function sendEmail(){
-      const message=$("chatMessage").value.trim();
-      if(!message){
-        alert("Please write a message.");
-        return;
-      }
 
-      const button = document.querySelector('#chatModal button[onclick="sendEmail()"]');
-      if(button){
-        button.disabled = true;
-        button.dataset.oldText = button.textContent;
-        button.textContent = "Sending...";
-      }
+const message=$("chatMessage").value.trim();
 
-      const data = {
-        type: "customer_care",
-        subject: "Haleel Customer Care",
-        message: message,
-        accountId: (typeof currentUser !== "undefined" && currentUser)
-          ? (currentUser.accountId || currentUser.id || "")
-          : "",
-        timestamp: new Date().toISOString()
-      };
+if(!message){
 
-      const form=document.createElement("form");
-      form.method="POST";
-      form.action=HALEEL_BACKEND_URL;
-      form.target="haleelSubmitFrame";
-      form.style.display="none";
-      form.setAttribute("aria-hidden","true");
+alert("Please write a message.");
 
-      const input=document.createElement("input");
-      input.type="hidden";
-      input.name="payload";
-      input.value=JSON.stringify(data);
-      form.appendChild(input);
-      document.body.appendChild(form);
+return;
 
-      try{
-        form.submit();
-        $("chatMessage").value="";
-        closeChat();
-        alert("Fariintaada waa la diray ✅");
-      }catch(error){
-        console.error("Customer Care send error:", error);
-        alert("Fariinta lama diri karin. Fadlan mar kale isku day.");
-      }finally{
-        setTimeout(()=>{
-          form.remove();
-          if(button){
-            button.disabled = false;
-            button.textContent = button.dataset.oldText || "Send";
-          }
-        },1000);
-      }
-    }
+}
+
+const subject=encodeURIComponent(
+"Haleel Customer Care"
+);
+
+const body=encodeURIComponent(message);
+
+window.location.href=
+`mailto:haleelrealestate@gmail.com?subject=${subject}&body=${body}`;
+
+}
 
 
 /* =========================================================
