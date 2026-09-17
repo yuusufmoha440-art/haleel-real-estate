@@ -1337,6 +1337,246 @@ width:100%;
 
 }
 
+
+/* =========================================================
+   HALEEL SERVICES — PREMIUM SERVICE CARDS
+   Added without changing the existing sections.
+========================================================= */
+.services-page{
+  animation:pageIn .45s ease;
+}
+.services-hero{
+  position:relative;
+  overflow:hidden;
+  margin-bottom:26px;
+  padding:42px clamp(22px,4vw,46px);
+  border-radius:26px;
+  color:#fff;
+  background:
+    radial-gradient(circle at 90% 15%,rgba(32,178,107,.28),transparent 28%),
+    linear-gradient(135deg,#061b2d,#006CC2);
+  box-shadow:0 22px 65px rgba(0,74,130,.18);
+}
+.services-hero::before,
+.services-hero::after{
+  content:"";
+  position:absolute;
+  border:1px solid rgba(255,255,255,.13);
+  border-radius:50%;
+  pointer-events:none;
+}
+.services-hero::before{
+  width:260px;height:260px;
+  right:-100px;top:-145px;
+  animation:serviceOrbit 12s linear infinite;
+}
+.services-hero::after{
+  width:180px;height:180px;
+  left:-85px;bottom:-105px;
+}
+.services-hero-content{
+  position:relative;
+  z-index:2;
+  max-width:760px;
+}
+.services-kicker{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:7px 12px;
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:30px;
+  background:rgba(255,255,255,.08);
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:.8px;
+  margin-bottom:14px;
+}
+.services-hero h1{
+  font-size:clamp(30px,5vw,48px);
+  line-height:1.08;
+  margin-bottom:12px;
+}
+.services-hero p{
+  max-width:680px;
+  line-height:1.75;
+  color:rgba(255,255,255,.86);
+}
+
+.premium-services{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:20px;
+}
+.premium-service-card{
+  position:relative;
+  min-height:390px;
+  overflow:hidden;
+  border-radius:24px;
+  background:#fff;
+  border:1px solid var(--border);
+  box-shadow:0 14px 40px rgba(9,44,73,.075);
+  isolation:isolate;
+  transition:transform .35s ease,box-shadow .35s ease,border-color .35s ease;
+}
+.premium-service-card::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(180deg,rgba(3,24,42,.02) 15%,rgba(3,24,42,.88) 100%);
+  z-index:1;
+  pointer-events:none;
+}
+.premium-service-card:hover{
+  transform:translateY(-9px);
+  box-shadow:0 25px 60px rgba(0,74,130,.18);
+  border-color:rgba(0,108,194,.22);
+}
+.premium-service-bg{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  transition:transform .7s cubic-bezier(.2,.8,.2,1);
+  z-index:0;
+}
+.premium-service-card:hover .premium-service-bg{
+  transform:scale(1.08);
+}
+.premium-service-content{
+  position:absolute;
+  left:0;right:0;bottom:0;
+  z-index:2;
+  padding:25px;
+  color:#fff;
+}
+.premium-service-icon{
+  width:48px;height:48px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:15px;
+  background:rgba(255,255,255,.14);
+  border:1px solid rgba(255,255,255,.2);
+  backdrop-filter:blur(10px);
+  font-size:23px;
+  margin-bottom:14px;
+}
+.premium-service-content h3{
+  font-size:23px;
+  margin-bottom:8px;
+  color:#fff;
+}
+.premium-service-content p{
+  color:rgba(255,255,255,.84);
+  line-height:1.6;
+  font-size:14px;
+  min-height:45px;
+  margin-bottom:17px;
+}
+.service-register-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  min-width:145px;
+  padding:11px 16px;
+  border:1px solid rgba(255,255,255,.2);
+  border-radius:12px;
+  background:#fff;
+  color:#006CC2;
+  font-weight:900;
+  cursor:pointer;
+  transition:transform .25s ease,box-shadow .25s ease;
+}
+.service-register-btn:hover{
+  transform:translateY(-2px);
+  box-shadow:0 10px 25px rgba(0,0,0,.18);
+}
+
+.service-registration-box{
+  text-align:left;
+}
+.service-registration-box h2{
+  color:#081b2e;
+  margin-bottom:7px;
+}
+.service-registration-box > p{
+  color:#718096;
+  line-height:1.55;
+  margin-bottom:20px;
+}
+.service-registration-label{
+  display:block;
+  font-size:13px;
+  font-weight:800;
+  color:#53677a;
+  margin:0 0 7px;
+}
+.service-registration-input{
+  width:100%;
+  height:50px;
+  border:1px solid #dce4ec;
+  border-radius:13px;
+  padding:0 14px;
+  outline:none;
+  margin-bottom:13px;
+  background:#fff;
+  color:#1d3044;
+}
+.service-registration-input:focus{
+  border-color:#006CC2;
+  box-shadow:0 0 0 4px rgba(0,108,194,.09);
+}
+.service-registration-actions{
+  display:flex;
+  gap:10px;
+  margin-top:5px;
+}
+.service-registration-actions .btn{
+  flex:1;
+}
+body.dark .premium-service-card{
+  background:#131c26;
+}
+body.dark .service-registration-box h2{
+  color:#f1f5f9;
+}
+body.dark .service-registration-label{
+  color:#91a0b1;
+}
+body.dark .service-registration-input{
+  background:#151e28;
+  color:#e8eef5;
+  border-color:#2b3948;
+}
+body.dark .service-registration-box > p{
+  color:#91a0b1;
+}
+
+@keyframes serviceOrbit{
+  from{transform:rotate(0deg)}
+  to{transform:rotate(360deg)}
+}
+
+@media(max-width:1000px){
+  .premium-services{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
+@media(max-width:650px){
+  .premium-services{
+    grid-template-columns:1fr;
+  }
+  .premium-service-card{
+    min-height:365px;
+  }
+  .services-hero{
+    padding:30px 22px;
+  }
+}
+
 @keyframes pageIn{
 from{
 opacity:0;
@@ -2420,6 +2660,7 @@ body.dark .auth-created-warning{background:#332b12;color:#f2d675}
 <div class="nav">
 
 <button class="active" onclick="openPage('home',this)">🏠 Home</button>
+<button onclick="openPage('services',this)">✨ Services</button>
 <button onclick="openPage('property',this)">🏘 Property</button>
 <button onclick="openPage('care',this)">💬 Customer Care</button>
 <button onclick="openPage('submit',this)">📝 Submit Property</button>
@@ -2573,6 +2814,104 @@ View All
 
 </div>
 
+
+
+<!-- SERVICES -->
+<div class="page services-page" id="services">
+
+  <div class="services-hero">
+    <div class="services-hero-content">
+      <div class="services-kicker">✨ HALEEL SERVICES</div>
+      <h1>Adeegyo Casri ah, Hal Meel</h1>
+      <p>
+        Ka dooro adeegga aad u baahan tahay. Service kasta wuxuu leeyahay
+        xog kooban iyo Registration gaar ah si aad si fudud uga bilaabi karto.
+      </p>
+    </div>
+  </div>
+
+  <div class="section-header">
+    <div>
+      <h2>Services</h2>
+    </div>
+  </div>
+
+  <div class="premium-services">
+
+    <article class="premium-service-card">
+      <img class="premium-service-bg"
+           src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=85"
+           alt="Farsamo Tech">
+      <div class="premium-service-content">
+        <div class="premium-service-icon">💻</div>
+        <h3>Farsamo Tech</h3>
+        <p>Technology, IT iyo xalal digital ah oo kaa caawinaya shaqada iyo adeegyada casriga ah.</p>
+        <button class="service-register-btn" onclick="openServiceRegistration('Farsamo Tech')">Register Now →</button>
+      </div>
+    </article>
+
+    <article class="premium-service-card">
+      <img class="premium-service-bg"
+           src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=1200&q=85"
+           alt="Phub Academy">
+      <div class="premium-service-content">
+        <div class="premium-service-icon">🎓</div>
+        <h3>Phub Academy</h3>
+        <p>Waxbarasho, tababarro iyo koorsooyin loogu talagalay horumarinta aqoonta iyo xirfadaha.</p>
+        <button class="service-register-btn" onclick="openServiceRegistration('Phub Academy')">Register Now →</button>
+      </div>
+    </article>
+
+    <article class="premium-service-card">
+      <img class="premium-service-bg"
+           src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1200&q=85"
+           alt="Checking House">
+      <div class="premium-service-content">
+        <div class="premium-service-icon">🏠</div>
+        <h3>Checking House</h3>
+        <p>Adeeg ku saabsan hubinta iyo qiimeynta xogta guryaha si go'aan xog-ogaal ah loo qaato.</p>
+        <button class="service-register-btn" onclick="openServiceRegistration('Checking House')">Register Now →</button>
+      </div>
+    </article>
+
+    <article class="premium-service-card">
+      <img class="premium-service-bg"
+           src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&w=1200&q=85"
+           alt="Nagaad Agro">
+      <div class="premium-service-content">
+        <div class="premium-service-icon">🌱</div>
+        <h3>Nagaad Agro</h3>
+        <p>Adeegyo la xiriira beeraha, wax-soo-saarka iyo xalalka Agro ee casriga ah.</p>
+        <button class="service-register-btn" onclick="openServiceRegistration('Nagaad Agro')">Register Now →</button>
+      </div>
+    </article>
+
+    <article class="premium-service-card">
+      <img class="premium-service-bg"
+           src="https://images.unsplash.com/photo-1517849845537-4d257902454a?auto=format&fit=crop&w=1200&q=85"
+           alt="Barako Livestock">
+      <div class="premium-service-content">
+        <div class="premium-service-icon">🐄</div>
+        <h3>Barako Livestock</h3>
+        <p>Adeegyo iyo fursado la xiriira xoolaha iyo horumarinta livestock-ka.</p>
+        <button class="service-register-btn" onclick="openServiceRegistration('Barako Livestock')">Register Now →</button>
+      </div>
+    </article>
+
+    <article class="premium-service-card">
+      <img class="premium-service-bg"
+           src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1200&q=85"
+           alt="Haleel Services">
+      <div class="premium-service-content">
+        <div class="premium-service-icon">✨</div>
+        <h3>Haleel Services</h3>
+        <p>Meel aad ka heli karto adeegyada kale ee Haleel iyo fursadaha mustaqbalka lagu soo kordhinayo.</p>
+        <button class="service-register-btn" onclick="openServiceRegistration('Haleel Services')">Register Now →</button>
+      </div>
+    </article>
+
+  </div>
+</div>
 
 <!-- PROPERTY -->
 
@@ -3194,7 +3533,7 @@ Gudbi
 <h2>Settings</h2>
 
 <p style="color:#718096">
-Your Settings.
+Website Settings.
 </p>
 
 </div>
@@ -3206,7 +3545,7 @@ Your Settings.
 
 <div class="setting-card account-setting-card">
   <div class="setting-icon">👤</div>
-  <h3>Account</h3>
+  <h3>ACCOUNT</h3>
   <p>Macluumaadka akoonkaaga.</p>
 
   <div class="account-info-box">
@@ -3413,6 +3752,32 @@ onclick="toggleCare()">
 
 </div>
 
+
+
+<!-- SERVICE REGISTRATION -->
+<div class="modal" id="serviceRegistrationModal">
+  <div class="modal-box service-registration-box">
+    <button class="details-close" onclick="closeServiceRegistration()">×</button>
+    <div style="font-size:42px;margin-bottom:8px">✨</div>
+    <h2>Service Registration</h2>
+    <p>Buuxi xogta hoose si aad u diiwaangeliso adeegga aad dooratay.</p>
+
+    <label class="service-registration-label">Service</label>
+    <input class="service-registration-input" id="serviceRegistrationName" readonly>
+
+    <label class="service-registration-label">Magacaaga</label>
+    <input class="service-registration-input" id="serviceRegistrationUserName" type="text" placeholder="Geli magacaaga">
+
+    <label class="service-registration-label">Phone</label>
+    <input class="service-registration-input" id="serviceRegistrationPhone" type="tel" placeholder="Geli lambarka telefoonka">
+
+    <div class="service-registration-actions">
+      <button class="btn btn-outline" onclick="closeServiceRegistration()">Cancel</button>
+      <button class="btn btn-primary" onclick="submitServiceRegistration()">Register</button>
+    </div>
+    <div id="serviceRegistrationMessage" style="margin-top:12px;text-align:center;font-size:13px;font-weight:800;"></div>
+  </div>
+</div>
 
 <!-- PROPERTY DETAILS -->
 
@@ -4586,6 +4951,54 @@ return String(value)
 }
 
 
+
+/* =========================================================
+   SERVICE REGISTRATION
+========================================================= */
+function openServiceRegistration(serviceName){
+  const modal=$("serviceRegistrationModal");
+  if(!modal) return;
+  $("serviceRegistrationName").value=serviceName;
+  $("serviceRegistrationUserName").value="";
+  $("serviceRegistrationPhone").value="";
+  $("serviceRegistrationMessage").textContent="";
+  $("serviceRegistrationMessage").style.color="";
+  modal.classList.add("show");
+  setTimeout(()=>$("serviceRegistrationUserName").focus(),120);
+}
+
+function closeServiceRegistration(){
+  const modal=$("serviceRegistrationModal");
+  if(modal) modal.classList.remove("show");
+}
+
+function submitServiceRegistration(){
+  const service=$("serviceRegistrationName").value.trim();
+  const name=$("serviceRegistrationUserName").value.trim();
+  const phone=$("serviceRegistrationPhone").value.trim();
+  const message=$("serviceRegistrationMessage");
+
+  if(!name || !phone){
+    message.textContent="Fadlan buuxi magaca iyo telefoonka.";
+    message.style.color="#E5484D";
+    return;
+  }
+
+  message.textContent="Registration-ka waa la gudbiyay.";
+  message.style.color="#159957";
+
+  setTimeout(()=>{
+    closeServiceRegistration();
+  },900);
+}
+
+
+
+document.addEventListener("click",function(e){
+  const modal=$("serviceRegistrationModal");
+  if(modal && e.target===modal) closeServiceRegistration();
+});
+
 /* =========================================================
    NAVIGATION
 ========================================================= */
@@ -4604,6 +5017,7 @@ selected.classList.add("active");
 
 const titles={
 home:"Home",
+services:"Services",
 property:"Properties",
 care:"Customer Care",
 submit:"Submit Property",
@@ -4619,8 +5033,9 @@ document
 
 const map={
 home:0,
-property:1,
-care:2,
+services:1,
+property:2,
+care:3,
 submit:3,
 settings:4
 };
@@ -4642,7 +5057,7 @@ desktop.classList.add("active");
 let mobileIndex=index;
 
 if(page==="submit" || page==="settings"){
-mobileIndex=3;
+mobileIndex=4;
 }
 
 const mobile=
