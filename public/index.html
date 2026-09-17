@@ -2521,6 +2521,46 @@ body.dark .auth-created-warning{background:#332b12;color:#f2d675}
 ========================================================= */
 
 /* =========================================================
+   BARAKO LIVESTOCK
+========================================================= */
+.livestock-page{padding:28px 0 70px}
+.livestock-hero{
+  position:relative;overflow:hidden;border-radius:26px;padding:42px 34px;min-height:250px;
+  display:flex;align-items:flex-end;margin-bottom:28px;color:#fff;
+  background:linear-gradient(135deg,rgba(15,23,42,.92),rgba(0,108,194,.68)),url("https://images.unsplash.com/photo-1722145822884-df3d3aa7643e?auto=format&fit=crop&w=1600&q=85") center/cover;
+  box-shadow:0 18px 45px rgba(15,23,42,.16)
+}
+.livestock-hero h1{margin:0 0 10px;font-size:clamp(30px,4vw,48px);font-weight:950}
+.livestock-hero p{margin:0;max-width:760px;line-height:1.7;color:rgba(255,255,255,.9)}
+.livestock-back{margin-bottom:18px}
+.livestock-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.livestock-card{
+  position:relative;overflow:hidden;min-height:285px;border-radius:22px;padding:28px;display:flex;flex-direction:column;justify-content:flex-end;color:#fff;
+  background:#111827;box-shadow:0 14px 35px rgba(15,23,42,.12);transition:.3s ease
+}
+.livestock-card:hover{transform:translateY(-6px);box-shadow:0 20px 45px rgba(15,23,42,.18)}
+.livestock-card::before{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(15,23,42,.06),rgba(15,23,42,.9)),var(--livestock-bg);
+  background-size:cover;background-position:center;transition:transform .5s ease;z-index:1
+}
+.livestock-card:hover::before{transform:scale(1.06)}
+.livestock-card>*{position:relative;z-index:2}
+.livestock-icon{font-size:42px;margin-bottom:8px}
+.livestock-card h3{font-size:25px;margin:0 0 8px;font-weight:950}
+.livestock-card p{margin:0 0 17px;color:rgba(255,255,255,.86);line-height:1.55}
+.livestock-actions{display:flex;gap:10px;flex-wrap:wrap}
+.livestock-action{
+  display:inline-flex;align-items:center;justify-content:center;gap:7px;min-width:125px;padding:11px 16px;
+  border:1px solid rgba(255,255,255,.25);border-radius:12px;text-decoration:none;font-weight:800;cursor:pointer;transition:.25s
+}
+.livestock-action.buy{background:#fff;color:#006CC2}
+.livestock-action.call{background:rgba(32,178,107,.92);color:#fff}
+.livestock-action:hover{transform:translateY(-2px)}
+body.dark .livestock-card{box-shadow:0 18px 55px rgba(0,0,0,.28)}
+@media(max-width:760px){.livestock-grid{grid-template-columns:1fr}.livestock-hero{padding:30px 22px;min-height:230px}.livestock-card{min-height:245px}.livestock-action{flex:1;min-width:0}}
+
+/* =========================================================
    PHUB ACADEMY
 ========================================================= */
 .phub-page{padding:28px 0 70px}
@@ -3091,13 +3131,13 @@ View All
 
     <article class="premium-service-card">
       <img class="premium-service-bg"
-           src="https://images.unsplash.com/photo-1517849845537-4d257902454a?auto=format&fit=crop&w=1200&q=85"
-           alt="Barako Livestock">
+           src="https://images.unsplash.com/photo-1688998299787-8e9c66a8bfcf?auto=format&fit=crop&w=1200&q=85"
+           alt="Barako Livestock - Lo' badan">
       <div class="premium-service-content">
         <div class="premium-service-icon">🐄</div>
         <h3>Barako Livestock</h3>
         <p>Adeegyo iyo fursado la xiriira xoolaha iyo horumarinta livestock-ka.</p>
-        <button class="service-register-btn service-open-btn" id="serviceBtn4" onclick="alert('Barako Livestock waa la furayaa dhawaan.')">🔓 Open</button>
+        <button class="service-register-btn service-open-btn" id="serviceBtn4" onclick="openPage('livestock')">🔓 Open</button>
       </div>
     </article>
 
@@ -4057,6 +4097,65 @@ onclick="toggleCare()">
 </div>
 
 
+
+<!-- BARAKO LIVESTOCK -->
+<div class="page livestock-page" id="livestock">
+  <button class="btn btn-outline livestock-back" onclick="openPage('services')">← Back to Services</button>
+
+  <div class="livestock-hero">
+    <div>
+      <div style="font-weight:900;letter-spacing:.08em;text-transform:uppercase;font-size:12px;margin-bottom:9px">🐄 Barako Livestock</div>
+      <h1>Qaybaha Livestock</h1>
+      <p>Ka hel xoolaha aad rabto. Dooro Geel, Riyo, Ido ama Lo' kadibna isticmaal Buy Now ama Call Now si aad ula xiriirto Haleel.</p>
+    </div>
+  </div>
+
+  <div class="section-header">
+    <div><h2>Xoolaha La Heli Karo</h2><p style="color:#718096;margin-top:5px">Dooro nooca xoolaha aad rabto inaad iibsato.</p></div>
+  </div>
+
+  <div class="livestock-grid">
+    <article class="livestock-card" style='--livestock-bg:url("https://images.unsplash.com/photo-1722145822884-df3d3aa7643e?auto=format&fit=crop&w=1200&q=85")'>
+      <div class="livestock-icon">🐪</div>
+      <h3>Geella</h3>
+      <p>Geel kala duwan oo loogu talagalay iib iyo xoolo dhaqasho.</p>
+      <div class="livestock-actions">
+        <button class="livestock-action buy" onclick="openChat()">🛒 Buy Now</button>
+        <a class="livestock-action call" href="tel:+252907469995">📞 Call Now</a>
+      </div>
+    </article>
+
+    <article class="livestock-card" style='--livestock-bg:url("https://images.unsplash.com/photo-1563460043308-316e99a8a486?auto=format&fit=crop&w=1200&q=85")'>
+      <div class="livestock-icon">🐐</div>
+      <h3>Riyaha</h3>
+      <p>Riyo kala duwan oo diyaar u ah iib iyo dhaqasho.</p>
+      <div class="livestock-actions">
+        <button class="livestock-action buy" onclick="openChat()">🛒 Buy Now</button>
+        <a class="livestock-action call" href="tel:+252907469995">📞 Call Now</a>
+      </div>
+    </article>
+
+    <article class="livestock-card" style='--livestock-bg:url("https://images.unsplash.com/photo-1680537123580-d4986afad076?auto=format&fit=crop&w=1200&q=85")'>
+      <div class="livestock-icon">🐑</div>
+      <h3>Idaha</h3>
+      <p>Ido kala duwan oo loogu talagalay iib iyo xanaanayn.</p>
+      <div class="livestock-actions">
+        <button class="livestock-action buy" onclick="openChat()">🛒 Buy Now</button>
+        <a class="livestock-action call" href="tel:+252907469995">📞 Call Now</a>
+      </div>
+    </article>
+
+    <article class="livestock-card" style='--livestock-bg:url("https://images.unsplash.com/photo-1688998299787-8e9c66a8bfcf?auto=format&fit=crop&w=1200&q=85")'>
+      <div class="livestock-icon">🐄</div>
+      <h3>Lo'da</h3>
+      <p>Lo' kala duwan oo diyaar u ah iib iyo xoolo dhaqasho.</p>
+      <div class="livestock-actions">
+        <button class="livestock-action buy" onclick="openChat()">🛒 Buy Now</button>
+        <a class="livestock-action call" href="tel:+252907469995">📞 Call Now</a>
+      </div>
+    </article>
+  </div>
+</div>
 
 <!-- PHUB ACADEMY -->
 <div class="page phub-page" id="phub">
