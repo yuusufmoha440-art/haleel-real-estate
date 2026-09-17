@@ -3190,6 +3190,279 @@ View All
   </div>
 </div>
 
+
+<div id="qudaarOrderModal" class="qudaar-overlay" onclick="if(event.target===this) closeQudaarOrder()">
+  <div class="qudaar-modal" role="dialog" aria-modal="true" aria-labelledby="qudaarTitle">
+    <button type="button" class="qudaar-close" onclick="closeQudaarOrder()">×</button>
+
+    <div class="qudaar-head">
+      <div class="qudaar-head-icon">🥬</div>
+      <div>
+        <span>NAGAAD AGRO</span>
+        <h2 id="qudaarTitle">Qudaar</h2>
+        <p>Dooro tirada qudaarta aad rabto inaad dalbato.</p>
+      </div>
+    </div>
+
+    <div class="qudaar-list" id="qudaarList"></div>
+
+    <div class="qudaar-summary">
+      <div>
+        <small>Tirada guud</small>
+        <strong id="qudaarTotal">0</strong>
+      </div>
+      <div>
+        <small>Qudaar la doortay</small>
+        <strong id="qudaarSelected">0</strong>
+      </div>
+    </div>
+
+    <div class="qudaar-customer">
+      <div class="qudaar-customer-title">
+        <span>📋</span>
+        <div>
+          <h3>Faahfaahinta Qofka Dalbanaya</h3>
+          <p>Buuxi xogtaada si dalabka loo gudbiyo.</p>
+        </div>
+      </div>
+
+      <form id="qudaarOrderForm" onsubmit="event.preventDefault(); submitQudaarOrder();">
+        <div class="qudaar-form-grid">
+          <div class="qudaar-field">
+            <label for="qudaarCustomerName">Magaca *</label>
+            <input id="qudaarCustomerName" name="name" required placeholder="Geli magacaaga">
+          </div>
+
+          <div class="qudaar-field">
+            <label for="qudaarCustomerPhone">Lambarka *</label>
+            <input id="qudaarCustomerPhone" name="phone" type="tel" required placeholder="+252...">
+          </div>
+
+          <div class="qudaar-field">
+            <label for="qudaarCustomerCity">Magaalada *</label>
+            <input id="qudaarCustomerCity" name="city" required placeholder="Magaalada">
+          </div>
+
+          <div class="qudaar-field">
+            <label for="qudaarCustomerNeighborhood">Xaafadda *</label>
+            <input id="qudaarCustomerNeighborhood" name="neighborhood" required placeholder="Xaafadda">
+          </div>
+        </div>
+
+        <div class="qudaar-submit-row">
+          <button type="button" class="qudaar-cancel" onclick="closeQudaarOrder()">Ka Noqo</button>
+          <button type="submit" class="qudaar-submit">📨 Gudbi Dalabkaaga</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<style>
+.qudaar-overlay{
+  display:none;position:fixed;inset:0;z-index:100001;padding:16px;
+  align-items:center;justify-content:center;background:rgba(0,0,0,.62);
+  backdrop-filter:blur(8px)
+}
+.qudaar-overlay.show{display:flex;animation:qudaarFade .2s ease}
+.qudaar-modal{
+  width:min(850px,100%);max-height:94vh;overflow:auto;background:#fff;color:#111;
+  border-radius:26px;padding:28px;position:relative;box-shadow:0 30px 100px rgba(0,0,0,.35);
+  animation:qudaarUp .3s ease
+}
+.qudaar-close{
+  position:absolute;right:15px;top:13px;width:40px;height:40px;border:0;border-radius:50%;
+  background:#f1f3f5;font-size:27px;cursor:pointer
+}
+.qudaar-head{
+  display:flex;gap:15px;align-items:center;padding-right:48px;margin-bottom:23px
+}
+.qudaar-head-icon{
+  width:62px;height:62px;display:grid;place-items:center;border-radius:18px;
+  background:#eaf8ef;font-size:35px
+}
+.qudaar-head span{font-size:11px;font-weight:900;letter-spacing:.13em;color:#16803b}
+.qudaar-head h2{margin:4px 0 5px;font-size:28px}
+.qudaar-head p{margin:0;color:#718096}
+
+.qudaar-list{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px
+}
+.qudaar-item{
+  display:grid;grid-template-columns:62px 1fr auto;align-items:center;gap:12px;
+  border:1px solid #e3e8e5;border-radius:17px;padding:10px;background:#fff;
+  transition:.2s;min-width:0
+}
+.qudaar-item:hover{border-color:#8bc8a1;box-shadow:0 7px 20px rgba(20,100,50,.07)}
+.qudaar-photo{
+  width:62px;height:62px;border-radius:13px;object-fit:cover;background:#edf4ef
+}
+.qudaar-name{font-weight:900;font-size:15px}
+.qudaar-count{
+  display:flex;align-items:center;justify-content:flex-end;gap:7px;white-space:nowrap
+}
+.qudaar-count button{
+  width:34px;height:34px;border:0;border-radius:10px;font-size:20px;font-weight:900;
+  cursor:pointer;transition:.2s
+}
+.qudaar-minus{background:#f0f2f3;color:#333}
+.qudaar-plus{background:#198754;color:#fff}
+.qudaar-count button:hover{transform:scale(1.06)}
+.qudaar-number{
+  min-width:35px;text-align:center;font-size:17px;font-weight:900;color:#111
+}
+.qudaar-hint{
+  grid-column:1/-1;margin:0 0 3px 74px;font-size:11px;color:#87928c
+}
+.qudaar-summary{
+  display:flex;gap:14px;margin:18px 0;padding:15px;border-radius:16px;
+  background:linear-gradient(135deg,#effaf3,#f7fbf8);border:1px solid #d8eee0
+}
+.qudaar-summary>div{flex:1}
+.qudaar-summary small{display:block;color:#718096;font-size:11px}
+.qudaar-summary strong{display:block;margin-top:3px;font-size:22px;color:#14783b}
+
+.qudaar-customer{
+  border-top:1px solid #e6e9e7;padding-top:20px;margin-top:4px
+}
+.qudaar-customer-title{display:flex;gap:11px;align-items:center;margin-bottom:15px}
+.qudaar-customer-title>span{font-size:24px}
+.qudaar-customer-title h3{margin:0 0 3px}
+.qudaar-customer-title p{margin:0;color:#718096;font-size:13px}
+.qudaar-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.qudaar-field{display:flex;flex-direction:column;gap:7px}
+.qudaar-field label{font-size:13px;font-weight:800}
+.qudaar-field input{
+  width:100%;box-sizing:border-box;padding:13px 14px;border:1px solid #dce2de;
+  border-radius:12px;background:#fafcfb;font:inherit;outline:none;transition:.2s
+}
+.qudaar-field input:focus{border-color:#198754;box-shadow:0 0 0 3px rgba(25,135,84,.12);background:#fff}
+.qudaar-submit-row{display:flex;justify-content:flex-end;gap:11px;margin-top:20px}
+.qudaar-cancel,.qudaar-submit{
+  border:0;border-radius:12px;padding:13px 19px;font-weight:900;cursor:pointer
+}
+.qudaar-cancel{background:#edf0f2;color:#222}
+.qudaar-submit{background:linear-gradient(135deg,#15803d,#22a35a);color:#fff}
+@keyframes qudaarFade{from{opacity:0}to{opacity:1}}
+@keyframes qudaarUp{from{opacity:0;transform:translateY(18px) scale(.98)}to{opacity:1;transform:none}}
+
+@media(max-width:650px){
+  .qudaar-modal{padding:21px;border-radius:21px}
+  .qudaar-list{grid-template-columns:1fr}
+  .qudaar-form-grid{grid-template-columns:1fr}
+  .qudaar-submit-row{flex-direction:column-reverse}
+  .qudaar-cancel,.qudaar-submit{width:100%}
+}
+@media(max-width:390px){
+  .qudaar-item{grid-template-columns:52px 1fr auto;gap:8px}
+  .qudaar-photo{width:52px;height:52px}
+  .qudaar-count{gap:4px}
+  .qudaar-count button{width:31px;height:31px}
+  .qudaar-number{min-width:29px}
+}
+</style>
+
+<script>
+const QUDAAR_ITEMS = [
+  ['Yaanyo','https://images.unsplash.com/photo-1546094096-0df4bcaaa337?auto=format&fit=crop&w=400&q=85'],
+  ['Bisbaas','https://images.unsplash.com/photo-1563565375-f3fdfdbefa83?auto=format&fit=crop&w=400&q=85'],
+  ['Basal','https://images.unsplash.com/photo-1618512496248-a07fe83aa8cb?auto=format&fit=crop&w=400&q=85'],
+  ['Kabsaro','https://images.unsplash.com/photo-1518977676601-b53f82aba655?auto=format&fit=crop&w=400&q=85'],
+  ['Liin','https://images.unsplash.com/photo-1590502593747-42a996133562?auto=format&fit=crop&w=400&q=85'],
+  ['Moos','https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?auto=format&fit=crop&w=400&q=85'],
+  ['Cambe','https://images.unsplash.com/photo-1553279768-865429fa0078?auto=format&fit=crop&w=400&q=85'],
+  ['Qare','https://images.unsplash.com/photo-1563114773-84221bd62daa?auto=format&fit=crop&w=400&q=85'],
+  ['Saytuun','https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?auto=format&fit=crop&w=400&q=85'],
+  ['Kaarooto','https://images.unsplash.com/photo-1445282768818-728615cc910a?auto=format&fit=crop&w=400&q=85'],
+  ['Banbanooni','https://images.unsplash.com/photo-1592924357228-91a4daadcfea?auto=format&fit=crop&w=400&q=85'],
+  ['Qajaar','https://images.unsplash.com/photo-1604977042946-1eecc30f269e?auto=format&fit=crop&w=400&q=85'],
+  ['Toon','https://images.unsplash.com/photo-1540148426945-6cf22a6b2383?auto=format&fit=crop&w=400&q=85']
+];
+
+const qudaarQty = {};
+QUDAAR_ITEMS.forEach(item => qudaarQty[item[0]] = 0);
+
+function renderQudaarList(){
+  const list=document.getElementById('qudaarList');
+  if(!list)return;
+  list.innerHTML=QUDAAR_ITEMS.map(([name,img])=>`
+    <div class="qudaar-item">
+      <img class="qudaar-photo" src="${img}" alt="${name}">
+      <div class="qudaar-name">${name}</div>
+      <div class="qudaar-count">
+        <button type="button" class="qudaar-minus" onclick="changeQudaarQty('${name}',-10)">−</button>
+        <span class="qudaar-number" id="qty_${name.replace(/[^a-zA-Z0-9]/g,'_')}">${qudaarQty[name]}</span>
+        <button type="button" class="qudaar-plus" onclick="changeQudaarQty('${name}',10)">+</button>
+      </div>
+      <p class="qudaar-hint">+ = 10 ku dar</p>
+    </div>
+  `).join('');
+}
+
+function changeQudaarQty(name,change){
+  qudaarQty[name]=Math.max(0,qudaarQty[name]+change);
+  const id='qty_'+name.replace(/[^a-zA-Z0-9]/g,'_');
+  const el=document.getElementById(id);
+  if(el)el.textContent=qudaarQty[name];
+  updateQudaarSummary();
+}
+
+function updateQudaarSummary(){
+  const values=Object.values(qudaarQty);
+  const total=values.reduce((a,b)=>a+b,0);
+  const selected=values.filter(v=>v>0).length;
+  document.getElementById('qudaarTotal').textContent=total;
+  document.getElementById('qudaarSelected').textContent=selected;
+}
+
+function openQudaarOrder(){
+  const modal=document.getElementById('qudaarOrderModal');
+  if(!modal)return;
+  renderQudaarList();
+  updateQudaarSummary();
+  modal.classList.add('show');
+  document.body.style.overflow='hidden';
+  setTimeout(()=>document.getElementById('qudaarCustomerName')?.focus(),100);
+}
+
+function closeQudaarOrder(){
+  const modal=document.getElementById('qudaarOrderModal');
+  if(modal)modal.classList.remove('show');
+  document.body.style.overflow='';
+}
+
+function submitQudaarOrder(){
+  const form=document.getElementById('qudaarOrderForm');
+  if(!form||!form.reportValidity())return;
+
+  const selected=QUDAAR_ITEMS
+    .filter(([name])=>qudaarQty[name]>0)
+    .map(([name])=>name+': '+qudaarQty[name])
+    .join('\n');
+
+  if(!selected){
+    alert('Fadlan dooro ugu yaraan hal nooc oo qudaar ah.');
+    return;
+  }
+
+  const d=new FormData(form);
+  const body=[
+    'NAGAAD AGRO - DALAB QUDAAR',
+    '----------------------------',
+    'Qudaarta la dalbaday:',
+    selected,
+    '',
+    'Magaca: '+d.get('name'),
+    'Magaalada: '+d.get('city'),
+    'Xaafadda: '+d.get('neighborhood'),
+    'Lambarka: '+d.get('phone')
+  ].join('\n');
+
+  const subject=encodeURIComponent('Nagaad Agro - Dalab Qudaar');
+  window.location.href='mailto:haleelrealestate@gmail.com?subject='+subject+'&body='+encodeURIComponent(body);
+}
+</script>
+
 <div id="nagaadOrderModal" class="nagaad-order-overlay" onclick="if(event.target===this) closeNagaadOrder()">
   <div class="nagaad-order-modal" role="dialog" aria-modal="true" aria-labelledby="nagaadOrderTitle">
     <button type="button" class="nagaad-order-close" onclick="closeNagaadOrder()">×</button>
@@ -3333,6 +3606,10 @@ View All
 
 <script>
 function openNagaadOrder(product){
+  if(product === 'Qudaar'){
+    openQudaarOrder();
+    return;
+  }
   const modal=document.getElementById('nagaadOrderModal');
   const form=document.getElementById('nagaadOrderForm');
   if(!modal||!form)return;
