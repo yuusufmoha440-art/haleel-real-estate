@@ -2695,6 +2695,11 @@ body.dark .farsamo-service-card{
 
 
 </style>
+<style>
+.phub-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:2px}
+.phub-actions .farsamo-action{flex:1 1 140px;min-width:0}
+@media(max-width:480px){.phub-actions{flex-direction:column}.phub-actions .farsamo-action{width:100%}}
+</style>
 </head>
 
 <body>
@@ -3033,7 +3038,7 @@ View All
         <div class="premium-service-icon">💻</div>
         <h3>Farsamo Tech</h3>
         <p>Technology, IT iyo xalal digital ah oo kaa caawinaya shaqada iyo adeegyada casriga ah.</p>
-        <button class="service-register-btn service-open-btn" id="serviceBtn0" data-service="Farsamo Tech" onclick="openServiceDirect('Farsamo Tech')">Open →</button>
+        <button class="service-register-btn" id="serviceBtn0" data-service="Farsamo Tech" onclick="handleServiceButton('Farsamo Tech',this)">Register Now →</button>
       </div>
     </article>
 
@@ -3045,7 +3050,7 @@ View All
         <div class="premium-service-icon">🎓</div>
         <h3>Phub Academy</h3>
         <p>Waxbarasho, tababarro iyo koorsooyin loogu talagalay horumarinta aqoonta iyo xirfadaha.</p>
-        <button class="service-register-btn service-open-btn" id="serviceBtn1" data-service="Phub Academy" onclick="openServiceDirect('Phub Academy')">Open →</button>
+        <button class="service-register-btn" id="serviceBtn1" data-service="Phub Academy" onclick="handleServiceButton('Phub Academy',this)">Register Now →</button>
       </div>
     </article>
 
@@ -3057,7 +3062,7 @@ View All
         <div class="premium-service-icon">🏠</div>
         <h3>Checking House</h3>
         <p>Adeeg ku saabsan hubinta iyo qiimeynta xogta guryaha si go'aan xog-ogaal ah loo qaato.</p>
-        <button class="service-register-btn service-open-btn" id="serviceBtn2" data-service="Checking House" onclick="openServiceDirect('Checking House')">Open →</button>
+        <button class="service-register-btn" id="serviceBtn2" data-service="Checking House" onclick="handleServiceButton('Checking House',this)">Register Now →</button>
       </div>
     </article>
 
@@ -3069,7 +3074,7 @@ View All
         <div class="premium-service-icon">🌱</div>
         <h3>Nagaad Agro</h3>
         <p>Adeegyo la xiriira beeraha, wax-soo-saarka iyo xalalka Agro ee casriga ah.</p>
-        <button class="service-register-btn service-open-btn" id="serviceBtn3" data-service="Nagaad Agro" onclick="openServiceDirect('Nagaad Agro')">Open →</button>
+        <button class="service-register-btn" id="serviceBtn3" data-service="Nagaad Agro" onclick="handleServiceButton('Nagaad Agro',this)">Register Now →</button>
       </div>
     </article>
 
@@ -3081,7 +3086,7 @@ View All
         <div class="premium-service-icon">🐄</div>
         <h3>Barako Livestock</h3>
         <p>Adeegyo iyo fursado la xiriira xoolaha iyo horumarinta livestock-ka.</p>
-        <button class="service-register-btn service-open-btn" id="serviceBtn4" data-service="Barako Livestock" onclick="openServiceDirect('Barako Livestock')">Open →</button>
+        <button class="service-register-btn" id="serviceBtn4" data-service="Barako Livestock" onclick="handleServiceButton('Barako Livestock',this)">Register Now →</button>
       </div>
     </article>
 
@@ -3160,18 +3165,6 @@ View All
           <div class="farsamo-service-icon">🎨</div>
           <h3>Ranjiile</h3>
           <p>Rinjiyeynta guryaha, darbiyada, saqafyada iyo hagaajinta muuqaalka gudaha iyo dibadda.</p>
-          <div class="farsamo-actions">
-            <button class="farsamo-action chat" onclick="openChat()">💬 Chat Now</button>
-            <a class="farsamo-action call" href="tel:+252907469995">📞 Call Now</a>
-          </div>
-        </div>
-      </article>
-
-      <article class="farsamo-service-card" style='--farsamo-bg:url("https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&fit=crop&w=1200&q=85")'>
-        <div class="farsamo-service-content">
-          <div class="farsamo-service-icon">📹</div>
-          <h3>CCTV Services</h3>
-          <p>Rakibid, dejin, dayactir iyo kormeerka CCTV cameras si aad u hesho amni iyo ilaalin wanaagsan.</p>
           <div class="farsamo-actions">
             <button class="farsamo-action chat" onclick="openChat()">💬 Chat Now</button>
             <a class="farsamo-action call" href="tel:+252907469995">📞 Call Now</a>
@@ -4061,33 +4054,27 @@ onclick="toggleCare()">
     <article class="phub-card">
       <img class="phub-card-bg" src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=85" alt="Multi-media">
       <div class="phub-icon">🎬</div><h3>Multi-media</h3><p>Video editing, graphic design, content creation iyo xirfadaha multimedia.</p>
-      <button class="phub-open" onclick="alert('Qaybta Multi-media waa la diyaarinayaa.')">Open</button>
-    
-          <div class="phub-actions" style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;">
-            <button class="phub-action chat" onclick="openChat()" style="flex:1;min-width:130px;">💬 Chat Now</button>
-            <a class="phub-action call" href="tel:+252907469995" style="flex:1;min-width:130px;text-align:center;">📞 Call Now</a>
-          </div>
-      </article>
+      <div class="farsamo-actions phub-actions">
+        <button class="farsamo-action chat" onclick="openChat()">💬 Chat Now</button>
+        <a class="farsamo-action call" href="tel:+252907469995">📞 Call Now</a>
+      </div>
+    </article>
     <article class="phub-card">
       <img class="phub-card-bg" src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=85" alt="Data Analysis">
       <div class="phub-icon">📊</div><h3>Data Analysis</h3><p>Baro sida xogta loo ururiyo, loo falanqeeyo loona fahmo natiijooyinka.</p>
-      <button class="phub-open" onclick="alert('Qaybta Data Analysis waa la diyaarinayaa.')">Open</button>
-    
-          <div class="phub-actions" style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;">
-            <button class="phub-action chat" onclick="openChat()" style="flex:1;min-width:130px;">💬 Chat Now</button>
-            <a class="phub-action call" href="tel:+252907469995" style="flex:1;min-width:130px;text-align:center;">📞 Call Now</a>
-          </div>
-      </article>
+      <div class="farsamo-actions phub-actions">
+        <button class="farsamo-action chat" onclick="openChat()">💬 Chat Now</button>
+        <a class="farsamo-action call" href="tel:+252907469995">📞 Call Now</a>
+      </div>
+    </article>
     <article class="phub-card">
       <img class="phub-card-bg" src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=85" alt="Web Development">
       <div class="phub-icon">💻</div><h3>Web Development</h3><p>HTML, CSS, JavaScript iyo dhisidda websites casri ah oo responsive ah.</p>
-      <button class="phub-open" onclick="alert('Qaybta Web Development waa la diyaarinayaa.')">Open</button>
-    
-          <div class="phub-actions" style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;">
-            <button class="phub-action chat" onclick="openChat()" style="flex:1;min-width:130px;">💬 Chat Now</button>
-            <a class="phub-action call" href="tel:+252907469995" style="flex:1;min-width:130px;text-align:center;">📞 Call Now</a>
-          </div>
-      </article>
+      <div class="farsamo-actions phub-actions">
+        <button class="farsamo-action chat" onclick="openChat()">💬 Chat Now</button>
+        <a class="farsamo-action call" href="tel:+252907469995">📞 Call Now</a>
+      </div>
+    </article>
   </div>
 </div>
 
@@ -5320,19 +5307,25 @@ function isServiceRegistered(serviceName){
 
 function refreshServiceButtons(){
   document.querySelectorAll(".service-register-btn[data-service]").forEach(button=>{
-    button.textContent="Open →";
-    button.classList.add("service-open-btn");
+    const serviceName=button.dataset.service;
+    const registered=isServiceRegistered(serviceName);
+    button.textContent=registered ? "🔓 Open" : "Register Now →";
+    button.classList.toggle("service-open-btn",registered);
   });
 }
 
-function openServiceDirect(serviceName){
-  if(serviceName==="Farsamo Tech"){
-    openPage("farsamo");
-  }else if(serviceName==="Phub Academy"){
-    openPage("phub");
-  }else{
-    alert("Qaybta "+serviceName+" waa la diyaarinayaa.");
+function handleServiceButton(serviceName,button){
+  if(isServiceRegistered(serviceName)){
+    if(serviceName==="Farsamo Tech"){
+      openPage("farsamo");
+    }else if(serviceName==="Phub Academy"){
+      openPage("phub");
+    }else{
+      alert("Adeegga "+serviceName+" waa kuu furan yahay.");
+    }
+    return;
   }
+  openServiceRegistration(serviceName);
 }
 
 function openServiceRegistration(serviceName){
