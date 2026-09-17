@@ -2901,6 +2901,89 @@ View All
   </div>
 </div>
 
+
+<!-- FARSAMO TECH SERVICES -->
+<div class="page farsamo-page" id="farsamo">
+
+  <button class="btn btn-outline farsamo-back" onclick="openPage('services')">
+    ← Back to Services
+  </button>
+
+  <div class="farsamo-hero">
+    <div>
+      <div style="font-weight:900;letter-spacing:.08em;text-transform:uppercase;font-size:12px;margin-bottom:9px">
+        💻 Farsamo Tech
+      </div>
+      <h1>Adeegyo Farsamo</h1>
+      <p>
+        Hel qof xirfad leh oo kaa caawiya adeegyada korontada, mukeyfka,
+        tuubooyinka iyo cilad-bixinta. Dooro adeegga aad u baahan tahay.
+      </p>
+    </div>
+  </div>
+
+  <div class="section" style="margin-top:28px">
+    <div class="section-header">
+      <div>
+        <h2>Adeegyo</h2>
+        <p style="color:#718096;margin-top:5px">Dooro adeegga aad rabto kadibna Chat ama Call Now samee.</p>
+      </div>
+    </div>
+
+    <div class="farsamo-services">
+
+      <article class="farsamo-service-card" style='--farsamo-bg:url("https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=1200&q=85")'>
+        <div class="farsamo-service-content">
+          <div class="farsamo-service-icon">⚡</div>
+          <h3>Korontiiste</h3>
+          <p>Caawimaad ku saabsan rakibidda, dayactirka iyo ciladaha korontada.</p>
+          <div class="farsamo-actions">
+            <button class="farsamo-action chat" onclick="openChat()">💬 Chat Now</button>
+            <a class="farsamo-action call" href="tel:+252907469995">📞 Call Now</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="farsamo-service-card" style='--farsamo-bg:url("https://images.unsplash.com/photo-1631545806609-1f7e2a4d3a6d?auto=format&fit=crop&w=1200&q=85")'>
+        <div class="farsamo-service-content">
+          <div class="farsamo-service-icon">❄️</div>
+          <h3>Mukeyf</h3>
+          <p>Rakibid, nadiifin, dayactir iyo cilad-bixin adeegyada mukeyfka.</p>
+          <div class="farsamo-actions">
+            <button class="farsamo-action chat" onclick="openChat()">💬 Chat Now</button>
+            <a class="farsamo-action call" href="tel:+252907469995">📞 Call Now</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="farsamo-service-card" style='--farsamo-bg:url("https://images.unsplash.com/photo-1607472586893-edb57bdc0e39?auto=format&fit=crop&w=1200&q=85")'>
+        <div class="farsamo-service-content">
+          <div class="farsamo-service-icon">🚰</div>
+          <h3>Tuubayste</h3>
+          <p>Dayactirka tuubooyinka, biyaha iyo ciladaha nidaamka plumbing-ka.</p>
+          <div class="farsamo-actions">
+            <button class="farsamo-action chat" onclick="openChat()">💬 Chat Now</button>
+            <a class="farsamo-action call" href="tel:+252907469995">📞 Call Now</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="farsamo-service-card" style='--farsamo-bg:url("https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1200&q=85")'>
+        <div class="farsamo-service-content">
+          <div class="farsamo-service-icon">🛠️</div>
+          <h3>Cillad Bixin</h3>
+          <p>Haddii qalab ama adeeg cilad yeesho, hel caawimaad iyo cilad-bixin.</p>
+          <div class="farsamo-actions">
+            <button class="farsamo-action chat" onclick="openChat()">💬 Chat Now</button>
+            <a class="farsamo-action call" href="tel:+252907469995">📞 Call Now</a>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</div>
+
 <!-- PROPERTY -->
 
 <div class="page" id="property">
@@ -4946,6 +5029,143 @@ return String(value)
 
 
 
+
+/* =========================================================
+   FARSAMO TECH SERVICES
+========================================================= */
+.farsamo-page{
+  padding-bottom:40px;
+}
+.farsamo-hero{
+  position:relative;
+  overflow:hidden;
+  min-height:260px;
+  border-radius:26px;
+  padding:38px 30px;
+  display:flex;
+  align-items:center;
+  color:#fff;
+  background:
+    linear-gradient(120deg,rgba(3,28,52,.95),rgba(0,108,194,.78)),
+    url("https://images.unsplash.com/photo-1581092921461-eab62e97a780?auto=format&fit=crop&w=1600&q=85");
+  background-size:cover;
+  background-position:center;
+  box-shadow:0 20px 55px rgba(0,54,100,.18);
+}
+.farsamo-hero h1{
+  font-size:clamp(32px,5vw,52px);
+  margin-bottom:10px;
+}
+.farsamo-hero p{
+  max-width:700px;
+  color:rgba(255,255,255,.88);
+  line-height:1.7;
+}
+.farsamo-back{
+  margin-bottom:18px;
+}
+.farsamo-services{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:20px;
+  margin-top:24px;
+}
+.farsamo-service-card{
+  position:relative;
+  min-height:230px;
+  overflow:hidden;
+  border-radius:22px;
+  padding:28px;
+  color:#fff;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  background:#0d2538;
+  box-shadow:0 14px 40px rgba(9,44,73,.10);
+  transition:transform .3s ease,box-shadow .3s ease;
+}
+.farsamo-service-card:hover{
+  transform:translateY(-7px);
+  box-shadow:0 24px 55px rgba(9,44,73,.18);
+}
+.farsamo-service-card::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(180deg,rgba(3,28,52,.08),rgba(3,28,52,.90)),
+    var(--farsamo-bg);
+  background-size:cover;
+  background-position:center;
+  transition:transform .5s ease;
+}
+.farsamo-service-card:hover::before{
+  transform:scale(1.06);
+}
+.farsamo-service-content{
+  position:relative;
+  z-index:1;
+}
+.farsamo-service-icon{
+  width:52px;height:52px;
+  border-radius:15px;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(255,255,255,.16);
+  backdrop-filter:blur(8px);
+  font-size:24px;
+  margin-bottom:13px;
+}
+.farsamo-service-card h3{
+  color:#fff;
+  font-size:24px;
+  margin-bottom:7px;
+}
+.farsamo-service-card p{
+  color:rgba(255,255,255,.82);
+  line-height:1.55;
+  margin-bottom:18px;
+}
+.farsamo-actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.farsamo-action{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  min-width:120px;
+  padding:11px 16px;
+  border:1px solid rgba(255,255,255,.25);
+  border-radius:12px;
+  text-decoration:none;
+  font-weight:800;
+  cursor:pointer;
+  transition:.25s;
+}
+.farsamo-action.chat{
+  background:#fff;
+  color:#006CC2;
+}
+.farsamo-action.call{
+  background:rgba(32,178,107,.92);
+  color:#fff;
+}
+.farsamo-action:hover{
+  transform:translateY(-2px);
+}
+body.dark .farsamo-hero,
+body.dark .farsamo-service-card{
+  box-shadow:0 18px 55px rgba(0,0,0,.28);
+}
+@media(max-width:650px){
+  .farsamo-hero{padding:30px 22px;min-height:245px}
+  .farsamo-services{grid-template-columns:1fr}
+  .farsamo-service-card{min-height:250px}
+  .farsamo-action{flex:1;min-width:0}
+}
+
 /* =========================================================
    SERVICE REGISTRATION
 ========================================================= */
@@ -4983,7 +5203,10 @@ function submitServiceRegistration(){
 
   setTimeout(()=>{
     closeServiceRegistration();
-  },900);
+    if(service==="Farsamo Tech"){
+      openPage("farsamo");
+    }
+  },650);
 }
 
 
@@ -5012,6 +5235,7 @@ selected.classList.add("active");
 const titles={
 home:"Home",
 services:"Services",
+farsamo:"Adeegyo",
 property:"Properties",
 care:"Customer Care",
 submit:"Submit Property",
