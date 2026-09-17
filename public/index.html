@@ -1490,6 +1490,15 @@ width:100%;
   cursor:pointer;
   transition:transform .25s ease,box-shadow .25s ease;
 }
+.service-open-btn{
+  background:#159957;
+  color:#fff;
+  border-color:#159957;
+}
+.service-open-btn:hover{
+  background:#117a45;
+  color:#fff;
+}
 .service-register-btn:hover{
   transform:translateY(-2px);
   box-shadow:0 10px 25px rgba(0,0,0,.18);
@@ -2983,7 +2992,7 @@ View All
         <div class="premium-service-icon">💻</div>
         <h3>Farsamo Tech</h3>
         <p>Technology, IT iyo xalal digital ah oo kaa caawinaya shaqada iyo adeegyada casriga ah.</p>
-        <button class="service-register-btn" onclick="openServiceRegistration('Farsamo Tech')">Register Now →</button>
+        <button class="service-register-btn" id="serviceBtn0" data-service="Farsamo Tech" onclick="handleServiceButton('Farsamo Tech',this)">Register Now →</button>
       </div>
     </article>
 
@@ -2995,7 +3004,7 @@ View All
         <div class="premium-service-icon">🎓</div>
         <h3>Phub Academy</h3>
         <p>Waxbarasho, tababarro iyo koorsooyin loogu talagalay horumarinta aqoonta iyo xirfadaha.</p>
-        <button class="service-register-btn" onclick="openServiceRegistration('Phub Academy')">Register Now →</button>
+        <button class="service-register-btn" id="serviceBtn1" data-service="Phub Academy" onclick="handleServiceButton('Phub Academy',this)">Register Now →</button>
       </div>
     </article>
 
@@ -3007,7 +3016,7 @@ View All
         <div class="premium-service-icon">🏠</div>
         <h3>Checking House</h3>
         <p>Adeeg ku saabsan hubinta iyo qiimeynta xogta guryaha si go'aan xog-ogaal ah loo qaato.</p>
-        <button class="service-register-btn" onclick="openServiceRegistration('Checking House')">Register Now →</button>
+        <button class="service-register-btn" id="serviceBtn2" data-service="Checking House" onclick="handleServiceButton('Checking House',this)">Register Now →</button>
       </div>
     </article>
 
@@ -3019,7 +3028,7 @@ View All
         <div class="premium-service-icon">🌱</div>
         <h3>Nagaad Agro</h3>
         <p>Adeegyo la xiriira beeraha, wax-soo-saarka iyo xalalka Agro ee casriga ah.</p>
-        <button class="service-register-btn" onclick="openServiceRegistration('Nagaad Agro')">Register Now →</button>
+        <button class="service-register-btn" id="serviceBtn3" data-service="Nagaad Agro" onclick="handleServiceButton('Nagaad Agro',this)">Register Now →</button>
       </div>
     </article>
 
@@ -3031,7 +3040,7 @@ View All
         <div class="premium-service-icon">🐄</div>
         <h3>Barako Livestock</h3>
         <p>Adeegyo iyo fursado la xiriira xoolaha iyo horumarinta livestock-ka.</p>
-        <button class="service-register-btn" onclick="openServiceRegistration('Barako Livestock')">Register Now →</button>
+        <button class="service-register-btn" id="serviceBtn4" data-service="Barako Livestock" onclick="handleServiceButton('Barako Livestock',this)">Register Now →</button>
       </div>
     </article>
 
@@ -4335,6 +4344,7 @@ function openDashboardForUser(user){
   if(app)app.style.display="block";
 
   openPage("home");
+  refreshServiceButtons();
 }
 
 function lockDashboard(){
@@ -5170,6 +5180,36 @@ return String(value)
 /* =========================================================
    SERVICE REGISTRATION
 ========================================================= */
+function serviceStorageKey(serviceName){
+  const accountId=String(localStorage.getItem("haleelAccountId")||"guest").trim();
+  return "haleelServiceRegistered:"+accountId+":"+serviceName;
+}
+
+function isServiceRegistered(serviceName){
+  return localStorage.getItem(serviceStorageKey(serviceName))==="1";
+}
+
+function refreshServiceButtons(){
+  document.querySelectorAll(".service-register-btn[data-service]").forEach(button=>{
+    const serviceName=button.dataset.service;
+    const registered=isServiceRegistered(serviceName);
+    button.textContent=registered ? "🔓 Open" : "Register Now →";
+    button.classList.toggle("service-open-btn",registered);
+  });
+}
+
+function handleServiceButton(serviceName,button){
+  if(isServiceRegistered(serviceName)){
+    if(serviceName==="Farsamo Tech"){
+      openPage("farsamo");
+    }else{
+      alert("Adeegga "+serviceName+" waa kuu furan yahay.");
+    }
+    return;
+  }
+  openServiceRegistration(serviceName);
+}
+
 function openServiceRegistration(serviceName){
   const modal=$("serviceRegistrationModal");
   if(!modal) return;
@@ -5199,18 +5239,23 @@ function submitServiceRegistration(){
     return;
   }
 
+  localStorage.setItem(serviceStorageKey(service),"1");
+
   message.textContent="Registration-ka waa la gudbiyay.";
   message.style.color="#159957";
 
   setTimeout(()=>{
     closeServiceRegistration();
+    refreshServiceButtons();
     if(service==="Farsamo Tech"){
       openPage("farsamo");
     }
   },650);
 }
 
-
+document.addEventListener("DOMContentLoaded",function(){
+  refreshServiceButtons();
+});
 
 document.addEventListener("click",function(e){
   const modal=$("serviceRegistrationModal");
