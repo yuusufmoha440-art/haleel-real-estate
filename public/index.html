@@ -2751,51 +2751,6 @@ body.dark .farsamo-service-card{
 .phub-actions .farsamo-action{flex:1 1 140px;min-width:0}
 @media(max-width:480px){.phub-actions{flex-direction:column}.phub-actions .farsamo-action{width:100%}}
 </style>
-
-<style>
-/* FARSAMO SERVICE ORDER FORMS */
-.order-service-btn{background:#fff !important;color:#006CC2 !important}
-.order-service-btn:hover{background:#f3f9ff !important}
-.service-order-box{max-width:720px;max-height:min(92dvh,900px);overflow:auto;text-align:left;padding:30px;animation:serviceOrderIn .35s ease}
-.service-order-header{display:flex;align-items:center;gap:15px;margin-bottom:22px;padding-bottom:18px;border-bottom:1px solid #edf2f6}
-.service-order-icon{width:62px;height:62px;flex:none;display:flex;align-items:center;justify-content:center;border-radius:18px;background:#eaf5ff;font-size:30px;box-shadow:0 10px 25px rgba(0,108,194,.10)}
-.service-order-kicker{color:#006CC2;font-size:11px;font-weight:900;letter-spacing:1.4px;margin-bottom:4px}
-.service-order-header h2{color:#081b2e;margin:0 0 5px;font-size:27px}
-.service-order-header p{color:#718096;line-height:1.5;margin:0;font-size:14px}
-.service-order-grid,.service-specific-fields{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.service-specific-fields{margin-top:14px}
-.service-order-field{min-width:0}
-.service-order-full{grid-column:1/-1}
-.service-order-field label{display:block;color:#53677a;font-size:13px;font-weight:800;margin:0 0 7px}
-.service-order-field input,.service-order-field select,.service-order-field textarea{width:100%;border:1px solid #dce4ec;border-radius:13px;outline:none;background:#fff;color:#1d3044;padding:0 14px;transition:.25s}
-.service-order-field input,.service-order-field select{height:50px}
-.service-order-field textarea{min-height:120px;padding:13px 14px;resize:vertical}
-.service-order-field input:focus,.service-order-field select:focus,.service-order-field textarea:focus{border-color:#006CC2;box-shadow:0 0 0 4px rgba(0,108,194,.09)}
-.service-order-actions{display:flex;gap:10px;margin-top:18px}
-.service-order-actions .btn{flex:1}
-.service-order-message{min-height:20px;margin-top:13px;text-align:center;font-size:13px;font-weight:800;color:#718096}
-.service-order-message.error{color:#E5484D}
-.service-order-message.success{color:#159957}
-.service-order-note{margin:12px 0 0;color:#718096;font-size:11px;line-height:1.5;text-align:center}
-body.dark .service-order-box{background:#131c26}
-body.dark .service-order-header{border-bottom-color:rgba(255,255,255,.08)}
-body.dark .service-order-header h2{color:#f1f5f9}
-body.dark .service-order-header p,body.dark .service-order-note{color:#91a0b1}
-body.dark .service-order-field label{color:#91a0b1}
-body.dark .service-order-field input,body.dark .service-order-field select,body.dark .service-order-field textarea{background:#151e28;color:#e8eef5;border-color:#2b3948}
-body.dark .service-order-icon{background:#102d43}
-@keyframes serviceOrderIn{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
-@media(max-width:650px){
-  .service-order-box{padding:22px 17px;max-height:94dvh;border-radius:20px}
-  .service-order-header{align-items:flex-start}
-  .service-order-icon{width:52px;height:52px;font-size:25px}
-  .service-order-header h2{font-size:23px}
-  .service-order-grid,.service-specific-fields{grid-template-columns:1fr}
-  .service-order-full{grid-column:auto}
-  .service-order-actions{flex-direction:column}
-  .service-order-actions .btn{width:100%}
-}
-</style>
 </head>
 
 <body>
@@ -3162,7 +3117,7 @@ View All
       </div>
     </article>
 
-    <article class="premium-service-card">
+    <article class="premium-service-card nagaad-agro-main-card">
       <img class="premium-service-bg"
            src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&w=1200&q=85"
            alt="Nagaad Agro">
@@ -3170,7 +3125,7 @@ View All
         <div class="premium-service-icon">🌱</div>
         <h3>Nagaad Agro</h3>
         <p>Adeegyo la xiriira beeraha, wax-soo-saarka iyo xalalka Agro ee casriga ah.</p>
-        <button class="service-register-btn service-open-btn" id="serviceBtn3" onclick="alert('Nagaad Agro waa la furayaa dhawaan.')">🔓 Open</button>
+        <button class="service-register-btn service-open-btn" id="serviceBtn3" onclick="openPage('nagaadAgro')">🌱 Open</button>
       </div>
     </article>
 
@@ -3191,6 +3146,230 @@ View All
 
 
 <!-- FARSAMO TECH SERVICES -->
+
+<div class="page nagaad-agro-page" id="nagaadAgro">
+  <button class="btn btn-outline" onclick="openPage('services')">← Back to Services</button>
+
+  <div class="nagaad-agro-hero">
+    <div>
+      <div class="nagaad-agro-badge">🌱 NAGAAD AGRO</div>
+      <h1>Nagaad Agro</h1>
+      <p>Dooro adeegga aad rabto: Qudaar ama Calafka Xoolaha.</p>
+    </div>
+  </div>
+
+  <div class="section-header nagaad-section-header">
+    <div>
+      <h2>Qaybaha Nagaad Agro</h2>
+      <p style="color:#718096;margin-top:5px">Dooro qaybta aad rabto inaad dalbato.</p>
+    </div>
+  </div>
+
+  <div class="nagaad-agro-grid">
+    <article class="nagaad-agro-card">
+      <div class="nagaad-agro-icon">🥬</div>
+      <span class="nagaad-agro-label">AGRO</span>
+      <h3>Qudaar</h3>
+      <p>Qudaar iyo wax-soo-saarka beeraha oo aad si fudud uga dalban karto Haleel.</p>
+      <div class="nagaad-agro-actions">
+        <button type="button" class="nagaad-agro-btn order" onclick="openNagaadOrder('Qudaar')">📝 Dalbo</button>
+        <a class="nagaad-agro-btn call" href="tel:+252907469995">📞 Call Now</a>
+      </div>
+    </article>
+
+    <article class="nagaad-agro-card">
+      <div class="nagaad-agro-icon">🌾</div>
+      <span class="nagaad-agro-label">AGRO</span>
+      <h3>Calafka Xoolaha</h3>
+      <p>Calaf xoolaad loogu talagalay baahida quudinta iyo daryeelka xoolaha.</p>
+      <div class="nagaad-agro-actions">
+        <button type="button" class="nagaad-agro-btn order" onclick="openNagaadOrder('Calafka Xoolaha')">📝 Dalbo</button>
+        <a class="nagaad-agro-btn call" href="tel:+252907469995">📞 Call Now</a>
+      </div>
+    </article>
+  </div>
+</div>
+
+<div id="nagaadOrderModal" class="nagaad-order-overlay" onclick="if(event.target===this) closeNagaadOrder()">
+  <div class="nagaad-order-modal" role="dialog" aria-modal="true" aria-labelledby="nagaadOrderTitle">
+    <button type="button" class="nagaad-order-close" onclick="closeNagaadOrder()">×</button>
+
+    <div class="nagaad-order-head">
+      <div class="nagaad-order-big-icon">🌱</div>
+      <div>
+        <span>Dalabka Nagaad Agro</span>
+        <h2 id="nagaadOrderTitle">Dalbo Qudaar</h2>
+        <p id="nagaadOrderSubtitle">Buuxi xogta dalabkaaga.</p>
+      </div>
+    </div>
+
+    <form id="nagaadOrderForm" onsubmit="event.preventDefault(); submitNagaadOrder();">
+      <input type="hidden" id="nagaadProduct" name="product">
+
+      <div class="nagaad-form-grid">
+        <div class="nagaad-field">
+          <label for="nagaadName">Magacaaga *</label>
+          <input id="nagaadName" name="name" required placeholder="Geli magacaaga">
+        </div>
+
+        <div class="nagaad-field">
+          <label for="nagaadPhone">Telefoonka *</label>
+          <input id="nagaadPhone" name="phone" type="tel" required placeholder="+252...">
+        </div>
+
+        <div class="nagaad-field">
+          <label for="nagaadCity">Magaalada *</label>
+          <input id="nagaadCity" name="city" required placeholder="Magaalada">
+        </div>
+
+        <div class="nagaad-field">
+          <label for="nagaadQuantity">Tirada / Qadarka *</label>
+          <input id="nagaadQuantity" name="quantity" required placeholder="Tusaale: 10kg / 5 jawaan">
+        </div>
+
+        <div class="nagaad-field">
+          <label for="nagaadLocation">Goobta / Cinwaanka *</label>
+          <input id="nagaadLocation" name="location" required placeholder="Halka lagu geynayo">
+        </div>
+
+        <div class="nagaad-field">
+          <label for="nagaadDate">Goorta aad rabto</label>
+          <input id="nagaadDate" name="preferred_date" type="date">
+        </div>
+
+        <div class="nagaad-field nagaad-full">
+          <label for="nagaadDetails">Faahfaahinta Dalabka *</label>
+          <textarea id="nagaadDetails" name="details" required rows="4" placeholder="Qor faahfaahinta dalabkaaga..."></textarea>
+        </div>
+      </div>
+
+      <div class="nagaad-submit-row">
+        <button type="button" class="nagaad-cancel" onclick="closeNagaadOrder()">Ka Noqo</button>
+        <button type="submit" class="nagaad-submit">📨 Gudbi Dalabkaaga</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<style>
+.nagaad-agro-page{padding-bottom:50px}
+.nagaad-agro-hero{
+  margin-top:20px;min-height:250px;border-radius:26px;padding:45px;
+  display:flex;align-items:center;color:#fff;overflow:hidden;position:relative;
+  background:linear-gradient(110deg,rgba(10,70,35,.95),rgba(25,125,68,.72),rgba(70,170,90,.28)),
+  url("https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&w=1800&q=85");
+  background-size:cover;background-position:center;
+  box-shadow:0 22px 60px rgba(0,80,40,.18)
+}
+.nagaad-agro-badge{font-size:12px;font-weight:900;letter-spacing:.14em;margin-bottom:10px}
+.nagaad-agro-hero h1{font-size:clamp(36px,5vw,56px);margin:0 0 10px}
+.nagaad-agro-hero p{margin:0;color:rgba(255,255,255,.9);font-size:17px}
+.nagaad-section-header{margin-top:38px}
+.nagaad-agro-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+.nagaad-agro-card{
+  background:#fff;border:1px solid rgba(20,70,40,.1);border-radius:24px;padding:28px;
+  box-shadow:0 14px 42px rgba(10,50,30,.08);transition:.3s
+}
+.nagaad-agro-card:hover{transform:translateY(-6px);box-shadow:0 24px 55px rgba(10,50,30,.14)}
+.nagaad-agro-icon{font-size:48px;margin-bottom:10px}
+.nagaad-agro-label{font-size:11px;font-weight:900;letter-spacing:.12em;color:#198754}
+.nagaad-agro-card h3{font-size:25px;margin:6px 0 9px}
+.nagaad-agro-card p{color:#718096;line-height:1.7;min-height:55px}
+.nagaad-agro-actions{display:flex;gap:12px;margin-top:22px}
+.nagaad-agro-btn{
+  flex:1;text-align:center;text-decoration:none;border:0;border-radius:13px;padding:13px 16px;
+  font-weight:800;cursor:pointer;transition:.25s;box-sizing:border-box
+}
+.nagaad-agro-btn:hover{transform:translateY(-2px)}
+.nagaad-agro-btn.order{background:linear-gradient(135deg,#15803d,#22a35a);color:#fff}
+.nagaad-agro-btn.call{background:#101828;color:#fff}
+
+.nagaad-order-overlay{
+  display:none;position:fixed;inset:0;z-index:100000;align-items:center;justify-content:center;
+  padding:18px;background:rgba(0,0,0,.6);backdrop-filter:blur(7px)
+}
+.nagaad-order-overlay.show{display:flex;animation:nagaadFade .2s ease}
+.nagaad-order-modal{
+  width:min(720px,100%);max-height:92vh;overflow:auto;background:#fff;border-radius:25px;
+  padding:28px;color:#111;box-shadow:0 30px 90px rgba(0,0,0,.3);animation:nagaadUp .28s ease;position:relative
+}
+.nagaad-order-close{
+  position:absolute;right:14px;top:12px;width:40px;height:40px;border:0;border-radius:50%;
+  background:#f1f3f5;font-size:27px;cursor:pointer
+}
+.nagaad-order-head{display:flex;gap:14px;align-items:center;padding-right:48px;margin-bottom:24px}
+.nagaad-order-big-icon{font-size:40px}
+.nagaad-order-head>div:nth-child(2)>span{font-size:11px;font-weight:900;letter-spacing:.12em;color:#198754}
+.nagaad-order-head h2{margin:4px 0 5px}
+.nagaad-order-head p{margin:0;color:#718096}
+.nagaad-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.nagaad-field{display:flex;flex-direction:column;gap:7px}
+.nagaad-full{grid-column:1/-1}
+.nagaad-field label{font-weight:800;font-size:14px}
+.nagaad-field input,.nagaad-field textarea{
+  width:100%;box-sizing:border-box;padding:13px 14px;border:1px solid #dfe3e8;border-radius:12px;
+  background:#fafafa;font:inherit;outline:none;transition:.2s
+}
+.nagaad-field input:focus,.nagaad-field textarea:focus{border-color:#198754;box-shadow:0 0 0 3px rgba(25,135,84,.12);background:#fff}
+.nagaad-submit-row{display:flex;justify-content:flex-end;gap:12px;margin-top:22px}
+.nagaad-cancel,.nagaad-submit{border:0;border-radius:12px;padding:13px 18px;font-weight:800;cursor:pointer}
+.nagaad-cancel{background:#edf0f2;color:#222}
+.nagaad-submit{background:linear-gradient(135deg,#15803d,#22a35a);color:#fff}
+@keyframes nagaadFade{from{opacity:0}to{opacity:1}}
+@keyframes nagaadUp{from{opacity:0;transform:translateY(18px) scale(.98)}to{opacity:1;transform:none}}
+
+@media(max-width:650px){
+  .nagaad-agro-hero{padding:30px 24px;min-height:220px}
+  .nagaad-agro-grid{grid-template-columns:1fr}
+  .nagaad-agro-card{padding:23px}
+  .nagaad-agro-actions{flex-direction:column}
+  .nagaad-order-modal{padding:22px;border-radius:20px}
+  .nagaad-form-grid{grid-template-columns:1fr}
+  .nagaad-full{grid-column:auto}
+  .nagaad-submit-row{flex-direction:column-reverse}
+  .nagaad-cancel,.nagaad-submit{width:100%}
+}
+</style>
+
+<script>
+function openNagaadOrder(product){
+  const modal=document.getElementById('nagaadOrderModal');
+  const form=document.getElementById('nagaadOrderForm');
+  if(!modal||!form)return;
+  form.reset();
+  document.getElementById('nagaadProduct').value=product;
+  document.getElementById('nagaadOrderTitle').textContent='Dalbo '+product;
+  document.getElementById('nagaadOrderSubtitle').textContent='Buuxi xogta dalabkaaga ee '+product+'.';
+  modal.classList.add('show');
+  document.body.style.overflow='hidden';
+  setTimeout(()=>document.getElementById('nagaadName')?.focus(),100);
+}
+function closeNagaadOrder(){
+  const modal=document.getElementById('nagaadOrderModal');
+  if(modal)modal.classList.remove('show');
+  document.body.style.overflow='';
+}
+function submitNagaadOrder(){
+  const form=document.getElementById('nagaadOrderForm');
+  if(!form||!form.reportValidity())return;
+  const d=new FormData(form);
+  const body=[
+    'NAGAAD AGRO DALAB',
+    '--------------------',
+    'Qaybta: '+d.get('product'),
+    'Magaca: '+d.get('name'),
+    'Telefoon: '+d.get('phone'),
+    'Magaalada: '+d.get('city'),
+    'Tirada/Qadarka: '+d.get('quantity'),
+    'Goorta: '+(d.get('preferred_date')||''),
+    'Goobta: '+d.get('location'),
+    'Faahfaahin: '+d.get('details')
+  ].join('\n');
+  const subject=encodeURIComponent('Nagaad Agro Dalab - '+d.get('product'));
+  window.location.href='mailto:haleelrealestate@gmail.com?subject='+subject+'&body='+encodeURIComponent(body);
+}
+</script>
+
 <div class="page farsamo-page" id="farsamo">
 
   <button class="btn btn-outline farsamo-back" onclick="openPage('services')">
@@ -3214,7 +3393,7 @@ View All
     <div class="section-header">
       <div>
         <h2>Adeegyo</h2>
-        <p style="color:#718096;margin-top:5px">Dooro adeegga aad rabto, riix Dalbo, kadibna buuxi foomka gaarka ah ee adeegga.</p>
+        <p style="color:#718096;margin-top:5px">Dooro adeegga aad rabto kadibna Chat ama Call Now samee.</p>
       </div>
     </div>
 
@@ -3226,7 +3405,7 @@ View All
           <h3>Korontiiste</h3>
           <p>Caawimaad ku saabsan rakibidda, dayactirka iyo ciladaha korontada.</p>
           <div class="farsamo-actions">
-            <button class="farsamo-action chat order-service-btn" onclick="openServiceOrder('Korontiiste')">📝 Dalbo</button>
+            <button class="farsamo-action chat" onclick="openChat()">💬 Chat Now</button>
             <a class="farsamo-action call" href="tel:+252907469995">📞 Call Now</a>
           </div>
         </div>
@@ -3238,7 +3417,7 @@ View All
           <h3>Mukeyf</h3>
           <p>Rakibid, nadiifin, dayactir iyo cilad-bixin adeegyada mukeyfka.</p>
           <div class="farsamo-actions">
-            <button class="farsamo-action chat order-service-btn" onclick="openServiceOrder('Mukeyf')">📝 Dalbo</button>
+            <button class="farsamo-action chat" onclick="openChat()">💬 Chat Now</button>
             <a class="farsamo-action call" href="tel:+252907469995">📞 Call Now</a>
           </div>
         </div>
@@ -3250,7 +3429,7 @@ View All
           <h3>Tuubayste</h3>
           <p>Dayactirka tuubooyinka, biyaha iyo ciladaha nidaamka plumbing-ka.</p>
           <div class="farsamo-actions">
-            <button class="farsamo-action chat order-service-btn" onclick="openServiceOrder('Tuubayste')">📝 Dalbo</button>
+            <button class="farsamo-action chat" onclick="openChat()">💬 Chat Now</button>
             <a class="farsamo-action call" href="tel:+252907469995">📞 Call Now</a>
           </div>
         </div>
@@ -3262,7 +3441,7 @@ View All
           <h3>Ranjiile</h3>
           <p>Rinjiyeynta guryaha, darbiyada, saqafyada iyo hagaajinta muuqaalka gudaha iyo dibadda.</p>
           <div class="farsamo-actions">
-            <button class="farsamo-action chat order-service-btn" onclick="openServiceOrder('Ranjiile')">📝 Dalbo</button>
+            <button class="farsamo-action chat" onclick="openChat()">💬 Chat Now</button>
             <a class="farsamo-action call" href="tel:+252907469995">📞 Call Now</a>
           </div>
         </div>
@@ -3274,7 +3453,7 @@ View All
           <h3>Cillad Bixin</h3>
           <p>Haddii qalab ama adeeg cilad yeesho, hel caawimaad iyo cilad-bixin.</p>
           <div class="farsamo-actions">
-            <button class="farsamo-action chat order-service-btn" onclick="openServiceOrder('Cillad Bixin')">📝 Dalbo</button>
+            <button class="farsamo-action chat" onclick="openChat()">💬 Chat Now</button>
             <a class="farsamo-action call" href="tel:+252907469995">📞 Call Now</a>
           </div>
         </div>
@@ -3286,7 +3465,7 @@ View All
           <h3>CCTV</h3>
           <p>Rakibid iyo dayactir CCTV ah oo loogu talagalay guryaha, xafiisyada iyo ganacsiyada. La soco amnigaaga si fudud.</p>
           <div class="farsamo-actions">
-            <button class="farsamo-action chat order-service-btn" onclick="openServiceOrder('CCTV')">📝 Dalbo</button>
+            <button class="farsamo-action chat" onclick="openChat()">💬 Chat Now</button>
             <a class="farsamo-action call" href="tel:+252907469995">📞 Call Now</a>
           </div>
         </div>
@@ -4258,63 +4437,27 @@ onclick="toggleCare()">
 </div>
 
 <!-- SERVICE REGISTRATION -->
-<!-- FARSAMO SERVICE ORDER MODAL -->
-<div class="modal" id="serviceOrderModal">
-  <div class="modal-box service-order-box">
-    <button class="details-close" type="button" onclick="closeServiceOrder()">×</button>
-    <div class="service-order-header">
-      <div class="service-order-icon" id="serviceOrderIcon">📝</div>
-      <div>
-        <div class="service-order-kicker">HALEEL FARSAMO</div>
-        <h2 id="serviceOrderTitle">Dalbo Adeeg</h2>
-        <p id="serviceOrderIntro">Buuxi xogta hoose si aad u dalbato adeeggan.</p>
-      </div>
+<div class="modal" id="serviceRegistrationModal">
+  <div class="modal-box service-registration-box">
+    <button class="details-close" onclick="closeServiceRegistration()">×</button>
+    <div style="font-size:42px;margin-bottom:8px">✨</div>
+    <h2>Service Registration</h2>
+    <p>Buuxi xogta hoose si aad u diiwaangeliso adeegga aad dooratay.</p>
+
+    <label class="service-registration-label">Service</label>
+    <input class="service-registration-input" id="serviceRegistrationName" readonly>
+
+    <label class="service-registration-label">Magacaaga</label>
+    <input class="service-registration-input" id="serviceRegistrationUserName" type="text" placeholder="Geli magacaaga">
+
+    <label class="service-registration-label">Phone</label>
+    <input class="service-registration-input" id="serviceRegistrationPhone" type="tel" placeholder="Geli lambarka telefoonka">
+
+    <div class="service-registration-actions">
+      <button class="btn btn-outline" onclick="closeServiceRegistration()">Cancel</button>
+      <button class="btn btn-primary" onclick="submitServiceRegistration()">Register</button>
     </div>
-
-    <form id="serviceOrderForm" onsubmit="submitServiceOrder(event)">
-      <input type="hidden" id="serviceOrderService">
-
-      <div class="service-order-grid">
-        <div class="service-order-field">
-          <label for="orderName">Magacaaga *</label>
-          <input id="orderName" required type="text" placeholder="Geli magacaaga">
-        </div>
-        <div class="service-order-field">
-          <label for="orderPhone">Telefoonka *</label>
-          <input id="orderPhone" required type="tel" inputmode="tel" placeholder="+252...">
-        </div>
-        <div class="service-order-field">
-          <label for="orderEmail">Email</label>
-          <input id="orderEmail" type="email" placeholder="Email-kaaga">
-        </div>
-        <div class="service-order-field">
-          <label for="orderCity">Magaalada *</label>
-          <input id="orderCity" required type="text" placeholder="Magaalada">
-        </div>
-        <div class="service-order-field service-order-full">
-          <label for="orderLocation">Goobta / Cinwaanka adeegga *</label>
-          <input id="orderLocation" required type="text" placeholder="Xaafadda, degmada ama goobta">
-        </div>
-      </div>
-
-      <div id="serviceSpecificFields" class="service-specific-fields"></div>
-
-      <div class="service-order-field service-order-full" style="margin-top:14px">
-        <label for="orderDetails">Faahfaahin dheeraad ah *</label>
-        <textarea id="orderDetails" required placeholder="Sharax dhibaatada ama shaqada aad rabto in laguu qabto..."></textarea>
-      </div>
-
-      <div class="service-order-message" id="serviceOrderMessage"></div>
-
-      <div class="service-order-actions">
-        <button class="btn btn-outline" type="button" onclick="closeServiceOrder()">Ka noqo</button>
-        <button class="btn btn-primary" id="serviceOrderSubmit" type="submit">📨 Gudbi Dalabka</button>
-      </div>
-
-      <p class="service-order-note">
-        Dalabka waxaa loo diyaarinayaa fariin email ah oo loo dirayo <strong>haleelrealestate@gmail.com</strong>.
-      </p>
-    </form>
+    <div id="serviceRegistrationMessage" style="margin-top:12px;text-align:center;font-size:13px;font-weight:800;"></div>
   </div>
 </div>
 
@@ -5494,208 +5637,92 @@ return String(value)
 
 
 /* =========================================================
-   FARSAMO SERVICE ORDERS
-   Each Farsamo service has its own order form.
+   SERVICE REGISTRATION
 ========================================================= */
-const FARSAMO_SERVICE_FORMS = {
-  "Korontiiste": {
-    icon:"⚡",
-    intro:"Dalbo koronto-yaqaan si laguu caawiyo rakibid, dayactir ama cilad koronto.",
-    fields:`
-      <div class="service-order-field">
-        <label for="specificType">Nooca adeegga *</label>
-        <select id="specificType" required>
-          <option value="">Dooro...</option>
-          <option>Rakibid koronto</option><option>Dayactir koronto</option>
-          <option>Cilad koronto</option><option>Fiilo / Socket / Switch</option>
-          <option>Generator / Inverter</option>
-        </select>
-      </div>
-      <div class="service-order-field">
-        <label for="specificTime">Waqtiga aad rabto</label>
-        <input id="specificTime" type="text" placeholder="Tusaale: Maanta 4:00 galabnimo">
-      </div>`
-  },
-  "Mukeyf": {
-    icon:"❄️",
-    intro:"Dalbo adeegga mukeyfka: rakibid, nadiifin, dayactir ama cilad-bixin.",
-    fields:`
-      <div class="service-order-field">
-        <label for="specificType">Nooca adeegga *</label>
-        <select id="specificType" required>
-          <option value="">Dooro...</option><option>Rakibid Mukeyf</option>
-          <option>Nadiifin Mukeyf</option><option>Dayactir Mukeyf</option>
-          <option>Cilad-bixin Mukeyf</option>
-        </select>
-      </div>
-      <div class="service-order-field">
-        <label for="specificTime">Waqtiga aad rabto</label>
-        <input id="specificTime" type="text" placeholder="Tusaale: Berri subax">
-      </div>`
-  },
-  "Tuubayste": {
-    icon:"🚰",
-    intro:"Dalbo tuubayste si loo xalliyo tuubooyinka, biyaha ama plumbing-ka.",
-    fields:`
-      <div class="service-order-field">
-        <label for="specificType">Nooca dhibaatada *</label>
-        <select id="specificType" required>
-          <option value="">Dooro...</option><option>Tuubo biyo-baxaysa</option>
-          <option>Biyo xirmay</option><option>Musqul / Toilet</option>
-          <option>Rakibid tuubooyin</option><option>Haanta / Pump</option>
-        </select>
-      </div>
-      <div class="service-order-field">
-        <label for="specificUrgency">Degdegga</label>
-        <select id="specificUrgency"><option>Caadi</option><option>Degdeg</option><option>Aad u degdeg</option></select>
-      </div>`
-  },
-  "Ranjiile": {
-    icon:"🎨",
-    intro:"Dalbo ranjiile loogu talagalay rinjiyeynta gudaha ama dibadda.",
-    fields:`
-      <div class="service-order-field">
-        <label for="specificType">Nooca shaqada *</label>
-        <select id="specificType" required>
-          <option value="">Dooro...</option><option>Rinjiyeynta gudaha</option>
-          <option>Rinjiyeynta dibadda</option><option>Darbiyo</option>
-          <option>Saqaf</option><option>Guri dhan</option>
-        </select>
-      </div>
-      <div class="service-order-field">
-        <label for="specificSize">Qiyaasta / Cabirka</label>
-        <input id="specificSize" type="text" placeholder="Tusaale: 3 qol ama 120m²">
-      </div>`
-  },
-  "Cillad Bixin": {
-    icon:"🛠️",
-    intro:"Dalbo cilad-bixin si xirfadle loo siiyo faahfaahinta qalabka ama adeegga ciladaysan.",
-    fields:`
-      <div class="service-order-field">
-        <label for="specificDevice">Qalabka / adeegga ciladaysan *</label>
-        <input id="specificDevice" required type="text" placeholder="Tusaale: Refrigerator, TV, Pump...">
-      </div>
-      <div class="service-order-field">
-        <label for="specificUrgency">Degdegga</label>
-        <select id="specificUrgency"><option>Caadi</option><option>Degdeg</option><option>Aad u degdeg</option></select>
-      </div>`
-  },
-  "CCTV": {
-    icon:"📹",
-    intro:"Dalbo CCTV rakibid ama dayactir si goobtaada amnigeeda loo xoojiyo.",
-    fields:`
-      <div class="service-order-field">
-        <label for="specificType">Nooca adeegga *</label>
-        <select id="specificType" required>
-          <option value="">Dooro...</option><option>Rakibid CCTV cusub</option>
-          <option>Dayactir CCTV</option><option>Camera dheeraad ah</option>
-          <option>DVR / NVR</option><option>Remote Viewing</option>
-        </select>
-      </div>
-      <div class="service-order-field">
-        <label for="specificCameras">Tirada Cameras</label>
-        <input id="specificCameras" type="number" min="1" placeholder="Tusaale: 4">
-      </div>`
-  }
-};
-
-function openServiceOrder(serviceName){
-  const modal=$("serviceOrderModal");
-  const config=FARSAMO_SERVICE_FORMS[serviceName];
-  if(!modal || !config) return;
-
-  $("serviceOrderForm").reset();
-  $("serviceOrderService").value=serviceName;
-  $("serviceOrderTitle").textContent="Dalbo "+serviceName;
-  $("serviceOrderIcon").textContent=config.icon;
-  $("serviceOrderIntro").textContent=config.intro;
-  $("serviceSpecificFields").innerHTML=config.fields;
-  $("serviceOrderMessage").textContent="";
-  $("serviceOrderMessage").className="service-order-message";
-  $("serviceOrderSubmit").disabled=false;
-  $("serviceOrderSubmit").textContent="📨 Gudbi Dalabka";
-  modal.classList.add("show");
-  setTimeout(()=>$("orderName").focus(),120);
+function serviceStorageKey(serviceName){
+  const accountId=String(localStorage.getItem("haleelAccountId")||"guest").trim();
+  return "haleelServiceRegistered:"+accountId+":"+serviceName;
 }
 
-function closeServiceOrder(){
-  const modal=$("serviceOrderModal");
+function isServiceRegistered(serviceName){
+  return localStorage.getItem(serviceStorageKey(serviceName))==="1";
+}
+
+function refreshServiceButtons(){
+  document.querySelectorAll(".service-register-btn[data-service]").forEach(button=>{
+    const serviceName=button.dataset.service;
+    const registered=isServiceRegistered(serviceName);
+    button.textContent=registered ? "🔓 Open" : "Register Now →";
+    button.classList.toggle("service-open-btn",registered);
+  });
+}
+
+function handleServiceButton(serviceName,button){
+  if(isServiceRegistered(serviceName)){
+    if(serviceName==="Farsamo Tech"){
+      openPage("farsamo");
+    }else if(serviceName==="Phub Academy"){
+      openPage("phub");
+    }else{
+      alert("Adeegga "+serviceName+" waa kuu furan yahay.");
+    }
+    return;
+  }
+  openServiceRegistration(serviceName);
+}
+
+function openServiceRegistration(serviceName){
+  const modal=$("serviceRegistrationModal");
+  if(!modal) return;
+  $("serviceRegistrationName").value=serviceName;
+  $("serviceRegistrationUserName").value="";
+  $("serviceRegistrationPhone").value="";
+  $("serviceRegistrationMessage").textContent="";
+  $("serviceRegistrationMessage").style.color="";
+  modal.classList.add("show");
+  setTimeout(()=>$("serviceRegistrationUserName").focus(),120);
+}
+
+function closeServiceRegistration(){
+  const modal=$("serviceRegistrationModal");
   if(modal) modal.classList.remove("show");
 }
 
-function getSpecificServiceData(){
-  const box=$("serviceSpecificFields");
-  const values=[];
-  if(!box) return values;
-  box.querySelectorAll("input,select,textarea").forEach(el=>{
-    const label=box.querySelector(`label[for="${el.id}"]`);
-    const name=label ? label.textContent.replace("*","").trim() : el.id;
-    const value=String(el.value||"").trim();
-    if(value) values.push([name,value]);
-  });
-  return values;
-}
+function submitServiceRegistration(){
+  const service=$("serviceRegistrationName").value.trim();
+  const name=$("serviceRegistrationUserName").value.trim();
+  const phone=$("serviceRegistrationPhone").value.trim();
+  const message=$("serviceRegistrationMessage");
 
-function submitServiceOrder(event){
-  event.preventDefault();
-
-  const form=$("serviceOrderForm");
-  const service=$("serviceOrderService").value.trim();
-  const name=$("orderName").value.trim();
-  const phone=$("orderPhone").value.trim();
-  const email=$("orderEmail").value.trim();
-  const city=$("orderCity").value.trim();
-  const location=$("orderLocation").value.trim();
-  const details=$("orderDetails").value.trim();
-  const message=$("serviceOrderMessage");
-  const button=$("serviceOrderSubmit");
-
-  if(!service || !name || !phone || !city || !location || !details){
-    message.textContent="Fadlan buuxi dhammaan meelaha muhiimka ah.";
-    message.className="service-order-message error";
+  if(!name || !phone){
+    message.textContent="Fadlan buuxi magaca iyo telefoonka.";
+    message.style.color="#E5484D";
     return;
   }
 
-  let body=`DALAB ADEEG FARSAMO - HALEEL\n\nAdeegga: ${service}\nMagaca: ${name}\nTelefoon: ${phone}\nEmail: ${email || "Lama gelin"}\nMagaalada: ${city}\nGoobta/Cinwaanka: ${location}\n`;
-  getSpecificServiceData().forEach(([label,value])=>{ body += `${label}: ${value}\n`; });
-  body += `\nFaahfaahin:\n${details}\n\n---\nDalabkan waxaa laga soo gudbiyay Haleel Real Estate.`;
+  localStorage.setItem(serviceStorageKey(service),"1");
 
-  // Silent/background submission. This endpoint must be your backend/Cloudflare Worker
-  // that forwards the submitted data to haleelrealestate@gmail.com.
-  const endpoint="YOUR_CLOUDFLARE_WORKER_EMAIL_ENDPOINT";
+  message.textContent="Registration-ka waa la gudbiyay.";
+  message.style.color="#159957";
 
-  button.disabled=true;
-  button.textContent="⏳ Waa la dirayaa...";
-
-  const data=new FormData(form);
-  data.set("service",service);
-  data.set("message",body);
-  data.set("to","haleelrealestate@gmail.com");
-
-  fetch(endpoint,{
-    method:"POST",
-    body:data,
-    mode:"cors",
-    credentials:"omit"
-  }).then(r=>{
-    if(!r.ok) throw new Error("Email endpoint failed");
-    message.textContent="✅ Dalabkaaga si toos ah ayaa loo diray.";
-    message.className="service-order-message success";
-    form.reset();
-    closeServiceOrder();
-  }).catch(err=>{
-    console.error(err);
-    message.textContent="❌ Dirista dalabka way fashilantay. Endpoint-ka email-ka ayaa u baahan in la xiro.";
-    message.className="service-order-message error";
-  }).finally(()=>{
-    button.disabled=false;
-    button.textContent="📨 Gudbi Dalabka";
-  });
+  setTimeout(()=>{
+    closeServiceRegistration();
+    refreshServiceButtons();
+    if(service==="Farsamo Tech"){
+      openPage("farsamo");
+    }else if(service==="Phub Academy"){
+      openPage("phub");
+    }
+  },650);
 }
 
+document.addEventListener("DOMContentLoaded",function(){
+  refreshServiceButtons();
+});
+
 document.addEventListener("click",function(e){
-  const modal=$("serviceOrderModal");
-  if(modal && e.target===modal) closeServiceOrder();
+  const modal=$("serviceRegistrationModal");
+  if(modal && e.target===modal) closeServiceRegistration();
 });
 
 /* =========================================================
