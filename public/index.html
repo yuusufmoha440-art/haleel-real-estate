@@ -2751,602 +2751,6 @@ body.dark .farsamo-service-card{
 .phub-actions .farsamo-action{flex:1 1 140px;min-width:0}
 @media(max-width:480px){.phub-actions{flex-direction:column}.phub-actions .farsamo-action{width:100%}}
 </style>
-<style>
-
-/* =========================================================
-   PHUB ACADEMY + BARAKO LIVESTOCK RESPONSIVE FIX
-   Fits desktop, laptop, tablet and mobile without clipping.
-========================================================= */
-.phub-page,
-.livestock-page{
-  width:100%;
-  max-width:100%;
-  overflow:visible;
-}
-
-.phub-grid,
-.livestock-grid{
-  width:100%;
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:22px;
-  align-items:stretch;
-}
-
-.phub-card,
-.livestock-card{
-  width:100%;
-  min-width:0;
-  min-height:330px;
-  height:auto;
-  padding:26px;
-  border-radius:22px;
-  overflow:hidden;
-}
-
-.phub-card h3,
-.livestock-card h3{
-  overflow-wrap:anywhere;
-}
-
-.phub-card p,
-.livestock-card p{
-  max-width:100%;
-  overflow-wrap:anywhere;
-}
-
-.phub-actions,
-.livestock-actions{
-  width:100%;
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-}
-
-.phub-actions .farsamo-action,
-.livestock-actions .livestock-action{
-  flex:1 1 150px;
-  min-width:0;
-  white-space:normal;
-  text-align:center;
-}
-
-.phub-hero,
-.livestock-hero{
-  width:100%;
-  max-width:100%;
-}
-
-/* Laptop / smaller desktop */
-@media (max-width:1100px){
-  .phub-grid,
-  .livestock-grid{
-    grid-template-columns:repeat(2,minmax(0,1fr));
-    gap:16px;
-  }
-
-  .phub-card,
-  .livestock-card{
-    min-height:310px;
-    padding:22px;
-  }
-
-  .phub-card h3,
-  .livestock-card h3{
-    font-size:22px;
-  }
-}
-
-/* Tablet */
-@media (max-width:760px){
-  .phub-grid,
-  .livestock-grid{
-    grid-template-columns:1fr;
-    gap:16px;
-  }
-
-  .phub-card,
-  .livestock-card{
-    min-height:300px;
-    padding:22px;
-  }
-
-  .phub-actions,
-  .livestock-actions{
-    flex-direction:row;
-  }
-
-  .phub-actions .farsamo-action,
-  .livestock-actions .livestock-action{
-    flex:1 1 0;
-  }
-}
-
-/* Mobile */
-@media (max-width:480px){
-  .phub-page,
-  .livestock-page{
-    padding-left:0;
-    padding-right:0;
-  }
-
-  .phub-hero,
-  .livestock-hero{
-    border-radius:20px;
-    padding:25px 18px;
-    min-height:220px;
-  }
-
-  .phub-hero h1,
-  .livestock-hero h1{
-    font-size:clamp(28px,8vw,38px);
-    line-height:1.12;
-  }
-
-  .phub-hero p,
-  .livestock-hero p{
-    font-size:14px;
-    line-height:1.6;
-  }
-
-  .phub-card,
-  .livestock-card{
-    min-height:285px;
-    padding:19px;
-    border-radius:18px;
-  }
-
-  .phub-icon{
-    font-size:36px;
-  }
-
-  .phub-card h3,
-  .livestock-card h3{
-    font-size:20px;
-  }
-
-  .phub-card p,
-  .livestock-card p{
-    font-size:14px;
-    line-height:1.55;
-  }
-
-  .phub-actions,
-  .livestock-actions{
-    flex-direction:column;
-    gap:8px;
-  }
-
-  .phub-actions .farsamo-action,
-  .livestock-actions .livestock-action{
-    width:100%;
-    flex:0 0 auto;
-    min-height:46px;
-  }
-}
-
-/* Very narrow phones */
-@media (max-width:360px){
-  .phub-card,
-  .livestock-card{
-    min-height:275px;
-    padding:16px;
-  }
-
-  .phub-card h3,
-  .livestock-card h3{
-    font-size:18px;
-  }
-
-  .phub-card p,
-  .livestock-card p{
-    font-size:13px;
-  }
-}
-
-</style>
-
-<style id="phub-barako-final-fix">
-/* FINAL RESPONSIVE FIX: PHUB + BARAKO */
-.main .phub-page,
-.main .livestock-page{
-  width:100% !important;
-  max-width:none !important;
-  min-width:0 !important;
-}
-
-.main .phub-grid,
-.main .livestock-grid{
-  display:grid !important;
-  width:100% !important;
-  max-width:none !important;
-  min-width:0 !important;
-  grid-template-columns:repeat(2,minmax(0,1fr)) !important;
-  gap:20px !important;
-}
-
-.main .phub-card,
-.main .livestock-card{
-  width:100% !important;
-  min-width:0 !important;
-  max-width:none !important;
-  min-height:320px !important;
-  height:auto !important;
-  box-sizing:border-box !important;
-  padding:24px !important;
-}
-
-.main .phub-card > *,
-.main .livestock-card > *{
-  min-width:0;
-  max-width:100%;
-}
-
-.main .phub-card h3,
-.main .phub-card p,
-.main .livestock-card h3,
-.main .livestock-card p{
-  overflow-wrap:anywhere;
-  word-break:normal;
-}
-
-.main .phub-actions,
-.main .livestock-actions{
-  width:100% !important;
-  display:flex !important;
-  gap:10px !important;
-  flex-wrap:wrap !important;
-}
-
-.main .phub-actions > *,
-.main .livestock-actions > *{
-  flex:1 1 150px !important;
-  min-width:0 !important;
-  max-width:none !important;
-}
-
-@media (max-width:1100px){
-  .main .phub-grid,
-  .main .livestock-grid{
-    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
-    gap:16px !important;
-  }
-  .main .phub-card,
-  .main .livestock-card{
-    min-height:300px !important;
-    padding:20px !important;
-  }
-}
-
-@media (max-width:750px){
-  .main .phub-grid,
-  .main .livestock-grid{
-    grid-template-columns:1fr !important;
-    gap:16px !important;
-  }
-  .main .phub-card,
-  .main .livestock-card{
-    min-height:285px !important;
-    padding:20px !important;
-  }
-  .main .phub-actions,
-  .main .livestock-actions{
-    flex-direction:row !important;
-  }
-}
-
-@media (max-width:480px){
-  .main .phub-card,
-  .main .livestock-card{
-    min-height:270px !important;
-    padding:17px !important;
-    border-radius:18px !important;
-  }
-  .main .phub-card h3,
-  .main .livestock-card h3{
-    font-size:20px !important;
-    line-height:1.2 !important;
-  }
-  .main .phub-card p,
-  .main .livestock-card p{
-    font-size:14px !important;
-    line-height:1.5 !important;
-  }
-  .main .phub-actions,
-  .main .livestock-actions{
-    flex-direction:column !important;
-    gap:8px !important;
-  }
-  .main .phub-actions > *,
-  .main .livestock-actions > *{
-    width:100% !important;
-    flex:0 0 auto !important;
-    min-height:46px !important;
-  }
-}
-
-@media (max-width:360px){
-  .main .phub-card,
-  .main .livestock-card{
-    min-height:260px !important;
-    padding:15px !important;
-  }
-  .main .phub-card h3,
-  .main .livestock-card h3{
-    font-size:18px !important;
-  }
-}
-</style>
-
-
-<style id="phub-barako-new-design">
-/* =========================================================
-   NEW COMPACT DESIGN — PHUB ACADEMY + BARAKO LIVESTOCK
-   Small image thumbnails, clean cards, responsive layout.
-========================================================= */
-.phub-page,
-.livestock-page{
-  width:100% !important;
-  max-width:100% !important;
-  min-width:0 !important;
-  padding:18px 0 55px !important;
-  overflow:visible !important;
-}
-
-/* Compact section headers */
-.phub-hero,
-.livestock-hero{
-  min-height:0 !important;
-  height:auto !important;
-  margin-bottom:22px !important;
-  padding:24px 26px !important;
-  border-radius:20px !important;
-  display:block !important;
-  background:#fff !important;
-  color:#111827 !important;
-  border:1px solid #e7edf4 !important;
-  box-shadow:0 10px 30px rgba(15,23,42,.07) !important;
-}
-.phub-hero > div,
-.livestock-hero > div{max-width:900px}
-.phub-hero > div > div:first-child,
-.livestock-hero > div > div:first-child{
-  color:#2563eb !important;
-  margin-bottom:6px !important;
-}
-.phub-hero h1,
-.livestock-hero h1{
-  color:#111827 !important;
-  font-size:clamp(25px,3vw,36px) !important;
-  line-height:1.15 !important;
-  margin:0 0 7px !important;
-}
-.phub-hero p,
-.livestock-hero p{
-  color:#64748b !important;
-  font-size:14px !important;
-  line-height:1.55 !important;
-  margin:0 !important;
-}
-
-/* Grid */
-.phub-grid,
-.livestock-grid{
-  display:grid !important;
-  grid-template-columns:repeat(auto-fit,minmax(270px,1fr)) !important;
-  gap:16px !important;
-  width:100% !important;
-  min-width:0 !important;
-  align-items:stretch !important;
-}
-
-/* Cards become compact white cards */
-.phub-card,
-.livestock-card{
-  position:relative !important;
-  display:grid !important;
-  grid-template-columns:92px minmax(0,1fr) !important;
-  grid-template-rows:auto auto auto !important;
-  column-gap:15px !important;
-  align-items:center !important;
-  min-height:0 !important;
-  height:auto !important;
-  padding:16px !important;
-  border-radius:18px !important;
-  overflow:hidden !important;
-  background:#fff !important;
-  color:#111827 !important;
-  border:1px solid #e6ebf1 !important;
-  box-shadow:0 8px 24px rgba(15,23,42,.07) !important;
-  transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease !important;
-}
-.phub-card:hover,
-.livestock-card:hover{
-  transform:translateY(-4px) !important;
-  box-shadow:0 14px 32px rgba(15,23,42,.12) !important;
-  border-color:#cbd5e1 !important;
-}
-
-/* Disable old full-card background overlay */
-.phub-card::before,
-.livestock-card::before{
-  display:none !important;
-}
-
-/* Small image thumbnail */
-.phub-card::after,
-.livestock-card::after{
-  content:"";
-  grid-column:1;
-  grid-row:1 / span 3;
-  width:92px;
-  height:92px;
-  border-radius:15px;
-  background-image:var(--phub-bg, var(--livestock-bg));
-  background-size:cover;
-  background-position:center;
-  box-shadow:inset 0 0 0 1px rgba(15,23,42,.06);
-}
-
-/* Keep text on the right */
-.phub-card > *,
-.livestock-card > *{
-  position:relative !important;
-  z-index:2 !important;
-  grid-column:2 !important;
-  color:#111827 !important;
-}
-
-/* Icons */
-.phub-icon,
-.livestock-icon{
-  grid-row:1 !important;
-  font-size:25px !important;
-  line-height:1 !important;
-  margin:0 0 5px !important;
-}
-
-/* Titles */
-.phub-card h3,
-.livestock-card h3{
-  grid-row:1 !important;
-  font-size:19px !important;
-  line-height:1.2 !important;
-  margin:0 !important;
-  font-weight:900 !important;
-}
-
-/* Descriptions */
-.phub-card p,
-.livestock-card p{
-  grid-row:2 !important;
-  margin:7px 0 10px !important;
-  color:#64748b !important;
-  font-size:13px !important;
-  line-height:1.45 !important;
-}
-
-/* Buttons */
-.phub-actions,
-.livestock-actions{
-  grid-row:3 !important;
-  width:100% !important;
-  display:flex !important;
-  gap:7px !important;
-  flex-wrap:nowrap !important;
-  margin:0 !important;
-}
-.phub-actions > *,
-.livestock-actions > *{
-  flex:1 1 0 !important;
-  min-width:0 !important;
-  width:auto !important;
-  min-height:38px !important;
-  padding:8px 9px !important;
-  border-radius:10px !important;
-  font-size:12px !important;
-  white-space:nowrap !important;
-}
-
-/* Make Phub's Islamic-wide card unaffected if it appears elsewhere */
-.phub-islamic{
-  grid-column:auto !important;
-}
-
-/* Mobile */
-@media (max-width:600px){
-  .phub-page,
-  .livestock-page{
-    padding:12px 0 40px !important;
-  }
-
-  .phub-hero,
-  .livestock-hero{
-    padding:19px !important;
-    border-radius:17px !important;
-    margin-bottom:17px !important;
-  }
-
-  .phub-hero h1,
-  .livestock-hero h1{
-    font-size:25px !important;
-  }
-
-  .phub-hero p,
-  .livestock-hero p{
-    font-size:13px !important;
-  }
-
-  .phub-grid,
-  .livestock-grid{
-    grid-template-columns:1fr !important;
-    gap:12px !important;
-  }
-
-  .phub-card,
-  .livestock-card{
-    grid-template-columns:78px minmax(0,1fr) !important;
-    padding:13px !important;
-    border-radius:15px !important;
-    column-gap:12px !important;
-  }
-
-  .phub-card::after,
-  .livestock-card::after{
-    width:78px;
-    height:78px;
-    border-radius:13px;
-  }
-
-  .phub-icon,
-  .livestock-icon{
-    font-size:22px !important;
-  }
-
-  .phub-card h3,
-  .livestock-card h3{
-    font-size:17px !important;
-  }
-
-  .phub-card p,
-  .livestock-card p{
-    font-size:12.5px !important;
-  }
-
-  .phub-actions,
-  .livestock-actions{
-    gap:6px !important;
-  }
-
-  .phub-actions > *,
-  .livestock-actions > *{
-    min-height:36px !important;
-    font-size:11px !important;
-    padding:7px 6px !important;
-  }
-}
-
-@media (max-width:370px){
-  .phub-card,
-  .livestock-card{
-    grid-template-columns:68px minmax(0,1fr) !important;
-    column-gap:10px !important;
-    padding:11px !important;
-  }
-  .phub-card::after,
-  .livestock-card::after{
-    width:68px;
-    height:68px;
-  }
-  .phub-card h3,
-  .livestock-card h3{font-size:16px !important}
-  .phub-card p,
-  .livestock-card p{font-size:11.5px !important}
-  .phub-actions > *,
-  .livestock-actions > *{font-size:10px !important}
-}
-</style>
-
 </head>
 
 <body>
@@ -3709,11 +3113,11 @@ View All
         <div class="premium-service-icon">🐔</div>
         <h3>Chicking House</h3>
         <p>Adeeg ku saabsan hubinta iyo qiimeynta xogta guryaha si go'aan xog-ogaal ah loo qaato.</p>
-        <button class="service-register-btn service-open-btn" id="serviceBtn2" onclick="alert('Chicking House waa la furayaa dhawaan.')">🔓 Open</button>
+        <button class="service-register-btn service-open-btn" id="serviceBtn2" onclick="openPage('chickingHouse')">🔓 Open</button>
       </div>
     </article>
 
-    <article class="premium-service-card">
+    <article class="premium-service-card nagaad-agro-main-card">
       <img class="premium-service-bg"
            src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&w=1200&q=85"
            alt="Nagaad Agro">
@@ -3721,7 +3125,7 @@ View All
         <div class="premium-service-icon">🌱</div>
         <h3>Nagaad Agro</h3>
         <p>Adeegyo la xiriira beeraha, wax-soo-saarka iyo xalalka Agro ee casriga ah.</p>
-        <button class="service-register-btn service-open-btn" id="serviceBtn3" onclick="alert('Nagaad Agro waa la furayaa dhawaan.')">🔓 Open</button>
+        <button class="service-register-btn service-open-btn" id="serviceBtn3" onclick="openPage('nagaadAgro')">🌱 Open</button>
       </div>
     </article>
 
@@ -3742,6 +3146,652 @@ View All
 
 
 <!-- FARSAMO TECH SERVICES -->
+
+<div class="page chicking-page" id="chickingHouse">
+  <button class="btn btn-outline chicking-back" onclick="openPage('services')">← Back to Services</button>
+
+  <div class="chicking-hero">
+    <div>
+      <div class="chicking-badge">🐔 CHICKING HOUSE</div>
+      <h1>Dalbo Chicking House</h1>
+      <p>Dooro Ukun ama Digaag Nool. Isticmaal <strong>−</strong> iyo <strong>+</strong> si aad u dejiso tirada aad rabto.</p>
+    </div>
+  </div>
+
+  <div class="chicking-total-box" aria-live="polite">
+    <span>Tirada Guud</span>
+    <strong id="chickingGrandTotal">0</strong>
+    <small>qaybo / xabbo</small>
+  </div>
+
+  <div class="chicking-grid" id="chickingProducts"></div>
+
+  <section class="chicking-order-form-wrap">
+    <div class="chicking-form-head">
+      <span>📝</span>
+      <div>
+        <h2>Xogta Dalabka</h2>
+        <p>Geli xogtaada kadibna taabo “Dalbo Dalabkaaga”.</p>
+      </div>
+    </div>
+    <form id="chickingOrderForm" onsubmit="submitChickingOrder(event)">
+      <div class="chicking-form-grid">
+        <div class="chicking-field">
+          <label for="chickingName">Magacaaga *</label>
+          <input id="chickingName" name="name" required placeholder="Magacaaga">
+        </div>
+        <div class="chicking-field">
+          <label for="chickingCity">Magaalada *</label>
+          <input id="chickingCity" name="city" required placeholder="Magaalada">
+        </div>
+        <div class="chicking-field">
+          <label for="chickingNeighborhood">Xaafadda *</label>
+          <input id="chickingNeighborhood" name="neighborhood" required placeholder="Xaafadda">
+        </div>
+        <div class="chicking-field">
+          <label for="chickingPhone">Lambarka *</label>
+          <input id="chickingPhone" name="phone" type="tel" inputmode="tel" required placeholder="+252 ...">
+        </div>
+      </div>
+      <div class="chicking-form-note" id="chickingOrderNote">Fadlan dooro ugu yaraan hal alaab.</div>
+      <button class="chicking-submit" type="submit">🛒 Dalbo Dalabkaaga</button>
+    </form>
+  </section>
+</div>
+
+<style>
+.chicking-page{padding-bottom:55px}
+.chicking-back{margin-bottom:18px}
+.chicking-hero{
+  margin-top:8px;min-height:235px;border-radius:26px;padding:38px 42px;display:flex;align-items:center;
+  color:#fff;overflow:hidden;position:relative;
+  background:linear-gradient(110deg,rgba(73,35,10,.95),rgba(166,91,25,.78),rgba(245,170,65,.28)),
+  url("https://images.unsplash.com/photo-1604503468506-a8da13d82791?auto=format&fit=crop&w=1800&q=85");
+  background-size:cover;background-position:center;box-shadow:0 22px 60px rgba(80,45,10,.18)
+}
+.chicking-badge{font-size:12px;font-weight:900;letter-spacing:.14em;margin-bottom:10px}
+.chicking-hero h1{font-size:clamp(34px,5vw,54px);margin:0 0 10px}
+.chicking-hero p{margin:0;color:rgba(255,255,255,.93);font-size:17px;max-width:720px;line-height:1.65}
+.chicking-total-box{
+  margin:22px 0;display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;
+  padding:18px 22px;border-radius:20px;background:#fff;border:1px solid #eadfd2;box-shadow:0 12px 35px rgba(70,40,10,.08)
+}
+.chicking-total-box span{font-weight:900;color:#6b4a2d}.chicking-total-box strong{font-size:34px;color:#a85b19}.chicking-total-box small{color:#718096;font-weight:700}
+.chicking-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.chicking-card{
+  overflow:hidden;background:#fff;border:1px solid #eadfd2;border-radius:23px;box-shadow:0 13px 40px rgba(70,40,10,.08);
+  transition:.25s;animation:chickingUp .35s ease both
+}
+.chicking-card:hover{transform:translateY(-5px);box-shadow:0 22px 50px rgba(70,40,10,.13)}
+.chicking-card img{width:100%;height:205px;display:block;object-fit:cover}
+.chicking-card-body{padding:20px}
+.chicking-card-label{font-size:11px;font-weight:900;letter-spacing:.12em;color:#a85b19;text-transform:uppercase}
+.chicking-card h3{margin:5px 0 15px;font-size:24px}
+.chicking-qty-row{display:flex;align-items:center;justify-content:space-between;gap:10px;background:#faf7f3;border-radius:15px;padding:9px}
+.chicking-minus,.chicking-plus{width:48px;height:48px;border:0;border-radius:13px;font-size:25px;font-weight:900;cursor:pointer;transition:.2s}
+.chicking-minus{background:#ece7e1;color:#4a3423}.chicking-plus{background:linear-gradient(135deg,#a85b19,#d8872d);color:#fff}
+.chicking-minus:hover,.chicking-plus:hover{transform:scale(1.04)}
+.chicking-qty{min-width:70px;text-align:center;font-size:25px;font-weight:900;color:#1f2937}
+.chicking-hint{text-align:center;margin-top:9px;color:#8a7b6c;font-size:12px;font-weight:700}
+.chicking-order-form-wrap{margin-top:28px;background:#fff;border:1px solid #eadfd2;border-radius:24px;padding:28px;box-shadow:0 14px 42px rgba(70,40,10,.08)}
+.chicking-form-head{display:flex;gap:13px;align-items:center;margin-bottom:22px}.chicking-form-head>span{font-size:35px}.chicking-form-head h2{margin:0 0 5px}.chicking-form-head p{margin:0;color:#718096}
+.chicking-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.chicking-field{display:flex;flex-direction:column;gap:7px}.chicking-field label{font-weight:800;font-size:14px}
+.chicking-field input{width:100%;box-sizing:border-box;padding:14px;border:1px solid #dfe3e8;border-radius:12px;background:#fafafa;font:inherit;outline:none;transition:.2s}
+.chicking-field input:focus{border-color:#a85b19;box-shadow:0 0 0 3px rgba(168,91,25,.12);background:#fff}
+.chicking-form-note{margin:18px 0 12px;padding:12px 14px;border-radius:12px;background:#fff7ed;color:#8a4b14;font-size:13px;font-weight:700}
+.chicking-submit{width:100%;border:0;border-radius:14px;padding:15px 18px;background:linear-gradient(135deg,#a85b19,#d8872d);color:#fff;font-weight:900;font-size:16px;cursor:pointer;transition:.25s}
+.chicking-submit:hover{transform:translateY(-2px);box-shadow:0 10px 25px rgba(168,91,25,.2)}
+@keyframes chickFade{from{opacity:0}to{opacity:1}}@keyframes chickUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.chicking-card{animation-name:chickUp}
+@media(max-width:900px){.chicking-grid{grid-template-columns:1fr 1fr}.chicking-hero{padding:32px 28px}}
+@media(max-width:650px){.chicking-grid{grid-template-columns:1fr}.chicking-form-grid{grid-template-columns:1fr}.chicking-order-form-wrap{padding:21px}.chicking-hero{padding:28px 23px}.chicking-card img{height:220px}}
+</style>
+
+<script>
+const CHICKING_ITEMS=[
+  {name:'Ukun',image:'https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?auto=format&fit=crop&w=1000&q=85'},
+  {name:'Digaag Nool',image:'https://upload.wikimedia.org/wikipedia/commons/3/34/Barnyard_Animal_%28Unsplash%29.jpg'}
+];
+const chickingQty=CHICKING_ITEMS.map(()=>0);
+function renderChickingProducts(){
+  const root=document.getElementById('chickingProducts'); if(!root)return;
+  root.innerHTML=CHICKING_ITEMS.map((item,i)=>`<article class="chicking-card" style="animation-delay:${i*70}ms">
+    <img src="${item.image}" alt="${item.name}">
+    <div class="chicking-card-body">
+      <div class="chicking-card-label">Chicking House</div><h3>${item.name}</h3>
+      <div class="chicking-qty-row">
+        <button type="button" class="chicking-minus" aria-label="Ka jar ${item.name}" onclick="changeChickingQty(${i},-10)">−</button>
+        <strong class="chicking-qty" id="chickQty_${i}">0</strong>
+        <button type="button" class="chicking-plus" aria-label="Ku dar 10 ${item.name}" onclick="changeChickingQty(${i},10)">+</button>
+      </div>
+      <div class="chicking-hint">+ = 10 ku dar</div>
+    </div></article>`).join('');
+}
+function changeChickingQty(index,change){
+  chickingQty[index]=Math.max(0,(chickingQty[index]||0)+change);
+  const el=document.getElementById('chickQty_'+index);
+  if(el)el.textContent=chickingQty[index];
+  const total=chickingQty.reduce((a,b)=>a+b,0);
+  const totalEl=document.getElementById('chickingGrandTotal');
+  if(totalEl)totalEl.textContent=total;
+  const note=document.getElementById('chickingOrderNote');
+  if(note)note.textContent=total>0?'Dalabkaaga waa diyaar.':'Fadlan dooro ugu yaraan hal alaab.';
+}
+function submitChickingOrder(event){
+  event.preventDefault();
+  const total=chickingQty.reduce((a,b)=>a+b,0);
+  const form=document.getElementById('chickingOrderForm');
+  if(!form||!form.reportValidity())return;
+  if(total<=0){alert('Fadlan dooro ugu yaraan hal alaab.');return;}
+  const d=new FormData(form);
+  const products=CHICKING_ITEMS.filter(x=>chickingQty[x.name]>0).map(x=>x.name+': '+chickingQty[x.name]+' xabbo').join('\n');
+  const body=['CHICKING HOUSE DALAB','--------------------',products,'','Tirada Guud: '+total+' xabbo','Magaca: '+d.get('name'),'Magaalada: '+d.get('city'),'Xaafadda: '+d.get('neighborhood'),'Lambarka: '+d.get('phone')].join('\n');
+  const subject=encodeURIComponent('Chicking House Dalab - '+total+' xabbo');
+  window.location.href='mailto:haleelrealestate@gmail.com?subject='+subject+'&body='+encodeURIComponent(body);
+}
+renderChickingProducts();
+</script>
+
+<div class="page nagaad-agro-page" id="nagaadAgro">
+  <button class="btn btn-outline" onclick="openPage('services')">← Back to Services</button>
+
+  <div class="nagaad-agro-hero">
+    <div>
+      <div class="nagaad-agro-badge">🌱 NAGAAD AGRO</div>
+      <h1>Nagaad Agro</h1>
+      <p>Dooro adeegga aad rabto: Qudaar ama Calafka Xoolaha.</p>
+    </div>
+  </div>
+
+  <div class="section-header nagaad-section-header">
+    <div>
+      <h2>Qaybaha Nagaad Agro</h2>
+      <p style="color:#718096;margin-top:5px">Dooro qaybta aad rabto inaad dalbato.</p>
+    </div>
+  </div>
+
+  <div class="nagaad-agro-grid">
+    <article class="nagaad-agro-card">
+      <div class="nagaad-agro-icon">🥬</div>
+      <span class="nagaad-agro-label">AGRO</span>
+      <h3>Qudaar</h3>
+      <p>Qudaar iyo wax-soo-saarka beeraha oo aad si fudud uga dalban karto Haleel.</p>
+      <div class="nagaad-agro-actions">
+        <button type="button" class="nagaad-agro-btn order" onclick="openNagaadOrder('Qudaar')">📝 Dalbo</button>
+        <a class="nagaad-agro-btn call" href="tel:+252907469995">📞 Call Now</a>
+      </div>
+    </article>
+
+    <article class="nagaad-agro-card">
+      <div class="nagaad-agro-icon">🌾</div>
+      <span class="nagaad-agro-label">AGRO</span>
+      <h3>Calafka Xoolaha</h3>
+      <p>Calaf xoolaad loogu talagalay baahida quudinta iyo daryeelka xoolaha.</p>
+      <div class="nagaad-agro-actions">
+        <button type="button" class="nagaad-agro-btn order" onclick="openNagaadOrder('Calafka Xoolaha')">📝 Dalbo</button>
+        <a class="nagaad-agro-btn call" href="tel:+252907469995">📞 Call Now</a>
+      </div>
+    </article>
+  </div>
+</div>
+
+
+<div id="qudaarOrderModal" class="qudaar-overlay" onclick="if(event.target===this) closeQudaarOrder()">
+  <div class="qudaar-modal" role="dialog" aria-modal="true" aria-labelledby="qudaarTitle">
+    <button type="button" class="qudaar-close" onclick="closeQudaarOrder()">×</button>
+
+    <div class="qudaar-head">
+      <div class="qudaar-head-icon">🥬</div>
+      <div>
+        <span>NAGAAD AGRO</span>
+        <h2 id="qudaarTitle">Qudaar</h2>
+        <p>Dooro tirada qudaarta aad rabto inaad dalbato.</p>
+      </div>
+    </div>
+
+    <div class="qudaar-list" id="qudaarList"></div>
+
+    <div class="qudaar-summary">
+      <div>
+        <small>Tirada guud</small>
+        <strong id="qudaarTotal">0</strong>
+      </div>
+      <div>
+        <small>Qudaar la doortay</small>
+        <strong id="qudaarSelected">0</strong>
+      </div>
+    </div>
+
+    <div class="qudaar-customer">
+      <div class="qudaar-customer-title">
+        <span>📋</span>
+        <div>
+          <h3>Faahfaahinta Qofka Dalbanaya</h3>
+          <p>Buuxi xogtaada si dalabka loo gudbiyo.</p>
+        </div>
+      </div>
+
+      <form id="qudaarOrderForm" onsubmit="event.preventDefault(); submitQudaarOrder();">
+        <div class="qudaar-form-grid">
+          <div class="qudaar-field">
+            <label for="qudaarCustomerName">Magaca *</label>
+            <input id="qudaarCustomerName" name="name" required placeholder="Geli magacaaga">
+          </div>
+
+          <div class="qudaar-field">
+            <label for="qudaarCustomerPhone">Lambarka *</label>
+            <input id="qudaarCustomerPhone" name="phone" type="tel" required placeholder="+252...">
+          </div>
+
+          <div class="qudaar-field">
+            <label for="qudaarCustomerCity">Magaalada *</label>
+            <input id="qudaarCustomerCity" name="city" required placeholder="Magaalada">
+          </div>
+
+          <div class="qudaar-field">
+            <label for="qudaarCustomerNeighborhood">Xaafadda *</label>
+            <input id="qudaarCustomerNeighborhood" name="neighborhood" required placeholder="Xaafadda">
+          </div>
+        </div>
+
+        <div class="qudaar-submit-row">
+          <button type="button" class="qudaar-cancel" onclick="closeQudaarOrder()">Ka Noqo</button>
+          <button type="submit" class="qudaar-submit">📨 Gudbi Dalabkaaga</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<style>
+.qudaar-overlay{
+  display:none;position:fixed;inset:0;z-index:100001;padding:16px;
+  align-items:center;justify-content:center;background:rgba(0,0,0,.62);
+  backdrop-filter:blur(8px)
+}
+.qudaar-overlay.show{display:flex;animation:qudaarFade .2s ease}
+.qudaar-modal{
+  width:min(850px,100%);max-height:94vh;overflow:auto;background:#fff;color:#111;
+  border-radius:26px;padding:28px;position:relative;box-shadow:0 30px 100px rgba(0,0,0,.35);
+  animation:qudaarUp .3s ease
+}
+.qudaar-close{
+  position:absolute;right:15px;top:13px;width:40px;height:40px;border:0;border-radius:50%;
+  background:#f1f3f5;font-size:27px;cursor:pointer
+}
+.qudaar-head{
+  display:flex;gap:15px;align-items:center;padding-right:48px;margin-bottom:23px
+}
+.qudaar-head-icon{
+  width:62px;height:62px;display:grid;place-items:center;border-radius:18px;
+  background:#eaf8ef;font-size:35px
+}
+.qudaar-head span{font-size:11px;font-weight:900;letter-spacing:.13em;color:#16803b}
+.qudaar-head h2{margin:4px 0 5px;font-size:28px}
+.qudaar-head p{margin:0;color:#718096}
+
+.qudaar-list{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px
+}
+.qudaar-item{
+  display:grid;grid-template-columns:62px 1fr auto;align-items:center;gap:12px;
+  border:1px solid #e3e8e5;border-radius:17px;padding:10px;background:#fff;
+  transition:.2s;min-width:0
+}
+.qudaar-item:hover{border-color:#8bc8a1;box-shadow:0 7px 20px rgba(20,100,50,.07)}
+.qudaar-photo{
+  width:62px;height:62px;border-radius:13px;object-fit:cover;background:#edf4ef
+}
+.qudaar-name{font-weight:900;font-size:15px}
+.qudaar-count{
+  display:flex;align-items:center;justify-content:flex-end;gap:7px;white-space:nowrap
+}
+.qudaar-count button{
+  width:34px;height:34px;border:0;border-radius:10px;font-size:20px;font-weight:900;
+  cursor:pointer;transition:.2s
+}
+.qudaar-minus{background:#f0f2f3;color:#333}
+.qudaar-plus{background:#198754;color:#fff}
+.qudaar-count button:hover{transform:scale(1.06)}
+.qudaar-number{
+  min-width:35px;text-align:center;font-size:17px;font-weight:900;color:#111
+}
+.qudaar-hint{
+  grid-column:1/-1;margin:0 0 3px 74px;font-size:11px;color:#87928c
+}
+.qudaar-summary{
+  display:flex;gap:14px;margin:18px 0;padding:15px;border-radius:16px;
+  background:linear-gradient(135deg,#effaf3,#f7fbf8);border:1px solid #d8eee0
+}
+.qudaar-summary>div{flex:1}
+.qudaar-summary small{display:block;color:#718096;font-size:11px}
+.qudaar-summary strong{display:block;margin-top:3px;font-size:22px;color:#14783b}
+
+.qudaar-customer{
+  border-top:1px solid #e6e9e7;padding-top:20px;margin-top:4px
+}
+.qudaar-customer-title{display:flex;gap:11px;align-items:center;margin-bottom:15px}
+.qudaar-customer-title>span{font-size:24px}
+.qudaar-customer-title h3{margin:0 0 3px}
+.qudaar-customer-title p{margin:0;color:#718096;font-size:13px}
+.qudaar-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.qudaar-field{display:flex;flex-direction:column;gap:7px}
+.qudaar-field label{font-size:13px;font-weight:800}
+.qudaar-field input{
+  width:100%;box-sizing:border-box;padding:13px 14px;border:1px solid #dce2de;
+  border-radius:12px;background:#fafcfb;font:inherit;outline:none;transition:.2s
+}
+.qudaar-field input:focus{border-color:#198754;box-shadow:0 0 0 3px rgba(25,135,84,.12);background:#fff}
+.qudaar-submit-row{display:flex;justify-content:flex-end;gap:11px;margin-top:20px}
+.qudaar-cancel,.qudaar-submit{
+  border:0;border-radius:12px;padding:13px 19px;font-weight:900;cursor:pointer
+}
+.qudaar-cancel{background:#edf0f2;color:#222}
+.qudaar-submit{background:linear-gradient(135deg,#15803d,#22a35a);color:#fff}
+@keyframes qudaarFade{from{opacity:0}to{opacity:1}}
+@keyframes qudaarUp{from{opacity:0;transform:translateY(18px) scale(.98)}to{opacity:1;transform:none}}
+
+@media(max-width:650px){
+  .qudaar-modal{padding:21px;border-radius:21px}
+  .qudaar-list{grid-template-columns:1fr}
+  .qudaar-form-grid{grid-template-columns:1fr}
+  .qudaar-submit-row{flex-direction:column-reverse}
+  .qudaar-cancel,.qudaar-submit{width:100%}
+}
+@media(max-width:390px){
+  .qudaar-item{grid-template-columns:52px 1fr auto;gap:8px}
+  .qudaar-photo{width:52px;height:52px}
+  .qudaar-count{gap:4px}
+  .qudaar-count button{width:31px;height:31px}
+  .qudaar-number{min-width:29px}
+}
+</style>
+
+<script>
+const QUDAAR_ITEMS = [
+  ['Yaanyo','https://images.unsplash.com/photo-1546094096-0df4bcaaa337?auto=format&fit=crop&w=400&q=85'],
+  ['Bisbaas','https://images.unsplash.com/photo-1563565375-f3fdfdbefa83?auto=format&fit=crop&w=400&q=85'],
+  ['Basal','https://images.unsplash.com/photo-1618512496248-a07fe83aa8cb?auto=format&fit=crop&w=400&q=85'],
+  ['Kabsaro','https://images.unsplash.com/photo-1518977676601-b53f82aba655?auto=format&fit=crop&w=400&q=85'],
+  ['Liin','https://images.unsplash.com/photo-1590502593747-42a996133562?auto=format&fit=crop&w=400&q=85'],
+  ['Moos','https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?auto=format&fit=crop&w=400&q=85'],
+  ['Cambe','https://images.unsplash.com/photo-1553279768-865429fa0078?auto=format&fit=crop&w=400&q=85'],
+  ['Qare','https://images.unsplash.com/photo-1563114773-84221bd62daa?auto=format&fit=crop&w=400&q=85'],
+  ['Saytuun','https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?auto=format&fit=crop&w=400&q=85'],
+  ['Kaarooto','https://images.unsplash.com/photo-1445282768818-728615cc910a?auto=format&fit=crop&w=400&q=85'],
+  ['Banbanooni','https://images.unsplash.com/photo-1592924357228-91a4daadcfea?auto=format&fit=crop&w=400&q=85'],
+  ['Qajaar','https://images.unsplash.com/photo-1604977042946-1eecc30f269e?auto=format&fit=crop&w=400&q=85'],
+  ['Toon','https://images.unsplash.com/photo-1540148426945-6cf22a6b2383?auto=format&fit=crop&w=400&q=85']
+];
+
+const qudaarQty = {};
+QUDAAR_ITEMS.forEach(item => qudaarQty[item[0]] = 0);
+
+function renderQudaarList(){
+  const list=document.getElementById('qudaarList');
+  if(!list)return;
+  list.innerHTML=QUDAAR_ITEMS.map(([name,img])=>`
+    <div class="qudaar-item">
+      <img class="qudaar-photo" src="${img}" alt="${name}">
+      <div class="qudaar-name">${name}</div>
+      <div class="qudaar-count">
+        <button type="button" class="qudaar-minus" onclick="changeQudaarQty('${name}',-10)">−</button>
+        <span class="qudaar-number" id="qty_${name.replace(/[^a-zA-Z0-9]/g,'_')}">${qudaarQty[name]}</span>
+        <button type="button" class="qudaar-plus" onclick="changeQudaarQty('${name}',10)">+</button>
+      </div>
+      <p class="qudaar-hint">+ = 10 ku dar</p>
+    </div>
+  `).join('');
+}
+
+function changeQudaarQty(name,change){
+  qudaarQty[name]=Math.max(0,qudaarQty[name]+change);
+  const id='qty_'+name.replace(/[^a-zA-Z0-9]/g,'_');
+  const el=document.getElementById(id);
+  if(el)el.textContent=qudaarQty[name];
+  updateQudaarSummary();
+}
+
+function updateQudaarSummary(){
+  const values=Object.values(qudaarQty);
+  const total=values.reduce((a,b)=>a+b,0);
+  const selected=values.filter(v=>v>0).length;
+  document.getElementById('qudaarTotal').textContent=total;
+  document.getElementById('qudaarSelected').textContent=selected;
+}
+
+function openQudaarOrder(){
+  const modal=document.getElementById('qudaarOrderModal');
+  if(!modal)return;
+  renderQudaarList();
+  updateQudaarSummary();
+  modal.classList.add('show');
+  document.body.style.overflow='hidden';
+  setTimeout(()=>document.getElementById('qudaarCustomerName')?.focus(),100);
+}
+
+function closeQudaarOrder(){
+  const modal=document.getElementById('qudaarOrderModal');
+  if(modal)modal.classList.remove('show');
+  document.body.style.overflow='';
+}
+
+function submitQudaarOrder(){
+  const form=document.getElementById('qudaarOrderForm');
+  if(!form||!form.reportValidity())return;
+
+  const selected=QUDAAR_ITEMS
+    .filter(([name])=>qudaarQty[name]>0)
+    .map(([name])=>name+': '+qudaarQty[name])
+    .join('\n');
+
+  if(!selected){
+    alert('Fadlan dooro ugu yaraan hal nooc oo qudaar ah.');
+    return;
+  }
+
+  const d=new FormData(form);
+  const body=[
+    'NAGAAD AGRO - DALAB QUDAAR',
+    '----------------------------',
+    'Qudaarta la dalbaday:',
+    selected,
+    '',
+    'Magaca: '+d.get('name'),
+    'Magaalada: '+d.get('city'),
+    'Xaafadda: '+d.get('neighborhood'),
+    'Lambarka: '+d.get('phone')
+  ].join('\n');
+
+  const subject=encodeURIComponent('Nagaad Agro - Dalab Qudaar');
+  window.location.href='mailto:haleelrealestate@gmail.com?subject='+subject+'&body='+encodeURIComponent(body);
+}
+</script>
+
+<div id="nagaadOrderModal" class="nagaad-order-overlay" onclick="if(event.target===this) closeNagaadOrder()">
+  <div class="nagaad-order-modal" role="dialog" aria-modal="true" aria-labelledby="nagaadOrderTitle">
+    <button type="button" class="nagaad-order-close" onclick="closeNagaadOrder()">×</button>
+
+    <div class="nagaad-order-head">
+      <div class="nagaad-order-big-icon">🌱</div>
+      <div>
+        <span>Dalabka Nagaad Agro</span>
+        <h2 id="nagaadOrderTitle">Dalbo Qudaar</h2>
+        <p id="nagaadOrderSubtitle">Buuxi xogta dalabkaaga.</p>
+      </div>
+    </div>
+
+    <form id="nagaadOrderForm" onsubmit="event.preventDefault(); submitNagaadOrder();">
+      <input type="hidden" id="nagaadProduct" name="product">
+
+      <div class="nagaad-form-grid">
+        <div class="nagaad-field">
+          <label for="nagaadName">Magacaaga *</label>
+          <input id="nagaadName" name="name" required placeholder="Geli magacaaga">
+        </div>
+
+        <div class="nagaad-field">
+          <label for="nagaadPhone">Telefoonka *</label>
+          <input id="nagaadPhone" name="phone" type="tel" required placeholder="+252...">
+        </div>
+
+        <div class="nagaad-field">
+          <label for="nagaadCity">Magaalada *</label>
+          <input id="nagaadCity" name="city" required placeholder="Magaalada">
+        </div>
+
+        <div class="nagaad-field">
+          <label for="nagaadQuantity">Tirada / Qadarka *</label>
+          <input id="nagaadQuantity" name="quantity" required placeholder="Tusaale: 10kg / 5 jawaan">
+        </div>
+
+        <div class="nagaad-field">
+          <label for="nagaadLocation">Goobta / Cinwaanka *</label>
+          <input id="nagaadLocation" name="location" required placeholder="Halka lagu geynayo">
+        </div>
+
+        <div class="nagaad-field">
+          <label for="nagaadDate">Goorta aad rabto</label>
+          <input id="nagaadDate" name="preferred_date" type="date">
+        </div>
+
+        <div class="nagaad-field nagaad-full">
+          <label for="nagaadDetails">Faahfaahinta Dalabka *</label>
+          <textarea id="nagaadDetails" name="details" required rows="4" placeholder="Qor faahfaahinta dalabkaaga..."></textarea>
+        </div>
+      </div>
+
+      <div class="nagaad-submit-row">
+        <button type="button" class="nagaad-cancel" onclick="closeNagaadOrder()">Ka Noqo</button>
+        <button type="submit" class="nagaad-submit">📨 Gudbi Dalabkaaga</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<style>
+.nagaad-agro-page{padding-bottom:50px}
+.nagaad-agro-hero{
+  margin-top:20px;min-height:250px;border-radius:26px;padding:45px;
+  display:flex;align-items:center;color:#fff;overflow:hidden;position:relative;
+  background:linear-gradient(110deg,rgba(10,70,35,.95),rgba(25,125,68,.72),rgba(70,170,90,.28)),
+  url("https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&w=1800&q=85");
+  background-size:cover;background-position:center;
+  box-shadow:0 22px 60px rgba(0,80,40,.18)
+}
+.nagaad-agro-badge{font-size:12px;font-weight:900;letter-spacing:.14em;margin-bottom:10px}
+.nagaad-agro-hero h1{font-size:clamp(36px,5vw,56px);margin:0 0 10px}
+.nagaad-agro-hero p{margin:0;color:rgba(255,255,255,.9);font-size:17px}
+.nagaad-section-header{margin-top:38px}
+.nagaad-agro-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+.nagaad-agro-card{
+  background:#fff;border:1px solid rgba(20,70,40,.1);border-radius:24px;padding:28px;
+  box-shadow:0 14px 42px rgba(10,50,30,.08);transition:.3s
+}
+.nagaad-agro-card:hover{transform:translateY(-6px);box-shadow:0 24px 55px rgba(10,50,30,.14)}
+.nagaad-agro-icon{font-size:48px;margin-bottom:10px}
+.nagaad-agro-label{font-size:11px;font-weight:900;letter-spacing:.12em;color:#198754}
+.nagaad-agro-card h3{font-size:25px;margin:6px 0 9px}
+.nagaad-agro-card p{color:#718096;line-height:1.7;min-height:55px}
+.nagaad-agro-actions{display:flex;gap:12px;margin-top:22px}
+.nagaad-agro-btn{
+  flex:1;text-align:center;text-decoration:none;border:0;border-radius:13px;padding:13px 16px;
+  font-weight:800;cursor:pointer;transition:.25s;box-sizing:border-box
+}
+.nagaad-agro-btn:hover{transform:translateY(-2px)}
+.nagaad-agro-btn.order{background:linear-gradient(135deg,#15803d,#22a35a);color:#fff}
+.nagaad-agro-btn.call{background:#101828;color:#fff}
+
+.nagaad-order-overlay{
+  display:none;position:fixed;inset:0;z-index:100000;align-items:center;justify-content:center;
+  padding:18px;background:rgba(0,0,0,.6);backdrop-filter:blur(7px)
+}
+.nagaad-order-overlay.show{display:flex;animation:nagaadFade .2s ease}
+.nagaad-order-modal{
+  width:min(720px,100%);max-height:92vh;overflow:auto;background:#fff;border-radius:25px;
+  padding:28px;color:#111;box-shadow:0 30px 90px rgba(0,0,0,.3);animation:nagaadUp .28s ease;position:relative
+}
+.nagaad-order-close{
+  position:absolute;right:14px;top:12px;width:40px;height:40px;border:0;border-radius:50%;
+  background:#f1f3f5;font-size:27px;cursor:pointer
+}
+.nagaad-order-head{display:flex;gap:14px;align-items:center;padding-right:48px;margin-bottom:24px}
+.nagaad-order-big-icon{font-size:40px}
+.nagaad-order-head>div:nth-child(2)>span{font-size:11px;font-weight:900;letter-spacing:.12em;color:#198754}
+.nagaad-order-head h2{margin:4px 0 5px}
+.nagaad-order-head p{margin:0;color:#718096}
+.nagaad-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.nagaad-field{display:flex;flex-direction:column;gap:7px}
+.nagaad-full{grid-column:1/-1}
+.nagaad-field label{font-weight:800;font-size:14px}
+.nagaad-field input,.nagaad-field textarea{
+  width:100%;box-sizing:border-box;padding:13px 14px;border:1px solid #dfe3e8;border-radius:12px;
+  background:#fafafa;font:inherit;outline:none;transition:.2s
+}
+.nagaad-field input:focus,.nagaad-field textarea:focus{border-color:#198754;box-shadow:0 0 0 3px rgba(25,135,84,.12);background:#fff}
+.nagaad-submit-row{display:flex;justify-content:flex-end;gap:12px;margin-top:22px}
+.nagaad-cancel,.nagaad-submit{border:0;border-radius:12px;padding:13px 18px;font-weight:800;cursor:pointer}
+.nagaad-cancel{background:#edf0f2;color:#222}
+.nagaad-submit{background:linear-gradient(135deg,#15803d,#22a35a);color:#fff}
+@keyframes nagaadFade{from{opacity:0}to{opacity:1}}
+@keyframes nagaadUp{from{opacity:0;transform:translateY(18px) scale(.98)}to{opacity:1;transform:none}}
+
+@media(max-width:650px){
+  .nagaad-agro-hero{padding:30px 24px;min-height:220px}
+  .nagaad-agro-grid{grid-template-columns:1fr}
+  .nagaad-agro-card{padding:23px}
+  .nagaad-agro-actions{flex-direction:column}
+  .nagaad-order-modal{padding:22px;border-radius:20px}
+  .nagaad-form-grid{grid-template-columns:1fr}
+  .nagaad-full{grid-column:auto}
+  .nagaad-submit-row{flex-direction:column-reverse}
+  .nagaad-cancel,.nagaad-submit{width:100%}
+}
+</style>
+
+<script>
+function openNagaadOrder(product){
+  if(product === 'Qudaar'){
+    openQudaarOrder();
+    return;
+  }
+  const modal=document.getElementById('nagaadOrderModal');
+  const form=document.getElementById('nagaadOrderForm');
+  if(!modal||!form)return;
+  form.reset();
+  document.getElementById('nagaadProduct').value=product;
+  document.getElementById('nagaadOrderTitle').textContent='Dalbo '+product;
+  document.getElementById('nagaadOrderSubtitle').textContent='Buuxi xogta dalabkaaga ee '+product+'.';
+  modal.classList.add('show');
+  document.body.style.overflow='hidden';
+  setTimeout(()=>document.getElementById('nagaadName')?.focus(),100);
+}
+function closeNagaadOrder(){
+  const modal=document.getElementById('nagaadOrderModal');
+  if(modal)modal.classList.remove('show');
+  document.body.style.overflow='';
+}
+function submitNagaadOrder(){
+  const form=document.getElementById('nagaadOrderForm');
+  if(!form||!form.reportValidity())return;
+  const d=new FormData(form);
+  const body=[
+    'NAGAAD AGRO DALAB',
+    '--------------------',
+    'Qaybta: '+d.get('product'),
+    'Magaca: '+d.get('name'),
+    'Telefoon: '+d.get('phone'),
+    'Magaalada: '+d.get('city'),
+    'Tirada/Qadarka: '+d.get('quantity'),
+    'Goorta: '+(d.get('preferred_date')||''),
+    'Goobta: '+d.get('location'),
+    'Faahfaahin: '+d.get('details')
+  ].join('\n');
+  const subject=encodeURIComponent('Nagaad Agro Dalab - '+d.get('product'));
+  window.location.href='mailto:haleelrealestate@gmail.com?subject='+subject+'&body='+encodeURIComponent(body);
+}
+</script>
+
 <div class="page farsamo-page" id="farsamo">
 
   <button class="btn btn-outline farsamo-back" onclick="openPage('services')">
@@ -4700,9 +4750,9 @@ onclick="toggleCare()">
 
   <div class="livestock-hero">
     <div>
-      <div style="font-weight:900;letter-spacing:.08em;text-transform:uppercase;font-size:11px;margin-bottom:6px">🐄 Barako Livestock</div>
-      <h1>Qaybaha Xoolaha</h1>
-      <p>Dooro nooca xoolaha aad rabto. Sawirradu hadda waa thumbnails yaryar si kaararku u noqdaan kuwo fudud oo si fiican uga muuqda dhammaan shaashadaha.</p>
+      <div style="font-weight:900;letter-spacing:.08em;text-transform:uppercase;font-size:12px;margin-bottom:9px">🐄 Barako Livestock</div>
+      <h1>Qaybaha Livestock</h1>
+      <p>Ka hel xoolaha aad rabto. Dooro Geel, Riyo, Ido ama Lo' kadibna isticmaal Buy Now ama Call Now si aad ula xiriirto Haleel.</p>
     </div>
   </div>
 
@@ -4711,43 +4761,43 @@ onclick="toggleCare()">
   </div>
 
   <div class="livestock-grid">
-    <article class="livestock-card" style='--livestock-bg:url("https://images.unsplash.com/photo-1722145822884-df3d3aa7643e?auto=format&fit=crop&w=600&q=80")'>
+    <article class="livestock-card" style='--livestock-bg:url("https://images.unsplash.com/photo-1722145822884-df3d3aa7643e?auto=format&fit=crop&w=1200&q=85")'>
       <div class="livestock-icon">🐪</div>
       <h3>Geella</h3>
       <p>Geel kala duwan oo loogu talagalay iib iyo xoolo dhaqasho.</p>
       <div class="livestock-actions">
-        <button class="livestock-action buy" onclick="openChat()">🛒 Buy</button>
-        <a class="livestock-action call" href="tel:+252907469995">📞 Call</a>
+        <button class="livestock-action buy" onclick="openChat()">🛒 Buy Now</button>
+        <a class="livestock-action call" href="tel:+252907469995">📞 Call Now</a>
       </div>
     </article>
 
-    <article class="livestock-card" style='--livestock-bg:url("https://images.unsplash.com/photo-1563460043308-316e99a8a486?auto=format&fit=crop&w=600&q=80")'>
+    <article class="livestock-card" style='--livestock-bg:url("https://images.unsplash.com/photo-1563460043308-316e99a8a486?auto=format&fit=crop&w=1200&q=85")'>
       <div class="livestock-icon">🐐</div>
       <h3>Riyaha</h3>
       <p>Riyo kala duwan oo diyaar u ah iib iyo dhaqasho.</p>
       <div class="livestock-actions">
-        <button class="livestock-action buy" onclick="openChat()">🛒 Buy</button>
-        <a class="livestock-action call" href="tel:+252907469995">📞 Call</a>
+        <button class="livestock-action buy" onclick="openChat()">🛒 Buy Now</button>
+        <a class="livestock-action call" href="tel:+252907469995">📞 Call Now</a>
       </div>
     </article>
 
-    <article class="livestock-card" style='--livestock-bg:url("https://images.unsplash.com/photo-1680537123580-d4986afad076?auto=format&fit=crop&w=600&q=80")'>
+    <article class="livestock-card" style='--livestock-bg:url("https://images.unsplash.com/photo-1680537123580-d4986afad076?auto=format&fit=crop&w=1200&q=85")'>
       <div class="livestock-icon">🐑</div>
       <h3>Idaha</h3>
       <p>Ido kala duwan oo loogu talagalay iib iyo xanaanayn.</p>
       <div class="livestock-actions">
-        <button class="livestock-action buy" onclick="openChat()">🛒 Buy</button>
-        <a class="livestock-action call" href="tel:+252907469995">📞 Call</a>
+        <button class="livestock-action buy" onclick="openChat()">🛒 Buy Now</button>
+        <a class="livestock-action call" href="tel:+252907469995">📞 Call Now</a>
       </div>
     </article>
 
-    <article class="livestock-card" style='--livestock-bg:url("https://images.unsplash.com/photo-1688998299787-8e9c66a8bfcf?auto=format&fit=crop&w=600&q=80")'>
+    <article class="livestock-card" style='--livestock-bg:url("https://images.unsplash.com/photo-1688998299787-8e9c66a8bfcf?auto=format&fit=crop&w=1200&q=85")'>
       <div class="livestock-icon">🐄</div>
       <h3>Lo'da</h3>
       <p>Lo' kala duwan oo diyaar u ah iib iyo xoolo dhaqasho.</p>
       <div class="livestock-actions">
-        <button class="livestock-action buy" onclick="openChat()">🛒 Buy</button>
-        <a class="livestock-action call" href="tel:+252907469995">📞 Call</a>
+        <button class="livestock-action buy" onclick="openChat()">🛒 Buy Now</button>
+        <a class="livestock-action call" href="tel:+252907469995">📞 Call Now</a>
       </div>
     </article>
   </div>
@@ -4756,12 +4806,11 @@ onclick="toggleCare()">
 <!-- PHUB ACADEMY -->
 <div class="page phub-page" id="phub">
   <button class="btn btn-outline phub-back" onclick="openPage('services')">← Back to Services</button>
-
   <div class="phub-hero">
     <div>
-      <div style="font-weight:900;letter-spacing:.08em;text-transform:uppercase;font-size:11px;margin-bottom:6px">🎓 Phub Academy</div>
+      <div style="font-weight:900;letter-spacing:.08em;text-transform:uppercase;font-size:12px;margin-bottom:9px">🎓 Phub Academy</div>
       <h1>Waxbarasho & Xirfado</h1>
-      <p>Dooro qaybta aad rabto inaad barato. Qayb kasta waxaa loo sameeyay qaab kooban oo si fiican uga shaqeeya laptop, tablet iyo mobile.</p>
+      <p>Baro xirfado casri ah iyo aqoon kala duwan adigoo hal meel ka heli kara qaybaha waxbarashada ee Phub Academy.</p>
     </div>
   </div>
 
@@ -4770,33 +4819,25 @@ onclick="toggleCare()">
   </div>
 
   <div class="phub-grid">
-    <article class="phub-card" style='--phub-bg:url("https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=600&q=80")'>
-      <div class="phub-icon">🎬</div>
-      <h3>Multi-media</h3>
-      <p>Video editing, graphic design, content creation iyo xirfadaha multimedia.</p>
+    <article class="phub-card" style='--phub-bg:url("https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=85")'> 
+      <div class="phub-icon">🎬</div><h3>Multi-media</h3><p>Video editing, graphic design, content creation iyo xirfadaha multimedia.</p>
       <div class="farsamo-actions phub-actions">
-        <button class="farsamo-action chat" onclick="openChat()">💬 Chat</button>
-        <a class="farsamo-action call" href="tel:+252907469995">📞 Call</a>
+        <button class="farsamo-action chat" onclick="openChat()">💬 Chat Now</button>
+        <a class="farsamo-action call" href="tel:+252907469995">📞 Call Now</a>
       </div>
     </article>
-
-    <article class="phub-card" style='--phub-bg:url("https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80")'>
-      <div class="phub-icon">📊</div>
-      <h3>Data Analysis</h3>
-      <p>Baro sida xogta loo ururiyo, loo falanqeeyo loona fahmo natiijooyinka.</p>
+    <article class="phub-card" style='--phub-bg:url("https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=85")'> 
+      <div class="phub-icon">📊</div><h3>Data Analysis</h3><p>Baro sida xogta loo ururiyo, loo falanqeeyo loona fahmo natiijooyinka.</p>
       <div class="farsamo-actions phub-actions">
-        <button class="farsamo-action chat" onclick="openChat()">💬 Chat</button>
-        <a class="farsamo-action call" href="tel:+252907469995">📞 Call</a>
+        <button class="farsamo-action chat" onclick="openChat()">💬 Chat Now</button>
+        <a class="farsamo-action call" href="tel:+252907469995">📞 Call Now</a>
       </div>
     </article>
-
-    <article class="phub-card" style='--phub-bg:url("https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=600&q=80")'>
-      <div class="phub-icon">💻</div>
-      <h3>Web Development</h3>
-      <p>HTML, CSS, JavaScript iyo dhisidda websites casri ah oo responsive ah.</p>
+    <article class="phub-card" style='--phub-bg:url("https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=85")'> 
+      <div class="phub-icon">💻</div><h3>Web Development</h3><p>HTML, CSS, JavaScript iyo dhisidda websites casri ah oo responsive ah.</p>
       <div class="farsamo-actions phub-actions">
-        <button class="farsamo-action chat" onclick="openChat()">💬 Chat</button>
-        <a class="farsamo-action call" href="tel:+252907469995">📞 Call</a>
+        <button class="farsamo-action chat" onclick="openChat()">💬 Chat Now</button>
+        <a class="farsamo-action call" href="tel:+252907469995">📞 Call Now</a>
       </div>
     </article>
   </div>
