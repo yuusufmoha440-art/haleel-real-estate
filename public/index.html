@@ -2751,6 +2751,47 @@ body.dark .farsamo-service-card{
 .phub-actions .farsamo-action{flex:1 1 140px;min-width:0}
 @media(max-width:480px){.phub-actions{flex-direction:column}.phub-actions .farsamo-action{width:100%}}
 </style>
+
+<style>
+/* FARSAMO ORDER FORM */
+.farsamo-order-overlay{
+  display:none;position:fixed;inset:0;z-index:100001;align-items:center;justify-content:center;
+  padding:18px;background:rgba(3,13,24,.68);backdrop-filter:blur(8px)
+}
+.farsamo-order-overlay.show{display:flex;animation:farsamoFade .2s ease}
+.farsamo-order-modal{
+  width:min(760px,100%);max-height:92vh;overflow:auto;background:#fff;border-radius:26px;
+  padding:28px;color:#122033;box-shadow:0 30px 90px rgba(0,0,0,.30);position:relative;animation:farsamoUp .28s ease
+}
+.farsamo-order-close{position:absolute;right:14px;top:12px;width:40px;height:40px;border:0;border-radius:50%;background:#eef2f6;color:#203040;font-size:27px;cursor:pointer}
+.farsamo-order-head{display:flex;gap:14px;align-items:center;padding-right:48px;margin-bottom:24px}
+.farsamo-order-icon{width:52px;height:52px;border-radius:16px;display:grid;place-items:center;background:linear-gradient(135deg,#006CC2,#20B26B);color:#fff;font-size:25px;box-shadow:0 10px 25px rgba(0,108,194,.18)}
+.farsamo-order-head small{display:block;color:#006CC2;font-weight:900;letter-spacing:.10em;text-transform:uppercase;font-size:11px}
+.farsamo-order-head h2{margin:4px 0 5px;font-size:26px}
+.farsamo-order-head p{margin:0;color:#718096;line-height:1.5}
+.farsamo-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+.farsamo-field{display:flex;flex-direction:column;gap:7px}
+.farsamo-field.full{grid-column:1/-1}
+.farsamo-field label{font-size:13px;font-weight:850;color:#43576b}
+.farsamo-field input,.farsamo-field select,.farsamo-field textarea{width:100%;box-sizing:border-box;border:1px solid #dce4ec;border-radius:13px;background:#f9fbfd;color:#17283a;padding:13px 14px;font:inherit;outline:none;transition:.2s}
+.farsamo-field input,.farsamo-field select{height:48px}
+.farsamo-field textarea{min-height:110px;resize:vertical}
+.farsamo-field input:focus,.farsamo-field select:focus,.farsamo-field textarea:focus{border-color:#006CC2;box-shadow:0 0 0 4px rgba(0,108,194,.09);background:#fff}
+.farsamo-submit-row{display:flex;gap:11px;margin-top:21px}
+.farsamo-cancel,.farsamo-submit{flex:1;border:0;border-radius:13px;padding:14px 18px;font-weight:900;cursor:pointer;transition:.2s}
+.farsamo-cancel{background:#edf1f5;color:#25364a}.farsamo-submit{background:linear-gradient(135deg,#006CC2,#20B26B);color:#fff;box-shadow:0 10px 24px rgba(0,108,194,.18)}
+.farsamo-cancel:hover,.farsamo-submit:hover{transform:translateY(-2px)}
+.farsamo-order-status{margin-top:12px;font-size:13px;font-weight:800;text-align:center;min-height:18px}
+@keyframes farsamoFade{from{opacity:0}to{opacity:1}}
+@keyframes farsamoUp{from{opacity:0;transform:translateY(18px) scale(.98)}to{opacity:1;transform:none}}
+@media(max-width:650px){
+ .farsamo-order-modal{padding:21px;border-radius:21px;max-height:94vh}
+ .farsamo-form-grid{grid-template-columns:1fr}.farsamo-field.full{grid-column:auto}
+ .farsamo-submit-row{flex-direction:column-reverse}.farsamo-cancel,.farsamo-submit{width:100%}
+ .farsamo-order-head h2{font-size:22px}
+}
+</style>
+
 </head>
 
 <body>
@@ -3795,7 +3836,7 @@ function submitNagaadOrder(){
     <div class="section-header">
       <div>
         <h2>Adeegyo</h2>
-        <p style="color:#718096;margin-top:5px">Dooro adeegga aad rabto kadibna Chat ama Call Now samee.</p>
+        <p style="color:#718096;margin-top:5px">Dooro adeegga aad rabto, buuxi foomka dalabka, kadibna xogtaada gudbi.</p>
       </div>
     </div>
 
@@ -3807,7 +3848,7 @@ function submitNagaadOrder(){
           <h3>Korontiiste</h3>
           <p>Caawimaad ku saabsan rakibidda, dayactirka iyo ciladaha korontada.</p>
           <div class="farsamo-actions">
-            <button class="farsamo-action chat" onclick="openChat()">💬 Chat Now</button>
+            <button class="farsamo-action chat" type="button" onclick="openFarsamoOrder(this.closest('article').querySelector('h3').textContent)">📋 Dalbo</button>
             <a class="farsamo-action call" href="tel:+252907469995">📞 Call Now</a>
           </div>
         </div>
@@ -3819,7 +3860,7 @@ function submitNagaadOrder(){
           <h3>Mukeyf</h3>
           <p>Rakibid, nadiifin, dayactir iyo cilad-bixin adeegyada mukeyfka.</p>
           <div class="farsamo-actions">
-            <button class="farsamo-action chat" onclick="openChat()">💬 Chat Now</button>
+            <button class="farsamo-action chat" type="button" onclick="openFarsamoOrder(this.closest('article').querySelector('h3').textContent)">📋 Dalbo</button>
             <a class="farsamo-action call" href="tel:+252907469995">📞 Call Now</a>
           </div>
         </div>
@@ -3831,7 +3872,7 @@ function submitNagaadOrder(){
           <h3>Tuubayste</h3>
           <p>Dayactirka tuubooyinka, biyaha iyo ciladaha nidaamka plumbing-ka.</p>
           <div class="farsamo-actions">
-            <button class="farsamo-action chat" onclick="openChat()">💬 Chat Now</button>
+            <button class="farsamo-action chat" type="button" onclick="openFarsamoOrder(this.closest('article').querySelector('h3').textContent)">📋 Dalbo</button>
             <a class="farsamo-action call" href="tel:+252907469995">📞 Call Now</a>
           </div>
         </div>
@@ -3843,7 +3884,7 @@ function submitNagaadOrder(){
           <h3>Ranjiile</h3>
           <p>Rinjiyeynta guryaha, darbiyada, saqafyada iyo hagaajinta muuqaalka gudaha iyo dibadda.</p>
           <div class="farsamo-actions">
-            <button class="farsamo-action chat" onclick="openChat()">💬 Chat Now</button>
+            <button class="farsamo-action chat" type="button" onclick="openFarsamoOrder(this.closest('article').querySelector('h3').textContent)">📋 Dalbo</button>
             <a class="farsamo-action call" href="tel:+252907469995">📞 Call Now</a>
           </div>
         </div>
@@ -3855,7 +3896,7 @@ function submitNagaadOrder(){
           <h3>Cillad Bixin</h3>
           <p>Haddii qalab ama adeeg cilad yeesho, hel caawimaad iyo cilad-bixin.</p>
           <div class="farsamo-actions">
-            <button class="farsamo-action chat" onclick="openChat()">💬 Chat Now</button>
+            <button class="farsamo-action chat" type="button" onclick="openFarsamoOrder(this.closest('article').querySelector('h3').textContent)">📋 Dalbo</button>
             <a class="farsamo-action call" href="tel:+252907469995">📞 Call Now</a>
           </div>
         </div>
@@ -3867,7 +3908,7 @@ function submitNagaadOrder(){
           <h3>CCTV</h3>
           <p>Rakibid iyo dayactir CCTV ah oo loogu talagalay guryaha, xafiisyada iyo ganacsiyada. La soco amnigaaga si fudud.</p>
           <div class="farsamo-actions">
-            <button class="farsamo-action chat" onclick="openChat()">💬 Chat Now</button>
+            <button class="farsamo-action chat" type="button" onclick="openFarsamoOrder(this.closest('article').querySelector('h3').textContent)">📋 Dalbo</button>
             <a class="farsamo-action call" href="tel:+252907469995">📞 Call Now</a>
           </div>
         </div>
@@ -3876,6 +3917,92 @@ function submitNagaadOrder(){
     </div>
   </div>
 </div>
+
+
+<!-- FARSAMO ORDER MODAL -->
+<div id="farsamoOrderModal" class="farsamo-order-overlay" onclick="if(event.target===this) closeFarsamoOrder()">
+  <div class="farsamo-order-modal" role="dialog" aria-modal="true" aria-labelledby="farsamoOrderTitle">
+    <button type="button" class="farsamo-order-close" onclick="closeFarsamoOrder()">×</button>
+    <div class="farsamo-order-head">
+      <div class="farsamo-order-icon" id="farsamoOrderIcon">📋</div>
+      <div>
+        <small>Dalabka Farsamo</small>
+        <h2 id="farsamoOrderTitle">Dalbo Adeeg</h2>
+        <p id="farsamoOrderSubtitle">Buuxi xogta hoose si aad u gudbiso dalabkaaga.</p>
+      </div>
+    </div>
+    <form id="farsamoOrderForm" onsubmit="event.preventDefault();submitFarsamoOrder();">
+      <input type="hidden" id="farsamoService" name="service">
+      <div class="farsamo-form-grid">
+        <div class="farsamo-field"><label for="farsamoName">Magacaaga *</label><input id="farsamoName" name="name" required placeholder="Geli magacaaga"></div>
+        <div class="farsamo-field"><label for="farsamoPhone">Telefoonka *</label><input id="farsamoPhone" name="phone" type="tel" required placeholder="+252..."></div>
+        <div class="farsamo-field"><label for="farsamoCity">Magaalada *</label><input id="farsamoCity" name="city" required placeholder="Magaalada"></div>
+        <div class="farsamo-field"><label for="farsamoLocation">Goobta / Cinwaanka *</label><input id="farsamoLocation" name="location" required placeholder="Halka adeegga laga qabanayo"></div>
+        <div class="farsamo-field"><label for="farsamoDate">Taariikhda aad rabto *</label><input id="farsamoDate" name="date" type="date" required></div>
+        <div class="farsamo-field"><label for="farsamoTime">Waqtiga aad rabto</label><input id="farsamoTime" name="time" type="time"></div>
+        <div class="farsamo-field full"><label for="farsamoDetails" id="farsamoDetailsLabel">Faahfaahinta dhibaatada / adeegga *</label><textarea id="farsamoDetails" name="details" required placeholder="Sharax adeegga aad u baahan tahay..."></textarea></div>
+      </div>
+      <div id="farsamoOrderStatus" class="farsamo-order-status"></div>
+      <div class="farsamo-submit-row">
+        <button type="button" class="farsamo-cancel" onclick="closeFarsamoOrder()">Ka Noqo</button>
+        <button type="submit" class="farsamo-submit">📨 Dalbo & Gudbi</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+const farsamoServiceMeta={
+  'Korontiiste':{icon:'⚡',hint:'Sharax ciladda korontada, rakibidda ama dayactirka aad u baahan tahay.'},
+  'Mukeyf':{icon:'❄️',hint:'Sheeg nooca mukeyfka iyo waxa aad rabto: rakibid, nadiifin ama dayactir.'},
+  'Tuubayste':{icon:'🚰',hint:'Sharax meesha tuubadu ka ciladaysan tahay ama adeegga plumbing-ka aad rabto.'},
+  'Ranjiile':{icon:'🎨',hint:'Sheeg waxa la rinjiyeynayo, cabbirka/baaxadda iyo faahfaahinta shaqada.'},
+  'Cillad Bixin':{icon:'🛠️',hint:'Sharax qalabka ama adeegga ciladda qaba iyo dhibaatada jirta.'},
+  'CCTV':{icon:'📹',hint:'Sheeg tirada kamaradaha, goobta iyo haddii ay tahay rakibid ama dayactir.'}
+};
+function openFarsamoOrder(service){
+  const modal=document.getElementById('farsamoOrderModal');
+  const form=document.getElementById('farsamoOrderForm');
+  if(!modal||!form)return;
+  form.reset();
+  document.getElementById('farsamoService').value=service;
+  document.getElementById('farsamoOrderTitle').textContent='Dalbo '+service;
+  document.getElementById('farsamoOrderSubtitle').textContent='Buuxi xogta dalabka '+service+' kadibna gudbi.';
+  document.getElementById('farsamoOrderIcon').textContent=(farsamoServiceMeta[service]||{}).icon||'📋';
+  document.getElementById('farsamoDetails').placeholder=(farsamoServiceMeta[service]||{}).hint||'Sharax adeegga aad u baahan tahay...';
+  document.getElementById('farsamoOrderStatus').textContent='';
+  modal.classList.add('show');
+  document.body.style.overflow='hidden';
+  setTimeout(()=>document.getElementById('farsamoName')?.focus(),100);
+}
+function closeFarsamoOrder(){
+  const modal=document.getElementById('farsamoOrderModal');
+  if(modal)modal.classList.remove('show');
+  document.body.style.overflow='';
+}
+function submitFarsamoOrder(){
+  const form=document.getElementById('farsamoOrderForm');
+  if(!form||!form.reportValidity())return;
+  const d=new FormData(form);
+  const service=d.get('service');
+  const body=[
+    'HALEEL FARSAMO - DALAB ADEEG',
+    '------------------------------',
+    'Adeegga: '+service,
+    'Magaca: '+d.get('name'),
+    'Telefoon: '+d.get('phone'),
+    'Magaalada: '+d.get('city'),
+    'Goobta / Cinwaanka: '+d.get('location'),
+    'Taariikhda: '+d.get('date'),
+    'Waqtiga: '+(d.get('time')||''),
+    'Faahfaahinta: '+d.get('details')
+  ].join('\n');
+  const subject=encodeURIComponent('Haleel Farsamo - Dalab '+service);
+  document.getElementById('farsamoOrderStatus').textContent='Dalabka waa la diyaariyey, email-ka ayaa furmaya...';
+  window.location.href='mailto:haleelrealestate@gmail.com?subject='+subject+'&body='+encodeURIComponent(body);
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeFarsamoOrder()});
+</script>
 
 <!-- PROPERTY -->
 
