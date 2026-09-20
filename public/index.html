@@ -1337,7 +1337,6 @@ width:100%;
 
 }
 
-
 /* =========================================================
    HALEEL SERVICES — PREMIUM SERVICE CARDS
    Added without changing the existing sections.
@@ -1525,7 +1524,6 @@ width:100%;
   box-shadow:0 10px 25px rgba(0,0,0,.18);
 }
 
-
 @keyframes serviceOrbit{
   from{transform:rotate(0deg)}
   to{transform:rotate(360deg)}
@@ -1558,7 +1556,6 @@ opacity:1;
 transform:translateY(0);
 }
 }
-
 
 /* =========================================================
    HALEEL AUTHENTICATION
@@ -1856,8 +1853,6 @@ body.dark .auth-account-preview{background:#102d43;color:#65b9ff}
   .auth-name-grid{grid-template-columns:1fr}
 }
 
-
-
 /* =========================================================
    HALEEL AUTH — PREMIUM RESPONSIVE SIGN IN
    Fluid sizing for phones, tablets and desktop.
@@ -1931,14 +1926,6 @@ body.dark .auth-account-preview{background:#102d43;color:#65b9ff}
   animation:authOrbit 12s linear infinite;
 }
 
-.auth-brand-panel::after{
-  content:"";
-  position:absolute;
-  width:180px;height:180px;
-  border:1px solid rgba(255,255,255,.18);
-  border-radius:50%;
-  right:-55px;bottom:-55px;
-}
 
 .auth-logo{
   position:relative;
@@ -1979,11 +1966,6 @@ body.dark .auth-account-preview{background:#102d43;color:#65b9ff}
   animation:authTextIn .7s .2s both;
 }
 
-.auth-feature{
-  margin-top:30px;
-  display:grid;
-  gap:11px;
-}
 
 .auth-feature span{
   display:flex;
@@ -2055,13 +2037,6 @@ body.dark .auth-account-preview{background:#102d43;color:#65b9ff}
   animation:authFormPremium .5s cubic-bezier(.2,.8,.2,1);
 }
 
-.auth-label{
-  display:block;
-  margin:0 0 7px;
-  color:#53677a;
-  font-size:13px;
-  font-weight:800;
-}
 
 .auth-input{
   width:100%;
@@ -2086,13 +2061,7 @@ body.dark .auth-account-preview{background:#102d43;color:#65b9ff}
   transform:translateY(-1px);
 }
 
-.auth-name-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-}
 
-.auth-password-wrap{position:relative}
 .auth-password-wrap .auth-input{padding-right:54px}
 
 .auth-eye{
@@ -2142,7 +2111,7 @@ body.dark .auth-account-preview{background:#102d43;color:#65b9ff}
 
 .auth-primary:hover::before{transform:translateX(110%)}
 .auth-primary:hover{transform:translateY(-2px) scale(1.005)}
-.auth-primary:disabled{opacity:.65;cursor:wait;transform:none}
+
 
 .auth-secondary{
   width:100%;
@@ -2182,19 +2151,19 @@ body.dark .auth-account-preview{background:#102d43;color:#65b9ff}
   animation:authPulse 1.5s ease-in-out infinite;
 }
 .auth-account-preview strong{display:block;font-size:28px;letter-spacing:2px;margin-top:4px}
-.auth-created-view{text-align:center}
-.auth-created-view h2{color:#159957;font-size:26px;line-height:1.25;margin:12px 0 8px}
-.auth-created-view>p{color:#718096;margin-bottom:20px}
-.auth-created-icon{width:72px;height:72px;margin:0 auto 10px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#e8f8ef;color:#159957;font-size:40px;font-weight:900;box-shadow:0 8px 25px rgba(21,153,87,.12)}
-.auth-created-card{text-align:left;padding:18px;margin:0 0 18px;border:1px solid rgba(0,108,194,.14);border-radius:18px;background:#f7fbff;box-shadow:0 10px 28px rgba(0,40,80,.07)}
-.auth-created-title{color:#006CC2;font-size:16px;font-weight:900;margin-bottom:14px;text-align:center}
-.auth-created-row{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:11px 0;border-bottom:1px solid rgba(0,0,0,.06);font-size:14px}
-.auth-created-row:last-child{border-bottom:0;padding-bottom:2px}
-.auth-created-row span{color:#718096;font-weight:700}
-.auth-created-row strong{color:#1d3044;text-align:right;overflow-wrap:anywhere}
-.auth-created-row:first-of-type strong{color:#006CC2;font-size:22px;letter-spacing:2px}
-.auth-open-account{margin-top:2px}
-.auth-created-warning{margin-top:15px;padding:12px 14px;border-radius:13px;background:#fff8e6;color:#765b00;font-size:12px;line-height:1.55}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* Tablet */
 @media(max-width:850px){
@@ -2243,7 +2212,6 @@ body.dark .auth-account-preview{background:#102d43;color:#65b9ff}
     margin:0;
   }
 
-  .auth-feature{display:none}
 
   .auth-form-panel{
     height:auto;
@@ -2276,9 +2244,9 @@ body.dark .auth-account-preview{background:#102d43;color:#65b9ff}
   .auth-input{height:50px;border-radius:13px;margin-bottom:12px}
   .auth-primary{height:51px;border-radius:13px}
   .auth-secondary{height:48px;border-radius:13px}
-  .auth-name-grid{grid-template-columns:1fr}
-  .auth-created-row{flex-direction:column;gap:4px}
-  .auth-created-row strong{text-align:left}
+
+
+
 }
 
 /* Very short phone screens: compact spacing instead of scaling the whole card. */
@@ -2297,31 +2265,28 @@ body.dark .auth-account-preview{background:#102d43;color:#65b9ff}
 /* Dark mode */
 body.dark .auth-shell{background:#131c26}
 body.dark .auth-form-panel{background:linear-gradient(180deg,#131c26 0%,#101923 100%)}
-body.dark .auth-form-wrap h2{color:#f1f5f9}
-body.dark .auth-form-wrap>p,
-body.dark .auth-bottom,
-body.dark .auth-note,
-body.dark .auth-label{color:#91a0b1}
+
+
 body.dark .auth-input{background:#141f2a;color:#e8eef5;border-color:#2b3d4e}
 body.dark .auth-input:hover{border-color:#3b5970}
 body.dark .auth-input:focus{background:#152332;box-shadow:0 0 0 4px rgba(101,185,255,.10),0 8px 22px rgba(0,0,0,.16)}
 body.dark .auth-eye:hover{background:#19324a;color:#65b9ff}
 body.dark .auth-secondary{background:#172534}
 body.dark .auth-secondary:hover{background:#1b3145}
-body.dark .auth-account-preview{background:#102d43;color:#65b9ff}
-body.dark .auth-created-view h2{color:#65d59a}
-body.dark .auth-created-icon{background:#123624;color:#65d59a}
-body.dark .auth-created-card{background:#10212f;border-color:#244967}
-body.dark .auth-created-title{color:#65b9ff}
-body.dark .auth-created-row{border-bottom-color:rgba(255,255,255,.08)}
-body.dark .auth-created-row span{color:#91a0b1}
-body.dark .auth-created-row strong{color:#e8eef5}
-body.dark .auth-created-row:first-of-type strong{color:#65b9ff}
-body.dark .auth-created-warning{background:#332b12;color:#f2d675}
+
+
+
+
+
+
+
+
+
+
 
 @keyframes authFormPremium{
   from{opacity:0;transform:translateY(12px) scale(.985)}
-  to{opacity:1;transform:translateY(0) scale(1)}
+
 }
 @keyframes authTextIn{
   from{opacity:0;transform:translateY(12px)}
@@ -2336,8 +2301,8 @@ body.dark .auth-created-warning{background:#332b12;color:#f2d675}
   50%{transform:translateY(-4px)}
 }
 @keyframes authOrbit{
-  from{transform:rotate(0deg)}
-  to{transform:rotate(360deg)}
+
+
 }
 @keyframes authButtonGlow{
   0%,100%{background-position:0% 50%}
@@ -2348,7 +2313,6 @@ body.dark .auth-created-warning{background:#332b12;color:#f2d675}
   .auth-shell,.auth-logo,.auth-brand-panel::before,.auth-primary,.auth-form-view,.auth-brand-panel h1,.auth-brand-panel p,.auth-form-wrap h2::after{animation:none!important}
   .auth-primary,.auth-secondary,.auth-input,.auth-eye,.auth-feature span{transition:none!important}
 }
-
 
 /* =========================================================
    HALEEL AUTH — FULL DEVICE FIT / NO EXTRA PAGE SPACE
@@ -2409,7 +2373,7 @@ body.dark .auth-created-warning{background:#332b12;color:#f2d675}
   }
   .auth-brand-panel h1{margin:12px 0 8px;font-size:clamp(30px,9vw,42px)}
   .auth-brand-panel p{font-size:13px;line-height:1.5;margin:0;max-width:100%}
-  .auth-feature{display:none}
+
   .auth-form-panel{
     min-height:0;height:62%;
     padding:clamp(18px,5vw,28px) clamp(18px,6vw,30px);
@@ -2449,7 +2413,7 @@ body.dark .auth-created-warning{background:#332b12;color:#f2d675}
   .auth-brand-panel{height:100%;padding:18px}
   .auth-form-panel{height:100%;padding:14px 24px}
   .auth-brand-panel h1{font-size:clamp(24px,7vh,34px)}
-  .auth-brand-panel p{font-size:11px}
+
   .auth-form-wrap h2{font-size:23px}
   .auth-form-wrap>p{margin-bottom:8px}
   .auth-input{height:40px;margin-bottom:6px}
@@ -2461,11 +2425,11 @@ body.dark .auth-created-warning{background:#332b12;color:#f2d675}
   .auth-brand-panel{height:31%}
   .auth-form-panel{height:69%;padding-top:10px;padding-bottom:10px}
   .auth-brand-panel h1{font-size:27px;margin:6px 0}
-  .auth-brand-panel p{font-size:11px}
+
   .auth-form-wrap h2{font-size:22px}
-  .auth-form-wrap>p{margin-bottom:8px}
+
   .auth-input{height:40px;margin-bottom:5px}
-  .auth-primary{height:41px}
+
   .auth-secondary{height:39px}
   .auth-bottom{margin-top:6px}
   .auth-note{display:none}
@@ -2706,7 +2670,6 @@ body.dark .farsamo-service-card{
   .farsamo-action{flex:1;min-width:0}
 }
 
-
 </style>
 <style>
 .phub-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:2px}
@@ -2758,10 +2721,6 @@ body.dark .farsamo-service-card{
 
 <body>
 
-
-<!-- =========================================================
-     HALEEL AUTHENTICATION GATE
-========================================================= -->
 <section class="auth-gate" id="authGate">
   <div class="auth-shell">
     <div class="auth-brand-panel">
@@ -2933,9 +2892,6 @@ Customer Care
 
 </div>
 
-
-<!-- HOME -->
-
 <div class="page active" id="home">
 
 <div class="hero">
@@ -2966,7 +2922,6 @@ Diiwaangeli Guri
 
 </div>
 </div>
-
 
 <section class="section">
 
@@ -3002,7 +2957,6 @@ Diiwaangeli Guri
 
 </div>
 </section>
-
 
 <section class="section">
 
@@ -3040,7 +2994,6 @@ onclick="installHaleel()">
 </div>
 </section>
 
-
 <section class="section">
 
 <div class="section-header">
@@ -3060,9 +3013,6 @@ View All
 
 </div>
 
-
-
-<!-- SERVICES -->
 <div class="page services-page" id="services">
 
   <div class="services-hero">
@@ -3091,13 +3041,11 @@ View All
       <div class="premium-service-content">
         <div class="premium-service-icon">⚙️</div>
         <h3>Farsamo Tech</h3>
-        <p>Adeeg Farsamo oo dhamaystiran, haddii aad ubaahan tahay xalal farsamo oo kala duwan waxaan kuu diyaarinay 
+        <p>Adeeg Farsamo oo dhamaystiran, haddii aad ubaahan tahay xalal farsamo oo kala duwan waxaan kuu diyaarinay
          engineero gacan fudud oo markiiba kuugu imaanaya goobtaada.</p>
         <button class="service-register-btn service-open-btn" onclick="openPage('farsamo')">Open</button>
       </div>
     </article>
-
-    
 
     <article class="premium-service-card">
       <img class="premium-service-bg"
@@ -3124,13 +3072,8 @@ View All
       </div>
     </article>
 
-    
-
   </div>
 </div>
-
-
-<!-- FARSAMO TECH SERVICES -->
 
 <div class="page chicking-page" id="chickingHouse">
   <button class="btn btn-outline chicking-back" onclick="openPage('services')">← Back to Services</button>
@@ -3321,7 +3264,6 @@ renderChickingProducts();
     </article>
   </div>
 </div>
-
 
 <div id="qudaarOrderModal" class="qudaar-overlay" onclick="if(event.target===this) closeQudaarOrder()">
   <div class="qudaar-modal" role="dialog" aria-modal="true" aria-labelledby="qudaarTitle">
@@ -3884,8 +3826,6 @@ function submitNagaadOrder(){
   </div>
 </div>
 
-
-<!-- FARSAMO ORDER MODAL -->
 <div id="farsamoOrderModal" class="farsamo-order-overlay" onclick="if(event.target===this) closeFarsamoOrder()">
   <div class="farsamo-order-modal" role="dialog" aria-modal="true" aria-labelledby="farsamoOrderTitle">
     <button type="button" class="farsamo-order-close" onclick="closeFarsamoOrder()">×</button>
@@ -4012,8 +3952,6 @@ function submitFarsamoOrder(){
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeFarsamoOrder()});
 </script>
 
-<!-- PROPERTY -->
-
 <div class="page" id="property">
 
 <div class="property-header">
@@ -4034,7 +3972,6 @@ Macmiil raadi nooca guri aad doonaysid inaad kiraysatid.
 
 </div>
 
-
 <div class="search-panel">
 
 <div class="search-top">
@@ -4046,7 +3983,6 @@ Macmiil raadi nooca guri aad doonaysid inaad kiraysatid.
 <span>Guryaha Banaan</span>
 
 </div>
-
 
 <div class="search-grid">
 
@@ -4063,7 +3999,6 @@ autocomplete="off">
 
 </div>
 
-
 <select id="typeFilter" class="filter-select">
 
 <option value="">Nooca Guriga</option>
@@ -4076,13 +4011,11 @@ autocomplete="off">
 
 </select>
 
-
 <select id="cityFilter" class="filter-select">
 
 <option value="">Magaalada</option>
 
 </select>
-
 
 <select id="bedroomFilter" class="filter-select">
 
@@ -4095,7 +4028,6 @@ autocomplete="off">
 </select>
 
 </div>
-
 
 <div class="advanced-filters">
 
@@ -4112,7 +4044,6 @@ placeholder="$ Min">
 
 </div>
 
-
 <div>
 
 <label class="filter-label">Qiimaha ugu badan</label>
@@ -4126,7 +4057,6 @@ placeholder="$ Max">
 
 </div>
 
-
 <div>
 
 <label class="filter-label">Marxaladda</label>
@@ -4137,7 +4067,6 @@ placeholder="$ Max">
 </select>
 
 </div>
-
 
 <div>
 
@@ -4151,7 +4080,6 @@ placeholder="$ Max">
 </select>
 
 </div>
-
 
 <div>
 
@@ -4167,7 +4095,6 @@ onclick="filterProperties()">
 </div>
 
 </div>
-
 
 <div class="search-actions">
 
@@ -4191,9 +4118,7 @@ onclick="resetFilters()">
 
 </div>
 
-
 <div class="property-grid" id="propertyGrid"></div>
-
 
 <div class="no-results" id="noResults">
 
@@ -4215,9 +4140,6 @@ Reset Filters
 </div>
 
 </div>
-
-
-<!-- CUSTOMER CARE -->
 
 <div class="page" id="care">
 
@@ -4260,7 +4182,6 @@ style="background:#fff;color:#006CC2;text-decoration:none">
 
 </div>
 
-
 <div class="care-grid">
 
 <div class="care-card">
@@ -4279,7 +4200,6 @@ Start Chat
 
 </div>
 
-
 <div class="care-card">
 
 <div class="care-icon">🟢</div>
@@ -4296,7 +4216,6 @@ WhatsApp Us
 </a>
 
 </div>
-
 
 <div class="care-card">
 
@@ -4315,7 +4234,6 @@ Call Now
 </div>
 
 </div>
-
 
 <div class="section">
 
@@ -4337,7 +4255,6 @@ onclick="openChatWithMessage('Waxaan rabaa guri aan kireysto.')">
 
 </div>
 
-
 <div class="care-help-card"
 onclick="openChatWithMessage('Waxaan rabaa inaan gurigayga iibiyo.')">
 
@@ -4350,7 +4267,6 @@ onclick="openChatWithMessage('Waxaan rabaa inaan gurigayga iibiyo.')">
 
 </div>
 
-
 <div class="care-help-card"
 onclick="openChatWithMessage('Waxaan rabaa inaan guri gudbiyo.')">
 
@@ -4362,7 +4278,6 @@ onclick="openChatWithMessage('Waxaan rabaa inaan guri gudbiyo.')">
 </div>
 
 </div>
-
 
 <div class="care-help-card"
 onclick="openChatWithMessage('Waxaan qabaa cabasho ama dhibaato.')">
@@ -4378,7 +4293,6 @@ onclick="openChatWithMessage('Waxaan qabaa cabasho ama dhibaato.')">
 
 </div>
 </div>
-
 
 <div class="care-contact-strip">
 
@@ -4421,9 +4335,6 @@ href="mailto:haleelrealestate@gmail.com">
 
 </div>
 
-
-<!-- SUBMIT PROPERTY -->
-
 <div class="page" id="submit">
 
 <div class="form-container">
@@ -4433,7 +4344,6 @@ href="mailto:haleelrealestate@gmail.com">
 <p style="color:#718096;margin:10px 0 30px">
 Diiwaangeli guriga aad rabto in la kireeyo.
 </p>
-
 
 <div class="form-section">
 
@@ -4463,7 +4373,6 @@ Diiwaangeli guriga aad rabto in la kireeyo.
 
 </div>
 </div>
-
 
 <div class="form-section">
 
@@ -4566,7 +4475,6 @@ placeholder="Cabirka Guriga">
 </div>
 </div>
 
-
 <div class="form-section">
 
 <h3>Faahfaahinta Guriga</h3>
@@ -4577,7 +4485,6 @@ id="description"
 placeholder="Faahfaahinta Guriga"></textarea>
 
 </div>
-
 
 <div class="form-section">
 
@@ -4605,7 +4512,6 @@ accept="image/*">
 
 </div>
 
-
 <button
 class="btn btn-primary"
 id="submitPropertyButton"
@@ -4619,9 +4525,6 @@ Gudbi
 </div>
 
 </div>
-
-
-<!-- SETTINGS -->
 
 <div class="page" id="settings">
 
@@ -4638,7 +4541,6 @@ Website Settings.
 </div>
 
 </div>
-
 
 <div class="settings-grid">
 
@@ -4663,7 +4565,6 @@ Website Settings.
     Log Out
   </button>
 </div>
-
 
 <div class="setting-card">
 
@@ -4699,7 +4600,6 @@ Current theme: Light Mode
 
 </div>
 
-
 <div class="setting-card">
 
 <div class="setting-icon">🌍</div>
@@ -4724,7 +4624,6 @@ Loading...
 
 </div>
 
-
 <div class="setting-card">
 
 <div class="setting-icon">💬</div>
@@ -4743,7 +4642,6 @@ Contact Us
 
 </div>
 
-
 <div class="setting-card">
 
 <div class="setting-icon">🌐</div>
@@ -4759,7 +4657,6 @@ Contact Us
 </select>
 
 </div>
-
 
 <div class="setting-card">
 
@@ -4782,9 +4679,6 @@ Haleel Real Estate — Hogaanka Kiraynta.
 </div>
 
 </main>
-
-
-<!-- MOBILE NAV -->
 
 <nav class="mobile-nav">
 
@@ -4822,9 +4716,6 @@ Settings
 
 </nav>
 
-
-<!-- FLOATING CARE -->
-
 <div class="floating-care">
 
 <div
@@ -4856,20 +4747,6 @@ onclick="toggleCare()">
 </button>
 
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- PROPERTY DETAILS -->
 
 <div
 class="modal"
@@ -4937,9 +4814,6 @@ WhatsApp
 </div>
 </div>
 
-
-<!-- CHAT -->
-
 <div
 class="modal"
 id="chatModal">
@@ -4982,9 +4856,6 @@ Send
 </div>
 </div>
 
-
-<!-- SUCCESS -->
-
 <div
 class="modal"
 id="successModal">
@@ -5011,16 +4882,12 @@ Dib u noqo!
 </div>
 </div>
 
-
-<!-- HIDDEN SUBMISSION TARGET -->
-
 <iframe
 name="haleelSubmitFrame"
 id="haleelSubmitFrame"
 style="display:none;width:0;height:0;border:0"
 title="Haleel submission">
 </iframe>
-
 
 <script>
 
@@ -5031,8 +4898,6 @@ title="Haleel submission">
 function $(id){
 return document.getElementById(id);
 }
-
-
 
 /* =========================================================
    HALEEL ACCOUNT AUTH — 7 DIGIT ID
@@ -5408,14 +5273,12 @@ document.addEventListener("DOMContentLoaded",()=>{
   restoreHaleelSession();
 });
 
-
 /* =========================================================
    GOOGLE APPS SCRIPT BACKEND
 ========================================================= */
 
 const HALEEL_BACKEND_URL =
 "https://script.google.com/macros/s/AKfycby5_MaPFQpcRDObAVYomJ0Pm89gOqASiS59J7I31sSEO-0dsGmGvv6x29CfTx6ft35a/exec";
-
 
 /* =========================================================
    PROPERTY DATABASE
@@ -5725,7 +5588,6 @@ description:"Villa executive ah oo aad u ballaaran."
 
 ];
 
-
 /* =========================================================
    PROPERTY RENDER
 ========================================================= */
@@ -5823,7 +5685,6 @@ grid.appendChild(card);
 
 }
 
-
 function renderHomeProperties(){
 
 renderProperties(
@@ -5832,7 +5693,6 @@ properties.slice(0,3),
 );
 
 }
-
 
 /* =========================================================
    FILTER
@@ -5900,7 +5760,6 @@ filtered.length===0
 
 }
 
-
 function loadCityFilter(){
 
 const select=$("cityFilter");
@@ -5924,7 +5783,6 @@ select.appendChild(option);
 
 }
 
-
 function resetFilters(){
 
 $("propertySearch").value="";
@@ -5939,7 +5797,6 @@ $("sortFilter").value="newest";
 filterProperties();
 
 }
-
 
 function enableLiveSearch(){
 
@@ -5965,7 +5822,6 @@ element.addEventListener("change",filterProperties);
 });
 
 }
-
 
 /* =========================================================
    DETAILS
@@ -6004,13 +5860,11 @@ $("detailsModal").classList.add("show");
 
 }
 
-
 function closeDetails(){
 
 $("detailsModal").classList.remove("show");
 
 }
-
 
 function toggleFavorite(button){
 
@@ -6028,7 +5882,6 @@ button.style.color="";
 
 }
 
-
 function escapeHTML(value){
 
 return String(value)
@@ -6039,9 +5892,6 @@ return String(value)
 .replace(/'/g,"&#039;");
 
 }
-
-
-
 
 /* =========================================================
    NAVIGATION
@@ -6120,7 +5970,6 @@ behavior:"smooth"
 
 }
 
-
 /* =========================================================
    THEME
 ========================================================= */
@@ -6161,13 +6010,11 @@ localStorage.setItem("haleelTheme",theme);
 
 }
 
-
 function setTheme(theme){
 
 applyTheme(theme);
 
 }
-
 
 /* =========================================================
    COUNTRY CLOCK
@@ -6193,7 +6040,6 @@ const countries=[
 ["🇦🇺","Australia","Australia/Sydney"]
 
 ];
-
 
 function loadCountries(){
 
@@ -6226,7 +6072,6 @@ changeCountry();
 
 }
 
-
 function changeCountry(){
 
 const select=$("countrySelect");
@@ -6241,7 +6086,6 @@ select.value
 updateCountryTime();
 
 }
-
 
 function updateCountryTime(){
 
@@ -6280,7 +6124,6 @@ ${country[0]} ${country[1]} — ${time}
 
 }
 
-
 /* =========================================================
    CUSTOMER CARE
 ========================================================= */
@@ -6290,7 +6133,6 @@ function toggleCare(){
 $("careMenu").classList.toggle("show");
 
 }
-
 
 function openChat(){
 
@@ -6302,13 +6144,11 @@ $("chatMessage").focus();
 
 }
 
-
 function closeChat(){
 
 $("chatModal").classList.remove("show");
 
 }
-
 
 function openChatWithMessage(message){
 
@@ -6317,7 +6157,6 @@ openChat();
 $("chatMessage").value=message;
 
 }
-
 
 function sendEmail(){
 
@@ -6342,7 +6181,6 @@ window.location.href=
 
 }
 
-
 /* =========================================================
    SUBMIT PROPERTY
    IMPORTANT:
@@ -6355,7 +6193,6 @@ window.location.href=
 
 let propertySubmissionInProgress=false;
 
-
 function submitProperty(){
 
 if(propertySubmissionInProgress){
@@ -6363,7 +6200,6 @@ if(propertySubmissionInProgress){
 return;
 
 }
-
 
 const owner=
 $("ownerName").value.trim();
@@ -6377,7 +6213,6 @@ $("propertyTitle").value.trim();
 const city=
 $("city").value.trim();
 
-
 /* REQUIRED FIELDS */
 
 if(!owner || !phone || !submitterName || !city){
@@ -6389,7 +6224,6 @@ alert(
 return;
 
 }
-
 
 /* START SUBMISSION */
 
@@ -6409,7 +6243,6 @@ button.style.cursor="wait";
 
 button.textContent=
 "⏳ Waa la dirayaa...";
-
 
 /* DATA SENT TO GOOGLE APPS SCRIPT */
 
@@ -6453,7 +6286,6 @@ $("description").value.trim()
 
 };
 
-
 /*
 IMPORTANT:
 
@@ -6464,7 +6296,6 @@ e.parameter.payload
 Sidaas darteed waxaan si gaar ah
 hidden input ugu diraynaa magaca "payload".
 */
-
 
 const form=
 document.createElement("form");
@@ -6484,7 +6315,6 @@ form.setAttribute(
 "true"
 );
 
-
 const input=
 document.createElement("input");
 
@@ -6495,11 +6325,9 @@ input.name="payload";
 input.value=
 JSON.stringify(data);
 
-
 form.appendChild(input);
 
 document.body.appendChild(form);
-
 
 /*
 SUBMIT:
@@ -6509,7 +6337,6 @@ Google Apps Script gudaha hidden iframe.
 
 Gmail page/app ma furmayo.
 */
-
 
 try{
 
@@ -6542,7 +6369,6 @@ return;
 
 }
 
-
 /*
 Remove temporary form after submission.
 */
@@ -6556,7 +6382,6 @@ form.remove();
 }
 
 },1500);
-
 
 /*
 The browser cannot read Google's cross-origin
@@ -6581,7 +6406,6 @@ button.style.opacity="1";
 button.style.cursor="pointer";
 
 button.textContent=originalText;
-
 
 /* CLEAR FORM */
 
@@ -6611,7 +6435,6 @@ element.value="";
 
 });
 
-
 /* CLEAR IMAGE INPUT */
 
 if($("images")){
@@ -6620,11 +6443,9 @@ $("images").value="";
 
 }
 
-
 /* FINISH */
 
 propertySubmissionInProgress=false;
-
 
 /* SUCCESS MODAL */
 
@@ -6634,7 +6455,6 @@ $("successModal")
 },2500);
 
 }
-
 
 /* =========================================================
    SUCCESS
@@ -6649,13 +6469,11 @@ openPage("home");
 
 }
 
-
 /* =========================================================
    PWA INSTALL
 ========================================================= */
 
 let deferredInstallPrompt=null;
-
 
 window.addEventListener(
 "beforeinstallprompt",
@@ -6666,7 +6484,6 @@ event.preventDefault();
 deferredInstallPrompt=event;
 
 });
-
 
 window.addEventListener(
 "appinstalled",
@@ -6687,7 +6504,6 @@ button.disabled=true;
 }
 
 });
-
 
 async function installHaleel(){
 
@@ -6715,7 +6531,6 @@ return;
 
 }
 
-
 const isIOS=
 /iphone|ipad|ipod/i.test(
 navigator.userAgent
@@ -6725,13 +6540,11 @@ navigator.platform==="MacIntel" &&
 navigator.maxTouchPoints>1
 );
 
-
 const isStandalone=
 window.matchMedia(
 "(display-mode: standalone)"
 ).matches ||
 window.navigator.standalone===true;
-
 
 if(isStandalone){
 
@@ -6758,7 +6571,6 @@ alert(
 }
 
 }
-
 
 /* =========================================================
    SERVICE WORKER
@@ -6792,7 +6604,6 @@ error
 
 }
 
-
 /* =========================================================
    GLOBAL EVENTS
 ========================================================= */
@@ -6801,7 +6612,6 @@ document.addEventListener(
 "DOMContentLoaded",
 ()=>{
 
-
 /* THEME */
 
 const savedTheme=
@@ -6809,7 +6619,6 @@ localStorage.getItem("haleelTheme")
 ||"light";
 
 applyTheme(savedTheme);
-
 
 /* PROPERTIES */
 
@@ -6823,11 +6632,9 @@ enableLiveSearch();
 
 filterProperties();
 
-
 /* COUNTRIES */
 
 loadCountries();
-
 
 /* CLOSE PROPERTY DETAILS */
 
@@ -6844,7 +6651,6 @@ closeDetails();
 
 });
 
-
 /* CLOSE SUCCESS MODAL WHEN BACKDROP IS CLICKED */
 
 $("successModal")
@@ -6860,7 +6666,6 @@ closeSuccess();
 
 });
 
-
 /* CLOSE CHAT MODAL WHEN BACKDROP IS CLICKED */
 
 $("chatModal")
@@ -6875,7 +6680,6 @@ closeChat();
 }
 
 });
-
 
 /* ESC */
 
@@ -6898,7 +6702,6 @@ $("careMenu")
 }
 
 });
-
 
 /* CLICK OUTSIDE CARE */
 
@@ -6925,7 +6728,6 @@ $("careMenu")
 
 });
 
-
 /* =========================================================
    LIVE CLOCK
 ========================================================= */
@@ -6936,6 +6738,5 @@ updateCountryTime,
 );
 
 </script>
-
 </body>
 </html>
