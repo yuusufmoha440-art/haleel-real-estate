@@ -3878,12 +3878,28 @@ function submitNagaadOrder(){
       <input type="hidden" id="farsamoService" name="service">
       <div class="farsamo-form-grid">
         <div class="farsamo-field"><label for="farsamoName">Magacaaga *</label><input id="farsamoName" name="name" required placeholder="Geli magacaaga"></div>
-        <div class="farsamo-field"><label for="farsamoPhone">Telefoonka *</label><input id="farsamoPhone" name="phone" type="tel" required placeholder="+252..."></div>
+        <div class="farsamo-field"><label for="farsamoPhone">Taleefoonka *</label><input id="farsamoPhone" name="phone" type="tel" required placeholder="+252..."></div>
         <div class="farsamo-field"><label for="farsamoCity">Magaalada *</label><input id="farsamoCity" name="city" required placeholder="Magaalada"></div>
-        <div class="farsamo-field"><label for="farsamoLocation">Goobta / Cinwaanka *</label><input id="farsamoLocation" name="location" required placeholder="Halka adeegga laga qabanayo"></div>
+        <div class="farsamo-field"><label for="farsamoNeighborhood">Xaafada *</label><input id="farsamoNeighborhood" name="neighborhood" required placeholder="Geli xaafada"></div>
+
+        <div class="farsamo-field full" id="farsamoServiceTypeWrap">
+          <label for="farsamoServiceType">Nooca Adeeg *</label>
+          <select id="farsamoServiceType" name="serviceType" class="farsamo-select" required>
+            <option value="" selected disabled>Dooro nooca adeegga</option>
+            <option value="Koronto Gelin Guri">Koronto Gelin Guri</option>
+            <option value="Rakibid Socket">Rakibid Socket</option>
+            <option value="Hagaajin Socket">Hagaajin Socket</option>
+            <option value="Rakibid Layr">Rakibid Layr</option>
+            <option value="Rakibid Marwaxad">Rakibid Marwaxad</option>
+            <option value="Xarig Bedel">Xarig Bedel</option>
+            <option value="Rakibid Switch">Rakibid Switch</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
         <div class="farsamo-field"><label for="farsamoDate">Taariikhda aad rabto *</label><input id="farsamoDate" name="date" type="date" required></div>
-        <div class="farsamo-field"><label for="farsamoTime">Waqtiga aad rabto</label><input id="farsamoTime" name="time" type="time"></div>
-        <div class="farsamo-field full"><label for="farsamoDetails" id="farsamoDetailsLabel">Faahfaahinta dhibaatada / adeegga *</label><textarea id="farsamoDetails" name="details" required placeholder="Sharax adeegga aad u baahan tahay..."></textarea></div>
+        <div class="farsamo-field"><label for="farsamoTime">Wakhtiga aad rabto *</label><input id="farsamoTime" name="time" type="time" required></div>
+        <div class="farsamo-field full"><label for="farsamoDetails" id="farsamoDetailsLabel">Faah-faahinta Adeega *</label><textarea id="farsamoDetails" name="details" required placeholder="Faah-faahin ka bixi adeegga aad u baahan tahay..."></textarea></div>
       </div>
       <div id="farsamoOrderStatus" class="farsamo-order-status"></div>
       <div class="farsamo-submit-row">
@@ -3912,7 +3928,30 @@ function openFarsamoOrder(service){
   document.getElementById('farsamoOrderTitle').textContent='Dalbo '+service;
   document.getElementById('farsamoOrderSubtitle').textContent='Buuxi xogta dalabka '+service+' kadibna gudbi.';
   document.getElementById('farsamoOrderIcon').textContent=(farsamoServiceMeta[service]||{}).icon||'📋';
-  document.getElementById('farsamoDetails').placeholder=(farsamoServiceMeta[service]||{}).hint||'Sharax adeegga aad u baahan tahay...';
+
+  const isElectrician = service === 'Korontiiste';
+  const neighborhoodField = document.getElementById('farsamoNeighborhood')?.closest('.farsamo-field');
+  const serviceTypeWrap = document.getElementById('farsamoServiceTypeWrap');
+  const locationField = document.getElementById('farsamoLocation')?.closest('.farsamo-field');
+  const detailsLabel = document.getElementById('farsamoDetailsLabel');
+  const serviceType = document.getElementById('farsamoServiceType');
+
+  if(isElectrician){
+    if(neighborhoodField) neighborhoodField.style.display='block';
+    if(serviceTypeWrap) serviceTypeWrap.style.display='block';
+    if(locationField) locationField.style.display='none';
+    if(serviceType) serviceType.required=true;
+    document.getElementById('farsamoDetails').placeholder='Faah-faahin ka bixi adeegga aad u baahan tahay...';
+    if(detailsLabel) detailsLabel.textContent='Faah-faahinta Adeega *';
+  }else{
+    if(neighborhoodField) neighborhoodField.style.display='none';
+    if(serviceTypeWrap) serviceTypeWrap.style.display='none';
+    if(locationField) locationField.style.display='block';
+    if(serviceType) serviceType.required=false;
+    document.getElementById('farsamoDetails').placeholder=(farsamoServiceMeta[service]||{}).hint||'Sharax adeegga aad u baahan tahay...';
+    if(detailsLabel) detailsLabel.textContent='Faahfaahinta dhibaatada / adeegga *';
+  }
+
   document.getElementById('farsamoOrderStatus').textContent='';
   modal.classList.add('show');
   document.body.style.overflow='hidden';
@@ -3933,12 +3972,13 @@ function submitFarsamoOrder(){
     '------------------------------',
     'Adeegga: '+service,
     'Magaca: '+d.get('name'),
-    'Telefoon: '+d.get('phone'),
+    'Taleefoon: '+d.get('phone'),
     'Magaalada: '+d.get('city'),
-    'Goobta / Cinwaanka: '+d.get('location'),
+    'Xaafada: '+(d.get('neighborhood')||''),
+    'Nooca Adeeg: '+(d.get('serviceType')||''),
     'Taariikhda: '+d.get('date'),
-    'Waqtiga: '+(d.get('time')||''),
-    'Faahfaahinta: '+d.get('details')
+    'Wakhtiga: '+(d.get('time')||''),
+    'Faah-faahinta Adeega: '+d.get('details')
   ].join('\n');
   const subject=encodeURIComponent('Haleel Farsamo - Dalab '+service);
   document.getElementById('farsamoOrderStatus').textContent='Dalabka waa la diyaariyey, email-ka ayaa furmaya...';
