@@ -3886,14 +3886,6 @@ function submitNagaadOrder(){
           <label for="farsamoServiceType">Nooca Adeeg *</label>
           <select id="farsamoServiceType" name="serviceType" class="farsamo-select" required>
             <option value="" selected disabled>Dooro nooca adeegga</option>
-            <option value="Koronto Gelin Guri">Koronto Gelin Guri</option>
-            <option value="Rakibid Socket">Rakibid Socket</option>
-            <option value="Hagaajin Socket">Hagaajin Socket</option>
-            <option value="Rakibid Layr">Rakibid Layr</option>
-            <option value="Rakibid Marwaxad">Rakibid Marwaxad</option>
-            <option value="Xarig Bedel">Xarig Bedel</option>
-            <option value="Rakibid Switch">Rakibid Switch</option>
-            <option value="Other">Other</option>
           </select>
         </div>
 
@@ -3911,6 +3903,15 @@ function submitNagaadOrder(){
 </div>
 
 <script>
+
+const farsamoServiceOptions={
+  'Korontiiste':['Koronto Gelin Guri','Rakibid Socket','Hagaajin Socket','Rakibid Layr','Rakibid Marwaxad','Xarig Bedel','Rakibid Switch','Other'],
+  'Mukeyf':['Rakibid Mukeyf','Nadiifin Mukeyf','Dayactir Mukeyf','Buuxin Gaas','Bedel Qayb','Rakibid Dhuun','Cillad Bixin'],
+  'Tuubayste':['Rakibid Tuubo','Dayactir Tuubo','Furista Tuubo Xiran','Rakibid Qasabad Biyo','Rakibid Musqul','Dayactir Taangi','Cillad Bixin'],
+  'Ranjiile':['Rinjiyeyn Guri','Rinjiyeyn Qol','Rinjiyeyn Xafiis','Rinjiyeyn Dibadda','Rinjiyeyn Albaab','Dayactir & Diyaarin Darbi','Rinjiyeyn Buuxda'],
+  'Cillad Bixin':['Cillad Koronto','Cillad Biyo/Tuubo','Cillad Mukeyf','Cillad Qalab','Cillad CCTV','Cillad Albaab','Cillad Kale'],
+  'CCTV':['Rakibid CCTV','Rakibid Camera Dheeraad ah','Dayactir CCTV','Bedel Camera','Rakibid DVR/NVR','Habaynta CCTV','Cillad Bixin']
+};
 const farsamoServiceMeta={
   'Korontiiste':{icon:'⚡',hint:'Sharax ciladda korontada, rakibidda ama dayactirka aad u baahan tahay.'},
   'Mukeyf':{icon:'❄️',hint:'Sheeg nooca mukeyfka iyo waxa aad rabto: rakibid, nadiifin ama dayactir.'},
@@ -3929,29 +3930,30 @@ function openFarsamoOrder(service){
   document.getElementById('farsamoOrderSubtitle').textContent='Buuxi xogta dalabka '+service+' kadibna gudbi.';
   document.getElementById('farsamoOrderIcon').textContent=(farsamoServiceMeta[service]||{}).icon||'📋';
 
-  const isElectrician = service === 'Korontiiste';
-  const neighborhoodField = document.getElementById('farsamoNeighborhood')?.closest('.farsamo-field');
-  const serviceTypeWrap = document.getElementById('farsamoServiceTypeWrap');
-  const locationField = document.getElementById('farsamoLocation')?.closest('.farsamo-field');
-  const detailsLabel = document.getElementById('farsamoDetailsLabel');
-  const serviceType = document.getElementById('farsamoServiceType');
+  const neighborhoodField=document.getElementById('farsamoNeighborhood')?.closest('.farsamo-field');
+  const serviceTypeWrap=document.getElementById('farsamoServiceTypeWrap');
+  const locationField=document.getElementById('farsamoLocation')?.closest('.farsamo-field');
+  const detailsLabel=document.getElementById('farsamoDetailsLabel');
+  const serviceType=document.getElementById('farsamoServiceType');
+  const options=farsamoServiceOptions[service]||['Other'];
 
+  if(serviceType){
+    serviceType.innerHTML='<option value="" selected disabled>Dooro nooca adeegga</option>'+options.map(o=>'<option value="'+o.replace(/"/g,'&quot;')+'">'+o+'</option>').join('');
+    serviceType.required=true;
+  }
+  if(serviceTypeWrap) serviceTypeWrap.style.display='block';
+
+  const isElectrician=service==='Korontiiste';
   if(isElectrician){
     if(neighborhoodField) neighborhoodField.style.display='block';
-    if(serviceTypeWrap) serviceTypeWrap.style.display='block';
     if(locationField) locationField.style.display='none';
-    if(serviceType) serviceType.required=true;
-    document.getElementById('farsamoDetails').placeholder='Faah-faahin ka bixi adeegga aad u baahan tahay...';
-    if(detailsLabel) detailsLabel.textContent='Faah-faahinta Adeega *';
   }else{
     if(neighborhoodField) neighborhoodField.style.display='none';
-    if(serviceTypeWrap) serviceTypeWrap.style.display='none';
     if(locationField) locationField.style.display='block';
-    if(serviceType) serviceType.required=false;
-    document.getElementById('farsamoDetails').placeholder=(farsamoServiceMeta[service]||{}).hint||'Sharax adeegga aad u baahan tahay...';
-    if(detailsLabel) detailsLabel.textContent='Faahfaahinta dhibaatada / adeegga *';
   }
 
+  document.getElementById('farsamoDetails').placeholder=(farsamoServiceMeta[service]||{}).hint||'Faah-faahin ka bixi adeegga aad u baahan tahay...';
+  if(detailsLabel) detailsLabel.textContent='Faah-faahinta Adeega *';
   document.getElementById('farsamoOrderStatus').textContent='';
   modal.classList.add('show');
   document.body.style.overflow='hidden';
