@@ -3087,9 +3087,16 @@ View All
   </div>
 
   <div class="chicking-total-box" aria-live="polite">
-    <span>Tirada Guud</span>
-    <strong id="chickingGrandTotal">0</strong>
-    <small>qaybo / xabbo</small>
+    <div>
+      <span>Tirada Guud</span>
+      <strong id="chickingGrandTotal">0</strong>
+      <small>qaybo / xabbo</small>
+    </div>
+    <div class="chicking-price-total">
+      <span>Qiimaha Guud</span>
+      <strong id="chickingGrandPrice">0</strong>
+      <small>wadarta</small>
+    </div>
   </div>
 
   <div class="chicking-grid" id="chickingProducts"></div>
@@ -3144,9 +3151,20 @@ View All
 .chicking-hero h1{font-size:clamp(34px,5vw,54px);margin:0 0 10px}
 .chicking-hero p{margin:0;color:rgba(255,255,255,.93);font-size:17px;max-width:720px;line-height:1.65}
 .chicking-total-box{
-  margin:22px 0;display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;
+  margin:22px 0;display:flex;align-items:stretch;justify-content:center;gap:12px;flex-wrap:wrap;
   padding:18px 22px;border-radius:20px;background:#fff;border:1px solid #eadfd2;box-shadow:0 12px 35px rgba(70,40,10,.08)
 }
+.chicking-total-box>div{
+  flex:1 1 180px;min-width:160px;text-align:center;padding:4px 16px
+}
+.chicking-total-box>div+div{border-left:1px solid #eadfd2}
+.chicking-total-box span{display:block;font-size:12px;font-weight:800;color:#718096}
+.chicking-total-box strong{display:block;font-size:28px;margin:3px 0;color:#17202a}
+.chicking-total-box small{display:block;color:#9aa3ad;font-size:11px}
+.chicking-unit-price{font-size:12px;color:#718096;margin:-3px 0 10px}
+.chicking-item-total{margin-top:10px;font-size:13px;color:#475467}
+.chicking-item-total strong{color:#17202a}
+
 .chicking-total-box span{font-weight:900;color:#6b4a2d}.chicking-total-box strong{font-size:34px;color:#a85b19}.chicking-total-box small{color:#718096;font-weight:700}
 .chicking-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
 .chicking-card{
@@ -3180,44 +3198,79 @@ View All
 
 <script>
 const CHICKING_ITEMS=[
-  {name:'Ukun',image:'https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?auto=format&fit=crop&w=1000&q=85'},
-  {name:'Digaag',image:'https://upload.wikimedia.org/wikipedia/commons/3/34/Barnyard_Animal_%28Unsplash%29.jpg'}
+  {name:'Ukun',price:0.3,image:'https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?auto=format&fit=crop&w=1000&q=85'},
+  {name:'Digaag',price:15,image:'https://upload.wikimedia.org/wikipedia/commons/3/34/Barnyard_Animal_%28Unsplash%29.jpg'}
 ];
 const chickingQty=CHICKING_ITEMS.map(()=>0);
+
 function renderChickingProducts(){
   const root=document.getElementById('chickingProducts'); if(!root)return;
   root.innerHTML=CHICKING_ITEMS.map((item,i)=>`<article class="chicking-card" style="animation-delay:${i*70}ms">
     <img src="${item.image}" alt="${item.name}">
     <div class="chicking-card-body">
       <div class="chicking-card-label">Chicking House</div><h3>${item.name}</h3>
+      <div class="chicking-unit-price">1 ${item.name} = ${item.price}</div>
       <div class="chicking-qty-row">
         <button type="button" class="chicking-minus" aria-label="Ka jar ${item.name}" onclick="changeChickingQty(${i},-10)">−</button>
         <strong class="chicking-qty" id="chickQty_${i}">0</strong>
         <button type="button" class="chicking-plus" aria-label="Ku dar 10 ${item.name}" onclick="changeChickingQty(${i},10)">+</button>
       </div>
+      <div class="chicking-item-total">Wadarta ${item.name}: <strong id="chickPrice_${i}">0</strong></div>
       <div class="chicking-hint">+ = 10 ku dar</div>
     </div></article>`).join('');
 }
+
 function changeChickingQty(index,change){
   chickingQty[index]=Math.max(0,(chickingQty[index]||0)+change);
-  const el=document.getElementById('chickQty_'+index);
-  if(el)el.textContent=chickingQty[index];
-  const total=chickingQty.reduce((a,b)=>a+b,0);
+
+  const qtyEl=document.getElementById('chickQty_'+index);
+  if(qtyEl)qtyEl.textContent=chickingQty[index];
+
+  const itemTotal=chickingQty[index]*CHICKING_ITEMS[index].price;
+  const priceEl=document.getElementById('chickPrice_'+index);
+  if(priceEl)priceEl.textContent=itemTotal.toFixed(2);
+
+  const totalQty=chickingQty.reduce((a,b)=>a+b,0);
+  const totalPrice=chickingQty.reduce((total,qty,i)=>total+(qty*CHICKING_ITEMS[i].price),0);
+
   const totalEl=document.getElementById('chickingGrandTotal');
-  if(totalEl)totalEl.textContent=total;
+  if(totalEl)totalEl.textContent=totalQty;
+
+  const grandPriceEl=document.getElementById('chickingGrandPrice');
+  if(grandPriceEl)grandPriceEl.textContent=totalPrice.toFixed(2);
+
   const note=document.getElementById('chickingOrderNote');
-  if(note)note.textContent=total>0?'Dalabkaaga waa diyaar.':'Fadlan dooro ugu yaraan hal alaab.';
+  if(note)note.textContent=totalQty>0?'Dalabkaaga waa diyaar. Qiimaha guud: '+totalPrice.toFixed(2):'Fadlan dooro ugu yaraan hal alaab.';
 }
+
 function submitChickingOrder(event){
   event.preventDefault();
-  const total=chickingQty.reduce((a,b)=>a+b,0);
+  const totalQty=chickingQty.reduce((a,b)=>a+b,0);
+  const totalPrice=chickingQty.reduce((total,qty,i)=>total+(qty*CHICKING_ITEMS[i].price),0);
   const form=document.getElementById('chickingOrderForm');
   if(!form||!form.reportValidity())return;
-  if(total<=0){alert('Fadlan dooro ugu yaraan hal alaab.');return;}
+  if(totalQty<=0){alert('Fadlan dooro ugu yaraan hal alaab.');return;}
+
   const d=new FormData(form);
-  const products=CHICKING_ITEMS.filter(x=>chickingQty[x.name]>0).map(x=>x.name+': '+chickingQty[x.name]+' xabbo').join('\n');
-  const body=['CHICKING HOUSE DALAB','--------------------',products,'','Tirada Guud: '+total+' xabbo','Magaca: '+d.get('name'),'Magaalada: '+d.get('city'),'Xaafadda: '+d.get('neighborhood'),'Lambarka: '+d.get('phone')].join('\n');
-  const subject=encodeURIComponent('Chicking House Dalab - '+total+' xabbo');
+  const products=CHICKING_ITEMS
+    .map((item,i)=>chickingQty[i]>0?item.name+': '+chickingQty[i]+' xabbo × '+item.price+' = '+(chickingQty[i]*item.price).toFixed(2):'')
+    .filter(Boolean)
+    .join('\n');
+
+  const body=[
+    'CHICKING HOUSE DALAB',
+    '--------------------',
+    products,
+    '',
+    'Tirada Guud: '+totalQty+' xabbo',
+    'Qiimaha Guud: '+totalPrice.toFixed(2),
+    'Magaca: '+d.get('name'),
+    'Magaalada: '+d.get('city'),
+    'Xaafadda: '+d.get('neighborhood'),
+    'Lambarka: '+d.get('phone')
+  ].join('\n');
+
+  const subject=encodeURIComponent('Chicking House Dalab - '+totalQty+' xabbo');
   window.location.href='mailto:haleelrealestate@gmail.com?subject='+subject+'&body='+encodeURIComponent(body);
 }
 renderChickingProducts();
