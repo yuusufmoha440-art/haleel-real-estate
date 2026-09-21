@@ -3678,9 +3678,20 @@ function submitQudaarOrder(){
 }
 
 /* Chicking House: justified hero text */
-.chicking-page .chicking-hero > div { text-align: justify !important; text-justify: inter-word; }
+.chicking-page .chicking-hero > div {
+  width: min(760px, 100%);
+  text-align: justify !important;
+  text-justify: inter-word;
+}
+
 .chicking-page .chicking-hero h1,
-.chicking-page .chicking-hero p { text-align: justify !important; }
+.chicking-page .chicking-hero p {
+  text-align: justify !important;
+}
+
+.chicking-page .chicking-hero p {
+  line-height: 1.8;
+}
 </style>
 
 <script>
