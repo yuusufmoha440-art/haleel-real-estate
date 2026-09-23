@@ -5257,23 +5257,44 @@ function updateSettingsAccount(user){
     user?.number ??
     "";
 
-  let createdAt =
+  /*
+   * Created date-ka saxda ah wuxuu ka yimaadaa Cloudflare D1:
+   * users.created_at, waxaana Worker-ku uga soo celinayaa /api/me.
+   */
+  const createdAt =
     user?.createdAt ||
     user?.created_at ||
     user?.accountCreatedAt ||
     user?.account_created_at ||
     "";
 
-  /*
-   * Haddii backend-ku uusan /api/me ku soo celin Created date,
-   * isticmaal taariikhda account-kan lagu kaydiyey browser-ka markii
-   * account-ka la sameeyey.
-   */
-  if(!createdAt && accountId){
-    try{
-      createdAt =
-        localStorage.getItem("haleelAccountCreated:" + String(accountId)) || "";
-    }catch(e){}
+  function formatAccountCreatedDate(value){
+    if(!value) return "—";
+
+    const raw=String(value).trim();
+    let normalized=raw.replace(" ","T");
+
+    // SQLite CURRENT_TIMESTAMP waa UTC.
+    if(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/.test(normalized)){
+      normalized += "Z";
+    }
+
+    const date=new Date(normalized);
+
+    if(Number.isNaN(date.getTime())){
+      return raw;
+    }
+
+    return new Intl.DateTimeFormat("en-GB",{
+      timeZone:"Africa/Mogadishu",
+      year:"numeric",
+      month:"2-digit",
+      day:"2-digit",
+      hour:"2-digit",
+      minute:"2-digit",
+      second:"2-digit",
+      hour12:false
+    }).format(date);
   }
 
   const nameEl=$("settingsAccountName");
@@ -5284,7 +5305,7 @@ function updateSettingsAccount(user){
   if(nameEl) nameEl.textContent=name;
   if(idEl) idEl.textContent=accountId || "0000000";
   if(numberEl) numberEl.textContent=number || "—";
-  if(createdEl) createdEl.textContent=createdAt || "—";
+  if(createdEl) createdEl.textContent=formatAccountCreatedDate(createdAt);
 
   /*
    * Settings > Account:
@@ -5565,15 +5586,6 @@ async function createAccount(){
     if(!/^\d{7}$/.test(String(newId||""))){
       throw new Error(data.message || "Backend-ku ma soo celin 7-digit Account ID.");
     }
-
-    const createdAt=new Intl.DateTimeFormat("en-GB",{
-      timeZone:"Africa/Mogadishu",year:"numeric",month:"2-digit",day:"2-digit",
-      hour:"2-digit",minute:"2-digit",second:"2-digit",hour12:false
-    }).format(new Date());
-
-    try{
-      localStorage.setItem("haleelAccountCreated:" + String(newId), createdAt);
-    }catch(e){}
 
     $("authLoginId").value=String(newId);
     $("authLoginPassword").value="";
