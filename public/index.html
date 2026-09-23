@@ -1785,6 +1785,110 @@ transform:translateY(0);
   margin-top:4px;
 }
 
+.auth-profile-upload{
+  display:flex;
+  align-items:center;
+  gap:16px;
+  padding:15px;
+  margin:0 0 18px;
+  border:1px solid #dce8f2;
+  border-radius:18px;
+  background:linear-gradient(135deg,#f8fcff,#eef7ff);
+  animation:authProfileIn .45s ease;
+}
+.auth-profile-preview{
+  width:78px;
+  height:78px;
+  flex:none;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  background:#eaf5ff;
+  border:3px solid rgba(0,108,194,.15);
+  color:#006CC2;
+  font-size:32px;
+  box-shadow:0 8px 24px rgba(0,108,194,.12);
+}
+.auth-profile-preview img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+.auth-profile-upload-content{
+  min-width:0;
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:8px;
+}
+.auth-profile-title{
+  width:100%;
+  color:#081b2e;
+  font-size:14px;
+  font-weight:900;
+}
+.auth-profile-subtitle{
+  width:100%;
+  color:#718096;
+  font-size:12px;
+  line-height:1.45;
+}
+.auth-profile-button,
+.auth-profile-remove{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:38px;
+  padding:8px 12px;
+  border-radius:11px;
+  cursor:pointer;
+  font-size:12px;
+  font-weight:800;
+  transition:.25s;
+}
+.auth-profile-button{
+  background:#006CC2;
+  color:#fff;
+  box-shadow:0 8px 18px rgba(0,108,194,.18);
+}
+.auth-profile-button:hover{
+  transform:translateY(-2px);
+  background:#00539a;
+}
+.auth-profile-remove{
+  border:1px solid rgba(229,72,77,.2);
+  background:#fff;
+  color:#E5484D;
+}
+.auth-profile-remove:hover{
+  transform:translateY(-2px);
+  background:#fff4f4;
+}
+body.dark .auth-profile-upload{
+  background:linear-gradient(135deg,#10212f,#142a3b);
+  border-color:#244967;
+}
+body.dark .auth-profile-title{color:#f1f5f9}
+body.dark .auth-profile-subtitle{color:#91a0b1}
+body.dark .auth-profile-remove{
+  background:#18232e;
+  border-color:#633238;
+}
+@keyframes authProfileIn{
+  from{opacity:0;transform:translateY(8px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@media(max-width:430px){
+  .auth-profile-upload{
+    align-items:flex-start;
+  }
+  .auth-profile-preview{
+    width:68px;
+    height:68px;
+  }
+}
 .auth-created-view{text-align:center}
 .auth-created-view h2{color:#159957;font-size:26px;line-height:1.25;margin:12px 0 8px}
 .auth-created-view>p{color:#718096;margin-bottom:20px}
@@ -2786,6 +2890,20 @@ body.dark .farsamo-service-card{
         <div class="auth-form-view" id="createAccountView" style="display:none">
           <h2>Create Account</h2>
           <p>Buuxi xogta hoose. Backend-ku wuxuu kuu samaynayaa ID 7-digit ah.</p>
+
+          <div class="auth-profile-upload">
+            <div class="auth-profile-preview" id="authProfilePreview">
+              <span id="authProfilePreviewIcon">👤</span>
+              <img id="authProfileImage" alt="Profile preview" style="display:none">
+            </div>
+            <div class="auth-profile-upload-content">
+              <div class="auth-profile-title">Profile Picture</div>
+              <div class="auth-profile-subtitle">Ku dar sawirkaaga profile-ka (ikhtiyaari)</div>
+              <label class="auth-profile-button" for="authProfilePicture">📷 Add Picture</label>
+              <input id="authProfilePicture" type="file" accept="image/*" hidden>
+              <button class="auth-profile-remove" id="authProfileRemove" type="button" onclick="removeAuthProfilePicture()" style="display:none">Remove</button>
+            </div>
+          </div>
 
           <div class="auth-name-grid">
             <div>
@@ -5013,6 +5131,7 @@ function showCreateAccount(){
   $("createAccountView").style.display="block";
   $("accountCreatedView").style.display="none";
   authMessage("authSignupMessage","");
+  resetAuthProfilePictureUI();
   setTimeout(()=>$('authFirstName')?.focus(),80);
 }
 
@@ -5113,8 +5232,22 @@ function openDashboardForUser(user){
 
   const display=$("userDisplay");
   if(display){
-    display.innerHTML =
-      `${escapeHTML(name)}<small style="display:block;color:#718096;margin-top:3px">ID: ${escapeHTML(String(accountId))}</small>`;
+    const savedProfile = (() => {
+      try{
+        return accountId ? localStorage.getItem("haleelProfilePicture:" + String(accountId)) : "";
+      }catch(e){ return ""; }
+    })();
+
+    if(savedProfile){
+      display.innerHTML =
+        `<div style="display:flex;align-items:center;gap:10px">
+          <img src="${savedProfile}" alt="Profile" style="width:38px;height:38px;border-radius:50%;object-fit:cover;border:2px solid rgba(0,108,194,.18)">
+          <span>${escapeHTML(name)}<small style="display:block;color:#718096;margin-top:3px">ID: ${escapeHTML(String(accountId))}</small></span>
+        </div>`;
+    }else{
+      display.innerHTML =
+        `${escapeHTML(name)}<small style="display:block;color:#718096;margin-top:3px">ID: ${escapeHTML(String(accountId))}</small>`;
+    }
   }
 
   if(accountId){
@@ -5200,6 +5333,87 @@ async function authLogin(){
   }
 }
 
+let authProfilePictureData = "";
+
+function resetAuthProfilePictureUI(){
+  authProfilePictureData = "";
+  const input = $("authProfilePicture");
+  const img = $("authProfileImage");
+  const icon = $("authProfilePreviewIcon");
+  const remove = $("authProfileRemove");
+  if(input) input.value = "";
+  if(img){
+    img.removeAttribute("src");
+    img.style.display = "none";
+  }
+  if(icon) icon.style.display = "block";
+  if(remove) remove.style.display = "none";
+}
+
+function removeAuthProfilePicture(){
+  resetAuthProfilePictureUI();
+}
+
+function handleAuthProfilePicture(event){
+  const file = event.target.files?.[0];
+  if(!file) return;
+
+  if(!file.type.startsWith("image/")){
+    authMessage("authSignupMessage","Fadlan dooro sawir.");
+    event.target.value = "";
+    return;
+  }
+
+  const maxSize = 5 * 1024 * 1024;
+  if(file.size > maxSize){
+    authMessage("authSignupMessage","Sawirku waa inuu ka yar yahay 5MB.");
+    event.target.value = "";
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = () => {
+    authProfilePictureData = String(reader.result || "");
+    const img = $("authProfileImage");
+    const icon = $("authProfilePreviewIcon");
+    const remove = $("authProfileRemove");
+
+    if(img){
+      img.src = authProfilePictureData;
+      img.style.display = "block";
+    }
+    if(icon) icon.style.display = "none";
+    if(remove) remove.style.display = "inline-flex";
+    authMessage("authSignupMessage","");
+  };
+  reader.onerror = () => {
+    authMessage("authSignupMessage","Sawirka lama akhrin karin. Fadlan isku day mar kale.");
+  };
+  reader.readAsDataURL(file);
+}
+
+function restoreSavedProfilePicture(accountId){
+  const img = $("authProfileImage");
+  const icon = $("authProfilePreviewIcon");
+  const remove = $("authProfileRemove");
+  if(!accountId || !img) return;
+
+  try{
+    const saved = localStorage.getItem("haleelProfilePicture:" + String(accountId));
+    if(saved){
+      authProfilePictureData = saved;
+      img.src = saved;
+      img.style.display = "block";
+      if(icon) icon.style.display = "none";
+      if(remove) remove.style.display = "inline-flex";
+    }
+  }catch(e){}
+}
+
+document.addEventListener("DOMContentLoaded",()=>{
+  $("authProfilePicture")?.addEventListener("change",handleAuthProfilePicture);
+});
+
 async function createAccount(){
   const firstName=$("authFirstName").value.trim();
   const middleName=$("authMiddleName").value.trim();
@@ -5235,7 +5449,9 @@ async function createAccount(){
       lastName,
       /* Worker-ku wuxuu filayaa phoneNumber, ma aha number. */
       phoneNumber:number,
-      password
+      password,
+      /* Sawirka waxaa loo diraa Worker-ka haddii endpoint-ku taageero profilePicture. */
+      profilePicture: authProfilePictureData || null
     });
 
     const newId =
@@ -5255,6 +5471,17 @@ async function createAccount(){
     $("authLoginId").value=String(newId);
     $("authLoginPassword").value="";
     localStorage.setItem("haleelAccountId",String(newId));
+
+    /* Fallback frontend storage: profile-ku wuxuu ku sii jiri karaa browser-kan
+       xitaa haddii Worker-ku uusan weli kaydin profilePicture. */
+    if(authProfilePictureData){
+      try{
+        localStorage.setItem("haleelProfilePicture:" + String(newId),authProfilePictureData);
+      }catch(e){
+        /* Haddii browser storage-ku buuxsamo, account creation weli wuu soconayaa. */
+      }
+    }
+
     showAccountCreated(String(newId),firstName,middleName,lastName,createdAt);
 
   }catch(error){
