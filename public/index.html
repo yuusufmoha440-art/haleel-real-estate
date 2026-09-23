@@ -905,6 +905,30 @@ font-size:35px;
 margin-bottom:20px;
 }
 
+.account-profile-photo{
+width:96px;
+height:96px;
+margin:0 auto 16px;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+overflow:hidden;
+background:#eaf5ff;
+border:3px solid rgba(0,108,194,.16);
+color:#006CC2;
+font-size:40px;
+box-shadow:0 10px 28px rgba(0,108,194,.12);
+}
+.account-profile-photo img{
+width:100%;
+height:100%;
+object-fit:cover;
+display:block;
+}
+.account-profile-photo-icon{
+line-height:1;
+}
 .account-info-box{
 margin:18px 0;
 padding:5px 15px;
@@ -4721,6 +4745,11 @@ Website Settings.
   <h3>Account</h3>
   <p>Macluumaadka akoonkaaga.</p>
 
+  <div class="account-profile-photo" id="settingsAccountProfilePhoto" aria-label="Profile picture">
+    <span class="account-profile-photo-icon" id="settingsAccountProfileIcon">👤</span>
+    <img id="settingsAccountProfileImage" alt="Profile picture" style="display:none">
+  </div>
+
   <div class="account-info-box">
     <div class="account-info-row">
       <span>Name:</span>
@@ -5217,6 +5246,41 @@ function updateSettingsAccount(user){
 
   if(nameEl) nameEl.textContent=name;
   if(idEl) idEl.textContent=accountId || "0000000";
+
+  /*
+   * Settings > Account:
+   * Marka hore isticmaal profilePicture-ka uu backend-ku soo celiyo.
+   * Haddii backend-ku uusan weli soo celin, isticmaal sawirka
+   * browser-ka lagu kaydiyey ee account-kan.
+   */
+  let profilePicture =
+    user?.profilePicture ||
+    user?.profile_picture ||
+    user?.profileImage ||
+    user?.profile_image ||
+    "";
+
+  if(!profilePicture && accountId){
+    try{
+      profilePicture =
+        localStorage.getItem("haleelProfilePicture:" + String(accountId)) || "";
+    }catch(e){}
+  }
+
+  const profileImg=$("settingsAccountProfileImage");
+  const profileIcon=$("settingsAccountProfileIcon");
+
+  if(profileImg){
+    if(profilePicture){
+      profileImg.src=profilePicture;
+      profileImg.style.display="block";
+      if(profileIcon) profileIcon.style.display="none";
+    }else{
+      profileImg.removeAttribute("src");
+      profileImg.style.display="none";
+      if(profileIcon) profileIcon.style.display="block";
+    }
+  }
 }
 
 function openDashboardForUser(user){
