@@ -4760,6 +4760,16 @@ Website Settings.
       <span>ID Account:</span>
       <strong id="settingsAccountId">0000000</strong>
     </div>
+
+    <div class="account-info-row">
+      <span>Number:</span>
+      <strong id="settingsAccountNumber">—</strong>
+    </div>
+
+    <div class="account-info-row">
+      <span>Created:</span>
+      <strong id="settingsAccountCreated">—</strong>
+    </div>
   </div>
 
   <button class="btn btn-primary account-logout-button" onclick="logout()">
@@ -5241,11 +5251,40 @@ function updateSettingsAccount(user){
     user?.account_id ||
     "";
 
+  const number =
+    user?.phoneNumber ??
+    user?.phone_number ??
+    user?.number ??
+    "";
+
+  let createdAt =
+    user?.createdAt ||
+    user?.created_at ||
+    user?.accountCreatedAt ||
+    user?.account_created_at ||
+    "";
+
+  /*
+   * Haddii backend-ku uusan /api/me ku soo celin Created date,
+   * isticmaal taariikhda account-kan lagu kaydiyey browser-ka markii
+   * account-ka la sameeyey.
+   */
+  if(!createdAt && accountId){
+    try{
+      createdAt =
+        localStorage.getItem("haleelAccountCreated:" + String(accountId)) || "";
+    }catch(e){}
+  }
+
   const nameEl=$("settingsAccountName");
   const idEl=$("settingsAccountId");
+  const numberEl=$("settingsAccountNumber");
+  const createdEl=$("settingsAccountCreated");
 
   if(nameEl) nameEl.textContent=name;
   if(idEl) idEl.textContent=accountId || "0000000";
+  if(numberEl) numberEl.textContent=number || "—";
+  if(createdEl) createdEl.textContent=createdAt || "—";
 
   /*
    * Settings > Account:
@@ -5531,6 +5570,10 @@ async function createAccount(){
       timeZone:"Africa/Mogadishu",year:"numeric",month:"2-digit",day:"2-digit",
       hour:"2-digit",minute:"2-digit",second:"2-digit",hour12:false
     }).format(new Date());
+
+    try{
+      localStorage.setItem("haleelAccountCreated:" + String(newId), createdAt);
+    }catch(e){}
 
     $("authLoginId").value=String(newId);
     $("authLoginPassword").value="";
