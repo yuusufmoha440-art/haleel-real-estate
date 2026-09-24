@@ -647,7 +647,6 @@ return new Response(
 JSON.stringify({
 success: true,
 
-```
   accountId:
     String(user.account_id)
       .padStart(7, "0"),
