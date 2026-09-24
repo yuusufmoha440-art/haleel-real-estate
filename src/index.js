@@ -6,12 +6,12 @@ const PASSWORD_HASH_LENGTH = 256;
 
 const MAX_PROFILE_IMAGE_SIZE = 5 * 1024 * 1024;
 
-const ALLOWED_IMAGE_TYPES = new Set([
-"image/jpeg",
-"image/png",
-"image/webp",
-"image/gif"
-]);
+const ALLOWED_IMAGE_TYPES = {
+"image/jpeg": "jpg",
+"image/png": "png",
+"image/webp": "webp",
+"image/gif": "gif"
+};
 
 // ============================================================
 // MAIN WORKER
@@ -23,11 +23,6 @@ const url = new URL(request.url);
 
 ```
 try {
-
-  // --------------------------------------------------------
-  // AUTH API
-  // --------------------------------------------------------
-
   if (url.pathname === "/api/signup") {
     return await signup(request, env);
   }
@@ -44,13 +39,7 @@ try {
     return await getCurrentUser(request, env);
   }
 
-
-  // --------------------------------------------------------
-  // PROFILE PICTURE API
-  // --------------------------------------------------------
-
   if (url.pathname === "/api/profile-picture") {
-
     if (request.method === "POST") {
       return await uploadProfilePicture(request, env);
     }
@@ -72,15 +61,9 @@ try {
     );
   }
 
-
-  // --------------------------------------------------------
-  // STATIC ASSETS
-  // --------------------------------------------------------
-
   return env.ASSETS.fetch(request);
 
 } catch (error) {
-
   console.error("WORKER ERROR:", error);
 
   return json(
@@ -101,7 +84,6 @@ try {
 // ============================================================
 
 async function signup(request, env) {
-
 if (request.method !== "POST") {
 return json(
 {
@@ -134,10 +116,6 @@ message: "Invalid request."
 );
 }
 
-// ----------------------------------------------------------
-// READ SIGNUP DATA
-// ----------------------------------------------------------
-
 if (
 typeof body.firstName !== "string" ||
 typeof body.middleName !== "string" ||
@@ -160,10 +138,6 @@ const middleName = body.middleName.trim();
 const lastName = body.lastName.trim();
 const phoneNumber = body.phoneNumber.trim();
 const password = body.password;
-
-// ----------------------------------------------------------
-// NAME VALIDATION
-// ----------------------------------------------------------
 
 if (!firstName || !middleName || !lastName) {
 return json(
@@ -206,10 +180,6 @@ message: "Last name is too long."
 );
 }
 
-// ----------------------------------------------------------
-// PHONE NUMBER VALIDATION
-// ----------------------------------------------------------
-
 if (!phoneNumber) {
 return json(
 {
@@ -240,10 +210,6 @@ message: "Invalid phone number."
 );
 }
 
-// ----------------------------------------------------------
-// PASSWORD VALIDATION
-// ----------------------------------------------------------
-
 if (password.length < 8) {
 return json(
 {
@@ -266,33 +232,23 @@ message: "Password is too long."
 }
 
 // ----------------------------------------------------------
-// CHECK DUPLICATE PHONE NUMBER
+// CHECK DUPLICATE PHONE
 // ----------------------------------------------------------
 
 let existingPhone;
 
 try {
-
-```
 existingPhone = await env.ACCOUNTS_DB
-  .prepare(`
-    SELECT account_id
-    FROM users
-    WHERE phone_number = ?
-    LIMIT 1
-  `)
-  .bind(phoneNumber)
-  .first();
-```
+.prepare(
+"SELECT account_id FROM users WHERE phone_number = ? LIMIT 1"
+)
+.bind(phoneNumber)
+.first();
 
 } catch (error) {
+console.error("PHONE CHECK ERROR:", error);
 
 ```
-console.error(
-  "PHONE CHECK ERROR:",
-  error
-);
-
 return json(
   {
     success: false,
@@ -322,31 +278,23 @@ message:
 let sequence;
 
 try {
-
-```
 sequence = await env.ACCOUNTS_DB
-  .prepare(`
-    SELECT next_id
-    FROM account_sequence
-    WHERE id = 1
-    LIMIT 1
-  `)
-  .first();
-```
+.prepare(
+"SELECT next_id FROM account_sequence WHERE id = 1 LIMIT 1"
+)
+.first();
 
 } catch (error) {
-
-```
 console.error(
-  "ACCOUNT SEQUENCE READ ERROR:",
-  error
+"ACCOUNT SEQUENCE READ ERROR:",
+error
 );
 
+```
 return json(
   {
     success: false,
-    message:
-      "Unable to read account sequence."
+    message: "Unable to read account sequence."
   },
   500
 );
@@ -358,8 +306,7 @@ if (!sequence) {
 return json(
 {
 success: false,
-message:
-"Account sequence is not configured."
+message: "Account sequence is not configured."
 },
 500
 );
@@ -375,8 +322,7 @@ accountId > MAX_ACCOUNT_ID
 return json(
 {
 success: false,
-message:
-"No more account IDs are available."
+message: "No more account IDs are available."
 },
 409
 );
@@ -389,25 +335,19 @@ message:
 let passwordHash;
 
 try {
-
-```
-passwordHash =
-  await hashPassword(password);
-```
+passwordHash = await hashPassword(password);
 
 } catch (error) {
-
-```
 console.error(
-  "PASSWORD HASH ERROR:",
-  error
+"PASSWORD HASH ERROR:",
+error
 );
 
+```
 return json(
   {
     success: false,
-    message:
-      "Unable to secure password."
+    message: "Unable to secure password."
   },
   500
 );
@@ -422,25 +362,19 @@ return json(
 let session;
 
 try {
-
-```
-session =
-  await buildSession(accountId);
-```
+session = await buildSession(accountId);
 
 } catch (error) {
-
-```
 console.error(
-  "SESSION BUILD ERROR:",
-  error
+"SESSION BUILD ERROR:",
+error
 );
 
+```
 return json(
   {
     success: false,
-    message:
-      "Unable to create session."
+    message: "Unable to create session."
   },
   500
 );
@@ -453,51 +387,32 @@ return json(
 // ----------------------------------------------------------
 
 try {
+await env.ACCOUNTS_DB.batch([
+env.ACCOUNTS_DB
+.prepare(
+"INSERT INTO users (account_id, password_hash, first_name, middle_name, last_name, phone_number, profile_picture) VALUES (?, ?, ?, ?, ?, ?, ?)"
+)
+.bind(
+accountId,
+passwordHash,
+firstName,
+middleName,
+lastName,
+phoneNumber,
+null
+),
 
 ```
-await env.ACCOUNTS_DB.batch([
-
   env.ACCOUNTS_DB
-    .prepare(`
-      INSERT INTO users (
-        account_id,
-        password_hash,
-        first_name,
-        middle_name,
-        last_name,
-        phone_number,
-        profile_picture
-      )
-      VALUES (?, ?, ?, ?, ?, ?, ?)
-    `)
-    .bind(
-      accountId,
-      passwordHash,
-      firstName,
-      middleName,
-      lastName,
-      phoneNumber,
-      null
-    ),
-
-  env.ACCOUNTS_DB
-    .prepare(`
-      UPDATE account_sequence
-      SET next_id = next_id + 1
-      WHERE id = 1
-        AND next_id = ?
-    `)
+    .prepare(
+      "UPDATE account_sequence SET next_id = next_id + 1 WHERE id = 1 AND next_id = ?"
+    )
     .bind(accountId),
 
   env.ACCOUNTS_DB
-    .prepare(`
-      INSERT INTO sessions (
-        account_id,
-        token_hash,
-        expires_at
-      )
-      VALUES (?, ?, ?)
-    `)
+    .prepare(
+      "INSERT INTO sessions (account_id, token_hash, expires_at) VALUES (?, ?, ?)"
+    )
     .bind(
       accountId,
       session.tokenHash,
@@ -507,28 +422,22 @@ await env.ACCOUNTS_DB.batch([
 ```
 
 } catch (error) {
-
-```
 console.error(
-  "SIGNUP DATABASE ERROR:",
-  error
+"SIGNUP DATABASE ERROR:",
+error
 );
 
+```
 return json(
   {
     success: false,
-    message:
-      "Unable to create account."
+    message: "Unable to create account."
   },
   500
 );
 ```
 
 }
-
-// ----------------------------------------------------------
-// FORMAT ACCOUNT ID
-// ----------------------------------------------------------
 
 const formattedAccountId =
 String(accountId).padStart(7, "0");
@@ -546,17 +455,14 @@ message: "Account created successfully."
 }),
 {
 status: 201,
+headers: {
+"Content-Type":
+"application/json; charset=UTF-8",
 
 ```
-  headers: {
-    "Content-Type":
-      "application/json; charset=UTF-8",
+    "Cache-Control": "no-store",
 
-    "Cache-Control":
-      "no-store",
-
-    "Set-Cookie":
-      session.cookie
+    "Set-Cookie": session.cookie
   }
 }
 ```
@@ -569,7 +475,6 @@ status: 201,
 // ============================================================
 
 async function login(request, env) {
-
 if (request.method !== "POST") {
 return json(
 {
@@ -584,8 +489,7 @@ if (!env.ACCOUNTS_DB) {
 return json(
 {
 success: false,
-message:
-"Accounts database is not connected."
+message: "Accounts database is not connected."
 },
 500
 );
@@ -611,10 +515,6 @@ typeof body.password === "string"
 ? body.password
 : "";
 
-// ----------------------------------------------------------
-// ACCOUNT ID VALIDATION
-// ----------------------------------------------------------
-
 if (!/^\d{7}$/.test(accountId)) {
 return invalidLogin();
 }
@@ -623,8 +523,7 @@ if (!password) {
 return invalidLogin();
 }
 
-const numericAccountId =
-Number(accountId);
+const numericAccountId = Number(accountId);
 
 if (
 !Number.isInteger(numericAccountId) ||
@@ -641,34 +540,20 @@ return invalidLogin();
 let user;
 
 try {
-
-```
 user = await env.ACCOUNTS_DB
-  .prepare(`
-    SELECT
-      account_id,
-      password_hash,
-      first_name,
-      middle_name,
-      last_name,
-      phone_number,
-      profile_picture
-    FROM users
-    WHERE account_id = ?
-    LIMIT 1
-  `)
-  .bind(numericAccountId)
-  .first();
-```
+.prepare(
+"SELECT account_id, password_hash, first_name, middle_name, last_name, phone_number, profile_picture FROM users WHERE account_id = ? LIMIT 1"
+)
+.bind(numericAccountId)
+.first();
 
 } catch (error) {
-
-```
 console.error(
-  "LOGIN DATABASE ERROR:",
-  error
+"LOGIN DATABASE ERROR:",
+error
 );
 
+```
 return json(
   {
     success: false,
@@ -699,23 +584,19 @@ return invalidLogin();
 let passwordCorrect;
 
 try {
-
-```
 passwordCorrect =
-  await verifyPassword(
-    password,
-    user.password_hash
-  );
-```
-
-} catch (error) {
-
-```
-console.error(
-  "PASSWORD VERIFY ERROR:",
-  error
+await verifyPassword(
+password,
+user.password_hash
 );
 
+} catch (error) {
+console.error(
+"PASSWORD VERIFY ERROR:",
+error
+);
+
+```
 return invalidLogin();
 ```
 
@@ -732,22 +613,18 @@ return invalidLogin();
 let session;
 
 try {
-
-```
 session =
-  await buildSession(
-    Number(user.account_id)
-  );
-```
-
-} catch (error) {
-
-```
-console.error(
-  "LOGIN SESSION BUILD ERROR:",
-  error
+await buildSession(
+Number(user.account_id)
 );
 
+} catch (error) {
+console.error(
+"LOGIN SESSION BUILD ERROR:",
+error
+);
+
+```
 return json(
   {
     success: false,
@@ -765,33 +642,24 @@ return json(
 // ----------------------------------------------------------
 
 try {
-
-```
 await env.ACCOUNTS_DB
-  .prepare(`
-    INSERT INTO sessions (
-      account_id,
-      token_hash,
-      expires_at
-    )
-    VALUES (?, ?, ?)
-  `)
-  .bind(
-    Number(user.account_id),
-    session.tokenHash,
-    session.expiresAt
-  )
-  .run();
-```
+.prepare(
+"INSERT INTO sessions (account_id, token_hash, expires_at) VALUES (?, ?, ?)"
+)
+.bind(
+Number(user.account_id),
+session.tokenHash,
+session.expiresAt
+)
+.run();
 
 } catch (error) {
-
-```
 console.error(
-  "LOGIN SESSION ERROR:",
-  error
+"LOGIN SESSION ERROR:",
+error
 );
 
+```
 return json(
   {
     success: false,
@@ -803,10 +671,6 @@ return json(
 ```
 
 }
-
-// ----------------------------------------------------------
-// LOGIN SUCCESS
-// ----------------------------------------------------------
 
 return new Response(
 JSON.stringify({
@@ -859,12 +723,10 @@ success: true,
 // ============================================================
 
 function invalidLogin() {
-
 return json(
 {
 success: false,
-message:
-"Invalid ID or password."
+message: "Invalid ID or password."
 },
 401
 );
@@ -875,13 +737,11 @@ message:
 // ============================================================
 
 async function getCurrentUser(request, env) {
-
 if (request.method !== "GET") {
 return json(
 {
 success: false,
-message:
-"Method not allowed."
+message: "Method not allowed."
 },
 405
 );
@@ -896,10 +756,6 @@ loggedIn: false
 500
 );
 }
-
-// ----------------------------------------------------------
-// GET SESSION COOKIE
-// ----------------------------------------------------------
 
 const token =
 getCookie(
@@ -917,27 +773,19 @@ loggedIn: false
 );
 }
 
-// ----------------------------------------------------------
-// HASH SESSION TOKEN
-// ----------------------------------------------------------
-
 let tokenHash;
 
 try {
-
-```
 tokenHash =
-  await sha256(token);
-```
+await sha256(token);
 
 } catch (error) {
-
-```
 console.error(
-  "TOKEN HASH ERROR:",
-  error
+"TOKEN HASH ERROR:",
+error
 );
 
+```
 return json(
   {
     success: false,
@@ -948,41 +796,27 @@ return json(
 ```
 
 }
-
-// ----------------------------------------------------------
-// FIND ACTIVE SESSION
-// ----------------------------------------------------------
 
 let session;
 
 try {
-
-```
 session = await env.ACCOUNTS_DB
-  .prepare(`
-    SELECT
-      account_id,
-      expires_at
-    FROM sessions
-    WHERE token_hash = ?
-      AND expires_at > ?
-    LIMIT 1
-  `)
-  .bind(
-    tokenHash,
-    new Date().toISOString()
-  )
-  .first();
-```
+.prepare(
+"SELECT account_id, expires_at FROM sessions WHERE token_hash = ? AND expires_at > ? LIMIT 1"
+)
+.bind(
+tokenHash,
+new Date().toISOString()
+)
+.first();
 
 } catch (error) {
-
-```
 console.error(
-  "SESSION LOOKUP ERROR:",
-  error
+"SESSION LOOKUP ERROR:",
+error
 );
 
+```
 return json(
   {
     success: false,
@@ -994,21 +828,16 @@ return json(
 
 }
 
-// ----------------------------------------------------------
-// SESSION INVALID / EXPIRED
-// ----------------------------------------------------------
-
 if (!session) {
+return new Response(
+JSON.stringify({
+success: false,
+loggedIn: false
+}),
+{
+status: 401,
 
 ```
-return new Response(
-  JSON.stringify({
-    success: false,
-    loggedIn: false
-  }),
-  {
-    status: 401,
-
     headers: {
       "Content-Type":
         "application/json; charset=UTF-8",
@@ -1025,41 +854,25 @@ return new Response(
 
 }
 
-// ----------------------------------------------------------
-// GET USER
-// ----------------------------------------------------------
-
 let user;
 
 try {
-
-```
 user = await env.ACCOUNTS_DB
-  .prepare(`
-    SELECT
-      first_name,
-      middle_name,
-      last_name,
-      phone_number,
-      profile_picture
-    FROM users
-    WHERE account_id = ?
-    LIMIT 1
-  `)
-  .bind(
-    Number(session.account_id)
-  )
-  .first();
-```
+.prepare(
+"SELECT first_name, middle_name, last_name, phone_number, profile_picture FROM users WHERE account_id = ? LIMIT 1"
+)
+.bind(
+Number(session.account_id)
+)
+.first();
 
 } catch (error) {
-
-```
 console.error(
-  "CURRENT USER DATABASE ERROR:",
-  error
+"CURRENT USER DATABASE ERROR:",
+error
 );
 
+```
 return json(
   {
     success: false,
@@ -1072,16 +885,15 @@ return json(
 }
 
 if (!user) {
+return new Response(
+JSON.stringify({
+success: false,
+loggedIn: false
+}),
+{
+status: 401,
 
 ```
-return new Response(
-  JSON.stringify({
-    success: false,
-    loggedIn: false
-  }),
-  {
-    status: 401,
-
     headers: {
       "Content-Type":
         "application/json; charset=UTF-8",
@@ -1097,10 +909,6 @@ return new Response(
 ```
 
 }
-
-// ----------------------------------------------------------
-// RETURN CURRENT USER
-// ----------------------------------------------------------
 
 return json({
 success: true,
@@ -1131,11 +939,10 @@ profilePicture:
 }
 
 // ============================================================
-// PROFILE PICTURE UPLOAD
+// UPLOAD PROFILE PICTURE
 // ============================================================
 
 async function uploadProfilePicture(request, env) {
-
 if (request.method !== "POST") {
 return json(
 {
@@ -1150,61 +957,68 @@ if (!env.ACCOUNTS_DB) {
 return json(
 {
 success: false,
-message:
-"Accounts database is not connected."
+message: "Accounts database is not connected."
 },
 500
 );
 }
 
-if (!env.PROFILE_IMAGES) {
+if (!env.PROFILE_BUCKET) {
 return json(
 {
 success: false,
-message:
-"Profile image storage is not connected."
+message: "Profile image storage is not connected."
 },
 500
 );
 }
 
-// ----------------------------------------------------------
-// AUTHENTICATE USER
-// ----------------------------------------------------------
-
 const auth =
-await authenticateUser(request, env);
+await authenticateUser(
+request,
+env
+);
 
 if (!auth.success) {
-return auth.response;
+return json(
+{
+success: false,
+message: "You must be logged in."
+},
+401
+);
 }
 
-// ----------------------------------------------------------
-// READ MULTIPART FORM
-// ----------------------------------------------------------
+const contentType =
+request.headers.get("Content-Type") || "";
+
+if (!contentType.toLowerCase().startsWith("multipart/form-data")) {
+return json(
+{
+success: false,
+message: "Please upload an image file."
+},
+400
+);
+}
 
 let formData;
 
 try {
-
-```
 formData =
-  await request.formData();
-```
+await request.formData();
 
 } catch (error) {
-
-```
 console.error(
-  "PROFILE FORM ERROR:",
-  error
+"PROFILE FORM ERROR:",
+error
 );
 
+```
 return json(
   {
     success: false,
-    message:
-      "Invalid image upload."
+    message: "Unable to read uploaded image."
   },
   400
 );
@@ -1213,47 +1027,32 @@ return json(
 }
 
 const file =
-formData.get("file") ||
-formData.get("image") ||
-formData.get("profilePicture");
+formData.get("profilePicture") ||
+formData.get("profile_picture") ||
+formData.get("file");
 
-if (!file || typeof file.arrayBuffer !== "function") {
+if (!(file instanceof File)) {
 return json(
 {
 success: false,
 message:
-"Please select a profile picture."
+"Profile picture file is required."
 },
 400
 );
 }
 
-// ----------------------------------------------------------
-// FILE TYPE
-// ----------------------------------------------------------
-
-const contentType =
-String(file.type || "").toLowerCase();
-
-if (!ALLOWED_IMAGE_TYPES.has(contentType)) {
+if (file.size <= 0) {
 return json(
 {
 success: false,
-message:
-"Only JPG, PNG, WEBP and GIF images are allowed."
+message: "The image file is empty."
 },
 400
 );
 }
 
-// ----------------------------------------------------------
-// FILE SIZE
-// ----------------------------------------------------------
-
-if (
-typeof file.size === "number" &&
-file.size > MAX_PROFILE_IMAGE_SIZE
-) {
+if (file.size > MAX_PROFILE_IMAGE_SIZE) {
 return json(
 {
 success: false,
@@ -1264,144 +1063,97 @@ message:
 );
 }
 
-let imageBuffer;
+const extension =
+ALLOWED_IMAGE_TYPES[file.type];
 
-try {
-
-```
-imageBuffer =
-  await file.arrayBuffer();
-```
-
-} catch (error) {
-
-```
-console.error(
-  "PROFILE IMAGE READ ERROR:",
-  error
-);
-
-return json(
-  {
-    success: false,
-    message:
-      "Unable to read image."
-  },
-  400
-);
-```
-
-}
-
-if (
-imageBuffer.byteLength === 0 ||
-imageBuffer.byteLength > MAX_PROFILE_IMAGE_SIZE
-) {
+if (!extension) {
 return json(
 {
 success: false,
 message:
-"Invalid profile picture size."
+"Only JPG, PNG, WEBP and GIF images are allowed."
 },
-400
+415
 );
 }
 
 // ----------------------------------------------------------
-// CREATE R2 KEY
-// ----------------------------------------------------------
-
-const accountId =
-Number(auth.accountId);
-
-const extension =
-extensionFromContentType(
-contentType
-);
-
-const newKey =
-`profile-pictures/${accountId}.${extension}`;
-
-// ----------------------------------------------------------
-// GET OLD PROFILE PICTURE
+// READ OLD PROFILE PICTURE
 // ----------------------------------------------------------
 
 let oldProfilePicture = null;
 
 try {
+const oldUser =
+await env.ACCOUNTS_DB
+.prepare(
+"SELECT profile_picture FROM users WHERE account_id = ? LIMIT 1"
+)
+.bind(auth.accountId)
+.first();
 
 ```
-const oldUser =
-  await env.ACCOUNTS_DB
-    .prepare(`
-      SELECT profile_picture
-      FROM users
-      WHERE account_id = ?
-      LIMIT 1
-    `)
-    .bind(accountId)
-    .first();
-
-oldProfilePicture =
-  oldUser?.profile_picture || null;
+if (oldUser && oldUser.profile_picture) {
+  oldProfilePicture =
+    String(oldUser.profile_picture);
+}
 ```
 
 } catch (error) {
-
-```
 console.error(
-  "OLD PROFILE PICTURE READ ERROR:",
-  error
+"OLD PROFILE PICTURE READ ERROR:",
+error
 );
-
-return json(
-  {
-    success: false,
-    message:
-      "Unable to read current profile picture."
-  },
-  500
-);
-```
-
 }
 
 // ----------------------------------------------------------
-// UPLOAD TO R2
+// CREATE VERSIONED R2 KEY
+// ----------------------------------------------------------
+
+const accountId =
+String(auth.accountId);
+
+const imageId =
+crypto.randomUUID();
+
+const objectKey =
+"profile-pictures/" +
+accountId +
+"/" +
+imageId +
+"." +
+extension;
+
+// ----------------------------------------------------------
+// SAVE IMAGE TO R2
 // ----------------------------------------------------------
 
 try {
+await env.PROFILE_BUCKET.put(
+objectKey,
+file.stream(),
+{
+httpMetadata: {
+contentType: file.type,
+cacheControl:
+"private, max-age=3600"
+},
 
 ```
-await env.PROFILE_IMAGES.put(
-  newKey,
-  imageBuffer,
-  {
-    httpMetadata: {
-      contentType: contentType,
-      cacheControl:
-        "public, max-age=31536000, immutable"
-    },
-
     customMetadata: {
-      accountId:
-        String(accountId),
-
-      uploadedAt:
-        new Date().toISOString()
+      accountId: accountId
     }
   }
 );
 ```
 
 } catch (error) {
-
-```
 console.error(
-  "R2 PROFILE IMAGE UPLOAD ERROR:",
-  error
+"R2 PROFILE UPLOAD ERROR:",
+error
 );
 
+```
 return json(
   {
     success: false,
@@ -1419,41 +1171,32 @@ return json(
 // ----------------------------------------------------------
 
 try {
-
-```
 await env.ACCOUNTS_DB
-  .prepare(`
-    UPDATE users
-    SET profile_picture = ?
-    WHERE account_id = ?
-  `)
-  .bind(
-    newKey,
-    accountId
-  )
-  .run();
-```
+.prepare(
+"UPDATE users SET profile_picture = ? WHERE account_id = ?"
+)
+.bind(
+objectKey,
+auth.accountId
+)
+.run();
 
 } catch (error) {
-
-```
 console.error(
-  "PROFILE PICTURE DATABASE ERROR:",
-  error
+"PROFILE DATABASE UPDATE ERROR:",
+error
 );
 
-
-// Roll back R2 upload if database update fails.
-
+```
+// Remove newly uploaded image if D1 update fails.
 try {
-  await env.PROFILE_IMAGES.delete(newKey);
+  await env.PROFILE_BUCKET.delete(objectKey);
 } catch (deleteError) {
   console.error(
     "R2 ROLLBACK ERROR:",
     deleteError
   );
 }
-
 
 return json(
   {
@@ -1468,52 +1211,34 @@ return json(
 }
 
 // ----------------------------------------------------------
-// DELETE OLD R2 OBJECT
+// DELETE OLD R2 IMAGE
 // ----------------------------------------------------------
 
 if (
 oldProfilePicture &&
-oldProfilePicture !== newKey
+oldProfilePicture !== objectKey
 ) {
-
-```
 try {
-
-  await env.PROFILE_IMAGES.delete(
-    oldProfilePicture
-  );
-
+await env.PROFILE_BUCKET.delete(
+oldProfilePicture
+);
 } catch (error) {
-
-  console.error(
-    "OLD PROFILE IMAGE DELETE ERROR:",
-    error
-  );
-
-  // Do not fail the successful upload
-  // if old cleanup fails.
+console.error(
+"OLD R2 PROFILE DELETE ERROR:",
+error
+);
 }
-```
-
 }
-
-// ----------------------------------------------------------
-// RETURN SUCCESS
-// ----------------------------------------------------------
 
 return json({
 success: true,
 
 ```
-accountId:
-  String(accountId)
-    .padStart(7, "0"),
-
 profilePicture:
-  `/api/profile-picture`,
+  objectKey,
 
 message:
-  "Profile picture uploaded successfully."
+  "Profile picture updated successfully."
 ```
 
 });
@@ -1524,166 +1249,135 @@ message:
 // ============================================================
 
 async function getProfilePicture(request, env) {
-
 if (request.method !== "GET") {
 return json(
 {
 success: false,
-message:
-"Method not allowed."
+message: "Method not allowed."
 },
 405
 );
 }
 
-if (!env.ACCOUNTS_DB) {
-return new Response(
-"Database unavailable.",
+if (!env.ACCOUNTS_DB || !env.PROFILE_BUCKET) {
+return json(
 {
-status: 500
-}
+success: false,
+message:
+"Profile picture service is not connected."
+},
+500
 );
 }
-
-if (!env.PROFILE_IMAGES) {
-return new Response(
-"Profile image storage unavailable.",
-{
-status: 500
-}
-);
-}
-
-// ----------------------------------------------------------
-// AUTHENTICATE USER
-// ----------------------------------------------------------
 
 const auth =
-await authenticateUser(request, env);
+await authenticateUser(
+request,
+env
+);
 
 if (!auth.success) {
-return auth.response;
+return json(
+{
+success: false,
+message: "You must be logged in."
+},
+401
+);
 }
-
-// ----------------------------------------------------------
-// GET PROFILE PICTURE KEY
-// ----------------------------------------------------------
 
 let user;
 
 try {
-
-```
 user =
-  await env.ACCOUNTS_DB
-    .prepare(`
-      SELECT profile_picture
-      FROM users
-      WHERE account_id = ?
-      LIMIT 1
-    `)
-    .bind(
-      Number(auth.accountId)
-    )
-    .first();
-```
+await env.ACCOUNTS_DB
+.prepare(
+"SELECT profile_picture FROM users WHERE account_id = ? LIMIT 1"
+)
+.bind(auth.accountId)
+.first();
 
 } catch (error) {
-
-```
 console.error(
-  "PROFILE IMAGE DATABASE ERROR:",
-  error
+"PROFILE PICTURE DATABASE ERROR:",
+error
 );
 
-return new Response(
-  "Unable to access profile picture.",
+```
+return json(
   {
-    status: 500
-  }
+    success: false,
+    message:
+      "Unable to access profile picture."
+  },
+  500
 );
 ```
 
 }
 
-if (
-!user ||
-!user.profile_picture
-) {
-return new Response(
-"Profile picture not found.",
+if (!user || !user.profile_picture) {
+return json(
 {
-status: 404
-}
+success: false,
+message:
+"No profile picture has been uploaded."
+},
+404
 );
 }
-
-// ----------------------------------------------------------
-// READ FROM R2
-// ----------------------------------------------------------
 
 let object;
 
 try {
-
-```
 object =
-  await env.PROFILE_IMAGES.get(
-    user.profile_picture
-  );
-```
-
-} catch (error) {
-
-```
-console.error(
-  "R2 PROFILE IMAGE READ ERROR:",
-  error
+await env.PROFILE_BUCKET.get(
+String(user.profile_picture)
 );
 
-return new Response(
-  "Unable to read profile picture.",
+} catch (error) {
+console.error(
+"R2 PROFILE GET ERROR:",
+error
+);
+
+```
+return json(
   {
-    status: 500
-  }
+    success: false,
+    message:
+      "Unable to load profile picture."
+  },
+  500
 );
 ```
 
 }
 
 if (!object) {
-return new Response(
-"Profile picture not found.",
+return json(
 {
-status: 404
-}
+success: false,
+message:
+"Profile picture was not found."
+},
+404
 );
 }
-
-// ----------------------------------------------------------
-// RETURN IMAGE
-// ----------------------------------------------------------
 
 const headers =
 new Headers();
 
-object.writeHttpMetadata(
-headers
-);
+object.writeHttpMetadata(headers);
 
 headers.set(
-"etag",
+"ETag",
 object.httpEtag
 );
 
 headers.set(
 "Cache-Control",
 "private, max-age=3600"
-);
-
-headers.set(
-"X-Content-Type-Options",
-"nosniff"
 );
 
 return new Response(
@@ -1699,87 +1393,62 @@ headers
 // DELETE PROFILE PICTURE
 // ============================================================
 
-async function deleteProfilePicture(
-request,
-env
-) {
-
+async function deleteProfilePicture(request, env) {
 if (request.method !== "DELETE") {
 return json(
 {
 success: false,
-message:
-"Method not allowed."
+message: "Method not allowed."
 },
 405
 );
 }
 
-if (!env.ACCOUNTS_DB) {
+if (!env.ACCOUNTS_DB || !env.PROFILE_BUCKET) {
 return json(
 {
 success: false,
 message:
-"Accounts database is not connected."
+"Profile picture service is not connected."
 },
 500
 );
 }
-
-if (!env.PROFILE_IMAGES) {
-return json(
-{
-success: false,
-message:
-"Profile image storage is not connected."
-},
-500
-);
-}
-
-// ----------------------------------------------------------
-// AUTHENTICATE USER
-// ----------------------------------------------------------
 
 const auth =
-await authenticateUser(request, env);
+await authenticateUser(
+request,
+env
+);
 
 if (!auth.success) {
-return auth.response;
+return json(
+{
+success: false,
+message: "You must be logged in."
+},
+401
+);
 }
-
-const accountId =
-Number(auth.accountId);
-
-// ----------------------------------------------------------
-// GET CURRENT IMAGE
-// ----------------------------------------------------------
 
 let user;
 
 try {
-
-```
 user =
-  await env.ACCOUNTS_DB
-    .prepare(`
-      SELECT profile_picture
-      FROM users
-      WHERE account_id = ?
-      LIMIT 1
-    `)
-    .bind(accountId)
-    .first();
-```
+await env.ACCOUNTS_DB
+.prepare(
+"SELECT profile_picture FROM users WHERE account_id = ? LIMIT 1"
+)
+.bind(auth.accountId)
+.first();
 
 } catch (error) {
-
-```
 console.error(
-  "PROFILE DELETE DATABASE ERROR:",
-  error
+"PROFILE DELETE LOOKUP ERROR:",
+error
 );
 
+```
 return json(
   {
     success: false,
@@ -1792,84 +1461,44 @@ return json(
 
 }
 
-if (
-!user ||
-!user.profile_picture
-) {
+const objectKey =
+user && user.profile_picture
+? String(user.profile_picture)
+: null;
 
-```
-return json({
-  success: true,
-  profilePicture: null,
-  message:
-    "No profile picture exists."
-});
-```
-
-}
-
-// ----------------------------------------------------------
-// DELETE R2 OBJECT
-// ----------------------------------------------------------
-
+if (objectKey) {
 try {
-
-```
-await env.PROFILE_IMAGES.delete(
-  user.profile_picture
+await env.PROFILE_BUCKET.delete(
+objectKey
 );
-```
-
 } catch (error) {
-
-```
 console.error(
-  "R2 PROFILE DELETE ERROR:",
-  error
+"R2 PROFILE DELETE ERROR:",
+error
 );
-
-return json(
-  {
-    success: false,
-    message:
-      "Unable to delete profile picture."
-  },
-  500
-);
-```
-
+}
 }
 
-// ----------------------------------------------------------
-// REMOVE DATABASE REFERENCE
-// ----------------------------------------------------------
-
 try {
-
-```
 await env.ACCOUNTS_DB
-  .prepare(`
-    UPDATE users
-    SET profile_picture = NULL
-    WHERE account_id = ?
-  `)
-  .bind(accountId)
-  .run();
-```
+.prepare(
+"UPDATE users SET profile_picture = NULL WHERE account_id = ?"
+)
+.bind(auth.accountId)
+.run();
 
 } catch (error) {
-
-```
 console.error(
-  "PROFILE REFERENCE DELETE ERROR:",
-  error
+"PROFILE COLUMN CLEAR ERROR:",
+error
 );
 
+```
 return json(
   {
     success: false,
     message:
-      "Profile picture was deleted, but database update failed."
+      "Unable to remove profile picture."
   },
   500
 );
@@ -1886,36 +1515,15 @@ message:
 }
 
 // ============================================================
-// AUTHENTICATE USER
+// AUTHENTICATE CURRENT USER
 // ============================================================
 
-async function authenticateUser(
-request,
-env
-) {
-
+async function authenticateUser(request, env) {
 if (!env.ACCOUNTS_DB) {
 return {
-success: false,
-
-```
-  response: json(
-    {
-      success: false,
-      loggedIn: false,
-      message:
-        "Accounts database is not connected."
-    },
-    500
-  )
+success: false
 };
-```
-
 }
-
-// ----------------------------------------------------------
-// GET SESSION COOKIE
-// ----------------------------------------------------------
 
 const token =
 getCookie(
@@ -1924,216 +1532,61 @@ request,
 );
 
 if (!token) {
-
-```
 return {
-  success: false,
-
-  response: json(
-    {
-      success: false,
-      loggedIn: false,
-      message:
-        "Authentication required."
-    },
-    401
-  )
+success: false
 };
-```
-
 }
-
-// ----------------------------------------------------------
-// HASH SESSION TOKEN
-// ----------------------------------------------------------
 
 let tokenHash;
 
 try {
-
-```
 tokenHash =
-  await sha256(token);
-```
+await sha256(token);
 
-} catch (error) {
-
-```
-console.error(
-  "AUTH TOKEN HASH ERROR:",
-  error
-);
-
+} catch {
 return {
-  success: false,
-
-  response: json(
-    {
-      success: false,
-      loggedIn: false
-    },
-    500
-  )
+success: false
 };
-```
-
 }
-
-// ----------------------------------------------------------
-// FIND ACTIVE SESSION
-// ----------------------------------------------------------
 
 let session;
 
 try {
-
-```
 session =
-  await env.ACCOUNTS_DB
-    .prepare(`
-      SELECT
-        account_id,
-        expires_at
-      FROM sessions
-      WHERE token_hash = ?
-        AND expires_at > ?
-      LIMIT 1
-    `)
-    .bind(
-      tokenHash,
-      new Date().toISOString()
-    )
-    .first();
-```
+await env.ACCOUNTS_DB
+.prepare(
+"SELECT account_id, expires_at FROM sessions WHERE token_hash = ? AND expires_at > ? LIMIT 1"
+)
+.bind(
+tokenHash,
+new Date().toISOString()
+)
+.first();
 
 } catch (error) {
-
-```
 console.error(
-  "AUTH SESSION LOOKUP ERROR:",
-  error
+"AUTH SESSION ERROR:",
+error
 );
 
+```
 return {
-  success: false,
-
-  response: json(
-    {
-      success: false,
-      loggedIn: false
-    },
-    500
-  )
+  success: false
 };
 ```
 
 }
 
 if (!session) {
-
-```
 return {
-  success: false,
-
-  response: new Response(
-    JSON.stringify({
-      success: false,
-      loggedIn: false,
-      message:
-        "Session expired."
-    }),
-    {
-      status: 401,
-
-      headers: {
-        "Content-Type":
-          "application/json; charset=UTF-8",
-
-        "Cache-Control":
-          "no-store",
-
-        "Set-Cookie":
-          clearSessionCookie()
-      }
-    }
-  )
+success: false
 };
-```
-
-}
-
-// ----------------------------------------------------------
-// VERIFY USER EXISTS
-// ----------------------------------------------------------
-
-let userExists;
-
-try {
-
-```
-userExists =
-  await env.ACCOUNTS_DB
-    .prepare(`
-      SELECT account_id
-      FROM users
-      WHERE account_id = ?
-      LIMIT 1
-    `)
-    .bind(
-      Number(session.account_id)
-    )
-    .first();
-```
-
-} catch (error) {
-
-```
-console.error(
-  "AUTH USER LOOKUP ERROR:",
-  error
-);
-
-return {
-  success: false,
-
-  response: json(
-    {
-      success: false,
-      loggedIn: false
-    },
-    500
-  )
-};
-```
-
-}
-
-if (!userExists) {
-
-```
-return {
-  success: false,
-
-  response: json(
-    {
-      success: false,
-      loggedIn: false
-    },
-    401
-  )
-};
-```
-
 }
 
 return {
 success: true,
-
-```
 accountId:
-  Number(session.account_id)
-```
-
+Number(session.account_id)
 };
 }
 
@@ -2142,13 +1595,11 @@ accountId:
 // ============================================================
 
 async function logout(request, env) {
-
 if (request.method !== "POST") {
 return json(
 {
 success: false,
-message:
-"Method not allowed."
+message: "Method not allowed."
 },
 405
 );
@@ -2161,23 +1612,19 @@ request,
 );
 
 if (token && env.ACCOUNTS_DB) {
+try {
+const tokenHash =
+await sha256(token);
 
 ```
-try {
-
-  const tokenHash =
-    await sha256(token);
-
   await env.ACCOUNTS_DB
-    .prepare(`
-      DELETE FROM sessions
-      WHERE token_hash = ?
-    `)
+    .prepare(
+      "DELETE FROM sessions WHERE token_hash = ?"
+    )
     .bind(tokenHash)
     .run();
 
 } catch (error) {
-
   console.error(
     "LOGOUT DATABASE ERROR:",
     error
@@ -2218,7 +1665,6 @@ status: 200,
 // ============================================================
 
 async function buildSession(accountId) {
-
 const tokenBytes =
 new Uint8Array(32);
 
@@ -2245,12 +1691,10 @@ SESSION_DAYS *
 ).toISOString();
 
 const cookie =
-`haleel_session=${token}; ` +
-`HttpOnly; ` +
-`Secure; ` +
-`SameSite=Lax; ` +
-`Path=/; ` +
-`Max-Age=${SESSION_DAYS * 24 * 60 * 60}`;
+"haleel_session=" +
+token +
+"; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=" +
+(SESSION_DAYS * 24 * 60 * 60);
 
 return {
 accountId,
@@ -2266,7 +1710,6 @@ cookie
 // ============================================================
 
 function clearSessionCookie() {
-
 return (
 "haleel_session=; " +
 "HttpOnly; " +
@@ -2282,11 +1725,8 @@ return (
 // ============================================================
 
 async function sha256(value) {
-
 const data =
-new TextEncoder().encode(
-value
-);
+new TextEncoder().encode(value);
 
 const hash =
 await crypto.subtle.digest(
@@ -2304,7 +1744,6 @@ new Uint8Array(hash)
 // ============================================================
 
 async function hashPassword(password) {
-
 const salt =
 new Uint8Array(16);
 
@@ -2327,21 +1766,14 @@ const bits =
 await crypto.subtle.deriveBits(
 {
 name: "PBKDF2",
-
-```
-    salt: salt,
-
-    iterations:
-      PBKDF2_ITERATIONS,
-
-    hash: "SHA-256"
-  },
-
-  key,
-
-  PASSWORD_HASH_LENGTH
+salt: salt,
+iterations:
+PBKDF2_ITERATIONS,
+hash: "SHA-256"
+},
+key,
+PASSWORD_HASH_LENGTH
 );
-```
 
 const hash =
 new Uint8Array(bits);
@@ -2364,7 +1796,6 @@ async function verifyPassword(
 password,
 storedHash
 ) {
-
 const parts =
 storedHash.split("$");
 
@@ -2389,13 +1820,12 @@ let salt;
 let expectedHash;
 
 try {
+salt =
+base64UrlToBytes(
+parts[2]
+);
 
 ```
-salt =
-  base64UrlToBytes(
-    parts[2]
-  );
-
 expectedHash =
   base64UrlToBytes(
     parts[3]
@@ -2403,11 +1833,7 @@ expectedHash =
 ```
 
 } catch {
-
-```
 return false;
-```
-
 }
 
 if (
@@ -2432,20 +1858,13 @@ const bits =
 await crypto.subtle.deriveBits(
 {
 name: "PBKDF2",
-
-```
-    salt: salt,
-
-    iterations: iterations,
-
-    hash: "SHA-256"
-  },
-
-  key,
-
-  expectedHash.length * 8
+salt: salt,
+iterations: iterations,
+hash: "SHA-256"
+},
+key,
+expectedHash.length * 8
 );
-```
 
 const actualHash =
 new Uint8Array(bits);
@@ -2461,7 +1880,6 @@ expectedHash
 // ============================================================
 
 function timingSafeEqual(a, b) {
-
 if (a.length !== b.length) {
 return false;
 }
@@ -2473,12 +1891,8 @@ let i = 0;
 i < a.length;
 i++
 ) {
-
-```
 difference |=
-  a[i] ^ b[i];
-```
-
+a[i] ^ b[i];
 }
 
 return difference === 0;
@@ -2489,7 +1903,6 @@ return difference === 0;
 // ============================================================
 
 function getCookie(request, name) {
-
 const cookieHeader =
 request.headers.get("Cookie");
 
@@ -2501,20 +1914,16 @@ const cookies =
 cookieHeader.split(";");
 
 for (const cookie of cookies) {
+const trimmed =
+cookie.trim();
 
 ```
-const trimmed =
-  cookie.trim();
-
-
 const separator =
   trimmed.indexOf("=");
-
 
 if (separator === -1) {
   continue;
 }
-
 
 const key =
   trimmed.slice(
@@ -2522,12 +1931,10 @@ const key =
     separator
   );
 
-
 const value =
   trimmed.slice(
     separator + 1
   );
-
 
 if (key === name) {
   return value || null;
@@ -2544,19 +1951,11 @@ return null;
 // ============================================================
 
 async function readJSON(request) {
-
 try {
-
-```
 return await request.json();
-```
 
 } catch {
-
-```
 return null;
-```
-
 }
 }
 
@@ -2568,7 +1967,6 @@ function json(
 data,
 status = 200
 ) {
-
 return new Response(
 JSON.stringify(data),
 {
@@ -2589,50 +1987,15 @@ status,
 }
 
 // ============================================================
-// IMAGE EXTENSION
-// ============================================================
-
-function extensionFromContentType(
-contentType
-) {
-
-switch (contentType) {
-
-```
-case "image/jpeg":
-  return "jpg";
-
-case "image/png":
-  return "png";
-
-case "image/webp":
-  return "webp";
-
-case "image/gif":
-  return "gif";
-
-default:
-  return "bin";
-```
-
-}
-}
-
-// ============================================================
 // BYTES → BASE64URL
 // ============================================================
 
 function bytesToBase64Url(bytes) {
-
 let binary = "";
 
 for (const byte of bytes) {
-
-```
 binary +=
-  String.fromCharCode(byte);
-```
-
+String.fromCharCode(byte);
 }
 
 return btoa(binary)
@@ -2646,7 +2009,6 @@ return btoa(binary)
 // ============================================================
 
 function base64UrlToBytes(value) {
-
 const base64 =
 value
 .replace(/-/g, "+")
@@ -2658,7 +2020,9 @@ const padding =
 );
 
 const binary =
-atob(base64 + padding);
+atob(
+base64 + padding
+);
 
 const bytes =
 new Uint8Array(
@@ -2670,12 +2034,8 @@ let i = 0;
 i < binary.length;
 i++
 ) {
-
-```
 bytes[i] =
-  binary.charCodeAt(i);
-```
-
+binary.charCodeAt(i);
 }
 
 return bytes;
