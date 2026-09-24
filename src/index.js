@@ -6,7 +6,7 @@ const PASSWORD_HASH_LENGTH = 256;
 
 const MAX_PROFILE_IMAGE_SIZE = 5 * 1024 * 1024;
 
-const ALLOWED_IMAGE_TYPES = {
+const ALLOWED_PROFILE_TYPES = {
 "image/jpeg": "jpg",
 "image/png": "png",
 "image/webp": "webp",
@@ -231,10 +231,6 @@ message: "Password is too long."
 );
 }
 
-// ----------------------------------------------------------
-// CHECK DUPLICATE PHONE NUMBER
-// ----------------------------------------------------------
-
 let existingPhone;
 
 try {
@@ -271,10 +267,6 @@ message:
 );
 }
 
-// ----------------------------------------------------------
-// GET NEXT ACCOUNT ID
-// ----------------------------------------------------------
-
 let sequence;
 
 try {
@@ -294,7 +286,8 @@ error
 return json(
   {
     success: false,
-    message: "Unable to read account sequence."
+    message:
+      "Unable to read account sequence."
   },
   500
 );
@@ -306,7 +299,8 @@ if (!sequence) {
 return json(
 {
 success: false,
-message: "Account sequence is not configured."
+message:
+"Account sequence is not configured."
 },
 500
 );
@@ -322,15 +316,12 @@ accountId > MAX_ACCOUNT_ID
 return json(
 {
 success: false,
-message: "No more account IDs are available."
+message:
+"No more account IDs are available."
 },
 409
 );
 }
-
-// ----------------------------------------------------------
-// HASH PASSWORD
-// ----------------------------------------------------------
 
 let passwordHash;
 
@@ -347,17 +338,14 @@ error
 return json(
   {
     success: false,
-    message: "Unable to secure password."
+    message:
+      "Unable to secure password."
   },
   500
 );
 ```
 
 }
-
-// ----------------------------------------------------------
-// CREATE SESSION
-// ----------------------------------------------------------
 
 let session;
 
@@ -374,7 +362,8 @@ error
 return json(
   {
     success: false,
-    message: "Unable to create session."
+    message:
+      "Unable to create session."
   },
   500
 );
@@ -382,32 +371,17 @@ return json(
 
 }
 
-// ----------------------------------------------------------
-// SAVE USER
-//
-// users schema:
-// id
-// account_id
-// created_at
-// first_name
-// middle_name
-// last_name
-// password_hash
-// phone_number
-// profile_picture
-// ----------------------------------------------------------
-
 try {
 await env.ACCOUNTS_DB
 .prepare(
-"INSERT INTO users (account_id, first_name, middle_name, last_name, password_hash, phone_number, profile_picture) VALUES (?, ?, ?, ?, ?, ?, ?)"
+"INSERT INTO users (account_id, password_hash, first_name, middle_name, last_name, phone_number, profile_picture) VALUES (?, ?, ?, ?, ?, ?, ?)"
 )
 .bind(
 accountId,
+passwordHash,
 firstName,
 middleName,
 lastName,
-passwordHash,
 phoneNumber,
 null
 )
@@ -443,7 +417,8 @@ error
 return json(
   {
     success: false,
-    message: "Unable to create account."
+    message:
+      "Unable to create account."
   },
   500
 );
@@ -458,30 +433,25 @@ return new Response(
 JSON.stringify({
 success: true,
 accountId: formattedAccountId,
-firstName,
-middleName,
-lastName,
-phoneNumber,
+firstName: firstName,
+middleName: middleName,
+lastName: lastName,
+phoneNumber: phoneNumber,
 profilePicture: null,
-message: "Account created successfully."
+message:
+"Account created successfully."
 }),
 {
 status: 201,
-
-```
-  headers: {
-    "Content-Type":
-      "application/json; charset=UTF-8",
-
-    "Cache-Control":
-      "no-store",
-
-    "Set-Cookie":
-      session.cookie
-  }
+headers: {
+"Content-Type":
+"application/json; charset=UTF-8",
+"Cache-Control":
+"no-store",
+"Set-Cookie":
+session.cookie
 }
-```
-
+}
 );
 }
 
@@ -504,7 +474,8 @@ if (!env.ACCOUNTS_DB) {
 return json(
 {
 success: false,
-message: "Accounts database is not connected."
+message:
+"Accounts database is not connected."
 },
 500
 );
@@ -549,10 +520,6 @@ numericAccountId > MAX_ACCOUNT_ID
 return invalidLogin();
 }
 
-// ----------------------------------------------------------
-// FIND USER
-// ----------------------------------------------------------
-
 let user;
 
 try {
@@ -586,10 +553,6 @@ if (!user) {
 return invalidLogin();
 }
 
-// ----------------------------------------------------------
-// VERIFY PASSWORD
-// ----------------------------------------------------------
-
 if (
 typeof user.password_hash !== "string" ||
 !user.password_hash
@@ -622,10 +585,6 @@ if (!passwordCorrect) {
 return invalidLogin();
 }
 
-// ----------------------------------------------------------
-// CREATE LOGIN SESSION
-// ----------------------------------------------------------
-
 let session;
 
 try {
@@ -652,10 +611,6 @@ return json(
 ```
 
 }
-
-// ----------------------------------------------------------
-// SAVE LOGIN SESSION
-// ----------------------------------------------------------
 
 try {
 await env.ACCOUNTS_DB
@@ -717,7 +672,6 @@ success: true,
 }),
 {
   status: 200,
-
   headers: {
     "Content-Type":
       "application/json; charset=UTF-8",
@@ -742,7 +696,8 @@ function invalidLogin() {
 return json(
 {
 success: false,
-message: "Invalid ID or password."
+message:
+"Invalid ID or password."
 },
 401
 );
@@ -757,7 +712,8 @@ if (request.method !== "GET") {
 return json(
 {
 success: false,
-message: "Method not allowed."
+message:
+"Method not allowed."
 },
 405
 );
@@ -853,12 +809,11 @@ loggedIn: false
 }),
 {
 status: 401,
+headers: {
+"Content-Type":
+"application/json; charset=UTF-8",
 
 ```
-    headers: {
-      "Content-Type":
-        "application/json; charset=UTF-8",
-
       "Cache-Control":
         "no-store",
 
@@ -871,15 +826,10 @@ status: 401,
 
 }
 
-// ----------------------------------------------------------
-// GET USER
-// ----------------------------------------------------------
-
 let user;
 
 try {
-user =
-await env.ACCOUNTS_DB
+user = await env.ACCOUNTS_DB
 .prepare(
 "SELECT first_name, middle_name, last_name, phone_number, profile_picture FROM users WHERE account_id = ? LIMIT 1"
 )
@@ -914,12 +864,11 @@ loggedIn: false
 }),
 {
 status: 401,
+headers: {
+"Content-Type":
+"application/json; charset=UTF-8",
 
 ```
-    headers: {
-      "Content-Type":
-        "application/json; charset=UTF-8",
-
       "Cache-Control":
         "no-store",
 
@@ -961,695 +910,6 @@ profilePicture:
 }
 
 // ============================================================
-// UPLOAD PROFILE PICTURE
-// ============================================================
-
-async function uploadProfilePicture(request, env) {
-if (request.method !== "POST") {
-return json(
-{
-success: false,
-message: "Method not allowed."
-},
-405
-);
-}
-
-if (!env.ACCOUNTS_DB) {
-return json(
-{
-success: false,
-message: "Accounts database is not connected."
-},
-500
-);
-}
-
-if (!env.PROFILE_BUCKET) {
-return json(
-{
-success: false,
-message:
-"Profile image storage is not connected."
-},
-500
-);
-}
-
-const auth =
-await authenticateUser(
-request,
-env
-);
-
-if (!auth.success) {
-return json(
-{
-success: false,
-message: "You must be logged in."
-},
-401
-);
-}
-
-const contentType =
-request.headers.get("Content-Type") || "";
-
-if (
-!contentType
-.toLowerCase()
-.startsWith("multipart/form-data")
-) {
-return json(
-{
-success: false,
-message:
-"Please upload an image file."
-},
-400
-);
-}
-
-let formData;
-
-try {
-formData =
-await request.formData();
-
-} catch (error) {
-console.error(
-"PROFILE FORM ERROR:",
-error
-);
-
-```
-return json(
-  {
-    success: false,
-    message:
-      "Unable to read uploaded image."
-  },
-  400
-);
-```
-
-}
-
-const file =
-formData.get("profilePicture") ||
-formData.get("profile_picture") ||
-formData.get("file");
-
-if (!(file instanceof File)) {
-return json(
-{
-success: false,
-message:
-"Profile picture file is required."
-},
-400
-);
-}
-
-if (file.size <= 0) {
-return json(
-{
-success: false,
-message:
-"The image file is empty."
-},
-400
-);
-}
-
-if (file.size > MAX_PROFILE_IMAGE_SIZE) {
-return json(
-{
-success: false,
-message:
-"Profile picture must be 5 MB or smaller."
-},
-413
-);
-}
-
-const extension =
-ALLOWED_IMAGE_TYPES[file.type];
-
-if (!extension) {
-return json(
-{
-success: false,
-message:
-"Only JPG, PNG, WEBP and GIF images are allowed."
-},
-415
-);
-}
-
-// ----------------------------------------------------------
-// READ OLD R2 KEY
-// ----------------------------------------------------------
-
-let oldProfilePicture = null;
-
-try {
-const oldUser =
-await env.ACCOUNTS_DB
-.prepare(
-"SELECT profile_picture FROM users WHERE account_id = ? LIMIT 1"
-)
-.bind(auth.accountId)
-.first();
-
-```
-if (
-  oldUser &&
-  oldUser.profile_picture
-) {
-  oldProfilePicture =
-    String(
-      oldUser.profile_picture
-    );
-}
-```
-
-} catch (error) {
-console.error(
-"OLD PROFILE PICTURE READ ERROR:",
-error
-);
-}
-
-// ----------------------------------------------------------
-// CREATE UNIQUE R2 OBJECT KEY
-// ----------------------------------------------------------
-
-const objectKey =
-"profile-pictures/" +
-String(auth.accountId) +
-"/" +
-crypto.randomUUID() +
-"." +
-extension;
-
-// ----------------------------------------------------------
-// UPLOAD TO R2
-// ----------------------------------------------------------
-
-try {
-await env.PROFILE_BUCKET.put(
-objectKey,
-file.stream(),
-{
-httpMetadata: {
-contentType: file.type,
-cacheControl:
-"private, max-age=3600"
-},
-
-```
-    customMetadata: {
-      accountId:
-        String(auth.accountId)
-    }
-  }
-);
-```
-
-} catch (error) {
-console.error(
-"R2 PROFILE UPLOAD ERROR:",
-error
-);
-
-```
-return json(
-  {
-    success: false,
-    message:
-      "Unable to save profile picture."
-  },
-  500
-);
-```
-
-}
-
-// ----------------------------------------------------------
-// SAVE R2 KEY INTO D1
-// ----------------------------------------------------------
-
-try {
-await env.ACCOUNTS_DB
-.prepare(
-"UPDATE users SET profile_picture = ? WHERE account_id = ?"
-)
-.bind(
-objectKey,
-auth.accountId
-)
-.run();
-
-} catch (error) {
-console.error(
-"PROFILE DATABASE UPDATE ERROR:",
-error
-);
-
-```
-// Roll back the new R2 object.
-try {
-  await env.PROFILE_BUCKET.delete(
-    objectKey
-  );
-} catch (deleteError) {
-  console.error(
-    "R2 ROLLBACK ERROR:",
-    deleteError
-  );
-}
-
-return json(
-  {
-    success: false,
-    message:
-      "Unable to save profile picture information."
-  },
-  500
-);
-```
-
-}
-
-// ----------------------------------------------------------
-// DELETE OLD R2 OBJECT
-// ----------------------------------------------------------
-
-if (
-oldProfilePicture &&
-oldProfilePicture !== objectKey
-) {
-try {
-await env.PROFILE_BUCKET.delete(
-oldProfilePicture
-);
-
-```
-} catch (error) {
-  console.error(
-    "OLD R2 PROFILE DELETE ERROR:",
-    error
-  );
-}
-```
-
-}
-
-return json({
-success: true,
-
-```
-profilePicture:
-  objectKey,
-
-message:
-  "Profile picture updated successfully."
-```
-
-});
-}
-
-// ============================================================
-// GET PROFILE PICTURE
-// ============================================================
-
-async function getProfilePicture(request, env) {
-if (request.method !== "GET") {
-return json(
-{
-success: false,
-message: "Method not allowed."
-},
-405
-);
-}
-
-if (
-!env.ACCOUNTS_DB ||
-!env.PROFILE_BUCKET
-) {
-return json(
-{
-success: false,
-message:
-"Profile picture service is not connected."
-},
-500
-);
-}
-
-const auth =
-await authenticateUser(
-request,
-env
-);
-
-if (!auth.success) {
-return json(
-{
-success: false,
-message: "You must be logged in."
-},
-401
-);
-}
-
-let user;
-
-try {
-user =
-await env.ACCOUNTS_DB
-.prepare(
-"SELECT profile_picture FROM users WHERE account_id = ? LIMIT 1"
-)
-.bind(auth.accountId)
-.first();
-
-} catch (error) {
-console.error(
-"PROFILE PICTURE DATABASE ERROR:",
-error
-);
-
-```
-return json(
-  {
-    success: false,
-    message:
-      "Unable to access profile picture."
-  },
-  500
-);
-```
-
-}
-
-if (
-!user ||
-!user.profile_picture
-) {
-return json(
-{
-success: false,
-message:
-"No profile picture has been uploaded."
-},
-404
-);
-}
-
-let object;
-
-try {
-object =
-await env.PROFILE_BUCKET.get(
-String(
-user.profile_picture
-)
-);
-
-} catch (error) {
-console.error(
-"R2 PROFILE GET ERROR:",
-error
-);
-
-```
-return json(
-  {
-    success: false,
-    message:
-      "Unable to load profile picture."
-  },
-  500
-);
-```
-
-}
-
-if (!object) {
-return json(
-{
-success: false,
-message:
-"Profile picture was not found."
-},
-404
-);
-}
-
-const headers =
-new Headers();
-
-object.writeHttpMetadata(
-headers
-);
-
-headers.set(
-"ETag",
-object.httpEtag
-);
-
-headers.set(
-"Cache-Control",
-"private, max-age=3600"
-);
-
-return new Response(
-object.body,
-{
-status: 200,
-headers
-}
-);
-}
-
-// ============================================================
-// DELETE PROFILE PICTURE
-// ============================================================
-
-async function deleteProfilePicture(request, env) {
-if (request.method !== "DELETE") {
-return json(
-{
-success: false,
-message: "Method not allowed."
-},
-405
-);
-}
-
-if (
-!env.ACCOUNTS_DB ||
-!env.PROFILE_BUCKET
-) {
-return json(
-{
-success: false,
-message:
-"Profile picture service is not connected."
-},
-500
-);
-}
-
-const auth =
-await authenticateUser(
-request,
-env
-);
-
-if (!auth.success) {
-return json(
-{
-success: false,
-message: "You must be logged in."
-},
-401
-);
-}
-
-let user;
-
-try {
-user =
-await env.ACCOUNTS_DB
-.prepare(
-"SELECT profile_picture FROM users WHERE account_id = ? LIMIT 1"
-)
-.bind(auth.accountId)
-.first();
-
-} catch (error) {
-console.error(
-"PROFILE DELETE LOOKUP ERROR:",
-error
-);
-
-```
-return json(
-  {
-    success: false,
-    message:
-      "Unable to access profile picture."
-  },
-  500
-);
-```
-
-}
-
-const objectKey =
-user &&
-user.profile_picture
-? String(
-user.profile_picture
-)
-: null;
-
-if (objectKey) {
-try {
-await env.PROFILE_BUCKET.delete(
-objectKey
-);
-
-```
-} catch (error) {
-  console.error(
-    "R2 PROFILE DELETE ERROR:",
-    error
-  );
-}
-```
-
-}
-
-try {
-await env.ACCOUNTS_DB
-.prepare(
-"UPDATE users SET profile_picture = NULL WHERE account_id = ?"
-)
-.bind(auth.accountId)
-.run();
-
-} catch (error) {
-console.error(
-"PROFILE COLUMN CLEAR ERROR:",
-error
-);
-
-```
-return json(
-  {
-    success: false,
-    message:
-      "Unable to remove profile picture."
-  },
-  500
-);
-```
-
-}
-
-return json({
-success: true,
-profilePicture: null,
-message:
-"Profile picture deleted successfully."
-});
-}
-
-// ============================================================
-// AUTHENTICATE USER
-// ============================================================
-
-async function authenticateUser(
-request,
-env
-) {
-if (!env.ACCOUNTS_DB) {
-return {
-success: false
-};
-}
-
-const token =
-getCookie(
-request,
-"haleel_session"
-);
-
-if (!token) {
-return {
-success: false
-};
-}
-
-let tokenHash;
-
-try {
-tokenHash =
-await sha256(token);
-
-} catch {
-return {
-success: false
-};
-}
-
-let session;
-
-try {
-session =
-await env.ACCOUNTS_DB
-.prepare(
-"SELECT account_id, expires_at FROM sessions WHERE token_hash = ? AND expires_at > ? LIMIT 1"
-)
-.bind(
-tokenHash,
-new Date().toISOString()
-)
-.first();
-
-} catch (error) {
-console.error(
-"AUTH SESSION ERROR:",
-error
-);
-
-```
-return {
-  success: false
-};
-```
-
-}
-
-if (!session) {
-return {
-success: false
-};
-}
-
-return {
-success: true,
-accountId:
-Number(session.account_id)
-};
-}
-
-// ============================================================
 // LOGOUT
 // ============================================================
 
@@ -1658,7 +918,8 @@ if (request.method !== "POST") {
 return json(
 {
 success: false,
-message: "Method not allowed."
+message:
+"Method not allowed."
 },
 405
 );
@@ -1670,10 +931,7 @@ request,
 "haleel_session"
 );
 
-if (
-token &&
-env.ACCOUNTS_DB
-) {
+if (token && env.ACCOUNTS_DB) {
 try {
 const tokenHash =
 await sha256(token);
@@ -1704,12 +962,11 @@ message:
 }),
 {
 status: 200,
+headers: {
+"Content-Type":
+"application/json; charset=UTF-8",
 
 ```
-  headers: {
-    "Content-Type":
-      "application/json; charset=UTF-8",
-
     "Cache-Control":
       "no-store",
 
@@ -1723,12 +980,651 @@ status: 200,
 }
 
 // ============================================================
+// AUTHENTICATE USER
+// ============================================================
+
+async function authenticateUser(request, env) {
+if (!env.ACCOUNTS_DB) {
+return null;
+}
+
+const token =
+getCookie(
+request,
+"haleel_session"
+);
+
+if (!token) {
+return null;
+}
+
+let tokenHash;
+
+try {
+tokenHash =
+await sha256(token);
+} catch {
+return null;
+}
+
+try {
+const session =
+await env.ACCOUNTS_DB
+.prepare(
+"SELECT account_id, expires_at FROM sessions WHERE token_hash = ? AND expires_at > ? LIMIT 1"
+)
+.bind(
+tokenHash,
+new Date().toISOString()
+)
+.first();
+
+```
+if (!session) {
+  return null;
+}
+
+return {
+  accountId:
+    Number(session.account_id),
+
+  tokenHash: tokenHash
+};
+```
+
+} catch (error) {
+console.error(
+"AUTHENTICATION ERROR:",
+error
+);
+
+```
+return null;
+```
+
+}
+}
+
+// ============================================================
+// UPLOAD PROFILE PICTURE
+// ============================================================
+
+async function uploadProfilePicture(request, env) {
+if (request.method !== "POST") {
+return json(
+{
+success: false,
+message:
+"Method not allowed."
+},
+405
+);
+}
+
+if (!env.ACCOUNTS_DB) {
+return json(
+{
+success: false,
+message:
+"Accounts database is not connected."
+},
+500
+);
+}
+
+if (!env.PROFILE_BUCKET) {
+return json(
+{
+success: false,
+message:
+"Profile picture storage is not connected."
+},
+500
+);
+}
+
+const auth =
+await authenticateUser(
+request,
+env
+);
+
+if (!auth) {
+return json(
+{
+success: false,
+message:
+"You must be logged in."
+},
+401
+);
+}
+
+let formData;
+
+try {
+formData =
+await request.formData();
+
+} catch (error) {
+console.error(
+"PROFILE FORM ERROR:",
+error
+);
+
+```
+return json(
+  {
+    success: false,
+    message:
+      "Invalid upload request."
+  },
+  400
+);
+```
+
+}
+
+const file =
+formData.get("profilePicture") ||
+formData.get("profile_picture") ||
+formData.get("file");
+
+if (!(file instanceof File)) {
+return json(
+{
+success: false,
+message:
+"Profile picture file is required."
+},
+400
+);
+}
+
+if (!file.size) {
+return json(
+{
+success: false,
+message:
+"The selected image is empty."
+},
+400
+);
+}
+
+if (file.size > MAX_PROFILE_IMAGE_SIZE) {
+return json(
+{
+success: false,
+message:
+"Profile picture must be 5 MB or smaller."
+},
+413
+);
+}
+
+const contentType =
+String(file.type || "")
+.toLowerCase();
+
+const extension =
+ALLOWED_PROFILE_TYPES[contentType];
+
+if (!extension) {
+return json(
+{
+success: false,
+message:
+"Only JPG, PNG, WEBP and GIF images are allowed."
+},
+415
+);
+}
+
+const accountId =
+String(auth.accountId)
+.padStart(7, "0");
+
+const uniqueId =
+crypto.randomUUID();
+
+const objectKey =
+"profile-pictures/" +
+accountId +
+"/" +
+uniqueId +
+"." +
+extension;
+
+let oldProfilePicture = null;
+
+try {
+const oldUser =
+await env.ACCOUNTS_DB
+.prepare(
+"SELECT profile_picture FROM users WHERE account_id = ? LIMIT 1"
+)
+.bind(auth.accountId)
+.first();
+
+```
+if (oldUser) {
+  oldProfilePicture =
+    oldUser.profile_picture || null;
+}
+```
+
+} catch (error) {
+console.error(
+"OLD PROFILE LOOKUP ERROR:",
+error
+);
+
+```
+return json(
+  {
+    success: false,
+    message:
+      "Unable to read current profile picture."
+  },
+  500
+);
+```
+
+}
+
+try {
+await env.PROFILE_BUCKET.put(
+objectKey,
+file.stream(),
+{
+httpMetadata: {
+contentType: contentType,
+cacheControl:
+"private, max-age=3600"
+}
+}
+);
+
+} catch (error) {
+console.error(
+"R2 PROFILE UPLOAD ERROR:",
+error
+);
+
+```
+return json(
+  {
+    success: false,
+    message:
+      "Unable to save profile picture."
+  },
+  500
+);
+```
+
+}
+
+try {
+await env.ACCOUNTS_DB
+.prepare(
+"UPDATE users SET profile_picture = ? WHERE account_id = ?"
+)
+.bind(
+objectKey,
+auth.accountId
+)
+.run();
+
+} catch (error) {
+console.error(
+"PROFILE DATABASE UPDATE ERROR:",
+error
+);
+
+```
+try {
+  await env.PROFILE_BUCKET.delete(
+    objectKey
+  );
+} catch (deleteError) {
+  console.error(
+    "ROLLBACK R2 DELETE ERROR:",
+    deleteError
+  );
+}
+
+return json(
+  {
+    success: false,
+    message:
+      "Unable to save profile picture information."
+  },
+  500
+);
+```
+
+}
+
+if (
+oldProfilePicture &&
+oldProfilePicture !== objectKey
+) {
+try {
+await env.PROFILE_BUCKET.delete(
+oldProfilePicture
+);
+} catch (error) {
+console.error(
+"OLD PROFILE DELETE ERROR:",
+error
+);
+}
+}
+
+return json({
+success: true,
+profilePicture: objectKey,
+message:
+"Profile picture updated successfully."
+});
+}
+
+// ============================================================
+// GET PROFILE PICTURE
+// ============================================================
+
+async function getProfilePicture(request, env) {
+if (request.method !== "GET") {
+return json(
+{
+success: false,
+message:
+"Method not allowed."
+},
+405
+);
+}
+
+if (!env.ACCOUNTS_DB || !env.PROFILE_BUCKET) {
+return json(
+{
+success: false,
+message:
+"Profile picture service is not connected."
+},
+500
+);
+}
+
+const auth =
+await authenticateUser(
+request,
+env
+);
+
+if (!auth) {
+return json(
+{
+success: false,
+message:
+"You must be logged in."
+},
+401
+);
+}
+
+let user;
+
+try {
+user =
+await env.ACCOUNTS_DB
+.prepare(
+"SELECT profile_picture FROM users WHERE account_id = ? LIMIT 1"
+)
+.bind(auth.accountId)
+.first();
+
+} catch (error) {
+console.error(
+"PROFILE LOOKUP ERROR:",
+error
+);
+
+```
+return json(
+  {
+    success: false,
+    message:
+      "Unable to read profile picture."
+  },
+  500
+);
+```
+
+}
+
+if (
+!user ||
+!user.profile_picture
+) {
+return json(
+{
+success: false,
+message:
+"No profile picture found."
+},
+404
+);
+}
+
+let object;
+
+try {
+object =
+await env.PROFILE_BUCKET.get(
+user.profile_picture
+);
+
+} catch (error) {
+console.error(
+"R2 PROFILE GET ERROR:",
+error
+);
+
+```
+return json(
+  {
+    success: false,
+    message:
+      "Unable to load profile picture."
+  },
+  500
+);
+```
+
+}
+
+if (!object) {
+return json(
+{
+success: false,
+message:
+"Profile picture file was not found."
+},
+404
+);
+}
+
+const headers =
+new Headers();
+
+object.writeHttpMetadata(
+headers
+);
+
+headers.set(
+"ETag",
+object.httpEtag
+);
+
+headers.set(
+"Cache-Control",
+"private, max-age=3600"
+);
+
+return new Response(
+object.body,
+{
+status: 200,
+headers: headers
+}
+);
+}
+
+// ============================================================
+// DELETE PROFILE PICTURE
+// ============================================================
+
+async function deleteProfilePicture(request, env) {
+if (request.method !== "DELETE") {
+return json(
+{
+success: false,
+message:
+"Method not allowed."
+},
+405
+);
+}
+
+if (!env.ACCOUNTS_DB || !env.PROFILE_BUCKET) {
+return json(
+{
+success: false,
+message:
+"Profile picture service is not connected."
+},
+500
+);
+}
+
+const auth =
+await authenticateUser(
+request,
+env
+);
+
+if (!auth) {
+return json(
+{
+success: false,
+message:
+"You must be logged in."
+},
+401
+);
+}
+
+let user;
+
+try {
+user =
+await env.ACCOUNTS_DB
+.prepare(
+"SELECT profile_picture FROM users WHERE account_id = ? LIMIT 1"
+)
+.bind(auth.accountId)
+.first();
+
+} catch (error) {
+console.error(
+"PROFILE DELETE LOOKUP ERROR:",
+error
+);
+
+```
+return json(
+  {
+    success: false,
+    message:
+      "Unable to find profile picture."
+  },
+  500
+);
+```
+
+}
+
+if (
+user &&
+user.profile_picture
+) {
+try {
+await env.PROFILE_BUCKET.delete(
+user.profile_picture
+);
+
+```
+} catch (error) {
+  console.error(
+    "R2 PROFILE DELETE ERROR:",
+    error
+  );
+
+  return json(
+    {
+      success: false,
+      message:
+        "Unable to delete profile picture."
+    },
+    500
+  );
+}
+```
+
+}
+
+try {
+await env.ACCOUNTS_DB
+.prepare(
+"UPDATE users SET profile_picture = NULL WHERE account_id = ?"
+)
+.bind(auth.accountId)
+.run();
+
+} catch (error) {
+console.error(
+"PROFILE CLEAR DATABASE ERROR:",
+error
+);
+
+```
+return json(
+  {
+    success: false,
+    message:
+      "Unable to clear profile picture information."
+  },
+  500
+);
+```
+
+}
+
+return json({
+success: true,
+profilePicture: null,
+message:
+"Profile picture deleted successfully."
+});
+}
+
+// ============================================================
 // BUILD SESSION
 // ============================================================
 
-async function buildSession(
-accountId
-) {
+async function buildSession(accountId) {
 const tokenBytes =
 new Uint8Array(32);
 
@@ -1757,20 +1653,23 @@ SESSION_DAYS *
 const cookie =
 "haleel_session=" +
 token +
-"; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=" +
-(
+"; " +
+"HttpOnly; " +
+"Secure; " +
+"SameSite=Lax; " +
+"Path=/; " +
+"Max-Age=" +
 SESSION_DAYS *
 24 *
 60 *
-60
-);
+60;
 
 return {
-accountId,
-token,
-tokenHash,
-expiresAt,
-cookie
+accountId: accountId,
+token: token,
+tokenHash: tokenHash,
+expiresAt: expiresAt,
+cookie: cookie
 };
 }
 
@@ -1814,9 +1713,7 @@ new Uint8Array(hash)
 // PASSWORD HASH
 // ============================================================
 
-async function hashPassword(
-password
-) {
+async function hashPassword(password) {
 const salt =
 new Uint8Array(16);
 
@@ -1827,9 +1724,7 @@ salt
 const key =
 await crypto.subtle.importKey(
 "raw",
-new TextEncoder().encode(
-password
-),
+new TextEncoder().encode(password),
 {
 name: "PBKDF2"
 },
@@ -1841,21 +1736,14 @@ const bits =
 await crypto.subtle.deriveBits(
 {
 name: "PBKDF2",
-
-```
-    salt,
-
-    iterations:
-      PBKDF2_ITERATIONS,
-
-    hash: "SHA-256"
-  },
-
-  key,
-
-  PASSWORD_HASH_LENGTH
+salt: salt,
+iterations:
+PBKDF2_ITERATIONS,
+hash: "SHA-256"
+},
+key,
+PASSWORD_HASH_LENGTH
 );
-```
 
 const hash =
 new Uint8Array(bits);
@@ -1928,9 +1816,7 @@ return false;
 const key =
 await crypto.subtle.importKey(
 "raw",
-new TextEncoder().encode(
-password
-),
+new TextEncoder().encode(password),
 {
 name: "PBKDF2"
 },
@@ -1942,20 +1828,13 @@ const bits =
 await crypto.subtle.deriveBits(
 {
 name: "PBKDF2",
-
-```
-    salt,
-
-    iterations,
-
-    hash: "SHA-256"
-  },
-
-  key,
-
-  expectedHash.length * 8
+salt: salt,
+iterations: iterations,
+hash: "SHA-256"
+},
+key,
+expectedHash.length * 8
 );
-```
 
 const actualHash =
 new Uint8Array(bits);
@@ -1970,10 +1849,7 @@ expectedHash
 // TIMING-SAFE COMPARISON
 // ============================================================
 
-function timingSafeEqual(
-a,
-b
-) {
+function timingSafeEqual(a, b) {
 if (a.length !== b.length) {
 return false;
 }
@@ -1996,10 +1872,7 @@ return difference === 0;
 // COOKIE READER
 // ============================================================
 
-function getCookie(
-request,
-name
-) {
+function getCookie(request, name) {
 const cookieHeader =
 request.headers.get("Cookie");
 
@@ -2047,12 +1920,9 @@ return null;
 // JSON READER
 // ============================================================
 
-async function readJSON(
-request
-) {
+async function readJSON(request) {
 try {
 return await request.json();
-
 } catch {
 return null;
 }
@@ -2069,13 +1939,12 @@ status = 200
 return new Response(
 JSON.stringify(data),
 {
-status,
+status: status,
+headers: {
+"Content-Type":
+"application/json; charset=UTF-8",
 
 ```
-  headers: {
-    "Content-Type":
-      "application/json; charset=UTF-8",
-
     "Cache-Control":
       "no-store"
   }
@@ -2089,9 +1958,7 @@ status,
 // BYTES → BASE64URL
 // ============================================================
 
-function bytesToBase64Url(
-bytes
-) {
+function bytesToBase64Url(bytes) {
 let binary = "";
 
 for (const byte of bytes) {
@@ -2109,9 +1976,7 @@ return btoa(binary)
 // BASE64URL → BYTES
 // ============================================================
 
-function base64UrlToBytes(
-value
-) {
+function base64UrlToBytes(value) {
 const base64 =
 value
 .replace(/-/g, "+")
@@ -2123,9 +1988,7 @@ const padding =
 );
 
 const binary =
-atob(
-base64 + padding
-);
+atob(base64 + padding);
 
 const bytes =
 new Uint8Array(
