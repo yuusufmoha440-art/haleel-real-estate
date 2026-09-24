@@ -21,7 +21,6 @@ export default {
 async fetch(request, env) {
 const url = new URL(request.url);
 
-```
 try {
   if (url.pathname === "/api/signup") {
     return await signup(request, env);
@@ -74,7 +73,6 @@ try {
     500
   );
 }
-```
 
 }
 };
@@ -244,7 +242,6 @@ existingPhone = await env.ACCOUNTS_DB
 } catch (error) {
 console.error("PHONE CHECK ERROR:", error);
 
-```
 return json(
   {
     success: false,
@@ -252,7 +249,6 @@ return json(
   },
   500
 );
-```
 
 }
 
@@ -282,7 +278,6 @@ console.error(
 error
 );
 
-```
 return json(
   {
     success: false,
@@ -291,7 +286,6 @@ return json(
   },
   500
 );
-```
 
 }
 
@@ -334,7 +328,6 @@ console.error(
 error
 );
 
-```
 return json(
   {
     success: false,
@@ -343,7 +336,6 @@ return json(
   },
   500
 );
-```
 
 }
 
@@ -358,7 +350,6 @@ console.error(
 error
 );
 
-```
 return json(
   {
     success: false,
@@ -367,7 +358,6 @@ return json(
   },
   500
 );
-```
 
 }
 
@@ -387,7 +377,6 @@ null
 )
 .run();
 
-```
 await env.ACCOUNTS_DB
   .prepare(
     "UPDATE account_sequence SET next_id = next_id + 1 WHERE id = 1 AND next_id = ?"
@@ -405,7 +394,6 @@ await env.ACCOUNTS_DB
     session.expiresAt
   )
   .run();
-```
 
 } catch (error) {
 console.error(
@@ -413,7 +401,6 @@ console.error(
 error
 );
 
-```
 return json(
   {
     success: false,
@@ -422,7 +409,6 @@ return json(
   },
   500
 );
-```
 
 }
 
@@ -536,7 +522,6 @@ console.error(
 error
 );
 
-```
 return json(
   {
     success: false,
@@ -545,7 +530,6 @@ return json(
   },
   500
 );
-```
 
 }
 
@@ -575,9 +559,7 @@ console.error(
 error
 );
 
-```
 return invalidLogin();
-```
 
 }
 
@@ -599,7 +581,6 @@ console.error(
 error
 );
 
-```
 return json(
   {
     success: false,
@@ -608,7 +589,6 @@ return json(
   },
   500
 );
-```
 
 }
 
@@ -630,7 +610,6 @@ console.error(
 error
 );
 
-```
 return json(
   {
     success: false,
@@ -639,7 +618,6 @@ return json(
   },
   500
 );
-```
 
 }
 
@@ -682,7 +660,6 @@ success: true,
       session.cookie
   }
 }
-```
 
 );
 }
@@ -756,7 +733,6 @@ console.error(
 error
 );
 
-```
 return json(
   {
     success: false,
@@ -764,7 +740,6 @@ return json(
   },
   500
 );
-```
 
 }
 
@@ -788,7 +763,6 @@ console.error(
 error
 );
 
-```
 return json(
   {
     success: false,
@@ -796,7 +770,6 @@ return json(
   },
   500
 );
-```
 
 }
 
@@ -812,7 +785,6 @@ headers: {
 "Content-Type":
 "application/json; charset=UTF-8",
 
-```
       "Cache-Control":
         "no-store",
 
@@ -821,7 +793,6 @@ headers: {
     }
   }
 );
-```
 
 }
 
@@ -843,7 +814,6 @@ console.error(
 error
 );
 
-```
 return json(
   {
     success: false,
@@ -851,7 +821,6 @@ return json(
   },
   500
 );
-```
 
 }
 
@@ -867,7 +836,6 @@ headers: {
 "Content-Type":
 "application/json; charset=UTF-8",
 
-```
       "Cache-Control":
         "no-store",
 
@@ -876,7 +844,6 @@ headers: {
     }
   }
 );
-```
 
 }
 
@@ -884,7 +851,6 @@ return json({
 success: true,
 loggedIn: true,
 
-```
 accountId:
   String(session.account_id)
     .padStart(7, "0"),
@@ -903,7 +869,6 @@ phoneNumber:
 
 profilePicture:
   user.profile_picture || null
-```
 
 });
 }
@@ -935,7 +900,6 @@ try {
 const tokenHash =
 await sha256(token);
 
-```
   await env.ACCOUNTS_DB
     .prepare(
       "DELETE FROM sessions WHERE token_hash = ?"
@@ -949,7 +913,6 @@ await sha256(token);
     error
   );
 }
-```
 
 }
 
@@ -965,7 +928,6 @@ headers: {
 "Content-Type":
 "application/json; charset=UTF-8",
 
-```
     "Cache-Control":
       "no-store",
 
@@ -973,7 +935,6 @@ headers: {
       clearSessionCookie()
   }
 }
-```
 
 );
 }
@@ -1018,7 +979,6 @@ new Date().toISOString()
 )
 .first();
 
-```
 if (!session) {
   return null;
 }
@@ -1029,7 +989,6 @@ return {
 
   tokenHash: tokenHash
 };
-```
 
 } catch (error) {
 console.error(
@@ -1037,9 +996,7 @@ console.error(
 error
 );
 
-```
 return null;
-```
 
 }
 }
@@ -1111,7 +1068,6 @@ console.error(
 error
 );
 
-```
 return json(
   {
     success: false,
@@ -1120,7 +1076,6 @@ return json(
   },
   400
 );
-```
 
 }
 
@@ -1206,12 +1161,10 @@ await env.ACCOUNTS_DB
 .bind(auth.accountId)
 .first();
 
-```
 if (oldUser) {
   oldProfilePicture =
     oldUser.profile_picture || null;
 }
-```
 
 } catch (error) {
 console.error(
@@ -1219,7 +1172,6 @@ console.error(
 error
 );
 
-```
 return json(
   {
     success: false,
@@ -1228,7 +1180,6 @@ return json(
   },
   500
 );
-```
 
 }
 
@@ -1251,7 +1202,6 @@ console.error(
 error
 );
 
-```
 return json(
   {
     success: false,
@@ -1260,7 +1210,6 @@ return json(
   },
   500
 );
-```
 
 }
 
@@ -1281,7 +1230,6 @@ console.error(
 error
 );
 
-```
 try {
   await env.PROFILE_BUCKET.delete(
     objectKey
@@ -1301,7 +1249,6 @@ return json(
   },
   500
 );
-```
 
 }
 
@@ -1390,7 +1337,6 @@ console.error(
 error
 );
 
-```
 return json(
   {
     success: false,
@@ -1399,7 +1345,6 @@ return json(
   },
   500
 );
-```
 
 }
 
@@ -1431,7 +1376,6 @@ console.error(
 error
 );
 
-```
 return json(
   {
     success: false,
@@ -1440,7 +1384,6 @@ return json(
   },
   500
 );
-```
 
 }
 
@@ -1542,7 +1485,6 @@ console.error(
 error
 );
 
-```
 return json(
   {
     success: false,
@@ -1551,7 +1493,6 @@ return json(
   },
   500
 );
-```
 
 }
 
@@ -1564,7 +1505,6 @@ await env.PROFILE_BUCKET.delete(
 user.profile_picture
 );
 
-```
 } catch (error) {
   console.error(
     "R2 PROFILE DELETE ERROR:",
@@ -1580,7 +1520,6 @@ user.profile_picture
     500
   );
 }
-```
 
 }
 
@@ -1598,7 +1537,6 @@ console.error(
 error
 );
 
-```
 return json(
   {
     success: false,
@@ -1607,7 +1545,6 @@ return json(
   },
   500
 );
-```
 
 }
 
@@ -1794,12 +1731,10 @@ base64UrlToBytes(
 parts[2]
 );
 
-```
 expectedHash =
   base64UrlToBytes(
     parts[3]
   );
-```
 
 } catch {
 return false;
@@ -1886,7 +1821,6 @@ for (const cookie of cookies) {
 const trimmed =
 cookie.trim();
 
-```
 const separator =
   trimmed.indexOf("=");
 
@@ -1908,7 +1842,6 @@ const value =
 if (key === name) {
   return value || null;
 }
-```
 
 }
 
@@ -1943,12 +1876,10 @@ headers: {
 "Content-Type":
 "application/json; charset=UTF-8",
 
-```
     "Cache-Control":
       "no-store"
   }
 }
-```
 
 );
 }
