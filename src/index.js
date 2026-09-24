@@ -398,8 +398,7 @@ return json(
 // ----------------------------------------------------------
 
 try {
-await env.ACCOUNTS_DB.batch([
-env.ACCOUNTS_DB
+await env.ACCOUNTS_DB
 .prepare(
 "INSERT INTO users (account_id, first_name, middle_name, last_name, password_hash, phone_number, profile_picture) VALUES (?, ?, ?, ?, ?, ?, ?)"
 )
@@ -411,25 +410,27 @@ lastName,
 passwordHash,
 phoneNumber,
 null
-),
+)
+.run();
 
 ```
-  env.ACCOUNTS_DB
-    .prepare(
-      "UPDATE account_sequence SET next_id = next_id + 1 WHERE id = 1 AND next_id = ?"
-    )
-    .bind(accountId),
+await env.ACCOUNTS_DB
+  .prepare(
+    "UPDATE account_sequence SET next_id = next_id + 1 WHERE id = 1 AND next_id = ?"
+  )
+  .bind(accountId)
+  .run();
 
-  env.ACCOUNTS_DB
-    .prepare(
-      "INSERT INTO sessions (account_id, token_hash, expires_at) VALUES (?, ?, ?)"
-    )
-    .bind(
-      accountId,
-      session.tokenHash,
-      session.expiresAt
-    )
-]);
+await env.ACCOUNTS_DB
+  .prepare(
+    "INSERT INTO sessions (account_id, token_hash, expires_at) VALUES (?, ?, ?)"
+  )
+  .bind(
+    accountId,
+    session.tokenHash,
+    session.expiresAt
+  )
+  .run();
 ```
 
 } catch (error) {
