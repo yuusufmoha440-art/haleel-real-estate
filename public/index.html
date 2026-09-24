@@ -5617,7 +5617,34 @@ async function createAccount(){
      * Cloudflare R2, kadibna /api/me ayaa dib u soo celinaya
      * in account-kan uu leeyahay profile picture.
      */
-    showAccountCreated(String(newId),firstName,middleName,lastName,created_at);
+    /*
+     * created_at-ka halkan lagama heli karo variable-ka settings-ka,
+     * sababtoo ah wuxuu ku jiraa function kale (scope kale).
+     * Signup response-ka ama /api/me ayaa laga soo qaadanayaa
+     * taariikhda saxda ah ee Cloudflare D1.
+     */
+    let createdAt =
+      data?.created_at ||
+      data?.user?.created_at ||
+      "";
+
+    if(!createdAt){
+      try{
+        const meData = await authApi("/api/me");
+        createdAt =
+          meData?.created_at ||
+          meData?.user?.created_at ||
+          "";
+      }catch(_){}
+    }
+
+    showAccountCreated(
+      String(newId),
+      firstName,
+      middleName,
+      lastName,
+      createdAt
+    );
 
   }catch(error){
     authMessage(
