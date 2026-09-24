@@ -5324,13 +5324,12 @@ function updateSettingsAccount(user){
   const profileIcon=$("settingsAccountProfileIcon");
 
   if(profileImg){
-    if(profilePicture){
-      loadR2ProfilePicture(profileImg,profileIcon);
-    }else{
-      profileImg.removeAttribute("src");
-      profileImg.style.display="none";
-      if(profileIcon) profileIcon.style.display="block";
-    }
+    /*
+     * Sawirka account-ka waxaa laga akhriyaa Worker endpoint-ka
+     * /api/profile-picture, kaas oo R2 ka soo saaraya sawirka
+     * account-ka hadda ku jira session-ka.
+     */
+    loadR2ProfilePicture(profileImg,profileIcon);
   }
 }
 
@@ -5354,7 +5353,7 @@ function openDashboardForUser(user){
       </div>`;
 
     const dashboardPhoto=$("dashboardProfilePhoto");
-    if(user?.profilePicture && dashboardPhoto){
+    if(dashboardPhoto){
       loadR2ProfilePicture(dashboardPhoto,null,true);
     }
   }
@@ -5594,7 +5593,11 @@ async function createAccount(){
       /* Worker-ku wuxuu filayaa phoneNumber, ma aha number. */
       phoneNumber:number,
       password,
-      /* Sawirka waxaa loo diraa Worker-ka haddii endpoint-ku taageero profilePicture. */
+      /*
+       * Sawirka Add Profile Picture waxaa loo diraa Worker-ka.
+       * Worker-ka /api/signup waa inuu base64-kan ku kaydiyaa R2
+       * oo metadata/key-ga ku xafidaa D1.
+       */
       profilePicture: authProfilePictureData || null
     });
 
