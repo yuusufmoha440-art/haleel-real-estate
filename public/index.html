@@ -5308,33 +5308,24 @@ function updateSettingsAccount(user){
   if(createdEl) createdEl.textContent=formatAccountCreatedDate(createdAt);
 
   /*
-   * Settings > Account:
-   * Marka hore isticmaal profilePicture-ka uu backend-ku soo celiyo.
-   * Haddii backend-ku uusan weli soo celin, isticmaal sawirka
-   * browser-ka lagu kaydiyey ee account-kan.
+   * Profile Picture:
+   * Sawirka waxaa hadda laga soo qaadanayaa Cloudflare R2
+   * iyadoo Worker-ku xaqiijinayo session-ka account-ka.
+   * Browser localStorage laguma kaydinayo sawirka.
    */
-  let profilePicture =
+  const profilePicture =
     user?.profilePicture ||
     user?.profile_picture ||
     user?.profileImage ||
     user?.profile_image ||
     "";
 
-  if(!profilePicture && accountId){
-    try{
-      profilePicture =
-        localStorage.getItem("haleelProfilePicture:" + String(accountId)) || "";
-    }catch(e){}
-  }
-
   const profileImg=$("settingsAccountProfileImage");
   const profileIcon=$("settingsAccountProfileIcon");
 
   if(profileImg){
     if(profilePicture){
-      profileImg.src=profilePicture;
-      profileImg.style.display="block";
-      if(profileIcon) profileIcon.style.display="none";
+      loadR2ProfilePicture(profileImg,profileIcon);
     }else{
       profileImg.removeAttribute("src");
       profileImg.style.display="none";
@@ -5356,21 +5347,15 @@ function openDashboardForUser(user){
 
   const display=$("userDisplay");
   if(display){
-    const savedProfile = (() => {
-      try{
-        return accountId ? localStorage.getItem("haleelProfilePicture:" + String(accountId)) : "";
-      }catch(e){ return ""; }
-    })();
+    display.innerHTML =
+      `<div style="display:flex;align-items:center;gap:10px">
+        <span id="dashboardProfilePhoto" style="width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#eaf5ff;color:#006CC2;font-size:18px;overflow:hidden;border:2px solid rgba(0,108,194,.18)">👤</span>
+        <span>${escapeHTML(name)}<small style="display:block;color:#718096;margin-top:3px">ID: ${escapeHTML(String(accountId))}</small></span>
+      </div>`;
 
-    if(savedProfile){
-      display.innerHTML =
-        `<div style="display:flex;align-items:center;gap:10px">
-          <img src="${savedProfile}" alt="Profile" style="width:38px;height:38px;border-radius:50%;object-fit:cover;border:2px solid rgba(0,108,194,.18)">
-          <span>${escapeHTML(name)}<small style="display:block;color:#718096;margin-top:3px">ID: ${escapeHTML(String(accountId))}</small></span>
-        </div>`;
-    }else{
-      display.innerHTML =
-        `${escapeHTML(name)}<small style="display:block;color:#718096;margin-top:3px">ID: ${escapeHTML(String(accountId))}</small>`;
+    const dashboardPhoto=$("dashboardProfilePhoto");
+    if(user?.profilePicture && dashboardPhoto){
+      loadR2ProfilePicture(dashboardPhoto,null,true);
     }
   }
 
@@ -5458,6 +5443,58 @@ async function authLogin(){
 }
 
 let authProfilePictureData = "";
+let activeProfileObjectUrl = "";
+
+async function loadR2ProfilePicture(target, iconTarget=null, compact=false){
+  if(!target) return;
+
+  try{
+    const response=await fetch(HALEEL_AUTH_API+"/api/profile-picture",{
+      method:"GET",
+      credentials:"include",
+      cache:"no-store"
+    });
+
+    if(!response.ok){
+      throw new Error("Profile picture not available");
+    }
+
+    const blob=await response.blob();
+    if(!blob.type.startsWith("image/")){
+      throw new Error("Invalid profile image");
+    }
+
+    const objectUrl=URL.createObjectURL(blob);
+
+    if(activeProfileObjectUrl){
+      try{ URL.revokeObjectURL(activeProfileObjectUrl); }catch(e){}
+    }
+    activeProfileObjectUrl=objectUrl;
+
+    if(target.tagName==="IMG"){
+      target.src=objectUrl;
+      target.style.display="block";
+      if(iconTarget) iconTarget.style.display="none";
+    }else{
+      target.innerHTML="";
+      target.style.backgroundImage=`url("${objectUrl}")`;
+      target.style.backgroundSize="cover";
+      target.style.backgroundPosition="center";
+      target.style.backgroundRepeat="no-repeat";
+      target.style.color="transparent";
+    }
+  }catch(error){
+    if(target.tagName==="IMG"){
+      target.removeAttribute("src");
+      target.style.display="none";
+      if(iconTarget) iconTarget.style.display="block";
+    }else{
+      target.style.backgroundImage="";
+      target.textContent="👤";
+      target.style.color="#006CC2";
+    }
+  }
+}
 
 function resetAuthProfilePictureUI(){
   authProfilePictureData = "";
@@ -5516,23 +5553,6 @@ function handleAuthProfilePicture(event){
   reader.readAsDataURL(file);
 }
 
-function restoreSavedProfilePicture(accountId){
-  const img = $("authProfileImage");
-  const icon = $("authProfilePreviewIcon");
-  const remove = $("authProfileRemove");
-  if(!accountId || !img) return;
-
-  try{
-    const saved = localStorage.getItem("haleelProfilePicture:" + String(accountId));
-    if(saved){
-      authProfilePictureData = saved;
-      img.src = saved;
-      img.style.display = "block";
-      if(icon) icon.style.display = "none";
-      if(remove) remove.style.display = "inline-flex";
-    }
-  }catch(e){}
-}
 
 document.addEventListener("DOMContentLoaded",()=>{
   $("authProfilePicture")?.addEventListener("change",handleAuthProfilePicture);
@@ -5591,16 +5611,12 @@ async function createAccount(){
     $("authLoginPassword").value="";
     localStorage.setItem("haleelAccountId",String(newId));
 
-    /* Fallback frontend storage: profile-ku wuxuu ku sii jiri karaa browser-kan
-       xitaa haddii Worker-ku uusan weli kaydin profilePicture. */
-    if(authProfilePictureData){
-      try{
-        localStorage.setItem("haleelProfilePicture:" + String(newId),authProfilePictureData);
-      }catch(e){
-        /* Haddii browser storage-ku buuxsamo, account creation weli wuu soconayaa. */
-      }
-    }
-
+    /*
+     * Sawirka lama gelin localStorage.
+     * Worker-ka ayaa signup-ka dhexdiisa ku kaydinaya
+     * Cloudflare R2, kadibna /api/me ayaa dib u soo celinaya
+     * in account-kan uu leeyahay profile picture.
+     */
     showAccountCreated(String(newId),firstName,middleName,lastName,createdAt);
 
   }catch(error){
