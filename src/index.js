@@ -232,7 +232,7 @@ message: "Password is too long."
 }
 
 // ----------------------------------------------------------
-// CHECK DUPLICATE PHONE
+// CHECK DUPLICATE PHONE NUMBER
 // ----------------------------------------------------------
 
 let existingPhone;
@@ -384,20 +384,31 @@ return json(
 
 // ----------------------------------------------------------
 // SAVE USER
+//
+// users schema:
+// id
+// account_id
+// created_at
+// first_name
+// middle_name
+// last_name
+// password_hash
+// phone_number
+// profile_picture
 // ----------------------------------------------------------
 
 try {
 await env.ACCOUNTS_DB.batch([
 env.ACCOUNTS_DB
 .prepare(
-"INSERT INTO users (account_id, password_hash, first_name, middle_name, last_name, phone_number, profile_picture) VALUES (?, ?, ?, ?, ?, ?, ?)"
+"INSERT INTO users (account_id, first_name, middle_name, last_name, password_hash, phone_number, profile_picture) VALUES (?, ?, ?, ?, ?, ?, ?)"
 )
 .bind(
 accountId,
-passwordHash,
 firstName,
 middleName,
 lastName,
+passwordHash,
 phoneNumber,
 null
 ),
@@ -446,23 +457,26 @@ return new Response(
 JSON.stringify({
 success: true,
 accountId: formattedAccountId,
-firstName: firstName,
-middleName: middleName,
-lastName: lastName,
-phoneNumber: phoneNumber,
+firstName,
+middleName,
+lastName,
+phoneNumber,
 profilePicture: null,
 message: "Account created successfully."
 }),
 {
 status: 201,
-headers: {
-"Content-Type":
-"application/json; charset=UTF-8",
 
 ```
-    "Cache-Control": "no-store",
+  headers: {
+    "Content-Type":
+      "application/json; charset=UTF-8",
 
-    "Set-Cookie": session.cookie
+    "Cache-Control":
+      "no-store",
+
+    "Set-Cookie":
+      session.cookie
   }
 }
 ```
@@ -523,7 +537,8 @@ if (!password) {
 return invalidLogin();
 }
 
-const numericAccountId = Number(accountId);
+const numericAccountId =
+Number(accountId);
 
 if (
 !Number.isInteger(numericAccountId) ||
@@ -800,7 +815,8 @@ return json(
 let session;
 
 try {
-session = await env.ACCOUNTS_DB
+session =
+await env.ACCOUNTS_DB
 .prepare(
 "SELECT account_id, expires_at FROM sessions WHERE token_hash = ? AND expires_at > ? LIMIT 1"
 )
@@ -854,10 +870,15 @@ status: 401,
 
 }
 
+// ----------------------------------------------------------
+// GET USER
+// ----------------------------------------------------------
+
 let user;
 
 try {
-user = await env.ACCOUNTS_DB
+user =
+await env.ACCOUNTS_DB
 .prepare(
 "SELECT first_name, middle_name, last_name, phone_number, profile_picture FROM users WHERE account_id = ? LIMIT 1"
 )
@@ -967,7 +988,8 @@ if (!env.PROFILE_BUCKET) {
 return json(
 {
 success: false,
-message: "Profile image storage is not connected."
+message:
+"Profile image storage is not connected."
 },
 500
 );
@@ -992,11 +1014,16 @@ message: "You must be logged in."
 const contentType =
 request.headers.get("Content-Type") || "";
 
-if (!contentType.toLowerCase().startsWith("multipart/form-data")) {
+if (
+!contentType
+.toLowerCase()
+.startsWith("multipart/form-data")
+) {
 return json(
 {
 success: false,
-message: "Please upload an image file."
+message:
+"Please upload an image file."
 },
 400
 );
@@ -1018,7 +1045,8 @@ error
 return json(
   {
     success: false,
-    message: "Unable to read uploaded image."
+    message:
+      "Unable to read uploaded image."
   },
   400
 );
@@ -1046,7 +1074,8 @@ if (file.size <= 0) {
 return json(
 {
 success: false,
-message: "The image file is empty."
+message:
+"The image file is empty."
 },
 400
 );
@@ -1078,7 +1107,7 @@ message:
 }
 
 // ----------------------------------------------------------
-// READ OLD PROFILE PICTURE
+// READ OLD R2 KEY
 // ----------------------------------------------------------
 
 let oldProfilePicture = null;
@@ -1093,9 +1122,14 @@ await env.ACCOUNTS_DB
 .first();
 
 ```
-if (oldUser && oldUser.profile_picture) {
+if (
+  oldUser &&
+  oldUser.profile_picture
+) {
   oldProfilePicture =
-    String(oldUser.profile_picture);
+    String(
+      oldUser.profile_picture
+    );
 }
 ```
 
@@ -1107,25 +1141,19 @@ error
 }
 
 // ----------------------------------------------------------
-// CREATE VERSIONED R2 KEY
+// CREATE UNIQUE R2 OBJECT KEY
 // ----------------------------------------------------------
-
-const accountId =
-String(auth.accountId);
-
-const imageId =
-crypto.randomUUID();
 
 const objectKey =
 "profile-pictures/" +
-accountId +
+String(auth.accountId) +
 "/" +
-imageId +
+crypto.randomUUID() +
 "." +
 extension;
 
 // ----------------------------------------------------------
-// SAVE IMAGE TO R2
+// UPLOAD TO R2
 // ----------------------------------------------------------
 
 try {
@@ -1141,7 +1169,8 @@ cacheControl:
 
 ```
     customMetadata: {
-      accountId: accountId
+      accountId:
+        String(auth.accountId)
     }
   }
 );
@@ -1167,7 +1196,7 @@ return json(
 }
 
 // ----------------------------------------------------------
-// SAVE R2 KEY TO D1
+// SAVE R2 KEY INTO D1
 // ----------------------------------------------------------
 
 try {
@@ -1188,9 +1217,11 @@ error
 );
 
 ```
-// Remove newly uploaded image if D1 update fails.
+// Roll back the new R2 object.
 try {
-  await env.PROFILE_BUCKET.delete(objectKey);
+  await env.PROFILE_BUCKET.delete(
+    objectKey
+  );
 } catch (deleteError) {
   console.error(
     "R2 ROLLBACK ERROR:",
@@ -1211,7 +1242,7 @@ return json(
 }
 
 // ----------------------------------------------------------
-// DELETE OLD R2 IMAGE
+// DELETE OLD R2 OBJECT
 // ----------------------------------------------------------
 
 if (
@@ -1222,12 +1253,16 @@ try {
 await env.PROFILE_BUCKET.delete(
 oldProfilePicture
 );
+
+```
 } catch (error) {
-console.error(
-"OLD R2 PROFILE DELETE ERROR:",
-error
-);
+  console.error(
+    "OLD R2 PROFILE DELETE ERROR:",
+    error
+  );
 }
+```
+
 }
 
 return json({
@@ -1259,7 +1294,10 @@ message: "Method not allowed."
 );
 }
 
-if (!env.ACCOUNTS_DB || !env.PROFILE_BUCKET) {
+if (
+!env.ACCOUNTS_DB ||
+!env.PROFILE_BUCKET
+) {
 return json(
 {
 success: false,
@@ -1316,7 +1354,10 @@ return json(
 
 }
 
-if (!user || !user.profile_picture) {
+if (
+!user ||
+!user.profile_picture
+) {
 return json(
 {
 success: false,
@@ -1332,7 +1373,9 @@ let object;
 try {
 object =
 await env.PROFILE_BUCKET.get(
-String(user.profile_picture)
+String(
+user.profile_picture
+)
 );
 
 } catch (error) {
@@ -1368,7 +1411,9 @@ message:
 const headers =
 new Headers();
 
-object.writeHttpMetadata(headers);
+object.writeHttpMetadata(
+headers
+);
 
 headers.set(
 "ETag",
@@ -1404,7 +1449,10 @@ message: "Method not allowed."
 );
 }
 
-if (!env.ACCOUNTS_DB || !env.PROFILE_BUCKET) {
+if (
+!env.ACCOUNTS_DB ||
+!env.PROFILE_BUCKET
+) {
 return json(
 {
 success: false,
@@ -1462,8 +1510,11 @@ return json(
 }
 
 const objectKey =
-user && user.profile_picture
-? String(user.profile_picture)
+user &&
+user.profile_picture
+? String(
+user.profile_picture
+)
 : null;
 
 if (objectKey) {
@@ -1471,12 +1522,16 @@ try {
 await env.PROFILE_BUCKET.delete(
 objectKey
 );
+
+```
 } catch (error) {
-console.error(
-"R2 PROFILE DELETE ERROR:",
-error
-);
+  console.error(
+    "R2 PROFILE DELETE ERROR:",
+    error
+  );
 }
+```
+
 }
 
 try {
@@ -1515,10 +1570,13 @@ message:
 }
 
 // ============================================================
-// AUTHENTICATE CURRENT USER
+// AUTHENTICATE USER
 // ============================================================
 
-async function authenticateUser(request, env) {
+async function authenticateUser(
+request,
+env
+) {
 if (!env.ACCOUNTS_DB) {
 return {
 success: false
@@ -1611,7 +1669,10 @@ request,
 "haleel_session"
 );
 
-if (token && env.ACCOUNTS_DB) {
+if (
+token &&
+env.ACCOUNTS_DB
+) {
 try {
 const tokenHash =
 await sha256(token);
@@ -1664,7 +1725,9 @@ status: 200,
 // BUILD SESSION
 // ============================================================
 
-async function buildSession(accountId) {
+async function buildSession(
+accountId
+) {
 const tokenBytes =
 new Uint8Array(32);
 
@@ -1694,7 +1757,12 @@ const cookie =
 "haleel_session=" +
 token +
 "; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=" +
-(SESSION_DAYS * 24 * 60 * 60);
+(
+SESSION_DAYS *
+24 *
+60 *
+60
+);
 
 return {
 accountId,
@@ -1726,7 +1794,9 @@ return (
 
 async function sha256(value) {
 const data =
-new TextEncoder().encode(value);
+new TextEncoder().encode(
+value
+);
 
 const hash =
 await crypto.subtle.digest(
@@ -1743,7 +1813,9 @@ new Uint8Array(hash)
 // PASSWORD HASH
 // ============================================================
 
-async function hashPassword(password) {
+async function hashPassword(
+password
+) {
 const salt =
 new Uint8Array(16);
 
@@ -1754,7 +1826,9 @@ salt
 const key =
 await crypto.subtle.importKey(
 "raw",
-new TextEncoder().encode(password),
+new TextEncoder().encode(
+password
+),
 {
 name: "PBKDF2"
 },
@@ -1766,14 +1840,21 @@ const bits =
 await crypto.subtle.deriveBits(
 {
 name: "PBKDF2",
-salt: salt,
-iterations:
-PBKDF2_ITERATIONS,
-hash: "SHA-256"
-},
-key,
-PASSWORD_HASH_LENGTH
+
+```
+    salt,
+
+    iterations:
+      PBKDF2_ITERATIONS,
+
+    hash: "SHA-256"
+  },
+
+  key,
+
+  PASSWORD_HASH_LENGTH
 );
+```
 
 const hash =
 new Uint8Array(bits);
@@ -1846,7 +1927,9 @@ return false;
 const key =
 await crypto.subtle.importKey(
 "raw",
-new TextEncoder().encode(password),
+new TextEncoder().encode(
+password
+),
 {
 name: "PBKDF2"
 },
@@ -1858,13 +1941,20 @@ const bits =
 await crypto.subtle.deriveBits(
 {
 name: "PBKDF2",
-salt: salt,
-iterations: iterations,
-hash: "SHA-256"
-},
-key,
-expectedHash.length * 8
+
+```
+    salt,
+
+    iterations,
+
+    hash: "SHA-256"
+  },
+
+  key,
+
+  expectedHash.length * 8
 );
+```
 
 const actualHash =
 new Uint8Array(bits);
@@ -1879,7 +1969,10 @@ expectedHash
 // TIMING-SAFE COMPARISON
 // ============================================================
 
-function timingSafeEqual(a, b) {
+function timingSafeEqual(
+a,
+b
+) {
 if (a.length !== b.length) {
 return false;
 }
@@ -1902,7 +1995,10 @@ return difference === 0;
 // COOKIE READER
 // ============================================================
 
-function getCookie(request, name) {
+function getCookie(
+request,
+name
+) {
 const cookieHeader =
 request.headers.get("Cookie");
 
@@ -1950,7 +2046,9 @@ return null;
 // JSON READER
 // ============================================================
 
-async function readJSON(request) {
+async function readJSON(
+request
+) {
 try {
 return await request.json();
 
@@ -1990,7 +2088,9 @@ status,
 // BYTES → BASE64URL
 // ============================================================
 
-function bytesToBase64Url(bytes) {
+function bytesToBase64Url(
+bytes
+) {
 let binary = "";
 
 for (const byte of bytes) {
@@ -2008,7 +2108,9 @@ return btoa(binary)
 // BASE64URL → BYTES
 // ============================================================
 
-function base64UrlToBytes(value) {
+function base64UrlToBytes(
+value
+) {
 const base64 =
 value
 .replace(/-/g, "+")
