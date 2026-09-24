@@ -5174,13 +5174,13 @@ function showCreateAccount(){
   setTimeout(()=>$('authFirstName')?.focus(),80);
 }
 
-function showAccountCreated(accountId,firstName,middleName,lastName,createdAt){
+function showAccountCreated(accountId,firstName,middleName,lastName,created_at){
   $("signInView").style.display="none";
   $("createAccountView").style.display="none";
   $("accountCreatedView").style.display="block";
   $("authCreatedAccountId").textContent=String(accountId);
   $("authCreatedAccountName").textContent=[firstName,middleName,lastName].filter(Boolean).join(" ");
-  $("authCreatedAccountTime").textContent=createdAt;
+  $("authCreatedAccountTime").textContent=created_at;
 }
 
 async function openCreatedAccount(){
@@ -5261,10 +5261,10 @@ function updateSettingsAccount(user){
    * Created date-ka saxda ah wuxuu ka yimaadaa Cloudflare D1:
    * users.created_at, waxaana Worker-ku uga soo celinayaa /api/me.
    */
-  const createdAt =
-    user?.createdAt ||
+  const created_at =
     user?.created_at ||
-    user?.accountCreatedAt ||
+    user?.created_at ||
+    user?.accountcreated_at ||
     user?.account_created_at ||
     "";
 
@@ -5305,7 +5305,7 @@ function updateSettingsAccount(user){
   if(nameEl) nameEl.textContent=name;
   if(idEl) idEl.textContent=accountId || "0000000";
   if(numberEl) numberEl.textContent=number || "—";
-  if(createdEl) createdEl.textContent=formatAccountCreatedDate(createdAt);
+  if(createdEl) createdEl.textContent=formatAccountCreatedDate(created_at);
 
   /*
    * Profile Picture:
@@ -5617,7 +5617,7 @@ async function createAccount(){
      * Cloudflare R2, kadibna /api/me ayaa dib u soo celinaya
      * in account-kan uu leeyahay profile picture.
      */
-    showAccountCreated(String(newId),firstName,middleName,lastName,createdAt);
+    showAccountCreated(String(newId),firstName,middleName,lastName,created_at);
 
   }catch(error){
     authMessage(
