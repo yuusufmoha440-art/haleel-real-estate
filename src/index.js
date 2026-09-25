@@ -7,10 +7,10 @@ const PASSWORD_HASH_LENGTH = 256;
 const MAX_PROFILE_IMAGE_SIZE = 5 * 1024 * 1024;
 
 const ALLOWED_PROFILE_TYPES = {
-"image/jpeg": "jpg",
-"image/png": "png",
-"image/webp": "webp",
-"image/gif": "gif"
+  "image/jpeg": "jpg",
+  "image/png": "png",
+  "image/webp": "webp",
+  "image/gif": "gif"
 };
 
 // ============================================================
@@ -18,39 +18,69 @@ const ALLOWED_PROFILE_TYPES = {
 // ============================================================
 
 export default {
-async fetch(request, env) {
-const url = new URL(request.url);
+  async fetch(request, env) {
+    const url = new URL(request.url);
 
-try {
-  if (url.pathname === "/api/signup") {
-    return await signup(request, env);
-  }
+    try {
+      if (url.pathname === "/api/signup") {
+        return await signup(request, env);
+      }
 
-  if (url.pathname === "/api/login") {
-    return await login(request, env);
-  }
+      if (url.pathname === "/api/login") {
+        return await login(request, env);
+      }
 
-  if (url.pathname === "/api/logout") {
-    return await logout(request, env);
-  }
+      if (url.pathname === "/api/logout") {
+        return await logout(request, env);
+      }
 
-  if (url.pathname === "/api/me") {
-    return await getCurrentUser(request, env);
-  }
+      if (url.pathname === "/api/me") {
+        return await getCurrentUser(request, env);
+      }
 
-  if (url.pathname === "/api/profile-picture") {
-    if (request.method === "POST") {
-      return await uploadProfilePicture(request, env);
+      if (url.pathname === "/api/profile-picture") {
+        if (request.method === "POST") {
+          return await uploadProfilePicture(request, env);
+        }
+
+        if (request.method === "GET") {
+          return await getProfilePicture(request, env);
+        }
+
+        if (request.method === "DELETE") {
+          return await deleteProfilePicture(request, env);
+        }
+
+        return json(
+          {
+            success: false,
+            message: "Method not allowed."
+          },
+          405
+        );
+      }
+
+      return env.ASSETS.fetch(request);
+    } catch (error) {
+      console.error("WORKER ERROR:", error);
+
+      return json(
+        {
+          success: false,
+          message: "Server error."
+        },
+        500
+      );
     }
+  }
+};
 
-    if (request.method === "GET") {
-      return await getProfilePicture(request, env);
-    }
+// ============================================================
+// SIGN UP
+// ============================================================
 
-    if (request.method === "DELETE") {
-      return await deleteProfilePicture(request, env);
-    }
-
+async function signup(request, env) {
+  if (request.method !== "POST") {
     return json(
       {
         success: false,
@@ -60,385 +90,605 @@ try {
     );
   }
 
-  return env.ASSETS.fetch(request);
+  if (!env.ACCOUNTS_DB) {
+    return json(
+      {
+        success: false,
+        message: "Accounts database is not connected."
+      },
+      500
+    );
+  }
 
-} catch (error) {
-  console.error("WORKER ERROR:", error);
+  const body = await readJSON(request);
 
-  return json(
+  if (!body) {
+    return json(
+      {
+        success: false,
+        message: "Invalid request."
+      },
+      400
+    );
+  }
+
+  if (
+    typeof body.firstName !== "string" ||
+    typeof body.middleName !== "string" ||
+    typeof body.lastName !== "string" ||
+    typeof body.phoneNumber !== "string" ||
+    typeof body.password !== "string"
+  ) {
+    return json(
+      {
+        success: false,
+        message:
+          "First name, middle name, last name, phone number and password are required."
+      },
+      400
+    );
+  }
+
+  const firstName = body.firstName.trim();
+  const middleName = body.middleName.trim();
+  const lastName = body.lastName.trim();
+  const phoneNumber = body.phoneNumber.trim();
+  const password = body.password;
+
+  if (!firstName || !middleName || !lastName) {
+    return json(
+      {
+        success: false,
+        message:
+          "First name, middle name and last name are required."
+      },
+      400
+    );
+  }
+
+  if (firstName.length > 100) {
+    return json(
+      {
+        success: false,
+        message: "First name is too long."
+      },
+      400
+    );
+  }
+
+  if (middleName.length > 100) {
+    return json(
+      {
+        success: false,
+        message: "Middle name is too long."
+      },
+      400
+    );
+  }
+
+  if (lastName.length > 100) {
+    return json(
+      {
+        success: false,
+        message: "Last name is too long."
+      },
+      400
+    );
+  }
+
+  if (!phoneNumber) {
+    return json(
+      {
+        success: false,
+        message: "Phone number is required."
+      },
+      400
+    );
+  }
+
+  if (phoneNumber.length > 30) {
+    return json(
+      {
+        success: false,
+        message: "Phone number is too long."
+      },
+      400
+    );
+  }
+
+  if (!/^[0-9+\-\s()]+$/.test(phoneNumber)) {
+    return json(
+      {
+        success: false,
+        message: "Invalid phone number."
+      },
+      400
+    );
+  }
+
+  if (password.length < 8) {
+    return json(
+      {
+        success: false,
+        message:
+          "Password must contain at least 8 characters."
+      },
+      400
+    );
+  }
+
+  if (password.length > 128) {
+    return json(
+      {
+        success: false,
+        message: "Password is too long."
+      },
+      400
+    );
+  }
+
+  // ----------------------------------------------------------
+  // OPTIONAL PROFILE PICTURE FROM CREATE ACCOUNT
+  // ----------------------------------------------------------
+
+  let signupProfilePicture = null;
+
+  if (
+    body.profilePicture !== undefined &&
+    body.profilePicture !== null &&
+    body.profilePicture !== ""
+  ) {
+    if (typeof body.profilePicture !== "string") {
+      return json(
+        {
+          success: false,
+          message: "Invalid profile picture."
+        },
+        400
+      );
+    }
+
+    try {
+      signupProfilePicture =
+        await prepareSignupProfilePicture(
+          body.profilePicture
+        );
+    } catch (error) {
+      console.error(
+        "SIGNUP PROFILE PICTURE ERROR:",
+        error
+      );
+
+      return json(
+        {
+          success: false,
+          message:
+            error.message ||
+            "Invalid profile picture."
+        },
+        400
+      );
+    }
+  }
+
+  // ----------------------------------------------------------
+  // CHECK PHONE
+  // ----------------------------------------------------------
+
+  let existingPhone;
+
+  try {
+    existingPhone = await env.ACCOUNTS_DB
+      .prepare(
+        "SELECT account_id FROM users WHERE phone_number = ? LIMIT 1"
+      )
+      .bind(phoneNumber)
+      .first();
+  } catch (error) {
+    console.error("PHONE CHECK ERROR:", error);
+
+    return json(
+      {
+        success: false,
+        message: "Unable to check phone number."
+      },
+      500
+    );
+  }
+
+  if (existingPhone) {
+    return json(
+      {
+        success: false,
+        message:
+          "This phone number is already registered."
+      },
+      409
+    );
+  }
+
+  // ----------------------------------------------------------
+  // ACCOUNT SEQUENCE
+  // ----------------------------------------------------------
+
+  let sequence;
+
+  try {
+    sequence = await env.ACCOUNTS_DB
+      .prepare(
+        "SELECT next_id FROM account_sequence WHERE id = 1 LIMIT 1"
+      )
+      .first();
+  } catch (error) {
+    console.error(
+      "ACCOUNT SEQUENCE READ ERROR:",
+      error
+    );
+
+    return json(
+      {
+        success: false,
+        message:
+          "Unable to read account sequence."
+      },
+      500
+    );
+  }
+
+  if (!sequence) {
+    return json(
+      {
+        success: false,
+        message:
+          "Account sequence is not configured."
+      },
+      500
+    );
+  }
+
+  const accountId = Number(sequence.next_id);
+
+  if (
+    !Number.isInteger(accountId) ||
+    accountId < 1 ||
+    accountId > MAX_ACCOUNT_ID
+  ) {
+    return json(
+      {
+        success: false,
+        message:
+          "No more account IDs are available."
+      },
+      409
+    );
+  }
+
+  // ----------------------------------------------------------
+  // PASSWORD
+  // ----------------------------------------------------------
+
+  let passwordHash;
+
+  try {
+    passwordHash =
+      await hashPassword(password);
+  } catch (error) {
+    console.error(
+      "PASSWORD HASH ERROR:",
+      error
+    );
+
+    return json(
+      {
+        success: false,
+        message:
+          "Unable to secure password."
+      },
+      500
+    );
+  }
+
+  // ----------------------------------------------------------
+  // SESSION
+  // ----------------------------------------------------------
+
+  let session;
+
+  try {
+    session =
+      await buildSession(accountId);
+  } catch (error) {
+    console.error(
+      "SESSION BUILD ERROR:",
+      error
+    );
+
+    return json(
+      {
+        success: false,
+        message:
+          "Unable to create session."
+      },
+      500
+    );
+  }
+
+  // ----------------------------------------------------------
+  // SAVE PROFILE PICTURE TO R2 BEFORE DATABASE INSERT
+  // ----------------------------------------------------------
+
+  let profilePictureKey = null;
+
+  if (signupProfilePicture) {
+    if (!env.PROFILE_BUCKET) {
+      return json(
+        {
+          success: false,
+          message:
+            "Profile picture storage is not connected."
+        },
+        500
+      );
+    }
+
+    const formattedAccountId =
+      String(accountId).padStart(7, "0");
+
+    const objectKey =
+      "profile-pictures/" +
+      formattedAccountId +
+      "/" +
+      crypto.randomUUID() +
+      "." +
+      signupProfilePicture.extension;
+
+    try {
+      await env.PROFILE_BUCKET.put(
+        objectKey,
+        signupProfilePicture.bytes,
+        {
+          httpMetadata: {
+            contentType:
+              signupProfilePicture.contentType,
+            cacheControl:
+              "private, max-age=3600"
+          }
+        }
+      );
+
+      profilePictureKey = objectKey;
+    } catch (error) {
+      console.error(
+        "SIGNUP R2 PROFILE UPLOAD ERROR:",
+        error
+      );
+
+      return json(
+        {
+          success: false,
+          message:
+            "Unable to save profile picture."
+        },
+        500
+      );
+    }
+  }
+
+  // ----------------------------------------------------------
+  // DATABASE INSERT
+  // ----------------------------------------------------------
+
+  try {
+    await env.ACCOUNTS_DB
+      .prepare(
+        "INSERT INTO users (account_id, password_hash, first_name, middle_name, last_name, phone_number, profile_picture) VALUES (?, ?, ?, ?, ?, ?, ?)"
+      )
+      .bind(
+        accountId,
+        passwordHash,
+        firstName,
+        middleName,
+        lastName,
+        phoneNumber,
+        profilePictureKey
+      )
+      .run();
+
+    await env.ACCOUNTS_DB
+      .prepare(
+        "UPDATE account_sequence SET next_id = next_id + 1 WHERE id = 1 AND next_id = ?"
+      )
+      .bind(accountId)
+      .run();
+
+    await env.ACCOUNTS_DB
+      .prepare(
+        "INSERT INTO sessions (account_id, token_hash, expires_at) VALUES (?, ?, ?)"
+      )
+      .bind(
+        accountId,
+        session.tokenHash,
+        session.expiresAt
+      )
+      .run();
+  } catch (error) {
+    console.error(
+      "SIGNUP DATABASE ERROR:",
+      error
+    );
+
+    // ROLLBACK R2 IF DATABASE INSERT FAILS
+    if (
+      profilePictureKey &&
+      env.PROFILE_BUCKET
+    ) {
+      try {
+        await env.PROFILE_BUCKET.delete(
+          profilePictureKey
+        );
+      } catch (deleteError) {
+        console.error(
+          "SIGNUP R2 ROLLBACK ERROR:",
+          deleteError
+        );
+      }
+    }
+
+    return json(
+      {
+        success: false,
+        message:
+          "Unable to create account."
+      },
+      500
+    );
+  }
+
+  const formattedAccountId =
+    String(accountId).padStart(7, "0");
+
+  return new Response(
+    JSON.stringify({
+      success: true,
+      accountId:
+        formattedAccountId,
+      firstName:
+        firstName,
+      middleName:
+        middleName,
+      lastName:
+        lastName,
+      phoneNumber:
+        phoneNumber,
+
+      // IMPORTANT:
+      // This is now the R2 object key,
+      // not null.
+      profilePicture:
+        profilePictureKey,
+
+      message:
+        "Account created successfully."
+    }),
     {
-      success: false,
-      message: "Server error."
-    },
-    500
+      status: 201,
+      headers: {
+        "Content-Type":
+          "application/json; charset=UTF-8",
+        "Cache-Control":
+          "no-store",
+        "Set-Cookie":
+          session.cookie
+      }
+    }
   );
 }
 
-}
-};
-
 // ============================================================
-// SIGN UP
+// PREPARE SIGNUP PROFILE PICTURE
 // ============================================================
 
-async function signup(request, env) {
-if (request.method !== "POST") {
-return json(
-{
-success: false,
-message: "Method not allowed."
-},
-405
-);
-}
-
-if (!env.ACCOUNTS_DB) {
-return json(
-{
-success: false,
-message: "Accounts database is not connected."
-},
-500
-);
-}
-
-const body = await readJSON(request);
-
-if (!body) {
-return json(
-{
-success: false,
-message: "Invalid request."
-},
-400
-);
-}
-
-if (
-typeof body.firstName !== "string" ||
-typeof body.middleName !== "string" ||
-typeof body.lastName !== "string" ||
-typeof body.phoneNumber !== "string" ||
-typeof body.password !== "string"
+async function prepareSignupProfilePicture(
+  value
 ) {
-return json(
-{
-success: false,
-message:
-"First name, middle name, last name, phone number and password are required."
-},
-400
-);
-}
+  const match =
+    value.match(
+      /^data:(image\/(?:jpeg|png|webp|gif));base64,([\s\S]+)$/
+    );
 
-const firstName = body.firstName.trim();
-const middleName = body.middleName.trim();
-const lastName = body.lastName.trim();
-const phoneNumber = body.phoneNumber.trim();
-const password = body.password;
+  if (!match) {
+    throw new Error(
+      "Profile picture must be a valid JPG, PNG, WEBP or GIF image."
+    );
+  }
 
-if (!firstName || !middleName || !lastName) {
-return json(
-{
-success: false,
-message:
-"First name, middle name and last name are required."
-},
-400
-);
-}
+  const contentType =
+    match[1].toLowerCase();
 
-if (firstName.length > 100) {
-return json(
-{
-success: false,
-message: "First name is too long."
-},
-400
-);
-}
+  const extension =
+    ALLOWED_PROFILE_TYPES[
+      contentType
+    ];
 
-if (middleName.length > 100) {
-return json(
-{
-success: false,
-message: "Middle name is too long."
-},
-400
-);
-}
+  if (!extension) {
+    throw new Error(
+      "Only JPG, PNG, WEBP and GIF images are allowed."
+    );
+  }
 
-if (lastName.length > 100) {
-return json(
-{
-success: false,
-message: "Last name is too long."
-},
-400
-);
-}
+  const base64Data =
+    match[2]
+      .replace(/\s/g, "");
 
-if (!phoneNumber) {
-return json(
-{
-success: false,
-message: "Phone number is required."
-},
-400
-);
-}
+  if (!base64Data) {
+    throw new Error(
+      "The selected image is empty."
+    );
+  }
 
-if (phoneNumber.length > 30) {
-return json(
-{
-success: false,
-message: "Phone number is too long."
-},
-400
-);
-}
+  // Base64 size check before decoding.
+  const estimatedSize =
+    Math.floor(
+      (base64Data.length * 3) / 4
+    );
 
-if (!/^[0-9+-\s()]+$/.test(phoneNumber)) {
-return json(
-{
-success: false,
-message: "Invalid phone number."
-},
-400
-);
-}
+  if (
+    estimatedSize >
+    MAX_PROFILE_IMAGE_SIZE
+  ) {
+    throw new Error(
+      "Profile picture must be 5 MB or smaller."
+    );
+  }
 
-if (password.length < 8) {
-return json(
-{
-success: false,
-message:
-"Password must contain at least 8 characters."
-},
-400
-);
-}
+  let binary;
 
-if (password.length > 128) {
-return json(
-{
-success: false,
-message: "Password is too long."
-},
-400
-);
-}
+  try {
+    binary =
+      atob(base64Data);
+  } catch {
+    throw new Error(
+      "Invalid profile picture data."
+    );
+  }
 
-let existingPhone;
+  if (!binary.length) {
+    throw new Error(
+      "The selected image is empty."
+    );
+  }
 
-try {
-existingPhone = await env.ACCOUNTS_DB
-.prepare(
-"SELECT account_id FROM users WHERE phone_number = ? LIMIT 1"
-)
-.bind(phoneNumber)
-.first();
+  if (
+    binary.length >
+    MAX_PROFILE_IMAGE_SIZE
+  ) {
+    throw new Error(
+      "Profile picture must be 5 MB or smaller."
+    );
+  }
 
-} catch (error) {
-console.error("PHONE CHECK ERROR:", error);
+  const bytes =
+    new Uint8Array(
+      binary.length
+    );
 
-return json(
-  {
-    success: false,
-    message: "Unable to check phone number."
-  },
-  500
-);
+  for (
+    let i = 0;
+    i < binary.length;
+    i++
+  ) {
+    bytes[i] =
+      binary.charCodeAt(i);
+  }
 
-}
-
-if (existingPhone) {
-return json(
-{
-success: false,
-message:
-"This phone number is already registered."
-},
-409
-);
-}
-
-let sequence;
-
-try {
-sequence = await env.ACCOUNTS_DB
-.prepare(
-"SELECT next_id FROM account_sequence WHERE id = 1 LIMIT 1"
-)
-.first();
-
-} catch (error) {
-console.error(
-"ACCOUNT SEQUENCE READ ERROR:",
-error
-);
-
-return json(
-  {
-    success: false,
-    message:
-      "Unable to read account sequence."
-  },
-  500
-);
-
-}
-
-if (!sequence) {
-return json(
-{
-success: false,
-message:
-"Account sequence is not configured."
-},
-500
-);
-}
-
-const accountId = Number(sequence.next_id);
-
-if (
-!Number.isInteger(accountId) ||
-accountId < 1 ||
-accountId > MAX_ACCOUNT_ID
-) {
-return json(
-{
-success: false,
-message:
-"No more account IDs are available."
-},
-409
-);
-}
-
-let passwordHash;
-
-try {
-passwordHash = await hashPassword(password);
-
-} catch (error) {
-console.error(
-"PASSWORD HASH ERROR:",
-error
-);
-
-return json(
-  {
-    success: false,
-    message:
-      "Unable to secure password."
-  },
-  500
-);
-
-}
-
-let session;
-
-try {
-session = await buildSession(accountId);
-
-} catch (error) {
-console.error(
-"SESSION BUILD ERROR:",
-error
-);
-
-return json(
-  {
-    success: false,
-    message:
-      "Unable to create session."
-  },
-  500
-);
-
-}
-
-try {
-await env.ACCOUNTS_DB
-.prepare(
-"INSERT INTO users (account_id, password_hash, first_name, middle_name, last_name, phone_number, profile_picture) VALUES (?, ?, ?, ?, ?, ?, ?)"
-)
-.bind(
-accountId,
-passwordHash,
-firstName,
-middleName,
-lastName,
-phoneNumber,
-null
-)
-.run();
-
-await env.ACCOUNTS_DB
-  .prepare(
-    "UPDATE account_sequence SET next_id = next_id + 1 WHERE id = 1 AND next_id = ?"
-  )
-  .bind(accountId)
-  .run();
-
-await env.ACCOUNTS_DB
-  .prepare(
-    "INSERT INTO sessions (account_id, token_hash, expires_at) VALUES (?, ?, ?)"
-  )
-  .bind(
-    accountId,
-    session.tokenHash,
-    session.expiresAt
-  )
-  .run();
-
-} catch (error) {
-console.error(
-"SIGNUP DATABASE ERROR:",
-error
-);
-
-return json(
-  {
-    success: false,
-    message:
-      "Unable to create account."
-  },
-  500
-);
-
-}
-
-const formattedAccountId =
-String(accountId).padStart(7, "0");
-
-return new Response(
-JSON.stringify({
-success: true,
-accountId: formattedAccountId,
-firstName: firstName,
-middleName: middleName,
-lastName: lastName,
-phoneNumber: phoneNumber,
-profilePicture: null,
-message:
-"Account created successfully."
-}),
-{
-status: 201,
-headers: {
-"Content-Type":
-"application/json; charset=UTF-8",
-"Cache-Control":
-"no-store",
-"Set-Cookie":
-session.cookie
-}
-}
-);
+  return {
+    bytes:
+      bytes,
+    contentType:
+      contentType,
+    extension:
+      extension
+  };
 }
 
 // ============================================================
@@ -446,222 +696,223 @@ session.cookie
 // ============================================================
 
 async function login(request, env) {
-if (request.method !== "POST") {
-return json(
-{
-success: false,
-message: "Method not allowed."
-},
-405
-);
-}
-
-if (!env.ACCOUNTS_DB) {
-return json(
-{
-success: false,
-message:
-"Accounts database is not connected."
-},
-500
-);
-}
-
-const body = await readJSON(request);
-
-if (!body) {
-return json(
-{
-success: false,
-message: "Invalid request."
-},
-400
-);
-}
-
-const accountId =
-String(body.accountId || "").trim();
-
-const password =
-typeof body.password === "string"
-? body.password
-: "";
-
-if (!/^\d{7}$/.test(accountId)) {
-return invalidLogin();
-}
-
-if (!password) {
-return invalidLogin();
-}
-
-const numericAccountId =
-Number(accountId);
-
-if (
-!Number.isInteger(numericAccountId) ||
-numericAccountId < 1 ||
-numericAccountId > MAX_ACCOUNT_ID
-) {
-return invalidLogin();
-}
-
-let user;
-
-try {
-user = await env.ACCOUNTS_DB
-.prepare(
-"SELECT account_id, password_hash, first_name, middle_name, last_name, phone_number, profile_picture FROM users WHERE account_id = ? LIMIT 1"
-)
-.bind(numericAccountId)
-.first();
-
-} catch (error) {
-console.error(
-"LOGIN DATABASE ERROR:",
-error
-);
-
-return json(
-  {
-    success: false,
-    message:
-      "Unable to access account database."
-  },
-  500
-);
-
-}
-
-if (!user) {
-return invalidLogin();
-}
-
-if (
-typeof user.password_hash !== "string" ||
-!user.password_hash
-) {
-return invalidLogin();
-}
-
-let passwordCorrect;
-
-try {
-passwordCorrect =
-await verifyPassword(
-password,
-user.password_hash
-);
-
-} catch (error) {
-console.error(
-"PASSWORD VERIFY ERROR:",
-error
-);
-
-return invalidLogin();
-
-}
-
-if (!passwordCorrect) {
-return invalidLogin();
-}
-
-let session;
-
-try {
-session =
-await buildSession(
-Number(user.account_id)
-);
-
-} catch (error) {
-console.error(
-"LOGIN SESSION BUILD ERROR:",
-error
-);
-
-return json(
-  {
-    success: false,
-    message:
-      "Unable to create login session."
-  },
-  500
-);
-
-}
-
-try {
-await env.ACCOUNTS_DB
-.prepare(
-"INSERT INTO sessions (account_id, token_hash, expires_at) VALUES (?, ?, ?)"
-)
-.bind(
-Number(user.account_id),
-session.tokenHash,
-session.expiresAt
-)
-.run();
-
-} catch (error) {
-console.error(
-"LOGIN SESSION ERROR:",
-error
-);
-
-return json(
-  {
-    success: false,
-    message:
-      "Unable to create login session."
-  },
-  500
-);
-
-}
-
-return new Response(
-JSON.stringify({
-success: true,
-
-  accountId:
-    String(user.account_id)
-      .padStart(7, "0"),
-
-  firstName:
-    user.first_name || "",
-
-  middleName:
-    user.middle_name || "",
-
-  lastName:
-    user.last_name || "",
-
-  phoneNumber:
-    user.phone_number || "",
-
-  profilePicture:
-    user.profile_picture || null,
-
-  message:
-    "Login successful."
-}),
-{
-  status: 200,
-  headers: {
-    "Content-Type":
-      "application/json; charset=UTF-8",
-
-    "Cache-Control":
-      "no-store",
-
-    "Set-Cookie":
-      session.cookie
+  if (request.method !== "POST") {
+    return json(
+      {
+        success: false,
+        message: "Method not allowed."
+      },
+      405
+    );
   }
-}
 
-);
+  if (!env.ACCOUNTS_DB) {
+    return json(
+      {
+        success: false,
+        message:
+          "Accounts database is not connected."
+      },
+      500
+    );
+  }
+
+  const body =
+    await readJSON(request);
+
+  if (!body) {
+    return json(
+      {
+        success: false,
+        message: "Invalid request."
+      },
+      400
+    );
+  }
+
+  const accountId =
+    String(
+      body.accountId || ""
+    ).trim();
+
+  const password =
+    typeof body.password === "string"
+      ? body.password
+      : "";
+
+  if (!/^\d{7}$/.test(accountId)) {
+    return invalidLogin();
+  }
+
+  if (!password) {
+    return invalidLogin();
+  }
+
+  const numericAccountId =
+    Number(accountId);
+
+  if (
+    !Number.isInteger(
+      numericAccountId
+    ) ||
+    numericAccountId < 1 ||
+    numericAccountId > MAX_ACCOUNT_ID
+  ) {
+    return invalidLogin();
+  }
+
+  let user;
+
+  try {
+    user =
+      await env.ACCOUNTS_DB
+        .prepare(
+          "SELECT account_id, password_hash, first_name, middle_name, last_name, phone_number, profile_picture FROM users WHERE account_id = ? LIMIT 1"
+        )
+        .bind(
+          numericAccountId
+        )
+        .first();
+  } catch (error) {
+    console.error(
+      "LOGIN DATABASE ERROR:",
+      error
+    );
+
+    return json(
+      {
+        success: false,
+        message:
+          "Unable to access account database."
+      },
+      500
+    );
+  }
+
+  if (!user) {
+    return invalidLogin();
+  }
+
+  if (
+    typeof user.password_hash !==
+      "string" ||
+    !user.password_hash
+  ) {
+    return invalidLogin();
+  }
+
+  let passwordCorrect;
+
+  try {
+    passwordCorrect =
+      await verifyPassword(
+        password,
+        user.password_hash
+      );
+  } catch (error) {
+    console.error(
+      "PASSWORD VERIFY ERROR:",
+      error
+    );
+
+    return invalidLogin();
+  }
+
+  if (!passwordCorrect) {
+    return invalidLogin();
+  }
+
+  let session;
+
+  try {
+    session =
+      await buildSession(
+        Number(user.account_id)
+      );
+  } catch (error) {
+    console.error(
+      "LOGIN SESSION BUILD ERROR:",
+      error
+    );
+
+    return json(
+      {
+        success: false,
+        message:
+          "Unable to create login session."
+      },
+      500
+    );
+  }
+
+  try {
+    await env.ACCOUNTS_DB
+      .prepare(
+        "INSERT INTO sessions (account_id, token_hash, expires_at) VALUES (?, ?, ?)"
+      )
+      .bind(
+        Number(user.account_id),
+        session.tokenHash,
+        session.expiresAt
+      )
+      .run();
+  } catch (error) {
+    console.error(
+      "LOGIN SESSION ERROR:",
+      error
+    );
+
+    return json(
+      {
+        success: false,
+        message:
+          "Unable to create login session."
+      },
+      500
+    );
+  }
+
+  return new Response(
+    JSON.stringify({
+      success: true,
+
+      accountId:
+        String(
+          user.account_id
+        ).padStart(7, "0"),
+
+      firstName:
+        user.first_name || "",
+
+      middleName:
+        user.middle_name || "",
+
+      lastName:
+        user.last_name || "",
+
+      phoneNumber:
+        user.phone_number || "",
+
+      profilePicture:
+        user.profile_picture || null,
+
+      message:
+        "Login successful."
+    }),
+    {
+      status: 200,
+      headers: {
+        "Content-Type":
+          "application/json; charset=UTF-8",
+
+        "Cache-Control":
+          "no-store",
+
+        "Set-Cookie":
+          session.cookie
+      }
+    }
+  );
 }
 
 // ============================================================
@@ -669,944 +920,976 @@ success: true,
 // ============================================================
 
 function invalidLogin() {
-return json(
-{
-success: false,
-message:
-"Invalid ID or password."
-},
-401
-);
+  return json(
+    {
+      success: false,
+      message:
+        "Invalid ID or password."
+    },
+    401
+  );
 }
 
 // ============================================================
 // CURRENT USER
 // ============================================================
 
-async function getCurrentUser(request, env) {
-if (request.method !== "GET") {
-return json(
-{
-success: false,
-message:
-"Method not allowed."
-},
-405
-);
-}
-
-if (!env.ACCOUNTS_DB) {
-return json(
-{
-success: false,
-loggedIn: false
-},
-500
-);
-}
-
-const token =
-getCookie(
-request,
-"haleel_session"
-);
-
-if (!token) {
-return json(
-{
-success: false,
-loggedIn: false
-},
-401
-);
-}
-
-let tokenHash;
-
-try {
-tokenHash =
-await sha256(token);
-
-} catch (error) {
-console.error(
-"TOKEN HASH ERROR:",
-error
-);
-
-return json(
-  {
-    success: false,
-    loggedIn: false
-  },
-  500
-);
-
-}
-
-let session;
-
-try {
-session =
-await env.ACCOUNTS_DB
-.prepare(
-"SELECT account_id, expires_at FROM sessions WHERE token_hash = ? AND expires_at > ? LIMIT 1"
-)
-.bind(
-tokenHash,
-new Date().toISOString()
-)
-.first();
-
-} catch (error) {
-console.error(
-"SESSION LOOKUP ERROR:",
-error
-);
-
-return json(
-  {
-    success: false,
-    loggedIn: false
-  },
-  500
-);
-
-}
-
-if (!session) {
-return new Response(
-JSON.stringify({
-success: false,
-loggedIn: false
-}),
-{
-status: 401,
-headers: {
-"Content-Type":
-"application/json; charset=UTF-8",
-
-      "Cache-Control":
-        "no-store",
-
-      "Set-Cookie":
-        clearSessionCookie()
-    }
+async function getCurrentUser(
+  request,
+  env
+) {
+  if (request.method !== "GET") {
+    return json(
+      {
+        success: false,
+        message:
+          "Method not allowed."
+      },
+      405
+    );
   }
-);
 
-}
-
-let user;
-
-try {
-user = await env.ACCOUNTS_DB
-.prepare(
-"SELECT first_name, middle_name, last_name, phone_number, profile_picture FROM users WHERE account_id = ? LIMIT 1"
-)
-.bind(
-Number(session.account_id)
-)
-.first();
-
-} catch (error) {
-console.error(
-"CURRENT USER DATABASE ERROR:",
-error
-);
-
-return json(
-  {
-    success: false,
-    loggedIn: false
-  },
-  500
-);
-
-}
-
-if (!user) {
-return new Response(
-JSON.stringify({
-success: false,
-loggedIn: false
-}),
-{
-status: 401,
-headers: {
-"Content-Type":
-"application/json; charset=UTF-8",
-
-      "Cache-Control":
-        "no-store",
-
-      "Set-Cookie":
-        clearSessionCookie()
-    }
+  if (!env.ACCOUNTS_DB) {
+    return json(
+      {
+        success: false,
+        loggedIn: false
+      },
+      500
+    );
   }
-);
 
-}
+  const token =
+    getCookie(
+      request,
+      "haleel_session"
+    );
 
-return json({
-success: true,
-loggedIn: true,
+  if (!token) {
+    return json(
+      {
+        success: false,
+        loggedIn: false
+      },
+      401
+    );
+  }
 
-accountId:
-  String(session.account_id)
-    .padStart(7, "0"),
+  let tokenHash;
 
-firstName:
-  user.first_name || "",
+  try {
+    tokenHash =
+      await sha256(token);
+  } catch (error) {
+    console.error(
+      "TOKEN HASH ERROR:",
+      error
+    );
 
-middleName:
-  user.middle_name || "",
+    return json(
+      {
+        success: false,
+        loggedIn: false
+      },
+      500
+    );
+  }
 
-lastName:
-  user.last_name || "",
+  let session;
 
-phoneNumber:
-  user.phone_number || "",
+  try {
+    session =
+      await env.ACCOUNTS_DB
+        .prepare(
+          "SELECT account_id, expires_at FROM sessions WHERE token_hash = ? AND expires_at > ? LIMIT 1"
+        )
+        .bind(
+          tokenHash,
+          new Date().toISOString()
+        )
+        .first();
+  } catch (error) {
+    console.error(
+      "SESSION LOOKUP ERROR:",
+      error
+    );
 
-profilePicture:
-  user.profile_picture || null
+    return json(
+      {
+        success: false,
+        loggedIn: false
+      },
+      500
+    );
+  }
 
-});
+  if (!session) {
+    return new Response(
+      JSON.stringify({
+        success: false,
+        loggedIn: false
+      }),
+      {
+        status: 401,
+        headers: {
+          "Content-Type":
+            "application/json; charset=UTF-8",
+
+          "Cache-Control":
+            "no-store",
+
+          "Set-Cookie":
+            clearSessionCookie()
+        }
+      }
+    );
+  }
+
+  let user;
+
+  try {
+    user =
+      await env.ACCOUNTS_DB
+        .prepare(
+          "SELECT first_name, middle_name, last_name, phone_number, profile_picture FROM users WHERE account_id = ? LIMIT 1"
+        )
+        .bind(
+          Number(
+            session.account_id
+          )
+        )
+        .first();
+  } catch (error) {
+    console.error(
+      "CURRENT USER DATABASE ERROR:",
+      error
+    );
+
+    return json(
+      {
+        success: false,
+        loggedIn: false
+      },
+      500
+    );
+  }
+
+  if (!user) {
+    return new Response(
+      JSON.stringify({
+        success: false,
+        loggedIn: false
+      }),
+      {
+        status: 401,
+        headers: {
+          "Content-Type":
+            "application/json; charset=UTF-8",
+
+          "Cache-Control":
+            "no-store",
+
+          "Set-Cookie":
+            clearSessionCookie()
+        }
+      }
+    );
+  }
+
+  return json({
+    success: true,
+    loggedIn: true,
+
+    accountId:
+      String(
+        session.account_id
+      ).padStart(7, "0"),
+
+    firstName:
+      user.first_name || "",
+
+    middleName:
+      user.middle_name || "",
+
+    lastName:
+      user.last_name || "",
+
+    phoneNumber:
+      user.phone_number || "",
+
+    profilePicture:
+      user.profile_picture || null
+  });
 }
 
 // ============================================================
 // LOGOUT
 // ============================================================
 
-async function logout(request, env) {
-if (request.method !== "POST") {
-return json(
-{
-success: false,
-message:
-"Method not allowed."
-},
-405
-);
-}
-
-const token =
-getCookie(
-request,
-"haleel_session"
-);
-
-if (token && env.ACCOUNTS_DB) {
-try {
-const tokenHash =
-await sha256(token);
-
-  await env.ACCOUNTS_DB
-    .prepare(
-      "DELETE FROM sessions WHERE token_hash = ?"
-    )
-    .bind(tokenHash)
-    .run();
-
-} catch (error) {
-  console.error(
-    "LOGOUT DATABASE ERROR:",
-    error
-  );
-}
-
-}
-
-return new Response(
-JSON.stringify({
-success: true,
-message:
-"Logged out successfully."
-}),
-{
-status: 200,
-headers: {
-"Content-Type":
-"application/json; charset=UTF-8",
-
-    "Cache-Control":
-      "no-store",
-
-    "Set-Cookie":
-      clearSessionCookie()
+async function logout(
+  request,
+  env
+) {
+  if (request.method !== "POST") {
+    return json(
+      {
+        success: false,
+        message:
+          "Method not allowed."
+      },
+      405
+    );
   }
-}
 
-);
+  const token =
+    getCookie(
+      request,
+      "haleel_session"
+    );
+
+  if (
+    token &&
+    env.ACCOUNTS_DB
+  ) {
+    try {
+      const tokenHash =
+        await sha256(token);
+
+      await env.ACCOUNTS_DB
+        .prepare(
+          "DELETE FROM sessions WHERE token_hash = ?"
+        )
+        .bind(tokenHash)
+        .run();
+    } catch (error) {
+      console.error(
+        "LOGOUT DATABASE ERROR:",
+        error
+      );
+    }
+  }
+
+  return new Response(
+    JSON.stringify({
+      success: true,
+      message:
+        "Logged out successfully."
+    }),
+    {
+      status: 200,
+      headers: {
+        "Content-Type":
+          "application/json; charset=UTF-8",
+
+        "Cache-Control":
+          "no-store",
+
+        "Set-Cookie":
+          clearSessionCookie()
+      }
+    }
+  );
 }
 
 // ============================================================
 // AUTHENTICATE USER
 // ============================================================
 
-async function authenticateUser(request, env) {
-if (!env.ACCOUNTS_DB) {
-return null;
-}
+async function authenticateUser(
+  request,
+  env
+) {
+  if (!env.ACCOUNTS_DB) {
+    return null;
+  }
 
-const token =
-getCookie(
-request,
-"haleel_session"
-);
+  const token =
+    getCookie(
+      request,
+      "haleel_session"
+    );
 
-if (!token) {
-return null;
-}
+  if (!token) {
+    return null;
+  }
 
-let tokenHash;
+  let tokenHash;
 
-try {
-tokenHash =
-await sha256(token);
-} catch {
-return null;
-}
+  try {
+    tokenHash =
+      await sha256(token);
+  } catch {
+    return null;
+  }
 
-try {
-const session =
-await env.ACCOUNTS_DB
-.prepare(
-"SELECT account_id, expires_at FROM sessions WHERE token_hash = ? AND expires_at > ? LIMIT 1"
-)
-.bind(
-tokenHash,
-new Date().toISOString()
-)
-.first();
+  try {
+    const session =
+      await env.ACCOUNTS_DB
+        .prepare(
+          "SELECT account_id, expires_at FROM sessions WHERE token_hash = ? AND expires_at > ? LIMIT 1"
+        )
+        .bind(
+          tokenHash,
+          new Date().toISOString()
+        )
+        .first();
 
-if (!session) {
-  return null;
-}
+    if (!session) {
+      return null;
+    }
 
-return {
-  accountId:
-    Number(session.account_id),
+    return {
+      accountId:
+        Number(
+          session.account_id
+        ),
 
-  tokenHash: tokenHash
-};
+      tokenHash:
+        tokenHash
+    };
+  } catch (error) {
+    console.error(
+      "AUTHENTICATION ERROR:",
+      error
+    );
 
-} catch (error) {
-console.error(
-"AUTHENTICATION ERROR:",
-error
-);
-
-return null;
-
-}
+    return null;
+  }
 }
 
 // ============================================================
 // UPLOAD PROFILE PICTURE
 // ============================================================
 
-async function uploadProfilePicture(request, env) {
-if (request.method !== "POST") {
-return json(
-{
-success: false,
-message:
-"Method not allowed."
-},
-405
-);
-}
-
-if (!env.ACCOUNTS_DB) {
-return json(
-{
-success: false,
-message:
-"Accounts database is not connected."
-},
-500
-);
-}
-
-if (!env.PROFILE_BUCKET) {
-return json(
-{
-success: false,
-message:
-"Profile picture storage is not connected."
-},
-500
-);
-}
-
-const auth =
-await authenticateUser(
-request,
-env
-);
-
-if (!auth) {
-return json(
-{
-success: false,
-message:
-"You must be logged in."
-},
-401
-);
-}
-
-let formData;
-
-try {
-formData =
-await request.formData();
-
-} catch (error) {
-console.error(
-"PROFILE FORM ERROR:",
-error
-);
-
-return json(
-  {
-    success: false,
-    message:
-      "Invalid upload request."
-  },
-  400
-);
-
-}
-
-const file =
-formData.get("profilePicture") ||
-formData.get("profile_picture") ||
-formData.get("file");
-
-if (!(file instanceof File)) {
-return json(
-{
-success: false,
-message:
-"Profile picture file is required."
-},
-400
-);
-}
-
-if (!file.size) {
-return json(
-{
-success: false,
-message:
-"The selected image is empty."
-},
-400
-);
-}
-
-if (file.size > MAX_PROFILE_IMAGE_SIZE) {
-return json(
-{
-success: false,
-message:
-"Profile picture must be 5 MB or smaller."
-},
-413
-);
-}
-
-const contentType =
-String(file.type || "")
-.toLowerCase();
-
-const extension =
-ALLOWED_PROFILE_TYPES[contentType];
-
-if (!extension) {
-return json(
-{
-success: false,
-message:
-"Only JPG, PNG, WEBP and GIF images are allowed."
-},
-415
-);
-}
-
-const accountId =
-String(auth.accountId)
-.padStart(7, "0");
-
-const uniqueId =
-crypto.randomUUID();
-
-const objectKey =
-"profile-pictures/" +
-accountId +
-"/" +
-uniqueId +
-"." +
-extension;
-
-let oldProfilePicture = null;
-
-try {
-const oldUser =
-await env.ACCOUNTS_DB
-.prepare(
-"SELECT profile_picture FROM users WHERE account_id = ? LIMIT 1"
-)
-.bind(auth.accountId)
-.first();
-
-if (oldUser) {
-  oldProfilePicture =
-    oldUser.profile_picture || null;
-}
-
-} catch (error) {
-console.error(
-"OLD PROFILE LOOKUP ERROR:",
-error
-);
-
-return json(
-  {
-    success: false,
-    message:
-      "Unable to read current profile picture."
-  },
-  500
-);
-
-}
-
-try {
-await env.PROFILE_BUCKET.put(
-objectKey,
-file.stream(),
-{
-httpMetadata: {
-contentType: contentType,
-cacheControl:
-"private, max-age=3600"
-}
-}
-);
-
-} catch (error) {
-console.error(
-"R2 PROFILE UPLOAD ERROR:",
-error
-);
-
-return json(
-  {
-    success: false,
-    message:
-      "Unable to save profile picture."
-  },
-  500
-);
-
-}
-
-try {
-await env.ACCOUNTS_DB
-.prepare(
-"UPDATE users SET profile_picture = ? WHERE account_id = ?"
-)
-.bind(
-objectKey,
-auth.accountId
-)
-.run();
-
-} catch (error) {
-console.error(
-"PROFILE DATABASE UPDATE ERROR:",
-error
-);
-
-try {
-  await env.PROFILE_BUCKET.delete(
-    objectKey
-  );
-} catch (deleteError) {
-  console.error(
-    "ROLLBACK R2 DELETE ERROR:",
-    deleteError
-  );
-}
-
-return json(
-  {
-    success: false,
-    message:
-      "Unable to save profile picture information."
-  },
-  500
-);
-
-}
-
-if (
-oldProfilePicture &&
-oldProfilePicture !== objectKey
+async function uploadProfilePicture(
+  request,
+  env
 ) {
-try {
-await env.PROFILE_BUCKET.delete(
-oldProfilePicture
-);
-} catch (error) {
-console.error(
-"OLD PROFILE DELETE ERROR:",
-error
-);
-}
-}
+  if (request.method !== "POST") {
+    return json(
+      {
+        success: false,
+        message:
+          "Method not allowed."
+      },
+      405
+    );
+  }
 
-return json({
-success: true,
-profilePicture: objectKey,
-message:
-"Profile picture updated successfully."
-});
+  if (!env.ACCOUNTS_DB) {
+    return json(
+      {
+        success: false,
+        message:
+          "Accounts database is not connected."
+      },
+      500
+    );
+  }
+
+  if (!env.PROFILE_BUCKET) {
+    return json(
+      {
+        success: false,
+        message:
+          "Profile picture storage is not connected."
+      },
+      500
+    );
+  }
+
+  const auth =
+    await authenticateUser(
+      request,
+      env
+    );
+
+  if (!auth) {
+    return json(
+      {
+        success: false,
+        message:
+          "You must be logged in."
+      },
+      401
+    );
+  }
+
+  let formData;
+
+  try {
+    formData =
+      await request.formData();
+  } catch (error) {
+    console.error(
+      "PROFILE FORM ERROR:",
+      error
+    );
+
+    return json(
+      {
+        success: false,
+        message:
+          "Invalid upload request."
+      },
+      400
+    );
+  }
+
+  const file =
+    formData.get(
+      "profilePicture"
+    ) ||
+    formData.get(
+      "profile_picture"
+    ) ||
+    formData.get("file");
+
+  if (!(file instanceof File)) {
+    return json(
+      {
+        success: false,
+        message:
+          "Profile picture file is required."
+      },
+      400
+    );
+  }
+
+  if (!file.size) {
+    return json(
+      {
+        success: false,
+        message:
+          "The selected image is empty."
+      },
+      400
+    );
+  }
+
+  if (
+    file.size >
+    MAX_PROFILE_IMAGE_SIZE
+  ) {
+    return json(
+      {
+        success: false,
+        message:
+          "Profile picture must be 5 MB or smaller."
+      },
+      413
+    );
+  }
+
+  const contentType =
+    String(
+      file.type || ""
+    ).toLowerCase();
+
+  const extension =
+    ALLOWED_PROFILE_TYPES[
+      contentType
+    ];
+
+  if (!extension) {
+    return json(
+      {
+        success: false,
+        message:
+          "Only JPG, PNG, WEBP and GIF images are allowed."
+      },
+      415
+    );
+  }
+
+  const accountId =
+    String(
+      auth.accountId
+    ).padStart(7, "0");
+
+  const uniqueId =
+    crypto.randomUUID();
+
+  const objectKey =
+    "profile-pictures/" +
+    accountId +
+    "/" +
+    uniqueId +
+    "." +
+    extension;
+
+  let oldProfilePicture =
+    null;
+
+  try {
+    const oldUser =
+      await env.ACCOUNTS_DB
+        .prepare(
+          "SELECT profile_picture FROM users WHERE account_id = ? LIMIT 1"
+        )
+        .bind(
+          auth.accountId
+        )
+        .first();
+
+    if (oldUser) {
+      oldProfilePicture =
+        oldUser.profile_picture ||
+        null;
+    }
+  } catch (error) {
+    console.error(
+      "OLD PROFILE LOOKUP ERROR:",
+      error
+    );
+
+    return json(
+      {
+        success: false,
+        message:
+          "Unable to read current profile picture."
+      },
+      500
+    );
+  }
+
+  try {
+    await env.PROFILE_BUCKET.put(
+      objectKey,
+      file.stream(),
+      {
+        httpMetadata: {
+          contentType:
+            contentType,
+          cacheControl:
+            "private, max-age=3600"
+        }
+      }
+    );
+  } catch (error) {
+    console.error(
+      "R2 PROFILE UPLOAD ERROR:",
+      error
+    );
+
+    return json(
+      {
+        success: false,
+        message:
+          "Unable to save profile picture."
+      },
+      500
+    );
+  }
+
+  try {
+    await env.ACCOUNTS_DB
+      .prepare(
+        "UPDATE users SET profile_picture = ? WHERE account_id = ?"
+      )
+      .bind(
+        objectKey,
+        auth.accountId
+      )
+      .run();
+  } catch (error) {
+    console.error(
+      "PROFILE DATABASE UPDATE ERROR:",
+      error
+    );
+
+    try {
+      await env.PROFILE_BUCKET.delete(
+        objectKey
+      );
+    } catch (deleteError) {
+      console.error(
+        "ROLLBACK R2 DELETE ERROR:",
+        deleteError
+      );
+    }
+
+    return json(
+      {
+        success: false,
+        message:
+          "Unable to save profile picture information."
+      },
+      500
+    );
+  }
+
+  if (
+    oldProfilePicture &&
+    oldProfilePicture !== objectKey
+  ) {
+    try {
+      await env.PROFILE_BUCKET.delete(
+        oldProfilePicture
+      );
+    } catch (error) {
+      console.error(
+        "OLD PROFILE DELETE ERROR:",
+        error
+      );
+    }
+  }
+
+  return json({
+    success: true,
+    profilePicture:
+      objectKey,
+    message:
+      "Profile picture updated successfully."
+  });
 }
 
 // ============================================================
 // GET PROFILE PICTURE
 // ============================================================
 
-async function getProfilePicture(request, env) {
-if (request.method !== "GET") {
-return json(
-{
-success: false,
-message:
-"Method not allowed."
-},
-405
-);
-}
-
-if (!env.ACCOUNTS_DB || !env.PROFILE_BUCKET) {
-return json(
-{
-success: false,
-message:
-"Profile picture service is not connected."
-},
-500
-);
-}
-
-const auth =
-await authenticateUser(
-request,
-env
-);
-
-if (!auth) {
-return json(
-{
-success: false,
-message:
-"You must be logged in."
-},
-401
-);
-}
-
-let user;
-
-try {
-user =
-await env.ACCOUNTS_DB
-.prepare(
-"SELECT profile_picture FROM users WHERE account_id = ? LIMIT 1"
-)
-.bind(auth.accountId)
-.first();
-
-} catch (error) {
-console.error(
-"PROFILE LOOKUP ERROR:",
-error
-);
-
-return json(
-  {
-    success: false,
-    message:
-      "Unable to read profile picture."
-  },
-  500
-);
-
-}
-
-if (
-!user ||
-!user.profile_picture
+async function getProfilePicture(
+  request,
+  env
 ) {
-return json(
-{
-success: false,
-message:
-"No profile picture found."
-},
-404
-);
-}
+  if (request.method !== "GET") {
+    return json(
+      {
+        success: false,
+        message:
+          "Method not allowed."
+      },
+      405
+    );
+  }
 
-let object;
+  if (
+    !env.ACCOUNTS_DB ||
+    !env.PROFILE_BUCKET
+  ) {
+    return json(
+      {
+        success: false,
+        message:
+          "Profile picture service is not connected."
+      },
+      500
+    );
+  }
 
-try {
-object =
-await env.PROFILE_BUCKET.get(
-user.profile_picture
-);
+  const auth =
+    await authenticateUser(
+      request,
+      env
+    );
 
-} catch (error) {
-console.error(
-"R2 PROFILE GET ERROR:",
-error
-);
+  if (!auth) {
+    return json(
+      {
+        success: false,
+        message:
+          "You must be logged in."
+      },
+      401
+    );
+  }
 
-return json(
-  {
-    success: false,
-    message:
-      "Unable to load profile picture."
-  },
-  500
-);
+  let user;
 
-}
+  try {
+    user =
+      await env.ACCOUNTS_DB
+        .prepare(
+          "SELECT profile_picture FROM users WHERE account_id = ? LIMIT 1"
+        )
+        .bind(
+          auth.accountId
+        )
+        .first();
+  } catch (error) {
+    console.error(
+      "PROFILE LOOKUP ERROR:",
+      error
+    );
 
-if (!object) {
-return json(
-{
-success: false,
-message:
-"Profile picture file was not found."
-},
-404
-);
-}
+    return json(
+      {
+        success: false,
+        message:
+          "Unable to read profile picture."
+      },
+      500
+    );
+  }
 
-const headers =
-new Headers();
+  if (
+    !user ||
+    !user.profile_picture
+  ) {
+    return json(
+      {
+        success: false,
+        message:
+          "No profile picture found."
+      },
+      404
+    );
+  }
 
-object.writeHttpMetadata(
-headers
-);
+  let object;
 
-headers.set(
-"ETag",
-object.httpEtag
-);
+  try {
+    object =
+      await env.PROFILE_BUCKET.get(
+        user.profile_picture
+      );
+  } catch (error) {
+    console.error(
+      "R2 PROFILE GET ERROR:",
+      error
+    );
 
-headers.set(
-"Cache-Control",
-"private, max-age=3600"
-);
+    return json(
+      {
+        success: false,
+        message:
+          "Unable to load profile picture."
+      },
+      500
+    );
+  }
 
-return new Response(
-object.body,
-{
-status: 200,
-headers: headers
-}
-);
+  if (!object) {
+    return json(
+      {
+        success: false,
+        message:
+          "Profile picture file was not found."
+      },
+      404
+    );
+  }
+
+  const headers =
+    new Headers();
+
+  object.writeHttpMetadata(
+    headers
+  );
+
+  headers.set(
+    "ETag",
+    object.httpEtag
+  );
+
+  headers.set(
+    "Cache-Control",
+    "private, max-age=3600"
+  );
+
+  return new Response(
+    object.body,
+    {
+      status: 200,
+      headers: headers
+    }
+  );
 }
 
 // ============================================================
 // DELETE PROFILE PICTURE
 // ============================================================
 
-async function deleteProfilePicture(request, env) {
-if (request.method !== "DELETE") {
-return json(
-{
-success: false,
-message:
-"Method not allowed."
-},
-405
-);
-}
-
-if (!env.ACCOUNTS_DB || !env.PROFILE_BUCKET) {
-return json(
-{
-success: false,
-message:
-"Profile picture service is not connected."
-},
-500
-);
-}
-
-const auth =
-await authenticateUser(
-request,
-env
-);
-
-if (!auth) {
-return json(
-{
-success: false,
-message:
-"You must be logged in."
-},
-401
-);
-}
-
-let user;
-
-try {
-user =
-await env.ACCOUNTS_DB
-.prepare(
-"SELECT profile_picture FROM users WHERE account_id = ? LIMIT 1"
-)
-.bind(auth.accountId)
-.first();
-
-} catch (error) {
-console.error(
-"PROFILE DELETE LOOKUP ERROR:",
-error
-);
-
-return json(
-  {
-    success: false,
-    message:
-      "Unable to find profile picture."
-  },
-  500
-);
-
-}
-
-if (
-user &&
-user.profile_picture
+async function deleteProfilePicture(
+  request,
+  env
 ) {
-try {
-await env.PROFILE_BUCKET.delete(
-user.profile_picture
-);
+  if (request.method !== "DELETE") {
+    return json(
+      {
+        success: false,
+        message:
+          "Method not allowed."
+      },
+      405
+    );
+  }
 
-} catch (error) {
-  console.error(
-    "R2 PROFILE DELETE ERROR:",
-    error
-  );
+  if (
+    !env.ACCOUNTS_DB ||
+    !env.PROFILE_BUCKET
+  ) {
+    return json(
+      {
+        success: false,
+        message:
+          "Profile picture service is not connected."
+      },
+      500
+    );
+  }
 
-  return json(
-    {
-      success: false,
-      message:
-        "Unable to delete profile picture."
-    },
-    500
-  );
-}
+  const auth =
+    await authenticateUser(
+      request,
+      env
+    );
 
-}
+  if (!auth) {
+    return json(
+      {
+        success: false,
+        message:
+          "You must be logged in."
+      },
+      401
+    );
+  }
 
-try {
-await env.ACCOUNTS_DB
-.prepare(
-"UPDATE users SET profile_picture = NULL WHERE account_id = ?"
-)
-.bind(auth.accountId)
-.run();
+  let user;
 
-} catch (error) {
-console.error(
-"PROFILE CLEAR DATABASE ERROR:",
-error
-);
+  try {
+    user =
+      await env.ACCOUNTS_DB
+        .prepare(
+          "SELECT profile_picture FROM users WHERE account_id = ? LIMIT 1"
+        )
+        .bind(
+          auth.accountId
+        )
+        .first();
+  } catch (error) {
+    console.error(
+      "PROFILE DELETE LOOKUP ERROR:",
+      error
+    );
 
-return json(
-  {
-    success: false,
+    return json(
+      {
+        success: false,
+        message:
+          "Unable to find profile picture."
+      },
+      500
+    );
+  }
+
+  if (
+    user &&
+    user.profile_picture
+  ) {
+    try {
+      await env.PROFILE_BUCKET.delete(
+        user.profile_picture
+      );
+    } catch (error) {
+      console.error(
+        "R2 PROFILE DELETE ERROR:",
+        error
+      );
+
+      return json(
+        {
+          success: false,
+          message:
+            "Unable to delete profile picture."
+        },
+        500
+      );
+    }
+  }
+
+  try {
+    await env.ACCOUNTS_DB
+      .prepare(
+        "UPDATE users SET profile_picture = NULL WHERE account_id = ?"
+      )
+      .bind(
+        auth.accountId
+      )
+      .run();
+  } catch (error) {
+    console.error(
+      "PROFILE CLEAR DATABASE ERROR:",
+      error
+    );
+
+    return json(
+      {
+        success: false,
+        message:
+          "Unable to clear profile picture information."
+      },
+      500
+    );
+  }
+
+  return json({
+    success: true,
+    profilePicture: null,
     message:
-      "Unable to clear profile picture information."
-  },
-  500
-);
-
-}
-
-return json({
-success: true,
-profilePicture: null,
-message:
-"Profile picture deleted successfully."
-});
+      "Profile picture deleted successfully."
+  });
 }
 
 // ============================================================
 // BUILD SESSION
 // ============================================================
 
-async function buildSession(accountId) {
-const tokenBytes =
-new Uint8Array(32);
+async function buildSession(
+  accountId
+) {
+  const tokenBytes =
+    new Uint8Array(32);
 
-crypto.getRandomValues(
-tokenBytes
-);
+  crypto.getRandomValues(
+    tokenBytes
+  );
 
-const token =
-bytesToBase64Url(
-tokenBytes
-);
+  const token =
+    bytesToBase64Url(
+      tokenBytes
+    );
 
-const tokenHash =
-await sha256(token);
+  const tokenHash =
+    await sha256(token);
 
-const expiresAt =
-new Date(
-Date.now() +
-SESSION_DAYS *
-24 *
-60 *
-60 *
-1000
-).toISOString();
+  const expiresAt =
+    new Date(
+      Date.now() +
+        SESSION_DAYS *
+          24 *
+          60 *
+          60 *
+          1000
+    ).toISOString();
 
-const cookie =
-"haleel_session=" +
-token +
-"; " +
-"HttpOnly; " +
-"Secure; " +
-"SameSite=Lax; " +
-"Path=/; " +
-"Max-Age=" +
-SESSION_DAYS *
-24 *
-60 *
-60;
+  const cookie =
+    "haleel_session=" +
+    token +
+    "; " +
+    "HttpOnly; " +
+    "Secure; " +
+    "SameSite=Lax; " +
+    "Path=/; " +
+    "Max-Age=" +
+    SESSION_DAYS *
+      24 *
+      60 *
+      60;
 
-return {
-accountId: accountId,
-token: token,
-tokenHash: tokenHash,
-expiresAt: expiresAt,
-cookie: cookie
-};
+  return {
+    accountId:
+      accountId,
+    token:
+      token,
+    tokenHash:
+      tokenHash,
+    expiresAt:
+      expiresAt,
+    cookie:
+      cookie
+  };
 }
 
 // ============================================================
@@ -1614,14 +1897,14 @@ cookie: cookie
 // ============================================================
 
 function clearSessionCookie() {
-return (
-"haleel_session=; " +
-"HttpOnly; " +
-"Secure; " +
-"SameSite=Lax; " +
-"Path=/; " +
-"Max-Age=0"
-);
+  return (
+    "haleel_session=; " +
+    "HttpOnly; " +
+    "Secure; " +
+    "SameSite=Lax; " +
+    "Path=/; " +
+    "Max-Age=0"
+  );
 }
 
 // ============================================================
@@ -1629,69 +1912,77 @@ return (
 // ============================================================
 
 async function sha256(value) {
-const data =
-new TextEncoder().encode(
-value
-);
+  const data =
+    new TextEncoder().encode(
+      value
+    );
 
-const hash =
-await crypto.subtle.digest(
-"SHA-256",
-data
-);
+  const hash =
+    await crypto.subtle.digest(
+      "SHA-256",
+      data
+    );
 
-return bytesToBase64Url(
-new Uint8Array(hash)
-);
+  return bytesToBase64Url(
+    new Uint8Array(hash)
+  );
 }
 
 // ============================================================
 // PASSWORD HASH
 // ============================================================
 
-async function hashPassword(password) {
-const salt =
-new Uint8Array(16);
+async function hashPassword(
+  password
+) {
+  const salt =
+    new Uint8Array(16);
 
-crypto.getRandomValues(
-salt
-);
+  crypto.getRandomValues(
+    salt
+  );
 
-const key =
-await crypto.subtle.importKey(
-"raw",
-new TextEncoder().encode(password),
-{
-name: "PBKDF2"
-},
-false,
-["deriveBits"]
-);
+  const key =
+    await crypto.subtle.importKey(
+      "raw",
+      new TextEncoder().encode(
+        password
+      ),
+      {
+        name: "PBKDF2"
+      },
+      false,
+      ["deriveBits"]
+    );
 
-const bits =
-await crypto.subtle.deriveBits(
-{
-name: "PBKDF2",
-salt: salt,
-iterations:
-PBKDF2_ITERATIONS,
-hash: "SHA-256"
-},
-key,
-PASSWORD_HASH_LENGTH
-);
+  const bits =
+    await crypto.subtle.deriveBits(
+      {
+        name: "PBKDF2",
+        salt: salt,
+        iterations:
+          PBKDF2_ITERATIONS,
+        hash: "SHA-256"
+      },
+      key,
+      PASSWORD_HASH_LENGTH
+    );
 
-const hash =
-new Uint8Array(bits);
+  const hash =
+    new Uint8Array(bits);
 
-return (
-"pbkdf2$" +
-PBKDF2_ITERATIONS +
-"$" +
-bytesToBase64Url(salt) +
-"$" +
-bytesToBase64Url(hash)
-);
+  return (
+    "pbkdf2$" +
+    PBKDF2_ITERATIONS +
+    "$" +
+    bytesToBase64Url(
+      salt
+    ) +
+    "$" +
+    bytesToBase64Url(
+      hash
+    )
+  );
 }
 
 // ============================================================
@@ -1699,165 +1990,179 @@ bytesToBase64Url(hash)
 // ============================================================
 
 async function verifyPassword(
-password,
-storedHash
+  password,
+  storedHash
 ) {
-const parts =
-storedHash.split("$");
+  const parts =
+    storedHash.split("$");
 
-if (
-parts.length !== 4 ||
-parts[0] !== "pbkdf2"
-) {
-return false;
-}
+  if (
+    parts.length !== 4 ||
+    parts[0] !== "pbkdf2"
+  ) {
+    return false;
+  }
 
-const iterations =
-Number(parts[1]);
+  const iterations =
+    Number(parts[1]);
 
-if (
-!Number.isInteger(iterations) ||
-iterations < 1
-) {
-return false;
-}
+  if (
+    !Number.isInteger(
+      iterations
+    ) ||
+    iterations < 1
+  ) {
+    return false;
+  }
 
-let salt;
-let expectedHash;
+  let salt;
+  let expectedHash;
 
-try {
-salt =
-base64UrlToBytes(
-parts[2]
-);
+  try {
+    salt =
+      base64UrlToBytes(
+        parts[2]
+      );
 
-expectedHash =
-  base64UrlToBytes(
-    parts[3]
+    expectedHash =
+      base64UrlToBytes(
+        parts[3]
+      );
+  } catch {
+    return false;
+  }
+
+  if (
+    salt.length === 0 ||
+    expectedHash.length === 0
+  ) {
+    return false;
+  }
+
+  const key =
+    await crypto.subtle.importKey(
+      "raw",
+      new TextEncoder().encode(
+        password
+      ),
+      {
+        name: "PBKDF2"
+      },
+      false,
+      ["deriveBits"]
+    );
+
+  const bits =
+    await crypto.subtle.deriveBits(
+      {
+        name: "PBKDF2",
+        salt: salt,
+        iterations:
+          iterations,
+        hash: "SHA-256"
+      },
+      key,
+      expectedHash.length *
+        8
+    );
+
+  const actualHash =
+    new Uint8Array(bits);
+
+  return timingSafeEqual(
+    actualHash,
+    expectedHash
   );
-
-} catch {
-return false;
-}
-
-if (
-salt.length === 0 ||
-expectedHash.length === 0
-) {
-return false;
-}
-
-const key =
-await crypto.subtle.importKey(
-"raw",
-new TextEncoder().encode(password),
-{
-name: "PBKDF2"
-},
-false,
-["deriveBits"]
-);
-
-const bits =
-await crypto.subtle.deriveBits(
-{
-name: "PBKDF2",
-salt: salt,
-iterations: iterations,
-hash: "SHA-256"
-},
-key,
-expectedHash.length * 8
-);
-
-const actualHash =
-new Uint8Array(bits);
-
-return timingSafeEqual(
-actualHash,
-expectedHash
-);
 }
 
 // ============================================================
 // TIMING-SAFE COMPARISON
 // ============================================================
 
-function timingSafeEqual(a, b) {
-if (a.length !== b.length) {
-return false;
-}
-
-let difference = 0;
-
-for (
-let i = 0;
-i < a.length;
-i++
+function timingSafeEqual(
+  a,
+  b
 ) {
-difference |=
-a[i] ^ b[i];
-}
+  if (a.length !== b.length) {
+    return false;
+  }
 
-return difference === 0;
+  let difference = 0;
+
+  for (
+    let i = 0;
+    i < a.length;
+    i++
+  ) {
+    difference |=
+      a[i] ^ b[i];
+  }
+
+  return difference === 0;
 }
 
 // ============================================================
 // COOKIE READER
 // ============================================================
 
-function getCookie(request, name) {
-const cookieHeader =
-request.headers.get("Cookie");
+function getCookie(
+  request,
+  name
+) {
+  const cookieHeader =
+    request.headers.get(
+      "Cookie"
+    );
 
-if (!cookieHeader) {
-return null;
-}
+  if (!cookieHeader) {
+    return null;
+  }
 
-const cookies =
-cookieHeader.split(";");
+  const cookies =
+    cookieHeader.split(";");
 
-for (const cookie of cookies) {
-const trimmed =
-cookie.trim();
+  for (const cookie of cookies) {
+    const trimmed =
+      cookie.trim();
 
-const separator =
-  trimmed.indexOf("=");
+    const separator =
+      trimmed.indexOf("=");
 
-if (separator === -1) {
-  continue;
-}
+    if (separator === -1) {
+      continue;
+    }
 
-const key =
-  trimmed.slice(
-    0,
-    separator
-  );
+    const key =
+      trimmed.slice(
+        0,
+        separator
+      );
 
-const value =
-  trimmed.slice(
-    separator + 1
-  );
+    const value =
+      trimmed.slice(
+        separator + 1
+      );
 
-if (key === name) {
-  return value || null;
-}
+    if (key === name) {
+      return value || null;
+    }
+  }
 
-}
-
-return null;
+  return null;
 }
 
 // ============================================================
 // JSON READER
 // ============================================================
 
-async function readJSON(request) {
-try {
-return await request.json();
-} catch {
-return null;
-}
+async function readJSON(
+  request
+) {
+  try {
+    return await request.json();
+  } catch {
+    return null;
+  }
 }
 
 // ============================================================
@@ -1865,73 +2170,100 @@ return null;
 // ============================================================
 
 function json(
-data,
-status = 200
+  data,
+  status = 200
 ) {
-return new Response(
-JSON.stringify(data),
-{
-status: status,
-headers: {
-"Content-Type":
-"application/json; charset=UTF-8",
+  return new Response(
+    JSON.stringify(data),
+    {
+      status: status,
+      headers: {
+        "Content-Type":
+          "application/json; charset=UTF-8",
 
-    "Cache-Control":
-      "no-store"
-  }
-}
-
-);
+        "Cache-Control":
+          "no-store"
+      }
+    }
+  );
 }
 
 // ============================================================
 // BYTES → BASE64URL
 // ============================================================
 
-function bytesToBase64Url(bytes) {
+function bytesToBase64Url(
+  bytes
+) {
   let binary = "";
 
   for (const byte of bytes) {
-    binary += String.fromCharCode(byte);
+    binary +=
+      String.fromCharCode(
+        byte
+      );
   }
 
   return btoa(binary)
-    .replace(/\+/g, "-")
-    .replace(/\//g, "_")
-    .replace(/=+$/g, "");
+    .replace(
+      /\+/g,
+      "-"
+    )
+    .replace(
+      /\//g,
+      "_"
+    )
+    .replace(
+      /=+$/g,
+      ""
+    );
 }
 
 // ============================================================
 // BASE64URL → BYTES
 // ============================================================
 
-function base64UrlToBytes(value) {
-const base64 =
-value
-.replace(/-/g, "+")
-.replace(/_/g, "/");
-
-const padding =
-"=".repeat(
-(4 - (base64.length % 4)) % 4
-);
-
-const binary =
-atob(base64 + padding);
-
-const bytes =
-new Uint8Array(
-binary.length
-);
-
-for (
-let i = 0;
-i < binary.length;
-i++
+function base64UrlToBytes(
+  value
 ) {
-bytes[i] =
-binary.charCodeAt(i);
-}
+  const base64 =
+    value
+      .replace(
+        /-/g,
+        "+"
+      )
+      .replace(
+        /_/g,
+        "/"
+      );
 
-return bytes;
+  const padding =
+    "=".repeat(
+      (4 -
+        (base64.length %
+          4)) %
+        4
+    );
+
+  const binary =
+    atob(
+      base64 +
+        padding
+    );
+
+  const bytes =
+    new Uint8Array(
+      binary.length
+    );
+
+  for (
+    let i = 0;
+    i < binary.length;
+    i++
+  ) {
+    bytes[i] =
+      binary.charCodeAt(i);
+  }
+
+  return bytes;
 }
