@@ -1051,7 +1051,7 @@ async function getCurrentUser(
     user =
       await env.ACCOUNTS_DB
         .prepare(
-          "SELECT first_name, middle_name, last_name, phone_number, profile_picture FROM users WHERE account_id = ? LIMIT 1"
+          "SELECT first_name, middle_name, last_name, phone_number, profile_picture, created_at FROM users WHERE account_id = ? LIMIT 1"
         )
         .bind(
           Number(
