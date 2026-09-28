@@ -1117,6 +1117,9 @@ async function getCurrentUser(
     phoneNumber:
       user.phone_number || "",
 
+    created_at:
+      user.created_at || null,
+
     profilePicture:
       user.profile_picture || null
   });
