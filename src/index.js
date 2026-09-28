@@ -481,7 +481,7 @@ async function signup(request, env) {
   try {
     await env.ACCOUNTS_DB
       .prepare(
-        "INSERT INTO users (account_id, password_hash, first_name, middle_name, last_name, phone_number, profile_picture) VALUES (?, ?, ?, ?, ?, ?, ?)"
+        "INSERT INTO users (account_id, password_hash, first_name, middle_name, last_name, phone_number, profile_picture, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)"
       )
       .bind(
         accountId,
