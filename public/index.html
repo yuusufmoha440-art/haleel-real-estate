@@ -821,10 +821,10 @@ color:#1d3044;
 text-align:right;
 overflow-wrap:anywhere;
 }
-.account-info-row strong{
-  color:#1d3044;
-  text-align:right;
-  overflow-wrap:anywhere;
+.account-info-row:last-child strong{
+color:#006CC2;
+font-size:20px;
+letter-spacing:1.5px;
 }
 .account-logout-button{
 width:100%;
@@ -2477,6 +2477,86 @@ body.dark .farsamo-service-card{
   .farsamo-service-card{min-height:250px}
   .farsamo-action{flex:1;min-width:0}
 }
+
+/* =========================================================
+   ACCESSIBILITY / SCREEN READER VOICE
+========================================================= */
+.accessibility-toggle-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  margin-top:14px;
+  padding:12px 14px;
+  border:1px solid rgba(0,0,0,.08);
+  border-radius:12px;
+  background:rgba(247,251,255,.75);
+}
+.accessibility-toggle-label{
+  display:flex;
+  flex-direction:column;
+  gap:3px;
+}
+.accessibility-toggle-label strong{
+  color:#1d3044;
+  font-size:14px;
+}
+.accessibility-toggle-label span{
+  color:#718096;
+  font-size:12px;
+}
+.accessibility-switch{
+  position:relative;
+  flex:0 0 auto;
+  width:52px;
+  height:30px;
+}
+.accessibility-switch input{
+  opacity:0;
+  width:0;
+  height:0;
+}
+.accessibility-slider{
+  position:absolute;
+  inset:0;
+  cursor:pointer;
+  border-radius:999px;
+  background:#cbd5e0;
+  transition:.2s ease;
+}
+.accessibility-slider::before{
+  content:"";
+  position:absolute;
+  width:24px;
+  height:24px;
+  left:3px;
+  top:3px;
+  border-radius:50%;
+  background:#fff;
+  box-shadow:0 1px 4px rgba(0,0,0,.2);
+  transition:.2s ease;
+}
+.accessibility-switch input:checked + .accessibility-slider{
+  background:#006CC2;
+}
+.accessibility-switch input:checked + .accessibility-slider::before{
+  transform:translateX(22px);
+}
+.accessibility-switch input:focus-visible + .accessibility-slider{
+  outline:3px solid rgba(0,108,194,.25);
+  outline-offset:2px;
+}
+body.dark .accessibility-toggle-row{
+  background:#10212f;
+  border-color:#244967;
+}
+body.dark .accessibility-toggle-label strong{
+  color:#e8eef5;
+}
+body.dark .accessibility-toggle-label span{
+  color:#91a0b1;
+}
+
 </style>
 <style>
 .phub-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:2px}
@@ -4052,7 +4132,7 @@ Website Settings.
 <div class="setting-card account-setting-card">
   <div class="setting-icon">👤</div>
   <h3>Account</h3>
-  <p>Information</p>
+  <p>Macluumaadka akoonkaaga.</p>
   <div class="account-profile-photo" id="settingsAccountProfilePhoto" aria-label="Profile picture">
     <span class="account-profile-photo-icon" id="settingsAccountProfileIcon">👤</span>
     <img id="settingsAccountProfileImage" alt="Profile picture" style="display:none">
@@ -4103,6 +4183,23 @@ id="themeStatus">
 Current theme: Light Mode
 </div>
 </div>
+
+<div class="setting-card">
+<div class="setting-icon">🔊</div>
+<h3>Accessibility</h3>
+<p>Daar cod ahaan uga maqal qaybaha website-ka marka aad taabato.</p>
+<div class="accessibility-toggle-row">
+  <div class="accessibility-toggle-label">
+    <strong>Akhriska Codka</strong>
+    <span id="accessibilityVoiceStatus">Off</span>
+  </div>
+  <label class="accessibility-switch" aria-label="Akhriska Codka On ama Off">
+    <input type="checkbox" id="accessibilityVoiceToggle" onchange="toggleAccessibilityVoice(this.checked)">
+    <span class="accessibility-slider"></span>
+  </label>
+</div>
+</div>
+
 <div class="setting-card">
 <div class="setting-icon">🌍</div>
 <h3>Country</h3>
@@ -5885,6 +5982,95 @@ setInterval(
 updateCountryTime,
 1000
 );
+
+/* =========================================================
+   ACCESSIBILITY / SCREEN READER VOICE
+   Uses the browser Text-to-Speech API.
+========================================================= */
+const ACCESSIBILITY_VOICE_KEY = "haleel_accessibility_voice";
+let accessibilityVoiceEnabled = false;
+
+function speakAccessibilityText(text){
+  if(!accessibilityVoiceEnabled || !text) return;
+  const cleanText = String(text)
+    .replace(/\s+/g," ")
+    .replace(/\bhttps?:\/\/\S+/gi,"")
+    .trim()
+    .slice(0,700);
+  if(!cleanText) return;
+
+  try{
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(cleanText);
+    utterance.lang = "so-SO";
+    utterance.rate = 0.9;
+    utterance.pitch = 1;
+    window.speechSynthesis.speak(utterance);
+  }catch(_){ }
+}
+
+function getAccessibilityLabel(target){
+  if(!target) return "";
+
+  const labelled =
+    target.getAttribute?.("aria-label") ||
+    target.getAttribute?.("title") ||
+    target.getAttribute?.("alt");
+  if(labelled) return labelled;
+
+  if(target.matches?.("input,select,textarea")){
+    const id = target.id;
+    if(id){
+      const label = document.querySelector(`label[for="${CSS.escape(id)}"]`);
+      if(label?.innerText) return `${label.innerText}: ${target.value || ""}`.trim();
+    }
+    return target.value || target.placeholder || target.name || "";
+  }
+
+  const text = target.innerText || target.textContent || "";
+  return text.replace(/\s+/g," ").trim();
+}
+
+function updateAccessibilityVoiceUI(){
+  const toggle = $("accessibilityVoiceToggle");
+  const status = $("accessibilityVoiceStatus");
+  if(toggle) toggle.checked = accessibilityVoiceEnabled;
+  if(status) status.textContent = accessibilityVoiceEnabled ? "On — Taabo qayb si loo akhriyo" : "Off";
+}
+
+function toggleAccessibilityVoice(enabled){
+  accessibilityVoiceEnabled = !!enabled;
+  localStorage.setItem(ACCESSIBILITY_VOICE_KEY, accessibilityVoiceEnabled ? "on" : "off");
+  updateAccessibilityVoiceUI();
+
+  if(accessibilityVoiceEnabled){
+    speakAccessibilityText("Akhriska Codka waa On. Marka aad taabato qayb ka mid ah website-ka, qoraalka ayaa cod ahaan loo akhriyi doonaa.");
+  }else{
+    try{ window.speechSynthesis.cancel(); }catch(_){ }
+  }
+}
+
+function initAccessibilityVoice(){
+  accessibilityVoiceEnabled = localStorage.getItem(ACCESSIBILITY_VOICE_KEY) === "on";
+  updateAccessibilityVoiceUI();
+}
+
+document.addEventListener("click", function(e){
+  if(!accessibilityVoiceEnabled) return;
+  if(e.detail === 0) return;
+
+  const target = e.target.closest?.("button,a,[role=button],input,select,textarea,.card,.setting-card,.status-card,.service-card,.account-info-row,.theme-button,.nav button,.mobile-nav button");
+  if(!target) return;
+
+  if(target.id === "accessibilityVoiceToggle") return;
+  if(target.closest(".accessibility-switch")) return;
+
+  const label = getAccessibilityLabel(target);
+  if(label) speakAccessibilityText(label);
+},{capture:true});
+
+
+try{ initAccessibilityVoice(); }catch(_){ }
 </script>
 </body>
 </html>
