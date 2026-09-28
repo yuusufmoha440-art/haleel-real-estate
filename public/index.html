@@ -4071,7 +4071,7 @@ Website Settings.
       <strong id="settingsAccountNumber">—</strong>
     </div>
     <div class="account-info-row">
-      <span>Created:</span>
+      <span>Created at:</span>
       <strong id="settingsAccountCreated">—</strong>
     </div>
   </div>
@@ -4452,28 +4452,46 @@ function updateSettingsAccount(user){
     user?.account_created_at ||
     "";
   function formatAccountCreatedDate(value){
-    if(!value) return "—";
-    const raw=String(value).trim();
-    let normalized=raw.replace(" ","T");
-    // SQLite CURRENT_TIMESTAMP waa UTC.
-    if(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/.test(normalized)){
-      normalized += "Z";
-    }
-    const date=new Date(normalized);
-    if(Number.isNaN(date.getTime())){
-      return raw;
-    }
-    return new Intl.DateTimeFormat("en-GB",{
-      timeZone:"Africa/Mogadishu",
-      year:"numeric",
-      month:"2-digit",
-      day:"2-digit",
-      hour:"2-digit",
-      minute:"2-digit",
-      second:"2-digit",
-      hour12:false
-    }).format(date);
+  /*
+   * created_at waa inuu ka yimaadaa Cloudflare D1 users.created_at.
+   * SQLite CURRENT_TIMESTAMP wuxuu yahay UTC, sidaas darteed halkan
+   * waxaan ugu beddelaynaa Africa/Mogadishu (UTC+3).
+   *
+   * Lama isticmaalayo waqtiga browser-ka si loo abuuro taariikh cusub.
+   */
+  if(value === null || value === undefined || String(value).trim() === ""){
+    return "—";
   }
+
+  const raw = String(value).trim();
+
+  // ISO UTC: 2026-09-28T11:24:35Z
+  // SQLite UTC: 2026-09-28 11:24:35
+  let normalized = raw.replace(" ", "T");
+
+  // Haddii D1/SQLite uu soo celiyo timestamp aan timezone lahayn,
+  // CURRENT_TIMESTAMP waxaa loo qaadanayaa UTC.
+  if(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?$/.test(normalized)){
+    normalized += "Z";
+  }
+
+  const date = new Date(normalized);
+
+  if(Number.isNaN(date.getTime())){
+    return raw;
+  }
+
+  return new Intl.DateTimeFormat("en-GB",{
+    timeZone:"Africa/Mogadishu",
+    year:"numeric",
+    month:"2-digit",
+    day:"2-digit",
+    hour:"2-digit",
+    minute:"2-digit",
+    second:"2-digit",
+    hour12:false
+  }).format(date);
+}
   const nameEl=$("settingsAccountName");
   const idEl=$("settingsAccountId");
   const numberEl=$("settingsAccountNumber");
@@ -4481,7 +4499,10 @@ function updateSettingsAccount(user){
   if(nameEl) nameEl.textContent=name;
   if(idEl) idEl.textContent=accountId || "0000000";
   if(numberEl) numberEl.textContent=number || "—";
-  if(createdEl) createdEl.textContent=formatAccountCreatedDate(created_at);
+  if(createdEl){
+  // Muujinta taariikhda saxda ah ee users.created_at ee D1.
+  createdEl.textContent = formatAccountCreatedDate(created_at);
+}
   /*
    * Profile Picture:
    * Sawirka waxaa hadda laga soo qaadanayaa Cloudflare R2
