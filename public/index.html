@@ -2557,6 +2557,23 @@ body.dark .accessibility-toggle-label span{
   color:#91a0b1;
 }
 
+
+/* HALEEL EJAAR MODULE */
+.ejaar-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;margin-top:22px}
+.ejaar-option{padding:30px;border-radius:22px;background:#fff;border:1px solid var(--border);box-shadow:0 12px 35px rgba(9,44,73,.07)}
+.ejaar-option .service-icon{font-size:32px}
+.ejaar-form{max-width:900px;margin-top:22px}
+.ejaar-listing-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:22px}
+.ejaar-listing{background:#fff;border:1px solid var(--border);border-radius:20px;overflow:hidden;box-shadow:0 10px 30px rgba(9,44,73,.07)}
+.ejaar-listing img{width:100%;height:210px;object-fit:cover;background:#eaf5ff}
+.ejaar-listing-body{padding:18px}
+.ejaar-listing-body h3{margin-bottom:8px;color:#081b2e}
+.ejaar-listing-body p{margin:7px 0;color:#718096;line-height:1.5}
+.ejaar-message{margin:12px 0;font-weight:700;color:#159957}
+body.dark .ejaar-option,body.dark .ejaar-listing{background:#131c26;color:#e8eef5}
+body.dark .ejaar-listing-body h3{color:#f1f5f9}
+@media(max-width:750px){.ejaar-options,.ejaar-listing-grid{grid-template-columns:1fr}}
+
 </style>
 <style>
 .phub-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:2px}
@@ -2786,21 +2803,25 @@ Diiwaangeli Guri
 <div class="service-icon">🏠</div>
 <h3>Adeega Ejaar</h3>
 <p>Hel guri kiro ah ama si fudud u kirayso gurigaaga.</p>
+<button class="btn btn-primary" style="margin-top:16px;width:100%" onclick="openPage('ejaar')">Open</button>
 </div>
 <div class="card">
 <div class="service-icon">📢</div>
 <h3>Adeega Soohel</h3>
 <p>Haddii aad soo gudbiso guri kiro ah waxaad heli kartaa khidmad.</p>
+<button class="btn btn-primary" style="margin-top:16px;width:100%" onclick="openPage('soohel')">Open</button>
 </div>
 <div class="card">
 <div class="service-icon">🤝</div>
 <h3>Adeega Dilaal</h3>
 <p>Waxaad iibin kartaa gurigaaga iyo bugcadaada.</p>
+<button class="btn btn-primary" style="margin-top:16px;width:100%" onclick="openPage('dilaal')">Open</button>
 </div>
 <div class="card">
 <div class="service-icon">✈️</div>
 <h3>Adeega Musaafir</h3>
 <p>Waxaad booking garaysan kartaa hotel haddii aad tahay Safar ka hor inta aadan imaan magaalada.</p>
+<button class="btn btn-primary" style="margin-top:16px;width:100%" onclick="openPage('musaafir')">Booking</button>
 </div>
 </div>
 </section>
@@ -2814,7 +2835,7 @@ Diiwaangeli Guri
 <p>Guryaha Available</p>
 </div>
 <div class="status-card rented">
-<h2>EJAAR CARD</h2>
+<h2>ADEEGA EJAAR</h2>
 <p>Ku kirayso guri oo ka kirayso guri</p>
 </div>
 <div class="status-card new">
@@ -2841,6 +2862,59 @@ View All
 <div class="property-grid" id="homePropertyGrid"></div>
 </section>
 </div>
+
+<div class="page" id="ejaar">
+  <div class="property-header"><div><h2>Adeega Ejaar</h2><p>Dooro adeegga aad rabto.</p></div></div>
+  <div class="ejaar-options">
+    <article class="ejaar-option"><div class="service-icon">🏡</div><h3>Kiree Guri</h3><p>Geli xogta guriga aad rabto inaad dadka kale u kirayso, kadibna Publish Home taabo.</p><button class="btn btn-primary" style="margin-top:18px;width:100%" onclick="openPage('ejaarPublish')">Kiree Guri</button></article>
+    <article class="ejaar-option"><div class="service-icon">🔎</div><h3>Kirayso Guri</h3><p>Fiiri guryaha la daabacay, qiimahooda iyo goobta ay ku yaallaan.</p><button class="btn btn-primary" style="margin-top:18px;width:100%" onclick="openPage('ejaarRent');renderEjaarListings()">Kirayso Guri</button></article>
+  </div>
+</div>
+<div class="page" id="ejaarPublish">
+  <div class="property-header"><div><h2>Publish Home</h2><p>Buuxi xogta guriga aad kiraynayso.</p></div><button class="btn btn-outline" onclick="openPage('ejaar')">← Dib u noqo</button></div>
+  <form class="form-container ejaar-form" id="ejaarPublishForm">
+    <div class="form-grid">
+      <div class="form-group"><label for="ejaarName">Geli Magacaaga</label><input class="input" id="ejaarName" name="ownerName" required placeholder="Magacaaga oo buuxa"></div>
+      <div class="form-group"><label for="ejaarPhone">Geli Lambarkaaga</label><input class="input" id="ejaarPhone" name="phone" required type="tel" placeholder="Lambarka telefoonka"></div>
+      <div class="form-group"><label for="ejaarType">Nooca Guriga</label><select class="input" id="ejaarType" name="type" required><option value="">Dooro nooca guriga</option><option>Guri</option><option>Apartment</option><option>Villa</option><option>Commercial</option><option>Qol</option></select></div>
+      <div class="form-group"><label for="ejaarPrice">Qiimaha Kirada ($ bishii)</label><input class="input" id="ejaarPrice" name="price" type="number" min="1" required placeholder="Tusaale: 250"></div>
+      <div class="form-group"><label for="ejaarCity">Magaalada</label><input class="input" id="ejaarCity" name="city" required placeholder="Magaalada"></div>
+      <div class="form-group"><label for="ejaarNeighborhood">Xaafada</label><input class="input" id="ejaarNeighborhood" name="neighborhood" required placeholder="Xaafada"></div>
+    </div>
+    <div class="form-group"><label for="ejaarImage">Sawirka Guriga</label><input class="input" id="ejaarImage" name="image" type="file" accept="image/jpeg,image/png,image/webp,image/gif" required><small>Dooro sawir JPG, PNG, WEBP ama GIF.</small></div>
+    <p class="ejaar-message" id="ejaarPublishMessage" role="status"></p>
+    <button class="btn btn-primary" type="submit">Publish Home</button>
+  </form>
+</div>
+<div class="page" id="ejaarRent">
+  <div class="property-header"><div><h2>Kirayso Guri</h2><p>Guryaha ay dadka kale daabaceen.</p></div><button class="btn btn-outline" onclick="openPage('ejaar')">← Dib u noqo</button></div>
+  <div id="ejaarListingsMessage" class="ejaar-message" role="status"></div>
+  <div class="ejaar-listing-grid" id="ejaarListingGrid"></div>
+</div>
+<div class="page" id="soohel">
+  <div class="property-header"><div><h2>Adeega Soohel</h2><p>Ku soo hel guryo kiro ah, kadibna la wadaag macmiilka ama kooxda adeegga.</p></div></div>
+  <div class="ejaar-option"><div class="service-icon">📢</div><h3>Soohel Guri</h3><p>Haddii aad taqaan guri kiro ah, la xiriir maamulka Haleel si loo xaqiijiyo xogta iyo khidmada.</p><button class="btn btn-primary" onclick="openPage('care')">La Xiriir Customer Care</button></div>
+</div>
+<div class="page" id="dilaal">
+  <div class="property-header"><div><h2>Adeega Dilaal</h2><p>Adeegga isku xira milkiilayaasha guryaha iyo macaamiisha.</p></div></div>
+  <div class="ejaar-option"><div class="service-icon">🤝</div><h3>Dilaalnimo</h3><p>La xiriir kooxda Haleel si aad u hesho faahfaahin ku saabsan adeegga dilaalka iyo guryaha la heli karo.</p><button class="btn btn-primary" onclick="openPage('care')">La Xiriir Customer Care</button></div>
+</div>
+<div class="page" id="musaafir">
+  <div class="property-header"><div><h2>Adeega Musaafir</h2><p>Codso booking hoygaaga ka hor intaadan magaalada imaan.</p></div></div>
+  <form class="form-container ejaar-form" id="musaafirBookingForm">
+    <div class="form-grid">
+      <div class="form-group"><label for="travelerName">Magacaaga</label><input class="input" id="travelerName" required placeholder="Magacaaga"></div>
+      <div class="form-group"><label for="travelerPhone">Lambarkaaga</label><input class="input" id="travelerPhone" required type="tel" placeholder="Lambarka telefoonka"></div>
+      <div class="form-group"><label for="travelCity">Magaalada</label><input class="input" id="travelCity" required placeholder="Magaalada aad u safrayso"></div>
+      <div class="form-group"><label for="travelDate">Taariikhda Imaanshaha</label><input class="input" id="travelDate" required type="date"></div>
+      <div class="form-group"><label for="travelNights">Tirada Habeennada</label><input class="input" id="travelNights" required type="number" min="1" value="1"></div>
+      <div class="form-group"><label for="travelGuests">Tirada Dadka</label><input class="input" id="travelGuests" required type="number" min="1" value="1"></div>
+    </div>
+    <p id="musaafirBookingMessage" class="ejaar-message" role="status"></p>
+    <button class="btn btn-primary" type="submit">Gudbi Booking Request</button>
+  </form>
+</div>
+
 <div class="page services-page" id="services">
   <div class="services-hero">
     <div class="services-hero-content">
@@ -5456,6 +5530,12 @@ selected.classList.add("active");
 }
 const titles={
 home:"Home",
+ejaar:"Adeega Ejaar",
+ejaarPublish:"Publish Home",
+ejaarRent:"Kirayso Guri",
+soohel:"Adeega Soohel",
+dilaal:"Adeega Dilaal",
+musaafir:"Adeega Musaafir",
 services:"Services",
 farsamo:"Adeegyo",
 property:"Properties",
@@ -5875,6 +5955,73 @@ alert(
 );
 }
 }
+
+/* =========================================================
+   HALEEL EJAAR: publish and browse rental homes
+   Browser-local demo storage; use backend/API for cross-device listings.
+========================================================= */
+const EJAAR_STORAGE_KEY = "haleel_ejaar_published_homes_v1";
+function getEjaarHomes(){
+  try { const data=JSON.parse(localStorage.getItem(EJAAR_STORAGE_KEY)||"[]"); return Array.isArray(data)?data:[]; }
+  catch(_){ return []; }
+}
+function renderEjaarListings(){
+  const grid=document.getElementById("ejaarListingGrid");
+  const message=document.getElementById("ejaarListingsMessage");
+  if(!grid)return;
+  const homes=getEjaarHomes();
+  grid.replaceChildren();
+  if(!homes.length){ if(message)message.textContent="Weli guri lama Publish-gareyn. Marka guri la daabaco, halkan ayuu kasoo muuqanayaa."; return; }
+  if(message)message.textContent=`Waxaa la helay ${homes.length} guri.`;
+  homes.slice().reverse().forEach(home=>{
+    const card=document.createElement("article"); card.className="ejaar-listing";
+    const img=document.createElement("img"); img.src=home.image; img.alt="Sawirka guriga"; card.appendChild(img);
+    const body=document.createElement("div"); body.className="ejaar-listing-body";
+    const title=document.createElement("h3"); title.textContent=home.type+" — "+home.city; body.appendChild(title);
+    [["Qiimaha","$"+home.price+" / bishii"],["Xaafada",home.neighborhood],["Milkiilaha",home.ownerName],["Telefoon",home.phone]].forEach(pair=>{
+      const p=document.createElement("p"); p.textContent=pair[0]+": "+pair[1]; body.appendChild(p);
+    });
+    const contact=document.createElement("a"); contact.className="btn btn-primary"; contact.style.cssText="display:block;text-align:center;text-decoration:none;margin-top:12px"; contact.href="tel:"+home.phone.replace(/[^\d+]/g,""); contact.textContent="La Xiriir Milkiilaha"; body.appendChild(contact);
+    card.appendChild(body); grid.appendChild(card);
+  });
+}
+document.addEventListener("DOMContentLoaded",()=>{
+  const form=document.getElementById("ejaarPublishForm");
+  if(form)form.addEventListener("submit",async event=>{
+    event.preventDefault();
+    const msg=document.getElementById("ejaarPublishMessage");
+    const file=document.getElementById("ejaarImage").files[0];
+    if(!file){msg.textContent="Fadlan sawirka guriga dooro.";return;}
+    if(!/^image\/(jpeg|png|webp|gif)$/.test(file.type)){msg.textContent="Fadlan dooro sawir JPG, PNG, WEBP ama GIF.";return;}
+    if(file.size>2*1024*1024){msg.textContent="Sawirku waa inuu ka yaraadaa 2 MB si browser-ku u kaydin karo.";return;}
+    try{
+      const image=await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=reject;reader.readAsDataURL(file);});
+      const data=new FormData(form);
+      const homes=getEjaarHomes();
+      homes.push({id:Date.now(),ownerName:String(data.get("ownerName")).trim(),phone:String(data.get("phone")).trim(),type:String(data.get("type")),price:String(data.get("price")),city:String(data.get("city")).trim(),neighborhood:String(data.get("neighborhood")).trim(),image,createdAt:new Date().toISOString()});
+      localStorage.setItem(EJAAR_STORAGE_KEY,JSON.stringify(homes));
+      form.reset();msg.textContent="Guriga waa la Publish-gareeyay, wuxuuna kasoo muuqanayaa Kirayso Guri.";
+      renderEjaarListings();
+      setTimeout(()=>openPage("ejaarRent"),700);
+    }catch(error){msg.textContent="Kaydintu ma suuragelin. Isku day sawir ka yar ama browser-ka ka nadiifi meel kayd ah.";}
+  });
+  const booking=document.getElementById("musaafirBookingForm");
+  if(booking)booking.addEventListener("submit",event=>{
+    event.preventDefault();
+    const data=new FormData(booking);
+    const details={
+      name:document.getElementById("travelerName").value.trim(),
+      phone:document.getElementById("travelerPhone").value.trim(),
+      city:document.getElementById("travelCity").value.trim(),
+      date:document.getElementById("travelDate").value,
+      nights:document.getElementById("travelNights").value,
+      guests:document.getElementById("travelGuests").value
+    };
+    document.getElementById("musaafirBookingMessage").textContent="Codsiga booking-ga waa la diyaariyey. Fadlan la xiriir Customer Care si loo xaqiijiyo hoyga; codsigan weli si otomaatig ah email looma dirayo.";
+    try{localStorage.setItem("haleel_musaafir_last_booking",JSON.stringify(details));}catch(_){}
+  });
+});
+
 /* =========================================================
    SERVICE WORKER
 ========================================================= */
