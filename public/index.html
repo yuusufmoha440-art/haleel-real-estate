@@ -5957,66 +5957,63 @@ alert(
 }
 
 /* =========================================================
-   HALEEL EJAAR: publish and browse rental homes
-   Browser-local demo storage; use backend/API for cross-device listings.
+   HALEEL EJAAR: public listings through the server API
+   The Worker must implement GET/POST /api/ejaar/homes and email notifications.
 ========================================================= */
-const EJAAR_STORAGE_KEY = "haleel_ejaar_published_homes_v1";
-function getEjaarHomes(){
-  try { const data=JSON.parse(localStorage.getItem(EJAAR_STORAGE_KEY)||"[]"); return Array.isArray(data)?data:[]; }
-  catch(_){ return []; }
-}
-function renderEjaarListings(){
+async function renderEjaarListings(){
   const grid=document.getElementById("ejaarListingGrid");
   const message=document.getElementById("ejaarListingsMessage");
   if(!grid)return;
-  const homes=getEjaarHomes();
   grid.replaceChildren();
-  if(!homes.length){ if(message)message.textContent="Weli guri lama Publish-gareyn. Marka guri la daabaco, halkan ayuu kasoo muuqanayaa."; return; }
-  if(message)message.textContent=`Waxaa la helay ${homes.length} guri.`;
-  homes.slice().reverse().forEach(home=>{
-    const card=document.createElement("article"); card.className="ejaar-listing";
-    const img=document.createElement("img"); img.src=home.image; img.alt="Sawirka guriga"; card.appendChild(img);
-    const body=document.createElement("div"); body.className="ejaar-listing-body";
-    const title=document.createElement("h3"); title.textContent=home.type+" — "+home.city; body.appendChild(title);
-    [["Qiimaha","$"+home.price+" / bishii"],["Xaafada",home.neighborhood],["Milkiilaha",home.ownerName],["Telefoon",home.phone]].forEach(pair=>{
-      const p=document.createElement("p"); p.textContent=pair[0]+": "+pair[1]; body.appendChild(p);
+  if(message)message.textContent="Guryaha public-ka ah ayaa la soo rarayaa…";
+  try{
+    const response=await fetch("/api/ejaar/homes",{method:"GET",headers:{"Accept":"application/json"},cache:"no-store"});
+    if(!response.ok)throw new Error("API unavailable");
+    const result=await response.json();
+    const homes=Array.isArray(result)?result:(Array.isArray(result.homes)?result.homes:[]);
+    if(!homes.length){if(message)message.textContent="Weli guri lama Publish-gareyn. Marka guri la daabaco, halkan ayuu kasoo muuqanayaa.";return;}
+    if(message)message.textContent=`Waxaa la helay ${homes.length} guri.`;
+    homes.slice().reverse().forEach(home=>{
+      const card=document.createElement("article");card.className="ejaar-listing";
+      const img=document.createElement("img");img.src=home.imageUrl||home.image_url||home.image||"";img.alt="Sawirka guriga";img.loading="lazy";card.appendChild(img);
+      const body=document.createElement("div");body.className="ejaar-listing-body";
+      const title=document.createElement("h3");title.textContent=(home.type||"Guri")+" — "+(home.city||"");body.appendChild(title);
+      [["Qiimaha","$"+(home.price||"")+" / bishii"],["Xaafada",home.neighborhood||""]].forEach(pair=>{
+        const p=document.createElement("p");p.textContent=pair[0]+": "+pair[1];body.appendChild(p);
+      });
+      /* Public listing intentionally never shows owner name or phone number. */
+      card.appendChild(body);grid.appendChild(card);
     });
-    const contact=document.createElement("a"); contact.className="btn btn-primary"; contact.style.cssText="display:block;text-align:center;text-decoration:none;margin-top:12px"; contact.href="tel:"+home.phone.replace(/[^\d+]/g,""); contact.textContent="La Xiriir Milkiilaha"; body.appendChild(contact);
-    card.appendChild(body); grid.appendChild(card);
-  });
+  }catch(error){if(message)message.textContent="Guryaha public-ka ah hadda lama soo rari karo. Waxaa loo baahan yahay in API-ga Cloudflare Worker la hawlgeliyo.";}
 }
 document.addEventListener("DOMContentLoaded",()=>{
   const form=document.getElementById("ejaarPublishForm");
   if(form)form.addEventListener("submit",async event=>{
     event.preventDefault();
     const msg=document.getElementById("ejaarPublishMessage");
+    const submit=form.querySelector('button[type="submit"]');
     const file=document.getElementById("ejaarImage").files[0];
     if(!file){msg.textContent="Fadlan sawirka guriga dooro.";return;}
     if(!/^image\/(jpeg|png|webp|gif)$/.test(file.type)){msg.textContent="Fadlan dooro sawir JPG, PNG, WEBP ama GIF.";return;}
-    if(file.size>2*1024*1024){msg.textContent="Sawirku waa inuu ka yaraadaa 2 MB si browser-ku u kaydin karo.";return;}
+    if(file.size>5*1024*1024){msg.textContent="Sawirku waa inuu ka yaraadaa 5 MB.";return;}
+    if(submit){submit.disabled=true;submit.textContent="Waa la dirayaa…";}
     try{
-      const image=await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=reject;reader.readAsDataURL(file);});
-      const data=new FormData(form);
-      const homes=getEjaarHomes();
-      homes.push({id:Date.now(),ownerName:String(data.get("ownerName")).trim(),phone:String(data.get("phone")).trim(),type:String(data.get("type")),price:String(data.get("price")),city:String(data.get("city")).trim(),neighborhood:String(data.get("neighborhood")).trim(),image,createdAt:new Date().toISOString()});
-      localStorage.setItem(EJAAR_STORAGE_KEY,JSON.stringify(homes));
-      form.reset();msg.textContent="Guriga waa la Publish-gareeyay, wuxuuna kasoo muuqanayaa Kirayso Guri.";
-      renderEjaarListings();
+      /* Send privately to the Worker. Owner details are for admin/email only,
+         and must not be included in the public GET response. */
+      const response=await fetch("/api/ejaar/homes",{method:"POST",body:new FormData(form),headers:{"Accept":"application/json"}});
+      let result={};try{result=await response.json();}catch(_){}
+      if(!response.ok)throw new Error(result.error||"Server-ku ma aqbalin codsiga.");
+      form.reset();msg.textContent="Codsiga guriga waa la gudbiyey. Haddii backend-ka la habeeyey, xogta waxaa loo diraa maamulka Haleel Real Estate.";
+      await renderEjaarListings();
       setTimeout(()=>openPage("ejaarRent"),700);
-    }catch(error){msg.textContent="Kaydintu ma suuragelin. Isku day sawir ka yar ama browser-ka ka nadiifi meel kayd ah.";}
+    }catch(error){
+      msg.textContent="Gudbintu ma suuragelin. Hubi in Cloudflare Worker API-ga /api/ejaar/homes la habeeyey oo isku day mar kale.";
+    }finally{if(submit){submit.disabled=false;submit.textContent="Publish Home";}}
   });
   const booking=document.getElementById("musaafirBookingForm");
   if(booking)booking.addEventListener("submit",event=>{
     event.preventDefault();
-    const data=new FormData(booking);
-    const details={
-      name:document.getElementById("travelerName").value.trim(),
-      phone:document.getElementById("travelerPhone").value.trim(),
-      city:document.getElementById("travelCity").value.trim(),
-      date:document.getElementById("travelDate").value,
-      nights:document.getElementById("travelNights").value,
-      guests:document.getElementById("travelGuests").value
-    };
+    const details={name:document.getElementById("travelerName").value.trim(),phone:document.getElementById("travelerPhone").value.trim(),city:document.getElementById("travelCity").value.trim(),date:document.getElementById("travelDate").value,nights:document.getElementById("travelNights").value,guests:document.getElementById("travelGuests").value};
     document.getElementById("musaafirBookingMessage").textContent="Codsiga booking-ga waa la diyaariyey. Fadlan la xiriir Customer Care si loo xaqiijiyo hoyga; codsigan weli si otomaatig ah email looma dirayo.";
     try{localStorage.setItem("haleel_musaafir_last_booking",JSON.stringify(details));}catch(_){}
   });
