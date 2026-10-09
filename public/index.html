@@ -2557,6 +2557,26 @@ body.dark .accessibility-toggle-label span{
   color:#91a0b1;
 }
 
+
+/* HALEEL EJAAR REGISTRATION */
+.ejaar-home-card{overflow:hidden;position:relative}
+.ej-card-image{height:155px;margin:-27px -27px 20px;background:linear-gradient(0deg,rgba(0,40,70,.16),rgba(0,40,70,.02)),url("https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=1200&q=85") center/cover no-repeat;border-radius:20px 20px 0 0}
+.ej-home-summary{padding:12px;margin:12px 0;background:#eef7ff;border:1px solid #d7eafa;border-radius:12px;color:#1d3044;font-size:13px;line-height:1.8}
+.ej-home-summary strong{color:#006CC2}
+.ej-modal-form{display:grid;gap:12px;text-align:left;margin-top:18px}
+.ej-modal-form label{font-size:13px;font-weight:800;color:#53677a}
+.ej-modal-form input{width:100%;height:48px;border:1px solid #dce4ec;border-radius:12px;padding:0 13px;margin-top:6px}
+.ej-registration-note{font-size:12px;color:#718096;line-height:1.5;margin-top:10px}
+.ej-choice-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:22px}
+.ej-choice-card{padding:28px 22px;text-align:center;background:#fff;border:1px solid var(--border);border-radius:22px;box-shadow:0 10px 35px rgba(9,44,73,.055)}
+.ej-choice-card .ej-choice-icon{font-size:42px;margin-bottom:14px}
+.ej-choice-card h2{font-size:22px;color:#081b2e;margin-bottom:10px}
+.ej-choice-card p{color:#718096;line-height:1.6;margin-bottom:18px}
+body.dark .ej-home-summary{background:#10212f;color:#e8eef5;border-color:#244967}
+body.dark .ej-choice-card{background:#131c26}
+body.dark .ej-choice-card h2{color:#f1f5f9}
+@media(max-width:600px){.ej-choice-grid{grid-template-columns:1fr}.ej-card-image{margin-left:-27px;margin-right:-27px}}
+
 </style>
 <style>
 .phub-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:2px}
@@ -2782,10 +2802,14 @@ Diiwaangeli Guri
 <h2>Adeegyada</h2>
 </div>
 <div class="services">
-<div class="card">
-<div class="service-icon">🏠</div>
-<h3>Adeega Ejaar</h3>
-<p>Hel guri kiro ah ama si fudud u kirayso gurigaaga.</p>
+<div class="card ejaar-home-card">
+<div class="ej-card-image" role="img" aria-label="Xeeb qurux badan"></div>
+<div class="service-icon">🏖️</div>
+<h3>ADEEGA EJAAR</h3>
+<p>Iska diiwaangeli adeegga Ejaar, kadibna dooro inaad guri kireyso ama kiraysato.</p>
+<div id="ejHomeAccountSummary" class="ej-home-summary" hidden></div>
+<button class="btn btn-primary" type="button" onclick="openEjaarRegistration()">Registration</button>
+<button class="btn btn-outline" id="ejHomeViewBtn" type="button" onclick="openPage('ejaar')" hidden>View</button>
 </div>
 <div class="card">
 <div class="service-icon">📢</div>
@@ -4248,6 +4272,37 @@ Haleel Real Estate — Hogaanka Kiraynta.
 </div>
 </div>
 </div>
+<div class="page" id="ejaar">
+  <div class="care-hero">
+    <div class="care-status"><span class="care-status-dot"></span> HALEEL REAL ESTATE</div>
+    <h1>ADEEGA EJAAR</h1>
+    <p>Dooro adeegga aad u baahan tahay. Waxaad kireyn kartaa guri ama waxaad kiraysan kartaa gurigaaga.</p>
+    <div id="ejPageMember" class="ej-home-summary" hidden></div>
+  </div>
+  <div class="ej-choice-grid">
+    <article class="ej-choice-card"><div class="ej-choice-icon">🔑</div><h2>Kiree Guri</h2><p>Haddii aad rabto inaad gurigaaga qof kale ka kireyso, dooro qaybtaan.</p><button class="btn btn-primary" type="button" onclick="openEjaarChoice('Kiree Guri')">Kiree Guri</button></article>
+    <article class="ej-choice-card"><div class="ej-choice-icon">🏠</div><h2>Kirayso Guri</h2><p>Haddii aad raadinayso guri aad degto oo aad kiraysato, dooro qaybtaan.</p><button class="btn btn-primary" type="button" onclick="openEjaarChoice('Kirayso Guri')">Kirayso Guri</button></article>
+  </div>
+  <p class="ej-registration-note">Labada doorasho waxay hadda kuu muujinayaan qaybta aad dooratay. Form-yada dalabka guryaha waxaa lagu dari karaa tallaabada xigta.</p>
+</div>
+<div class="modal" id="ejRegistrationModal" role="dialog" aria-modal="true" aria-labelledby="ejRegistrationTitle">
+  <div class="modal-box">
+    <button class="details-close" type="button" onclick="closeEjaarRegistration()" aria-label="Xir">×</button>
+    <div class="service-icon" style="margin:0 auto 14px">🏖️</div>
+    <h2 id="ejRegistrationTitle">Ejaar Registration</h2>
+    <p class="details-text">Geli magacaaga iyo lambarkaaga si aad isu diiwaangeliso.</p>
+    <form class="ej-modal-form" id="ejRegistrationForm" onsubmit="createEjaarRegistration(event)">
+      <label>Geli magacaaga<input id="ejRegistrantName" name="name" autocomplete="name" maxlength="100" required placeholder="Magacaaga oo buuxa"></label>
+      <label>Geli Lambarkaaga<input id="ejRegistrantMobile" name="mobile" autocomplete="tel" inputmode="tel" maxlength="25" required placeholder="Lambarka telefoonka"></label>
+      <div id="ejRegistrationMessage" class="auth-message" role="status"></div>
+      <button class="btn btn-primary" type="submit">Create Ejaar</button>
+    </form>
+    <p class="ej-registration-note">ID-ga waxaa si otomaatig ah loogu siinayaa qaabka 0001, 0002, 0003...</p>
+  </div>
+</div>
+<div class="modal" id="ejChoiceModal" role="dialog" aria-modal="true" aria-labelledby="ejChoiceTitle">
+  <div class="modal-box"><button class="details-close" type="button" onclick="closeEjaarChoice()" aria-label="Xir">×</button><div class="service-icon" style="margin:0 auto 14px">🏠</div><h2 id="ejChoiceTitle">Adeega Ejaar</h2><p id="ejChoiceText" class="details-text"></p><button class="btn btn-primary" type="button" onclick="closeEjaarChoice()">Hagaag</button></div>
+</div>
 </main>
 <nav class="mobile-nav">
 <button
@@ -5456,6 +5511,7 @@ selected.classList.add("active");
 }
 const titles={
 home:"Home",
+ejaar:"Adeega Ejaar",
 services:"Services",
 farsamo:"Adeegyo",
 property:"Properties",
@@ -6071,6 +6127,57 @@ document.addEventListener("click", function(e){
 
 
 try{ initAccessibilityVoice(); }catch(_){ }
+
+/* HALEEL EJAAR REGISTRATION — browser-local demo storage */
+const EJ_REGISTRATIONS_KEY = "haleel_ejaar_registrations_v1";
+function getEjaarRegistrations(){
+  try { const v=JSON.parse(localStorage.getItem(EJ_REGISTRATIONS_KEY)||"[]"); return Array.isArray(v)?v:[]; } catch(_){ return []; }
+}
+function nextEjaarId(registrations){
+  const max=registrations.reduce((m,r)=>Math.max(m,Number(r.id)||0),0);
+  return String(max+1).padStart(4,"0");
+}
+function openEjaarRegistration(){
+  const form=document.getElementById("ejRegistrationForm");
+  const message=document.getElementById("ejRegistrationMessage");
+  if(form) form.reset(); if(message) message.textContent="";
+  document.getElementById("ejRegistrationModal")?.classList.add("show");
+  setTimeout(()=>document.getElementById("ejRegistrantName")?.focus(),80);
+}
+function closeEjaarRegistration(){document.getElementById("ejRegistrationModal")?.classList.remove("show");}
+function createEjaarRegistration(event){
+  event.preventDefault();
+  const name=document.getElementById("ejRegistrantName").value.trim();
+  const mobile=document.getElementById("ejRegistrantMobile").value.trim();
+  const message=document.getElementById("ejRegistrationMessage");
+  if(!name||!mobile){if(message)message.textContent="Fadlan geli magacaaga iyo lambarkaaga.";return;}
+  const registrations=getEjaarRegistrations();
+  const record={id:nextEjaarId(registrations),name,mobile,createdAt:new Date().toISOString()};
+  registrations.push(record);
+  try{localStorage.setItem(EJ_REGISTRATIONS_KEY,JSON.stringify(registrations));}
+  catch(_){if(message)message.textContent="Diiwaangelinta lama kaydin karin browser-kan. Fadlan hubi storage-ka.";return;}
+  closeEjaarRegistration();
+  renderEjaarRegistration(record);
+  openPage("ejaar");
+}
+function renderEjaarRegistration(record){
+  if(!record){const all=getEjaarRegistrations();record=all.length?all[all.length-1]:null;}
+  const summary=document.getElementById("ejHomeAccountSummary");
+  const view=document.getElementById("ejHomeViewBtn");
+  const pageMember=document.getElementById("ejPageMember");
+  if(!record){if(summary)summary.hidden=true;if(view)view.hidden=true;if(pageMember)pageMember.hidden=true;return;}
+  const html='<div><strong>Name:</strong> '+escapeHTML(record.name)+'</div><div><strong>Mobile:</strong> '+escapeHTML(record.mobile)+'</div><div><strong>ID:</strong> '+escapeHTML(record.id)+'</div>';
+  if(summary){summary.innerHTML=html;summary.hidden=false;}
+  if(view)view.hidden=false;
+  if(pageMember){pageMember.innerHTML=html;pageMember.hidden=false;}
+}
+function openEjaarChoice(choice){
+  document.getElementById("ejChoiceTitle").textContent=choice;
+  document.getElementById("ejChoiceText").textContent=choice==="Kiree Guri"?"Waxaad dooratay inaad guri kireyso. Foomka faahfaahinta guriga waxaa lagu dari karaa tallaabada xigta.":"Waxaad dooratay inaad guri kiraysato. Raadinta iyo codsiga guri waxaa lagu dari karaa tallaabada xigta.";
+  document.getElementById("ejChoiceModal")?.classList.add("show");
+}
+function closeEjaarChoice(){document.getElementById("ejChoiceModal")?.classList.remove("show");}
+document.addEventListener("DOMContentLoaded",()=>renderEjaarRegistration());
 </script>
 </body>
 </html>
